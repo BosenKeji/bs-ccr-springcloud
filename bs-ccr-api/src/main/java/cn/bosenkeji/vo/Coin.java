@@ -8,7 +8,7 @@ public class Coin implements Serializable{
     private String name;
     private int status;
     private Timestamp created_at;
-    private Timestamp update_at;
+    private Timestamp updated_at;
 
     public int getId() {
         return id;
@@ -43,11 +43,11 @@ public class Coin implements Serializable{
     }
 
     public Timestamp getUpdate_at() {
-        return update_at;
+        return updated_at;
     }
 
     public void setUpdate_at(Timestamp update_at) {
-        this.update_at = update_at;
+        this.updated_at = update_at;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Coin implements Serializable{
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", created_at=" + created_at +
-                ", update_at=" + update_at +
+                ", update_at=" + updated_at +
                 '}';
     }
 }
