@@ -7,7 +7,13 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+/**
+ * @ClassName CoinImpl
+ * @Description 货币实现类
+ * @Author Yu XueWen
+ * @Email 8586826@qq.com
+ * @Versio V1.0
+**/
 @Service
 public class CoinImpl implements ICoinService {
 

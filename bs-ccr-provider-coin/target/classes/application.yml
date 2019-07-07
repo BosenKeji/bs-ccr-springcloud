@@ -7,12 +7,13 @@ spring:
   application:
     name: bs-ccr-provider-coin
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource # 配置当前要使用的数据源的操作类型
-    driver-class-name: com.mysql.cj.jdbc.Driver # 配置MySQL的驱动程序类
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root # 数据库用户名
-    password: 123zxc # 数据库连接密码
+    username: root
+    password: 123zxc
 
 logging:
   level:
     cn.bosenkeji.mapper: debug
+

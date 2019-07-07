@@ -8,7 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-
+/**
+ * @ClassName CoinController
+ * @Description 货币
+ * @Author Yu XueWen
+ * @Email 8586826@qq.com
+ * @Versio V1.0
+**/
 @RestController
 @RequestMapping("/coin")
 public class CoinController {
