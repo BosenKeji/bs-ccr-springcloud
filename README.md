@@ -1,7 +1,8 @@
 # bs-ccr-springcloud
 
 ### Eureka
-    
+##### server
+##### client
 
 ### Spring Security
 
@@ -10,7 +11,7 @@
 
 
 ### Feign
-
+##### consumer
 
 ### Hystrix 
 

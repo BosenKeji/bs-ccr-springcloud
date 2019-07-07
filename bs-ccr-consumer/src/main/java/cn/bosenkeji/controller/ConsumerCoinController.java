@@ -22,9 +22,9 @@ import java.util.List;
 @RequestMapping("/consumer")
 public class ConsumerCoinController {
 
-    public static final String COIN_GET_URL = "http://localhost:8080/coin/get/";
-    public static final String COIN_LIST_URL="http://localhost:8080/coin/list/";
-    public static final String COIN_ADD_URL = "http://localhost:8080/coin/add/";
+    public static final String COIN_GET_URL = "http://BS-CCR-PROVIDER-COIN/coin/get/";
+    public static final String COIN_LIST_URL="http://BS-CCR-PROVIDER-COIN/coin/list/";
+    public static final String COIN_ADD_URL = "http://BS-CCR-PROVIDER-COIN/coin/add/";
 
 
     @Resource

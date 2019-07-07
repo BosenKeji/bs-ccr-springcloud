@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinService;
 import cn.bosenkeji.vo.Coin;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class CoinController {
     @Resource
     private ICoinService iCoinService;
 
+    @Resource
+    private DiscoveryClient client ;
+
     @RequestMapping(value="/get/{id}")
     public Object get(@PathVariable("id") int id) {
         return this.iCoinService.get(id) ;
@@ -34,5 +38,10 @@ public class CoinController {
     @RequestMapping(value="/list")
     public Object list() {
         return this.iCoinService.list() ;
+    }
+
+    @RequestMapping("/discover")
+    public Object discover() { // 直接返回发现服务信息
+        return this.client ;
     }
 }
