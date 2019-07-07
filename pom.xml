@@ -16,6 +16,7 @@
         <module>bs-ccr-api</module>
         <module>bs-ccr-security</module>
         <module>bs-ccr-service</module>
+        <module>bs-ccr-aliyun-api-gateway</module>
     </modules>
 
     <properties>
@@ -54,6 +55,16 @@
                 <version>1.3.0</version>
             </dependency>
             <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-cloudapi</artifactId>
+                <version>4.8.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>0.2.1.RELEASE</version>
+            </dependency>
+            <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-security</artifactId>
                 <version>1.0.0</version>
@@ -70,5 +81,34 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <finalName>boSen</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <delimiters>
+                        <delimiter>$</delimiter>
+                    </delimiters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source><!-- 源代码使用的开发版本 -->
+                    <target>${jdk.version}</target><!-- 需要生成的目标class文件的编译版本 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
