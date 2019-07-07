@@ -163,5 +163,6 @@
     <orderEntry type="library" name="Maven: io.github.openfeign:feign-hystrix:9.5.1" level="project" />
     <orderEntry type="library" name="Maven: io.github.openfeign:feign-java8:9.5.1" level="project" />
     <orderEntry type="module" module-name="bs-ccr-api" />
+    <orderEntry type="module" module-name="bs-ccr-service" />
   </component>
 </module>

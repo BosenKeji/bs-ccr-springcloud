@@ -15,6 +15,7 @@
         <module>bs-ccr-flyway</module>
         <module>bs-ccr-api</module>
         <module>bs-ccr-security</module>
+        <module>bs-ccr-service</module>
     </modules>
 
     <properties>
@@ -60,6 +61,11 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-api</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-service</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>

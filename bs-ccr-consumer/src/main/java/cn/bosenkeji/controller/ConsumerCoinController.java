@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.vo.Coin;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,11 +22,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/consumer")
 public class ConsumerCoinController {
-
-    public static final String COIN_GET_URL = "http://BS-CCR-PROVIDER-COIN/coin/get/";
-    public static final String COIN_LIST_URL="http://BS-CCR-PROVIDER-COIN/coin/list/";
-    public static final String COIN_ADD_URL = "http://BS-CCR-PROVIDER-COIN/coin/add/";
-
+    @Resource
+    private ICoinClientService iCoinClientService;
 
     @Resource
     private RestTemplate restTemplate;
@@ -36,23 +34,17 @@ public class ConsumerCoinController {
 
     @RequestMapping("/coin/get")
     public Object getProduct(int id) {
-        Coin coin = restTemplate.exchange(COIN_GET_URL + id, HttpMethod.GET,
-                new HttpEntity<Object>(httpHeaders), Coin.class).getBody();
-        return coin;
+        return iCoinClientService.getCoin(id);
     }
 
     @RequestMapping("/coin/list")
     public  Object listProduct() {
-        List<Coin> list = restTemplate.exchange(COIN_LIST_URL,HttpMethod.GET,
-                new HttpEntity<Object>(httpHeaders), List.class).getBody();
-        return list;
+        return iCoinClientService.listCoin();
     }
 
     @RequestMapping("/coin/add")
     public Object addCoin(Coin coin) {
-        Boolean result = restTemplate.exchange(COIN_ADD_URL, HttpMethod.POST,
-                new HttpEntity<Object>(coin,httpHeaders), Boolean.class).getBody();
-        return result;
+        return iCoinClientService.addCoin(coin);
     }
 
 }
