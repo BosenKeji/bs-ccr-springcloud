@@ -3,32 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a4ba29a7-28e0-4585-ac97-8cc0f06cad19" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-api/bs-ccr-api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-api/bs-ccr-api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-api/target/classes/cn/bosenkeji/vo/Coin.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-api/target/classes/cn/bosenkeji/vo/Coin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-consumer/bs-ccr-consumer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-consumer/bs-ccr-consumer.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-eureka/bs-ccr-eureka.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-eureka/bs-ccr-eureka.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/cn/bosenkeji/EurekaApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/cn/bosenkeji/EurekaApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/cn/bosenkeji/config/EurekaSecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-eureka/target/classes/cn/bosenkeji/config/EurekaSecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-flyway/bs-ccr-flyway.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-flyway/bs-ccr-flyway.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/bs-ccr-provider-coin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/bs-ccr-provider-coin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/CoinApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/CoinApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/controller/CoinController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/controller/CoinController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/mapper/CoinMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/mapper/CoinMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/service/ICoinService.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/service/ICoinService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/service/Impl/CoinImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/cn/bosenkeji/service/Impl/CoinImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/mapping/CoinMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-provider-coin/target/classes/mapping/CoinMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-security/bs-ccr-security.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-security/bs-ccr-security.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-security/target/classes/cn/bosenkeji/config/WebSecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-security/target/classes/cn/bosenkeji/config/WebSecurityConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/bs-ccr-service.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/bs-ccr-service.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/src/main/java/cn/bosenkeji/feign/config/FeignClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/src/main/java/cn/bosenkeji/config/FeignClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/src/main/java/cn/bosenkeji/service/ICoinClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/src/main/java/cn/bosenkeji/service/ICoinClientService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/feign/config/FeignClientConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/ICoinClientService.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/ICoinClientService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/fallback/ICoinClientServiceFallbackFactory$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/fallback/ICoinClientServiceFallbackFactory$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/fallback/ICoinClientServiceFallbackFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/target/classes/cn/bosenkeji/service/fallback/ICoinClientServiceFallbackFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bs-ccr-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bs-ccr-service/.gitignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bs-ccr-eureka/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -130,7 +106,11 @@
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="50">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -223,6 +203,7 @@
         <option value="$PROJECT_DIR$/bs-ccr-service/src/main/java/cn/bosenkeji/config/AliCloudAcsClientConfig.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/bs-ccr-service/.gitignore" />
       </list>
     </option>
   </component>
@@ -294,37 +275,22 @@
             <path>
               <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="bs-ccr-springcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="bs-ccr-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="bs-ccr-api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="bs-ccr-springcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="bs-ccr-consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="bs-ccr-eureka" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="bs-ccr-springcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="bs-ccr-consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="bs-ccr-provider-coin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="bs-ccr-springcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="bs-ccr-consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="bs-ccr-springcloud" type="462c0819:PsiDirectoryNode" />
-              <item name="bs-ccr-consumer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bosenkeji" type="462c0819:PsiDirectoryNode" />
+              <item name="bs-ccr-security" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bs-ccr-springcloud" type="b2602c69:ProjectViewProjectNode" />
@@ -343,10 +309,11 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/bs-ccr-service" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/bs-ccr-aliyun-api-gateway" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -464,12 +431,12 @@
       <updated>1562310190832</updated>
       <workItem from="1562310193828" duration="16109000" />
       <workItem from="1562340934340" duration="2912000" />
-      <workItem from="1562399665693" duration="30415000" />
+      <workItem from="1562399665693" duration="30535000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49436000" />
+    <option name="totallyTimeSpent" value="49556000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="6" y="23" width="1641" height="1027" extended-state="6" />
@@ -918,7 +885,11 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
