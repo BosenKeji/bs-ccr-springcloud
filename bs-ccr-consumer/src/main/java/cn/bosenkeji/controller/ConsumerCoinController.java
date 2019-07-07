@@ -2,15 +2,10 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.vo.Coin;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @ClassName ConsumerCoinController
@@ -24,13 +19,6 @@ import java.util.List;
 public class ConsumerCoinController {
     @Resource
     private ICoinClientService iCoinClientService;
-
-    @Resource
-    private RestTemplate restTemplate;
-
-    @Resource
-    private HttpHeaders httpHeaders;
-
 
     @RequestMapping("/coin/get")
     public Object getProduct(int id) {

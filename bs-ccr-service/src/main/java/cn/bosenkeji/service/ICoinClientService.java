@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.feign.config.FeignClientConfig;
+import cn.bosenkeji.service.fallback.ICoinClientServiceFallbackFactory;
 import cn.bosenkeji.vo.Coin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ import java.util.List;
  * @Email yuxuewen23@qq.com
  * @Versio V1.0
  **/
-@FeignClient(name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class)
+@FeignClient(name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinClientServiceFallbackFactory.class)
 public interface ICoinClientService {
     @RequestMapping("/coin/get/{id}")
     public Coin getCoin(@PathVariable("id")int id);

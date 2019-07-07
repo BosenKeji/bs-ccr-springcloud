@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @ClassName App
- * @Description 启动类 包含 Eureka Ribbon
+ * @Description 启动类 包含 Eureka Ribbon Feign
  * @Author Yu XueWen
  * @Email 8586826@qq.com
  * @Versio V1.0
