@@ -3,6 +3,8 @@ package cn.bosenkeji;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
 /**
  * @ClassName App
  * @Description 启动类
@@ -12,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 **/
 @SpringBootApplication
 @MapperScan("cn.bosenkeji.mapper")
+@EnableEurekaClient
 public class CoinApp {
     public static void main(String[] args) {
         SpringApplication.run(CoinApp.class, args);
