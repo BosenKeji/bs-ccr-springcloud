@@ -58,6 +58,11 @@
             <artifactId>bs-ccr-security</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-flyway</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
