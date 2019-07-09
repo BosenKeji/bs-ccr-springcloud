@@ -1,8 +1,9 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinMapper;
-import cn.bosenkeji.service.ICoinService;
+import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,20 +16,33 @@ import java.util.List;
  * @Versio V1.0
 **/
 @Service
-public class CoinImpl implements ICoinService {
+public class CoinImpl implements CoinService {
 
-    @Resource
+    @Autowired
     private CoinMapper coinMapper;
 
-    public Coin get(int id) {
-        return coinMapper.findById(id);
-    }
-
-    public boolean add(Coin coin) {
-        return coinMapper.create(coin);
-    }
-
+    @Override
     public List<Coin> list() {
         return coinMapper.findAll();
+    }
+
+    @Override
+    public Coin get(int id) {
+        return coinMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public boolean add(Coin coin) {
+        return coinMapper.insert(coin)==1;
+    }
+
+    @Override
+    public boolean update(Coin coin) {
+        return coinMapper.updateByPrimaryKeySelective(coin)==1;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return coinMapper.deleteByPrimaryKey(id)==1;
     }
 }

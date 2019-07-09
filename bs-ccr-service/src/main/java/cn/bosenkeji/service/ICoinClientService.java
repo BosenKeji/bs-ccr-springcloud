@@ -18,6 +18,7 @@ import java.util.List;
  **/
 @FeignClient(name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinClientServiceFallbackFactory.class)
 public interface ICoinClientService {
+
     @RequestMapping("/coin/get/{id}")
     public Coin getCoin(@PathVariable("id")int id);
 

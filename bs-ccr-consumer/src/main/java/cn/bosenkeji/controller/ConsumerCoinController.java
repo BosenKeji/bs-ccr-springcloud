@@ -32,6 +32,7 @@ public class ConsumerCoinController {
 
     @RequestMapping("/coin/add")
     public Object addCoin(Coin coin) {
+
         return iCoinClientService.addCoin(coin);
     }
 

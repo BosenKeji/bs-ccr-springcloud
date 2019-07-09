@@ -1,16 +1,26 @@
 package cn.bosenkeji.mapper;
 
-import java.util.List;
 import cn.bosenkeji.vo.Coin;
+
+import java.util.List;
+
 /**
- * @ClassName CoinMapper
- * @Description 货币
- * @Author Yu XueWen
- * @Email 8586826@qq.com
- * @Versio V1.0
-**/
+ * @Author CAJR
+ * @create 2019/7/9 16:27
+ */
+
 public interface CoinMapper {
-    boolean create(Coin coin);
-    public Coin findById(int id);
-    public List<Coin> findAll();
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Coin record);
+
+    int insertSelective(Coin record);
+
+    Coin selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Coin record);
+
+    int updateByPrimaryKey(Coin record);
+
+    List<Coin> findAll();
 }
