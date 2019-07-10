@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.CoinPairCoinMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.CoinPairCoin">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="coin_pair_id" jdbcType="INTEGER" property="coinPairId" />
+    <result column="coin_id" jdbcType="INTEGER" property="coinId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, coin_pair_id, coin_id, `status`, created_at, updated_at
+  </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+    select * from coin_pair_coin
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from coin_pair_coin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from coin_pair_coin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairCoin" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_coin (coin_pair_id, coin_id, `status`, 
+      created_at, updated_at)
+    values (#{coinPairId,jdbcType=INTEGER}, #{coinId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairCoin" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_coin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="coinPairId != null">
+        coin_pair_id,
+      </if>
+      <if test="coinId != null">
+        coin_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="coinPairId != null">
+        #{coinPairId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null">
+        #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.CoinPairCoin">
+    <!--@mbg.generated-->
+    update coin_pair_coin
+    <set>
+      <if test="coinPairId != null">
+        coin_pair_id = #{coinPairId,jdbcType=INTEGER},
+      </if>
+      <if test="coinId != null">
+        coin_id = #{coinId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.CoinPairCoin">
+    <!--@mbg.generated-->
+    update coin_pair_coin
+    set coin_pair_id = #{coinPairId,jdbcType=INTEGER},
+      coin_id = #{coinId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 /**
- * @ClassName CoinImpl
+ * @ClassName CoinServiceImpl
  * @Description 货币实现类
  * @Author Yu XueWen
  * @Email 8586826@qq.com
  * @Versio V1.0
 **/
 @Service
-public class CoinImpl implements CoinService {
+public class CoinServiceImpl implements CoinService {
 
     @Autowired
     private CoinMapper coinMapper;
