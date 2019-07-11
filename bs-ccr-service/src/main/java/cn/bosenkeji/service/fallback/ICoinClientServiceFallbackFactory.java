@@ -40,6 +40,16 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
             public boolean addCoin(Coin coin) {
                 return false;
             }
+
+            @Override
+            public boolean updateCoin(Coin coin) {
+                return false;
+            }
+
+            @Override
+            public boolean deleteCoin(int id) {
+                return false;
+            }
         };
     }
 }

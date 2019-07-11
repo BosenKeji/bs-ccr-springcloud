@@ -14,25 +14,35 @@ import javax.annotation.Resource;
  * @Versio V1.0
  **/
 @RestController
-@RequestMapping("/consumer/coin")
+@RequestMapping("/consumer")
 public class ConsumerCoinController {
     @Resource
     private ICoinClientService iCoinClientService;
 
-    @GetMapping("/{id}")
-    public Object getProduct(@PathVariable int id) {
+    @GetMapping("/coin/{id}")
+    public Object getCoin(@PathVariable("id") int id) {
         return iCoinClientService.getCoin(id);
     }
 
-    @GetMapping("/")
-    public  Object listProduct() {
+    @GetMapping("/coin")
+    public  Object listCoin() {
         return iCoinClientService.listCoin();
     }
 
-    @PostMapping("/")
-    public Object addCoin(Coin coin) {
+    @PostMapping("/coin")
+    public Object addCoin(@RequestBody Coin coin) {
 
         return iCoinClientService.addCoin(coin);
+    }
+
+    @PutMapping("/coin")
+    public Object updateCoin(@RequestBody Coin coin){
+        return iCoinClientService.updateCoin(coin);
+    }
+
+    @DeleteMapping("/coin/{id}")
+    public Object deleteCoin(@PathVariable("id") int id){
+        return iCoinClientService.deleteCoin(id);
     }
 
 }

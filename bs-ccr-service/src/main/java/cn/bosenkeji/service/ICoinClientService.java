@@ -4,10 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinClientServiceFallbackFactory;
 import cn.bosenkeji.vo.Coin;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,16 +16,20 @@ import java.util.List;
  * @Versio V1.0
  **/
 @FeignClient(name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinClientServiceFallbackFactory.class)
-
-@RequestMapping("/coin")
 public interface ICoinClientService {
 
-    @GetMapping("/{id}")
+    @GetMapping("/coin/{id}")
     public Coin getCoin(@PathVariable("id")int id);
 
-    @GetMapping("/")
+    @GetMapping("/coin")
     public List<Coin> listCoin() ;
 
-    @PostMapping("/")
-    public boolean addCoin(Coin coin) ;
+    @PostMapping("/coin")
+    public boolean addCoin(@RequestBody Coin coin) ;
+
+    @PutMapping("/coin")
+    public boolean updateCoin(@RequestBody Coin coin);
+
+    @DeleteMapping("/coin/{id}")
+    public boolean deleteCoin(@PathVariable("id") int id );
 }
