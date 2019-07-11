@@ -16,7 +16,8 @@
         <module>bs-ccr-api</module>
         <module>bs-ccr-security</module>
         <module>bs-ccr-service</module>
-        <module>bs-ccr-aliyun-api-gateway</module>
+        <module>bs-ccr-aliCloud-api-gateway</module>
+        <module>bs-ccr-aliCloud-acm</module>
     </modules>
 
     <properties>
@@ -58,6 +59,11 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-cloudapi</artifactId>
                 <version>4.8.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>0.9.0.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>

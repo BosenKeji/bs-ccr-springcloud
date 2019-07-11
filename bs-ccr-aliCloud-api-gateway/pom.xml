@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bs-ccr-aliyun-api-gateway</artifactId>
+    <artifactId>bs-ccr-aliCloud-api-gateway</artifactId>
 
 
 </project>
