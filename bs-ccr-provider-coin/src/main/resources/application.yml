@@ -6,25 +6,17 @@ mybatis:
 spring:
   application:
     name: bs-ccr-provider-coin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: admin
+    password: 123zxc
 
 logging:
   level:
     cn.bosenkeji.mapper: debug
-
-eureka:
-  client:
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://admin:admin@eureka:7001/eureka
-    fetch-registry: true
-  instance:
-    instance-id: bs-ccr-provider-coin
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10 # 心跳时间间隔（默认是30秒）
-    lease-expiration-duration-in-seconds: 20  # 默认90秒
