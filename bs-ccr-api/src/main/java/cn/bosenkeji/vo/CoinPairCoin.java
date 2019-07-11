@@ -2,12 +2,27 @@ package cn.bosenkeji.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
-public class Coin implements Serializable{
+/**
+ * @Author CAJR
+ * @create 2019/7/9 16:27
+ */
+
+public class CoinPairCoin implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private int id;
-    private String name;
+
+    private int coinPairId;
+
+    private int coinId;
+
     private int status;
+
     private Timestamp createdAt;
+
     private Timestamp updatedAt;
 
     public int getId() {
@@ -18,12 +33,20 @@ public class Coin implements Serializable{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getCoinPairId() {
+        return coinPairId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCoinPairId(int coinPairId) {
+        this.coinPairId = coinPairId;
+    }
+
+    public int getCoinId() {
+        return coinId;
+    }
+
+    public void setCoinId(int coinId) {
+        this.coinId = coinId;
     }
 
     public int getStatus() {
@@ -52,9 +75,10 @@ public class Coin implements Serializable{
 
     @Override
     public String toString() {
-        return "Coin{" +
+        return "CoinPairCoin{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", coinPairId=" + coinPairId +
+                ", coinId=" + coinId +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

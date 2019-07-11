@@ -17,14 +17,17 @@ import java.util.List;
  **/
 @Component
 public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinClientService> {
+    @Override
     public ICoinClientService create(Throwable throwable) {
         return new ICoinClientService() {
+            @Override
             public Coin getCoin(int id) {
                 Coin coin = new Coin();
                 coin.setName("hystrixName");
                 return coin;
             }
 
+            @Override
             public List<Coin> listCoin() {
                 Coin coin = new Coin();
                 coin.setName("hystrixName");
@@ -33,6 +36,7 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
                 return listCoin;
             }
 
+            @Override
             public boolean addCoin(Coin coin) {
                 return false;
             }
