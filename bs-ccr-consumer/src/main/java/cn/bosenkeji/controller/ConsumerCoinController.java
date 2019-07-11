@@ -2,8 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.vo.Coin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -15,22 +14,22 @@ import javax.annotation.Resource;
  * @Versio V1.0
  **/
 @RestController
-@RequestMapping("/consumer")
+@RequestMapping("/consumer/coin")
 public class ConsumerCoinController {
     @Resource
     private ICoinClientService iCoinClientService;
 
-    @RequestMapping("/coin/get")
-    public Object getProduct(int id) {
+    @GetMapping("/{id}")
+    public Object getProduct(@PathVariable int id) {
         return iCoinClientService.getCoin(id);
     }
 
-    @RequestMapping("/coin/list")
+    @GetMapping("/")
     public  Object listProduct() {
         return iCoinClientService.listCoin();
     }
 
-    @RequestMapping("/coin/add")
+    @PostMapping("/")
     public Object addCoin(Coin coin) {
 
         return iCoinClientService.addCoin(coin);
