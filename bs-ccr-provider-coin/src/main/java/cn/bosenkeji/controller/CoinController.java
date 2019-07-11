@@ -40,7 +40,7 @@ public class CoinController {
 
     @RequestMapping(value="/", method = RequestMethod.PUT)
     public Object put(@RequestBody Coin coin) {
-        return this.coinService.put(coin) ;
+        return this.coinService.update(coin) ;
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
