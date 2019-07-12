@@ -21,13 +21,13 @@ public interface ICoinClientService {
     @GetMapping("/coin/{id}")
     public Coin getCoin(@PathVariable("id")int id);
 
-    @GetMapping("/coin")
+    @GetMapping("/coin/")
     public List<Coin> listCoin() ;
 
-    @PostMapping("/coin")
+    @PostMapping("/coin/")
     public boolean addCoin(@RequestBody Coin coin) ;
 
-    @PutMapping("/coin")
+    @PutMapping("/coin/")
     public boolean updateCoin(@RequestBody Coin coin);
 
     @DeleteMapping("/coin/{id}")

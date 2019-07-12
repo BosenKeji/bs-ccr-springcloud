@@ -19,13 +19,13 @@ public interface ICoinPairClientService {
     @GetMapping("/coinpair/{id}")
     public CoinPair getCoinPair(@PathVariable("id") int id);
 
-    @GetMapping("/coinpair")
+    @GetMapping("/coinpair/")
     public List<CoinPair> listCoinPair() ;
 
-    @PostMapping("/coinpair")
+    @PostMapping("/coinpair/")
     public boolean addCoinPair(@RequestBody CoinPair coinPair) ;
 
-    @PutMapping("/coinpair")
+    @PutMapping("/coinpair/")
     public boolean updateCoinPair(@RequestBody CoinPair coinPair);
 
     @DeleteMapping("/coinpair/{id}")
