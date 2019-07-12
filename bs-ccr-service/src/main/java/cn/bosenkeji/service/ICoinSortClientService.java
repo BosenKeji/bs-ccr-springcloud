@@ -13,7 +13,7 @@ import java.util.List;
  * @Author CAJR
  * @create 2019/7/11 14:49
  */
-@FeignClient( name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
+@FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
 public interface ICoinSortClientService {
 
     @GetMapping("/coinsort/{id}")
