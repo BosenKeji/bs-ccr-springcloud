@@ -1,11 +1,19 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.config.ExceptionConfig;
+import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Min;
+
 /**
  * @ClassName CoinController
  * @Description 货币
@@ -15,6 +23,7 @@ import javax.annotation.Resource;
 **/
 @RestController
 @RequestMapping("/coin")
+@Validated
 public class CoinController {
 
     @Resource
@@ -28,9 +37,10 @@ public class CoinController {
         return this.coinService.list() ;
     }
 
+
     @RequestMapping(value="/{id}")
-    public Object get(@PathVariable("id") int id) {
-        return this.coinService.get(id) ;
+    public Object get( @PathVariable("id")  @Min(value = 1)  int id) {
+        return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST)

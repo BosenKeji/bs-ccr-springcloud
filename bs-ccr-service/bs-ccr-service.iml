@@ -103,5 +103,6 @@
     <orderEntry type="library" name="Maven: com.aliyun:aliyun-java-sdk-cloudapi:4.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.25" level="project" />
     <orderEntry type="module" module-name="bs-ccr-api" />
+    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final" level="project" />
   </component>
 </module>

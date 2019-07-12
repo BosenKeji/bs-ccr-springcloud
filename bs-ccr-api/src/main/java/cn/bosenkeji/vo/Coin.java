@@ -1,9 +1,14 @@
 package cn.bosenkeji.vo;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Coin implements Serializable{
+
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private int status;

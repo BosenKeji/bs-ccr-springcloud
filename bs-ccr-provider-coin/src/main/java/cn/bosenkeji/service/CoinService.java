@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.Coin;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName CoinService
@@ -14,7 +15,7 @@ import java.util.List;
 public interface CoinService {
     List<Coin> list();
 
-    Coin get(int id);
+    Optional<Coin> get(int id);
 
     boolean add(Coin coin);
 
