@@ -16,28 +16,28 @@ public class ConsumerCoinSortController {
     @Autowired
     ICoinSortClientService iCoinSortClientService;
 
-    @GetMapping("/coinsort/get")
-    public Object getProduct(int id) {
+    @GetMapping("/coinsort/{id}")
+    public Object getCoinSort(@PathVariable("id") int id) {
         return iCoinSortClientService.getCoinSort(id);
     }
 
-    @GetMapping("/coinsort/list")
+    @GetMapping("/coinsort")
     public  Object listProduct() {
         return iCoinSortClientService.listCoinSort();
     }
 
-    @PostMapping("/coinsort/add")
-    public Object addCoin(CoinSort coinSort) {
+    @PostMapping("/coinsort")
+    public Object addCoin(@RequestBody CoinSort coinSort) {
 
         return iCoinSortClientService.addCoinSort(coinSort);
     }
 
-    @PutMapping("/coin")
+    @PutMapping("/coinsort")
     public Object updateCoin(@RequestBody CoinSort coinSort){
         return iCoinSortClientService.updateCoinSort(coinSort);
     }
 
-    @DeleteMapping("/coin/{id}")
+    @DeleteMapping("/coinsort/{id}")
     public Object deleteCoinSort(@PathVariable("id") int id){
         return iCoinSortClientService.deleteCoinSort(id);
     }

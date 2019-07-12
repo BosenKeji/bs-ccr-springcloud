@@ -15,19 +15,19 @@ import java.util.List;
  * @Email yuxuewen23@qq.com
  * @Versio V1.0
  **/
-@FeignClient(name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinClientServiceFallbackFactory.class)
 public interface ICoinClientService {
 
     @GetMapping("/coin/{id}")
     public Coin getCoin(@PathVariable("id")int id);
 
-    @GetMapping("/coin")
+    @GetMapping("/coin/")
     public List<Coin> listCoin() ;
 
-    @PostMapping("/coin")
+    @PostMapping("/coin/")
     public boolean addCoin(@RequestBody Coin coin) ;
 
-    @PutMapping("/coin")
+    @PutMapping("/coin/")
     public boolean updateCoin(@RequestBody Coin coin);
 
     @DeleteMapping("/coin/{id}")
