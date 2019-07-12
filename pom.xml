@@ -11,6 +11,7 @@
     <modules>
         <module>bs-ccr-eureka</module>
         <module>bs-ccr-provider-coin</module>
+        <module>bs-ccr-provider-product</module>
         <module>bs-ccr-consumer</module>
         <module>bs-ccr-flyway</module>
         <module>bs-ccr-api</module>
