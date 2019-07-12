@@ -15,6 +15,7 @@
         <module>bs-ccr-consumer</module>
         <module>bs-ccr-flyway</module>
         <module>bs-ccr-api</module>
+        <module>bs-ccr-provider-product</module>
         <module>bs-ccr-security</module>
         <module>bs-ccr-service</module>
         <module>bs-ccr-aliCloud-api-gateway</module>

@@ -1,5 +1,6 @@
 package cn.bosenkeji;
 
+import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
 import org.junit.Test;
@@ -21,9 +22,6 @@ public class testCoin {
 
     @Test
     public void addCoin(){
-        Coin coin=new Coin();
-        coin.setName("test");
-        coin.setStatus(1);
-        coinService.add(coin);
+        System.out.println(CoinEnum.NAME.getCode());
     }
 }

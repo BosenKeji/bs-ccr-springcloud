@@ -5,6 +5,7 @@ import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName CoinController
@@ -44,7 +46,7 @@ public class CoinController {
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST)
-    public Object add(@RequestBody Coin coin) {
+    public Object add(@RequestBody @NotNull Coin coin) {
         return this.coinService.add(coin) ;
     }
 

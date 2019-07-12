@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -23,8 +24,8 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
-    public CoinSort get(int id) {
-        return coinSortMapper.selectByPrimaryKey(id);
+    public Optional<CoinSort> get(int id) {
+        return Optional.ofNullable(coinSortMapper.selectByPrimaryKey(id));
     }
 
     @Override

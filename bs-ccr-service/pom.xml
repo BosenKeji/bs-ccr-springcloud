@@ -31,6 +31,4 @@
             <artifactId>bs-ccr-api</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>

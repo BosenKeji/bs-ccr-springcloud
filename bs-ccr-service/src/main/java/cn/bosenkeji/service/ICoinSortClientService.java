@@ -13,19 +13,19 @@ import java.util.List;
  * @Author CAJR
  * @create 2019/7/11 14:49
  */
-@FeignClient( name = "BS-CCR-PROVIDER-COIN",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
+@FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
 public interface ICoinSortClientService {
 
-    @GetMapping("/coinsort/get/{id}")
+    @GetMapping("/coinsort/{id}")
     public CoinSort getCoinSort(@PathVariable("id") int id);
 
-    @GetMapping("/coinsort/list")
+    @GetMapping("/coinsort/")
     public List<CoinSort> listCoinSort() ;
 
-    @PostMapping("/coinsort/add")
+    @PostMapping("/coinsort/")
     public boolean addCoinSort(@RequestBody CoinSort coinSort) ;
 
-    @PutMapping("/coinsort")
+    @PutMapping("/coinsort/")
     public boolean updateCoinSort(@RequestBody CoinSort coinSort);
 
     @DeleteMapping("/coinsort/{id}")

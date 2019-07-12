@@ -1,10 +1,14 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.CoinSortEnum;
 import cn.bosenkeji.service.CoinSortService;
 import cn.bosenkeji.vo.CoinSort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Min;
 
 /**
  * @Author CAJR
@@ -25,8 +29,8 @@ public class CoinSortController {
     }
 
     @GetMapping("/{id}")
-    public Object get(@PathVariable int id){
-        return this.coinSortService.get(id);
+    public Object get(@PathVariable @Min(1) int id){
+        return this.coinSortService.get(id).orElseThrow(()-> new NotFoundException(CoinSortEnum.NAME));
     }
 
     @PostMapping("/")

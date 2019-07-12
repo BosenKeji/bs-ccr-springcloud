@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Versio V1.0
  **/
 @SpringBootApplication
-@RibbonClient(name = "BS-CCR-PROVIDER-COIN", configuration = RibbonConfig.class)
+//@RibbonClient(name = "BS-CCR-PROVIDER-COIN", configuration = RibbonConfig.class)
 @EnableFeignClients("cn.bosenkeji.service")
 public class ConsumerApp {
     public static void main(String[] args) {

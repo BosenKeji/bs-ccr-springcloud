@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -24,8 +25,8 @@ public class CoinPairCoinServiceImpl implements CoinPairCoinService {
     }
 
     @Override
-    public CoinPairCoin get(int id) {
-        return coinPairCoinMapper.selectByPrimaryKey(id);
+    public Optional<CoinPairCoin> get(int id) {
+        return Optional.ofNullable(coinPairCoinMapper.selectByPrimaryKey(id));
     }
 
     @Override
