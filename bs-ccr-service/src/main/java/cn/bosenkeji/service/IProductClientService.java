@@ -17,19 +17,19 @@ import java.util.List;
  * @Email yuxuewen23@qq.com
  * @Versio V1.0
  **/
-@FeignClient(name = "BS-CCR-PROVIDER-PRODUCT",configuration = FeignClientConfig.class,fallbackFactory = IProdcutClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProdcutClientServiceFallbackFactory.class)
 public interface IProductClientService {
 
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable("id") int id);
 
-    @GetMapping("/product")
+    @GetMapping("/product/")
     public List<Product> listProduct() ;
 
-    @PostMapping("/product")
+    @PostMapping("/product/")
     public boolean addProduct(@RequestBody Product product) ;
 
-    @PutMapping("/product")
+    @PutMapping("/product/")
     public boolean updateProduct(@RequestBody Product product);
     @DeleteMapping("/product/{id}")
     public boolean deleteProduct(@PathVariable("id") int id);

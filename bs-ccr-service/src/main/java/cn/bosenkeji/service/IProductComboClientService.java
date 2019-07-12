@@ -18,19 +18,19 @@ import java.util.List;
  * @Email yuxuewen23@qq.com
  * @Versio V1.0
  **/
-@FeignClient(name = "BS-CCR-PROVIDER-PRODUCT",configuration = FeignClientConfig.class,fallbackFactory = IProductComboClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProductComboClientServiceFallbackFactory.class)
 public interface IProductComboClientService {
 
     @GetMapping("/productcombo/{id}")
     public ProductCombo getProductCombo(@PathVariable("id") int id);
 
-    @GetMapping("/productcombo")
+    @GetMapping("/productcombo/")
     public List<ProductCombo> listProductCombo() ;
 
-    @PostMapping("/productcombo")
+    @PostMapping("/productcombo/")
     public boolean addProductCombo(@RequestBody ProductCombo productCombo) ;
 
-    @PutMapping("/productcombo")
+    @PutMapping("/productcombo/")
     public boolean updateProductCombo(@RequestBody ProductCombo productCombo);
 
     @DeleteMapping("/productcombo/{id}")
