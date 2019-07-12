@@ -1,4 +1,4 @@
-CREATE TABLE coin (
+CREATE TABLE admin (
     id int (11) NOT NULL AUTO_INCREMENT ,
     account varchar(50) not null ,
     password varchar(150) not null ,
