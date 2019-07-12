@@ -18,7 +18,7 @@ import java.util.List;
  * @Email yuxuewen23@qq.com
  * @Versio V1.0
  **/
-@FeignClient(name = "BS-CCR-PROVIDER-Product",configuration = FeignClientConfig.class,fallbackFactory = IProductComboClientServiceFallbackFactory.class)
+@FeignClient(name = "BS-CCR-PROVIDER-PRODUCT",configuration = FeignClientConfig.class,fallbackFactory = IProductComboClientServiceFallbackFactory.class)
 public interface IProductComboClientService {
 
     @GetMapping("/productcombo/{id}")

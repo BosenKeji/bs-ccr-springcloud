@@ -1,9 +1,10 @@
 package cn.bosenkeji.vo;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Product {
-    private Integer id;
+    private int id;
 
     private String name;
 
@@ -13,17 +14,17 @@ public class Product {
 
     private String remark;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,7 +33,7 @@ public class Product {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getVersionName() {
@@ -40,7 +41,7 @@ public class Product {
     }
 
     public void setVersionName(String versionName) {
-        this.versionName = versionName == null ? null : versionName.trim();
+        this.versionName = versionName;
     }
 
     public String getLogo() {
@@ -48,7 +49,7 @@ public class Product {
     }
 
     public void setLogo(String logo) {
-        this.logo = logo == null ? null : logo.trim();
+        this.logo = logo;
     }
 
     public String getRemark() {
@@ -56,30 +57,30 @@ public class Product {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
