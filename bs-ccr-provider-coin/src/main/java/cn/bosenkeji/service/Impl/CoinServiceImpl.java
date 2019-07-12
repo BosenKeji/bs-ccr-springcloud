@@ -6,8 +6,9 @@ import cn.bosenkeji.vo.Coin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
+
 /**
  * @ClassName CoinServiceImpl
  * @Description 货币实现类
@@ -27,8 +28,8 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public Coin get(int id) {
-        return coinMapper.selectByPrimaryKey(id);
+    public Optional<Coin> get(int id) {
+        return Optional.ofNullable(coinMapper.selectByPrimaryKey(id)) ;
     }
 
     @Override

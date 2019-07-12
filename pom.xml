@@ -19,6 +19,7 @@
         <module>bs-ccr-service</module>
         <module>bs-ccr-aliCloud-api-gateway</module>
         <module>bs-ccr-aliCloud-acm</module>
+        <module>bs-ccr-exception</module>
     </modules>
 
     <properties>
@@ -71,6 +72,13 @@
                 <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 <version>0.2.1.RELEASE</version>
             </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>problem-spring-web</artifactId>
+                <version>0.24.0</version>
+            </dependency>
+
+            <!-- 模块依赖 -->
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-security</artifactId>
