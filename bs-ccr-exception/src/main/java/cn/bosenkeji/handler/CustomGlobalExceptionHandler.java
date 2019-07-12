@@ -47,7 +47,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     // error handle for @Valid
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 

@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.CoinPair;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -11,7 +12,7 @@ import java.util.List;
 public interface CoinPairService {
     List<CoinPair> list();
 
-    CoinPair get(int id);
+    Optional<CoinPair> get(int id);
 
     boolean add(CoinPair coinPair);
 

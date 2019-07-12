@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo;
 
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;

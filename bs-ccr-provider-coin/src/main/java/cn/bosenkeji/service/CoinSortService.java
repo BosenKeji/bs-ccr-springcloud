@@ -4,6 +4,7 @@ import cn.bosenkeji.vo.CoinPair;
 import cn.bosenkeji.vo.CoinSort;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -13,7 +14,7 @@ import java.util.List;
 public interface CoinSortService {
     List<CoinSort> list();
 
-    CoinSort get(int id);
+    Optional<CoinSort> get(int id);
 
     boolean add(CoinSort coinSort);
 

@@ -1,10 +1,15 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.CoinPairEnum;
 import cn.bosenkeji.service.CoinPairService;
 import cn.bosenkeji.vo.CoinPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Min;
 
 /**
  * @Author CAJR
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/coinpair")
+@Validated
 public class CoinPairController {
 
     @Autowired
@@ -26,7 +32,7 @@ public class CoinPairController {
     }
 
     @GetMapping("/{id}")
-    public Object get(@PathVariable("id") int id){
+    public Object get(@PathVariable("id") @Min(1) int id){
         return this.coinPairService.get(id);
     }
 
