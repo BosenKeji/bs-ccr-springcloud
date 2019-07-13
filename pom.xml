@@ -21,6 +21,11 @@
         <module>bs-ccr-aliCloud-api-gateway</module>
         <module>bs-ccr-aliCloud-acm</module>
         <module>bs-ccr-exception</module>
+        <module>bs-ccr-jwt</module>
+        <module>bs-ccr-swagger</module>
+        <module>bs-ccr-boss-user</module>
+        <module>bs-ccr-provider-user-boss</module>
+        <module>bs-ccr-provider-user-front</module>
     </modules>
 
     <properties>
@@ -74,9 +79,14 @@
                 <version>0.2.1.RELEASE</version>
             </dependency>
             <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>problem-spring-web</artifactId>
-                <version>0.24.0</version>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>2.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>2.5.0</version>
             </dependency>
 
             <!-- 模块依赖 -->
