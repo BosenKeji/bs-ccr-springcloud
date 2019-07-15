@@ -1,20 +1,18 @@
 package cn.bosenkeji.vo;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
-public class ProductCombo {
+/**
+ * @Author CAJR
+ * @create 2019/7/15 15:43
+ */
+
+public class TradePlatform {
     private int id;
-
-    private int productId;
 
     private String name;
 
-    private int time;
-
-    private float price;
-
-    private String remark;
+    private String logo;
 
     private int status;
 
@@ -30,14 +28,6 @@ public class ProductCombo {
         this.id = id;
     }
 
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
     public String getName() {
         return name;
     }
@@ -46,28 +36,12 @@ public class ProductCombo {
         this.name = name;
     }
 
-    public int getTime() {
-        return time;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public int getStatus() {
