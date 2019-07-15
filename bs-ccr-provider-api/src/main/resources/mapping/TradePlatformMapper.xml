@@ -9,11 +9,19 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <association javaType="cn.bosenkeji.vo.TradePlatformApi" property="tradePlatformApi">
+      <id property="id" column="id"/>
+      <result property="nickname" column="nickname"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `name`, logo, `status`, created_at, updated_at
   </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select tp.*,tpa.* from trade_platform tp left join trade_platform_api tpa on tp.id = tpa.trade_platform_id;
+  </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
