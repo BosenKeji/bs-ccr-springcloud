@@ -5,6 +5,8 @@ import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -39,7 +41,8 @@ public class CoinController {
         return this.coinService.list() ;
     }
 
-
+    @ApiOperation(value="获取货币信息", notes="根据id来获取指定的货币详细信息")
+    @ApiImplicitParam(name="id", value="货币ID", required=true, dataType="String")
     @RequestMapping(value="/{id}")
     public Object get( @PathVariable("id")  @Min(value = 1)  int id) {
         return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
