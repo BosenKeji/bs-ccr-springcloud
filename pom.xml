@@ -11,11 +11,9 @@
     <modules>
 <!--        <module>bs-ccr-eureka</module>-->
         <module>bs-ccr-provider-coin</module>
-<!--        <module>bs-ccr-provider-product</module>-->
         <module>bs-ccr-consumer</module>
         <module>bs-ccr-flyway</module>
         <module>bs-ccr-api</module>
-        <module>bs-ccr-provider-product</module>
         <module>bs-ccr-security</module>
         <module>bs-ccr-service</module>
         <module>bs-ccr-aliCloud-api-gateway</module>
@@ -27,6 +25,9 @@
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-mybatis-generator</module>
         <module>bs-ccr-provider-api</module>
+        <module>bs-ccr-provider-combo</module>
+        <module>bs-ccr-provider-strategy</module>
+        <module>bs-ccr-provider-product</module>
     </modules>
 
     <properties>
