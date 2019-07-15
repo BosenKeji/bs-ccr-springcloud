@@ -27,6 +27,7 @@
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-provider-product-combo</module>
+        <module>bs-ccr-provider-api</module>
     </modules>
 
     <properties>
