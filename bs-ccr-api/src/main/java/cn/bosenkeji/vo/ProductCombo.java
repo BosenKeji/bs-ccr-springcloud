@@ -10,7 +10,7 @@ public class ProductCombo {
 
     private String name;
 
-    private float time;
+    private int time;
 
     private float price;
 
@@ -46,11 +46,11 @@ public class ProductCombo {
         this.name = name;
     }
 
-    public float getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(float time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
