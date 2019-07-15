@@ -13,7 +13,7 @@ public interface UserProductComboMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(UserProductCombo record);
+    boolean insert(UserProductCombo record);
 
     int insertSelective(UserProductCombo record);
 
@@ -25,7 +25,7 @@ public interface UserProductComboMapper {
 
     int updateByExample(@Param("record") UserProductCombo record, @Param("example") UserProductComboExample example);
 
-    int updateByPrimaryKeySelective(UserProductCombo record);
+    boolean updateByPrimaryKeySelective(UserProductCombo record);
 
     int updateByPrimaryKey(UserProductCombo record);
 }

@@ -45,4 +45,12 @@ public class ProductServiceImpl implements IProductService {
     public boolean update(Product product) {
          return this.productMapper.updateByPrimaryKeySelective(product);
     }
+
+    @Override
+    public boolean updateStatus(int id, int status) {
+        Product product=new Product();
+        product.setId(id);
+        product.setStatus(status);
+        return this.productMapper.updateByPrimaryKeySelective(product);
+    }
 }

@@ -11,9 +11,9 @@ public interface UserProductComboDayByAdminMapper {
 
     int deleteByExample(UserProductComboDayByAdminExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    boolean deleteByPrimaryKey(Integer id);
 
-    int insert(UserProductComboDayByAdmin record);
+    boolean insert(UserProductComboDayByAdmin record);
 
     int insertSelective(UserProductComboDayByAdmin record);
 
@@ -25,7 +25,7 @@ public interface UserProductComboDayByAdminMapper {
 
     int updateByExample(@Param("record") UserProductComboDayByAdmin record, @Param("example") UserProductComboDayByAdminExample example);
 
-    int updateByPrimaryKeySelective(UserProductComboDayByAdmin record);
+    boolean updateByPrimaryKeySelective(UserProductComboDayByAdmin record);
 
     int updateByPrimaryKey(UserProductComboDayByAdmin record);
 }
