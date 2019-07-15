@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bs-ccr-provider-product-combo</artifactId>
+    <artifactId>bs-ccr-provider-combo</artifactId>
 
-    <name>bs-ccr-provider-product-combo</name>
+    <name>bs-ccr-provider-combo</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
