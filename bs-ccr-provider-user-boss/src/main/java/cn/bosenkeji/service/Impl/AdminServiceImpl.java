@@ -3,7 +3,8 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.AdminMapper;
 import cn.bosenkeji.service.AdminService;
 import cn.bosenkeji.vo.Admin;
-import cn.bosenkeji.vo.Coin;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,21 @@ import java.util.Optional;
 **/
 @Service
 public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    private AdminMapper adminMapper;
+
     @Override
     public List<Admin> list() {
-        return null;
+        return adminMapper.findAll();
     }
+
+    @Override
+    public PageInfo listByPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo(adminMapper.findAll());
+    }
+
 
     @Override
     public Optional<Admin> get(int id) {
@@ -49,6 +61,7 @@ public class AdminServiceImpl implements AdminService {
 //
 //    @Override
 //    public List<Admin> list() {
+//        PageHelper.startPage(1,10);
 //        return adminMapper.findAll();
 //    }
 //

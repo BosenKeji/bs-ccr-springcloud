@@ -2,7 +2,6 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.vo.Product;
-import jdk.internal.util.xml.impl.ReaderUTF8;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;

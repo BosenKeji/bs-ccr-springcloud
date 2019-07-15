@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.Admin;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import java.util.Optional;
 **/
 public interface AdminService {
     List<Admin> list();
+
+    PageInfo listByPage(int pageNum, int pageSize);
 
     Optional<Admin> get(int id);
 
