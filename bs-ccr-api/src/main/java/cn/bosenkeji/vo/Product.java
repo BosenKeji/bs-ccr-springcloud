@@ -1,9 +1,12 @@
 package cn.bosenkeji.vo;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
-public class Product {
+/**
+ * @author: xivinChen
+ */
+public class Product implements Serializable {
     private int id;
 
     private String name;
@@ -19,6 +22,21 @@ public class Product {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
+
+    public Product(int id, String name, String versionName, String logo, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.versionName = versionName;
+        this.logo = logo;
+        this.remark = remark;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Product() {
+        super();
+    }
 
     public int getId() {
         return id;

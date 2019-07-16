@@ -1,8 +1,10 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.Product;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -10,8 +12,8 @@ import java.util.List;
  */
 public interface IProductService {
 
-    List<Product> list();
-    Product get(int id);
+    PageInfo<Product> list(int pageNum,int pageSize);
+    Optional<Product> get(int id);
 
     boolean add(Product product);
 

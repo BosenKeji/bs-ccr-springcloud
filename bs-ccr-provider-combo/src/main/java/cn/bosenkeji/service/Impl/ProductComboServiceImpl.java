@@ -3,11 +3,13 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.vo.ProductCombo;
-import cn.bosenkeji.vo.ProductComboExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -20,13 +22,24 @@ public class ProductComboServiceImpl implements IProductComboService {
     private ProductComboMapper productComboMapper;
 
     @Override
-    public List<ProductCombo> list() {
-        return this.productComboMapper.selectByExample(new ProductComboExample());
+    public PageInfo<ProductCombo> list(int pageNum,int pageSize) {
+
+        PageHelper.startPage(pageNum,pageSize);
+
+        return new PageInfo<ProductCombo>(this.productComboMapper.findAll());
     }
 
     @Override
-    public ProductCombo get(int id) {
-        return this.productComboMapper.selectByPrimaryKey(id);
+    public PageInfo<ProductCombo> listByStatus(int pageNum,int pageSize,int status) {
+
+        PageHelper.startPage(pageNum,pageSize);
+
+        return new PageInfo<ProductCombo>(this.productComboMapper.findAllByStatus(status));
+    }
+
+    @Override
+    public Optional<ProductCombo> get(int id) {
+        return Optional.ofNullable(this.productComboMapper.selectByPrimaryKey(id));
     }
 
     @Override

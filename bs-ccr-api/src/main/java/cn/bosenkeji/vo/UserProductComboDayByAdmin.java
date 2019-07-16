@@ -1,66 +1,83 @@
 package cn.bosenkeji.vo;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * @author xivinChen
+ */
 public class UserProductComboDayByAdmin implements Serializable {
-    private Integer id;
+    private int id;
 
-    private Integer adminId;
+    private int adminId;
 
-    private Integer userProductComboDayId;
+    private int userProductComboDayId;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    public Integer getId() {
+    public UserProductComboDayByAdmin(int id, int adminId, int userProductComboDayId, int status, Timestamp createdAt, Timestamp updatedAt) {
+        this.id = id;
+        this.adminId = adminId;
+        this.userProductComboDayId = userProductComboDayId;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public UserProductComboDayByAdmin() {
+        super();
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getAdminId() {
+    public int getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(Integer adminId) {
+    public void setAdminId(int adminId) {
         this.adminId = adminId;
     }
 
-    public Integer getUserProductComboDayId() {
+    public int getUserProductComboDayId() {
         return userProductComboDayId;
     }
 
-    public void setUserProductComboDayId(Integer userProductComboDayId) {
+    public void setUserProductComboDayId(int userProductComboDayId) {
         this.userProductComboDayId = userProductComboDayId;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

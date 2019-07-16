@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * @create 2019-07-13 16:52
  */
 @RestControllerAdvice
-public class ProductExceptionHandler extends ResponseEntityExceptionHandler {
+public class ComboExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<CustomErrorResponse> notFoundExceptionHandler(Exception ex, WebRequest request){
         CustomGlobalExceptionHandler customGlobalExceptionHandler=new CustomGlobalExceptionHandler();

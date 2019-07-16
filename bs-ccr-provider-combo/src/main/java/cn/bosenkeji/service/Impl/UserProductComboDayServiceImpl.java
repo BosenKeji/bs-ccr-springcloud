@@ -1,17 +1,15 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
-import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.IUserProductComboDayService;
-import cn.bosenkeji.service.IUserProductComboService;
-import cn.bosenkeji.vo.UserProductCombo;
 import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayExample;
-import cn.bosenkeji.vo.UserProductComboExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -36,12 +34,13 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     }
 
     @Override
-    public List<UserProductComboDay> list() {
-        return userProductComboDayMapper.selectByExample(new UserProductComboDayExample());
+    public PageInfo<UserProductComboDay> list(int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(userProductComboDayMapper.findAll());
     }
 
     @Override
-    public UserProductComboDay get(int id) {
-        return userProductComboDayMapper.selectByPrimaryKey(id);
+    public Optional<UserProductComboDay> get(int id) {
+        return Optional.ofNullable(userProductComboDayMapper.selectByPrimaryKey(id));
     }
 }

@@ -1,8 +1,10 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.UserProductComboDay;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -14,6 +16,6 @@ public interface IUserProductComboDayService {
 
     boolean add(UserProductComboDay userProductComboDay);
     boolean update(UserProductComboDay userProductComboDay);
-    List<UserProductComboDay> list();
-    UserProductComboDay get(int id);
+    PageInfo<UserProductComboDay> list(int pageNum,int pageSize);
+    Optional<UserProductComboDay> get(int id);
 }
