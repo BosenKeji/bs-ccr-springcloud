@@ -20,7 +20,6 @@
   </sql>
 
   <select id="findAll" resultMap="BaseResultMap">
-    select tp.*,tpa.* from trade_platform tp left join trade_platform_api tpa on tp.id = tpa.trade_platform_id;
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->

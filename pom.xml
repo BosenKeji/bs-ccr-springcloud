@@ -23,10 +23,10 @@
         <module>bs-ccr-exception</module>
         <module>bs-ccr-jwt</module>
         <module>bs-ccr-swagger</module>
-        <module>bs-ccr-boss-user</module>
+        <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
-        <module>bs-ccr-provider-api</module>
+        <module>bs-ccr-provider-TradePlatformApi</module>
     </modules>
 
     <properties>
