@@ -11,6 +11,18 @@
 
     <artifactId>bs-ccr-provider-coin</artifactId>
     <version>1.0.0</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -60,12 +72,10 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>bosenCCR</groupId>-->

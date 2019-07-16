@@ -1,8 +1,9 @@
 package cn.bosenkeji.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserProductCombo {
+public class UserProductCombo implements Serializable {
     private Integer id;
 
     private Integer userId;
