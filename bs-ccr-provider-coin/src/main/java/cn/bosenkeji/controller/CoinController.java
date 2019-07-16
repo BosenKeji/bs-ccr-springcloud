@@ -5,7 +5,11 @@ import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.vo.Coin;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @ClassName CoinController
@@ -25,6 +30,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/coin")
 @Validated
+@Api(value = "货币接口")
 public class CoinController {
 
     @Resource
@@ -33,34 +39,42 @@ public class CoinController {
     @Resource
     private DiscoveryClient client ;
 
+    @Value("${pageSize.common}")
+    private int pageSizeCommon;
+
+    @ApiOperation(value = "获取货币列表接口")
     @RequestMapping(value="/")
-    public Object list() {
-        return this.coinService.list() ;
+    public PageInfo list() {
+        return this.coinService.listByPage(0,pageSizeCommon) ;
     }
 
 
+    @ApiOperation(value = "获取单个货币信息列表接口")
     @RequestMapping(value="/{id}")
-    public Object get( @PathVariable("id")  @Min(value = 1)  int id) {
+    public Coin get( @PathVariable("id")  @Min(value = 1)  int id) {
         return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
     }
 
+    @ApiOperation(value = "添加单个货币信息列表接口")
     @RequestMapping(value="/", method = RequestMethod.POST)
-    public Object add(@RequestBody @NotNull Coin coin) {
+    public boolean add(@RequestBody @NotNull Coin coin) {
         return this.coinService.add(coin) ;
     }
 
+    @ApiOperation(value = "更新单个货币信息列表接口")
     @RequestMapping(value="/", method = RequestMethod.PUT)
-    public Object put(@RequestBody Coin coin) {
+    public boolean put(@RequestBody Coin coin) {
         return this.coinService.update(coin) ;
     }
 
+    @ApiOperation(value = "删除单个货币信息列表接口")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public Object delete(@PathVariable("id") int id) {
+    public boolean delete(@PathVariable("id") int id) {
         return this.coinService.delete(id) ;
     }
 
 
-
+    @ApiOperation(value = "发现服务接口")
     @RequestMapping("/discover")
     public Object discover() { // 直接返回发现服务信息
         return this.client ;

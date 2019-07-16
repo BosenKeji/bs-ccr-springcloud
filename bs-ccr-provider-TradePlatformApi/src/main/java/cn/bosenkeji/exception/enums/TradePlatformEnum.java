@@ -4,16 +4,16 @@ import cn.bosenkeji.enums.IProviderEnum;
 
 /**
  * @Author CAJR
- * @create 2019/7/15 15:14
+ * @create 2019/7/16 15:12
  */
-public enum TradePlatformApiEnum implements IProviderEnum {
-    NAME(10000, "交易平台Api");
+public enum TradePlatformEnum implements IProviderEnum {
+    NAME(10000, "交易平台");
 
     private Integer code;
 
     private String message;
 
-    TradePlatformApiEnum(Integer code, String message) {
+    TradePlatformEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -26,4 +26,5 @@ public enum TradePlatformApiEnum implements IProviderEnum {
     @Override
     public String getMessage() {
         return message;
-    }}
+    }
+}

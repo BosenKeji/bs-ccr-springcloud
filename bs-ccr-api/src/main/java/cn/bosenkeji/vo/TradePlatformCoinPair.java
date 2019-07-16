@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * @Author CAJR
- * @create 2019/7/15 17:27
+ * @create 2019/7/16 14:53
  */
 
 public class TradePlatformCoinPair {
@@ -19,7 +19,7 @@ public class TradePlatformCoinPair {
 
     private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
     public int getId() {
         return id;
@@ -61,11 +61,11 @@ public class TradePlatformCoinPair {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
