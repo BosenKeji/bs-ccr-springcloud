@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.naming.Name;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -90,11 +91,30 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     public List<UserProductCombo> getByUserId(int userId) {
 
         //查询用户id列表
+        List<Integer> ids=userProductComboMapper.selectPrimaryKeyByUserId(userId);
 
         //循环获取键值、有效时间 （同样区分是否在缓存中）
+        List<UserProductCombo> list=new ArrayList<>();
+        for (Integer id : ids) {
+
+            //先查询redis
+            String key="userproductcombo:id_"+id;
+            UserProductCombo userProductCombo = (UserProductCombo) redisTemplate.opsForValue().get(key);
+            if(userProductCombo==null||("").equals(userProductCombo)) {
+                //没有时从数据库拿
+                userProductCombo=userProductComboMapper.selectByPrimaryKey(id);
+            }
+            else {
+                //如果是从缓存取出的则取出有效时间，否则有效时间为0
+                long time = redisTemplate.getExpire(key, TimeUnit.DAYS);
+                userProductCombo.setRemainTime((int) time);
+
+            }
+            list.add(userProductCombo);
+        }
 
 
-        return null;
+        return list;
 
     }
 

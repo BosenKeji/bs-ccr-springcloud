@@ -136,6 +136,7 @@
   <select id="selectPrimaryKeyByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select id
     from user_product_combo
-    where user_id = #{userId,jdbcType=INTEGER},
+    where user_id = #{userId,jdbcType=INTEGER}
+
   </select>
 </mapper>

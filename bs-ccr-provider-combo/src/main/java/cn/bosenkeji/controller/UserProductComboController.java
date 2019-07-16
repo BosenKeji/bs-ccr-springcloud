@@ -48,6 +48,11 @@ public class UserProductComboController {
     @RequestMapping(value="/",method = RequestMethod.POST)
     public boolean add(@RequestBody UserProductCombo userProductCombo) { return this.iUserProductComboService.add(userProductCombo);}
 
+    @ApiOperation(value="根据用户id查询用户套餐时长api接口",notes="根据用户id查询用户套餐时长api接口")
+    @RequestMapping(value="/listbyuserid",method = RequestMethod.GET)
+    public List<UserProductCombo> listByUserId(@RequestParam("userId") int userId) {
+        return this.iUserProductComboService.getByUserId(userId);
+    }
 
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口")
     @RequestMapping(value="/discover")
