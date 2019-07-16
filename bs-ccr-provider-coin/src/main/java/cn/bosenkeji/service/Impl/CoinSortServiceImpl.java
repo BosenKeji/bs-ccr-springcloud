@@ -3,9 +3,12 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.CoinSortMapper;
 import cn.bosenkeji.service.CoinSortService;
 import cn.bosenkeji.vo.CoinSort;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,12 +18,18 @@ import java.util.Optional;
  */
 @Service
 public class CoinSortServiceImpl implements CoinSortService {
-    @Autowired
+    @Resource
     CoinSortMapper coinSortMapper;
 
     @Override
     public List<CoinSort> list() {
         return coinSortMapper.findAll();
+    }
+
+    @Override
+    public PageInfo listByPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo(list());
     }
 
     @Override

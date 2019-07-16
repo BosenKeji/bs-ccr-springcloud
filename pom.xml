@@ -22,9 +22,12 @@
         <module>bs-ccr-jwt</module>
         <module>bs-ccr-swagger</module>
         <module>bs-ccr-provider-user-boss</module>
+        <module>bs-ccr-provider-user-boss</module>
+        <module>bs-ccr-provider-user-front</module>
+        <module>bs-ccr-provider-TradePlatformApi</module>
+        <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-mybatis-generator</module>
-        <module>bs-ccr-provider-api</module>
         <module>bs-ccr-provider-combo</module>
         <module>bs-ccr-provider-strategy</module>
         <module>bs-ccr-provider-product</module>

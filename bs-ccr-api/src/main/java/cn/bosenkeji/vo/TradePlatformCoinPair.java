@@ -1,27 +1,25 @@
 package cn.bosenkeji.vo;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @Author CAJR
- * @create 2019/7/15 15:43
+ * @create 2019/7/16 14:53
  */
 
-public class TradePlatform {
+public class TradePlatformCoinPair {
     private int id;
 
-    private String name;
+    private int tradePlatformId;
 
-    private String logo;
+    private int coinPairId;
 
     private int status;
 
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
-
-    /*非数据库字段*/
-    private TradePlatformApi tradePlatformApi;
 
     public int getId() {
         return id;
@@ -31,20 +29,20 @@ public class TradePlatform {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getTradePlatformId() {
+        return tradePlatformId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTradePlatformId(int tradePlatformId) {
+        this.tradePlatformId = tradePlatformId;
     }
 
-    public String getLogo() {
-        return logo;
+    public int getCoinPairId() {
+        return coinPairId;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setCoinPairId(int coinPairId) {
+        this.coinPairId = coinPairId;
     }
 
     public int getStatus() {
@@ -69,13 +67,5 @@ public class TradePlatform {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public TradePlatformApi getTradePlatformApi() {
-        return tradePlatformApi;
-    }
-
-    public void setTradePlatformApi(TradePlatformApi tradePlatformApi) {
-        this.tradePlatformApi = tradePlatformApi;
     }
 }
