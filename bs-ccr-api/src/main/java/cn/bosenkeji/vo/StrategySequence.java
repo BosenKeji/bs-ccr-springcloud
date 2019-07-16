@@ -7,11 +7,27 @@ public class StrategySequence {
 
     private String name;
 
+    private String tip;
+
     private Byte status;
 
     private Date createdAt;
 
     private Date updatedAt;
+
+
+    public StrategySequence(Integer id, String name, String tip, Byte status, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.tip = tip;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public StrategySequence() {
+        super();
+    }
 
     public Integer getId() {
         return id;
@@ -53,15 +69,11 @@ public class StrategySequence {
         this.updatedAt = updatedAt;
     }
 
+    public String getTip() {
+        return tip;
+    }
 
-    @Override
-    public String toString() {
-        return "StrategySequence{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public void setTip(String tip) {
+        this.tip = tip;
     }
 }

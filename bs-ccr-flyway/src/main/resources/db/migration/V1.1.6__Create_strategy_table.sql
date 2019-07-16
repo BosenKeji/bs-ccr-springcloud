@@ -32,6 +32,7 @@ CREATE TABLE strategy_attribute (
 CREATE TABLE strategy_sequence (
     id int(11) NOT NULL AUTO_INCREMENT ,
     name varchar(50) not null ,
+    tip varchar(128) not null,
     status tinyint not null default 1,
     created_at timestamp not null ,
     updated_at timestamp not null default '1970-01-01 08:00:01',

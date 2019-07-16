@@ -17,6 +17,20 @@ public class StrategySequenceValue {
 
     private Date updatedAt;
 
+    public StrategySequenceValue(Integer id, Integer strategySequenceId, String value, Integer sortNum, Byte status, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.strategySequenceId = strategySequenceId;
+        this.value = value;
+        this.sortNum = sortNum;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public StrategySequenceValue() {
+        super();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -71,18 +85,5 @@ public class StrategySequenceValue {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "StrategySequenceValue{" +
-                "id=" + id +
-                ", strategySequenceId=" + strategySequenceId +
-                ", value='" + value + '\'' +
-                ", sortNum=" + sortNum +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

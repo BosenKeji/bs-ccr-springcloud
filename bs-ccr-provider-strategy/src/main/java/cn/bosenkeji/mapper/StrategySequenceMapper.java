@@ -4,11 +4,12 @@ import cn.bosenkeji.vo.StrategySequence;
 
 import java.util.List;
 
-
 public interface StrategySequenceMapper {
+    int insert(StrategySequence record);
 
+    int insertSelective(StrategySequence record);
 
-    StrategySequence getStrategySequenceByPrimaryKey(Integer id);
+    List<StrategySequence> findAll();
 
-    List<StrategySequence> getSequences();
+    StrategySequence findSequenceByPrimaryKey(Integer id);
 }

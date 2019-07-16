@@ -13,6 +13,18 @@ public class Strategy {
 
     private Date updatedAt;
 
+    public Strategy(Integer id, String name, Byte status, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Strategy() {
+        super();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -51,16 +63,5 @@ public class Strategy {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Strategy{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

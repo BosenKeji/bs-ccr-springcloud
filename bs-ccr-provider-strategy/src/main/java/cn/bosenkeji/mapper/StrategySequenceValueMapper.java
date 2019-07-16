@@ -2,13 +2,12 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.StrategySequenceValue;
 
-
 public interface StrategySequenceValueMapper {
+    int insert(StrategySequenceValue record);
 
+    int insertSelective(StrategySequenceValue record);
 
-    StrategySequenceValue getSequenceValueByPrimaryKey(Integer id);
+    StrategySequenceValue findSequenceValueBySequenceId(Integer sequenceId);
 
-    StrategySequenceValue getSequenceValueBySequenceId(Integer sequenceId);
-
-
+    String getSequenceValueByStrategyId(Integer strategyId);
 }

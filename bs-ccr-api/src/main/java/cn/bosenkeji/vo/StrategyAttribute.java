@@ -39,6 +39,31 @@ public class StrategyAttribute {
 
     private Date updatedAt;
 
+    public StrategyAttribute(Integer id, String name, Integer strategyId, Byte isDefault, Byte isTip, Integer lever, Integer strategySequenceId, Integer rate, Byte stopProfitRatio, Byte isStopProfitTrace, Byte stopProfitTraceTriggerRate, Byte stopProfitTraceDropRate, Byte isStopProfitMoney, Byte isStopProfitGrid, Byte buildReference, Byte status, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.strategyId = strategyId;
+        this.isDefault = isDefault;
+        this.isTip = isTip;
+        this.lever = lever;
+        this.strategySequenceId = strategySequenceId;
+        this.rate = rate;
+        this.stopProfitRatio = stopProfitRatio;
+        this.isStopProfitTrace = isStopProfitTrace;
+        this.stopProfitTraceTriggerRate = stopProfitTraceTriggerRate;
+        this.stopProfitTraceDropRate = stopProfitTraceDropRate;
+        this.isStopProfitMoney = isStopProfitMoney;
+        this.isStopProfitGrid = isStopProfitGrid;
+        this.buildReference = buildReference;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public StrategyAttribute() {
+        super();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -59,8 +84,8 @@ public class StrategyAttribute {
         return strategyId;
     }
 
-    public void setStrategyId(Integer startegyId) {
-        this.strategyId = startegyId;
+    public void setStrategyId(Integer strategyId) {
+        this.strategyId = strategyId;
     }
 
     public Byte getIsDefault() {
@@ -181,29 +206,5 @@ public class StrategyAttribute {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "StrategyAttribute{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", strategyId=" + strategyId +
-                ", isDefault=" + isDefault +
-                ", isTip=" + isTip +
-                ", lever=" + lever +
-                ", strategySequenceId=" + strategySequenceId +
-                ", rate=" + rate +
-                ", stopProfitRatio=" + stopProfitRatio +
-                ", isStopProfitTrace=" + isStopProfitTrace +
-                ", stopProfitTraceTriggerRate=" + stopProfitTraceTriggerRate +
-                ", stopProfitTraceDropRate=" + stopProfitTraceDropRate +
-                ", isStopProfitMoney=" + isStopProfitMoney +
-                ", isStopProfitGrid=" + isStopProfitGrid +
-                ", buildReference=" + buildReference +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

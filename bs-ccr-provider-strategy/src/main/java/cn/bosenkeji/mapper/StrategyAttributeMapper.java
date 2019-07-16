@@ -2,14 +2,10 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.StrategyAttribute;
 
-
 public interface StrategyAttributeMapper {
+    int insert(StrategyAttribute record);
 
-    StrategyAttribute getStrategyAttributeByPrimaryKey(Integer id);
+    int insertSelective(StrategyAttribute record);
 
-    StrategyAttribute getStrategyAttributeByStrategyId(Integer strategyId);
-
-    Integer getLevelByStrategyId(Integer strategyId);
-
-
+    StrategyAttribute findStrategyAttributeByStrategyId(Integer strategyId);
 }
