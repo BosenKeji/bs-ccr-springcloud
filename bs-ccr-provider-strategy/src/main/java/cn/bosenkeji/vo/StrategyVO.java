@@ -2,15 +2,15 @@ package cn.bosenkeji.vo;
 
 public class StrategyVO {
 
-    private Integer id;
+    private int id;
     private String name;
-    private Byte status;
+    private int status;
 
-    private Integer lever;
-    private Integer rate;
-    private Byte buildReference;
+    private int lever;
+    private int rate;
+    private int buildReference;
 
-    public StrategyVO(Integer id, String name, Byte status, Integer lever, Integer rate, Byte buildReference) {
+    public StrategyVO(int id, String name, int status, int lever, int rate, int buildReference) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -21,11 +21,11 @@ public class StrategyVO {
 
     public StrategyVO() { }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -37,35 +37,35 @@ public class StrategyVO {
         this.name = name;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Integer getLever() {
+    public int getLever() {
         return lever;
     }
 
-    public void setLever(Integer lever) {
+    public void setLever(int lever) {
         this.lever = lever;
     }
 
-    public Integer getRate() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
 
-    public Byte getBuildReference() {
+    public int getBuildReference() {
         return buildReference;
     }
 
-    public void setBuildReference(Byte buildReference) {
+    public void setBuildReference(int buildReference) {
         this.buildReference = buildReference;
     }
 

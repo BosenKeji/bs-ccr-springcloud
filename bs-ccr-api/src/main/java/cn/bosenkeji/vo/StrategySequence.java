@@ -1,22 +1,22 @@
 package cn.bosenkeji.vo;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 public class StrategySequence {
-    private Integer id;
+    private int id;
 
     private String name;
 
     private String tip;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-
-    public StrategySequence(Integer id, String name, String tip, Byte status, Date createdAt, Date updatedAt) {
+    public StrategySequence(int id, String name, String tip, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.name = name;
         this.tip = tip;
@@ -29,11 +29,11 @@ public class StrategySequence {
         super();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,27 +45,27 @@ public class StrategySequence {
         this.name = name == null ? null : name.trim();
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

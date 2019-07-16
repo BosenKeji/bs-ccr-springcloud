@@ -3,12 +3,12 @@
 <mapper namespace="cn.bosenkeji.mapper.StrategySequenceMapper">
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.StrategySequence">
     <constructor>
-      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="id" javaType="_int" jdbcType="INTEGER" />
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="tip" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="created_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="updated_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="status" javaType="_int" jdbcType="TINYINT" />
+      <arg column="created_at" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
+      <arg column="updated_at" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
 

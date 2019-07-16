@@ -3,24 +3,24 @@
 <mapper namespace="cn.bosenkeji.mapper.StrategyAttributeMapper">
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.StrategyAttribute">
     <constructor>
-      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="id" javaType="_int" jdbcType="INTEGER" />
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="strategy_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="is_default" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="is_tip" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="lever" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="strategy_sequence_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="rate" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="stop_profit_ratio" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="is_stop_profit_trace" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="stop_profit_trace_trigger_rate" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="stop_profit_trace_drop_rate" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="is_stop_profit_money" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="is_stop_profit_grid" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="build_reference" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="created_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="updated_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="strategy_id" javaType="_int" jdbcType="INTEGER" />
+      <arg column="is_default" javaType="_int" jdbcType="TINYINT" />
+      <arg column="is_tip" javaType="_int" jdbcType="TINYINT" />
+      <arg column="lever" javaType="_int" jdbcType="INTEGER" />
+      <arg column="strategy_sequence_id" javaType="_int" jdbcType="INTEGER" />
+      <arg column="rate" javaType="_int" jdbcType="INTEGER" />
+      <arg column="stop_profit_ratio" javaType="_int" jdbcType="TINYINT" />
+      <arg column="is_stop_profit_trace" javaType="_int" jdbcType="TINYINT" />
+      <arg column="stop_profit_trace_trigger_rate" javaType="_int" jdbcType="TINYINT" />
+      <arg column="stop_profit_trace_drop_rate" javaType="_int" jdbcType="TINYINT" />
+      <arg column="is_stop_profit_money" javaType="_int" jdbcType="TINYINT" />
+      <arg column="is_stop_profit_grid" javaType="_int" jdbcType="TINYINT" />
+      <arg column="build_reference" javaType="_int" jdbcType="TINYINT" />
+      <arg column="status" javaType="_int" jdbcType="TINYINT" />
+      <arg column="created_at" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
+      <arg column="updated_at" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
 

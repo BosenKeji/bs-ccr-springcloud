@@ -2,17 +2,17 @@ package cn.bosenkeji.vo;
 
 public class StrategySequenceVO {
 
-    private Integer id;
+    private int id;
     private String name;
     private String tip;
 
-    private Byte status;
+    private int status;
     private String value;
-    private Integer sortNum;
+    private int sortNum;
 
     public StrategySequenceVO() { }
 
-    public StrategySequenceVO(Integer id, String name, String tip, Byte status, String value, Integer sortNum) {
+    public StrategySequenceVO(int id, String name, String tip, int status, String value, int sortNum) {
         this.id = id;
         this.name = name;
         this.tip = tip;
@@ -22,11 +22,11 @@ public class StrategySequenceVO {
     }
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -46,11 +46,11 @@ public class StrategySequenceVO {
         this.tip = tip;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -62,11 +62,11 @@ public class StrategySequenceVO {
         this.value = value;
     }
 
-    public Integer getSortNum(Integer sortNum) {
+    public int getSortNum(Integer sortNum) {
         return this.sortNum;
     }
 
-    public void setSortNum(Integer sortNum) {
+    public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
     }
 

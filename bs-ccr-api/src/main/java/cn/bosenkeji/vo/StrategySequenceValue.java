@@ -1,23 +1,24 @@
 package cn.bosenkeji.vo;
 
-import java.util.Date;
+
+import java.sql.Timestamp;
 
 public class StrategySequenceValue {
-    private Integer id;
+    private int id;
 
-    private Integer strategySequenceId;
+    private int strategySequenceId;
 
     private String value;
 
-    private Integer sortNum;
+    private int sortNum;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    public StrategySequenceValue(Integer id, Integer strategySequenceId, String value, Integer sortNum, Byte status, Date createdAt, Date updatedAt) {
+    public StrategySequenceValue(int id, int strategySequenceId, String value, int sortNum, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.strategySequenceId = strategySequenceId;
         this.value = value;
@@ -31,19 +32,19 @@ public class StrategySequenceValue {
         super();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getStrategySequenceId() {
+    public int getStrategySequenceId() {
         return strategySequenceId;
     }
 
-    public void setStrategySequenceId(Integer strategySequenceId) {
+    public void setStrategySequenceId(int strategySequenceId) {
         this.strategySequenceId = strategySequenceId;
     }
 
@@ -55,35 +56,35 @@ public class StrategySequenceValue {
         this.value = value == null ? null : value.trim();
     }
 
-    public Integer getSortNum() {
+    public int getSortNum() {
         return sortNum;
     }
 
-    public void setSortNum(Integer sortNum) {
+    public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

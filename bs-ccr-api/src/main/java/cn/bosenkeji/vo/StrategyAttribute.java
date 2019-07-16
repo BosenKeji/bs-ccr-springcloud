@@ -1,45 +1,45 @@
 package cn.bosenkeji.vo;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class StrategyAttribute {
-    private Integer id;
+    private int id;
 
     private String name;
 
-    private Integer strategyId;
+    private int strategyId;
 
-    private Byte isDefault;
+    private int isDefault;
 
-    private Byte isTip;
+    private int isTip;
 
-    private Integer lever;
+    private int lever;
 
-    private Integer strategySequenceId;
+    private int strategySequenceId;
 
-    private Integer rate;
+    private int rate;
 
-    private Byte stopProfitRatio;
+    private int stopProfitRatio;
 
-    private Byte isStopProfitTrace;
+    private int isStopProfitTrace;
 
-    private Byte stopProfitTraceTriggerRate;
+    private int stopProfitTraceTriggerRate;
 
-    private Byte stopProfitTraceDropRate;
+    private int stopProfitTraceDropRate;
 
-    private Byte isStopProfitMoney;
+    private int isStopProfitMoney;
 
-    private Byte isStopProfitGrid;
+    private int isStopProfitGrid;
 
-    private Byte buildReference;
+    private int buildReference;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    public StrategyAttribute(Integer id, String name, Integer strategyId, Byte isDefault, Byte isTip, Integer lever, Integer strategySequenceId, Integer rate, Byte stopProfitRatio, Byte isStopProfitTrace, Byte stopProfitTraceTriggerRate, Byte stopProfitTraceDropRate, Byte isStopProfitMoney, Byte isStopProfitGrid, Byte buildReference, Byte status, Date createdAt, Date updatedAt) {
+    public StrategyAttribute(int id, String name, int strategyId, int isDefault, int isTip, int lever, int strategySequenceId, int rate, int stopProfitRatio, int isStopProfitTrace, int stopProfitTraceTriggerRate, int stopProfitTraceDropRate, int isStopProfitMoney, int isStopProfitGrid, int buildReference, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.name = name;
         this.strategyId = strategyId;
@@ -64,11 +64,11 @@ public class StrategyAttribute {
         super();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -80,131 +80,131 @@ public class StrategyAttribute {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getStrategyId() {
+    public int getStrategyId() {
         return strategyId;
     }
 
-    public void setStrategyId(Integer strategyId) {
+    public void setStrategyId(int strategyId) {
         this.strategyId = strategyId;
     }
 
-    public Byte getIsDefault() {
+    public int getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(Byte isDefault) {
+    public void setIsDefault(int isDefault) {
         this.isDefault = isDefault;
     }
 
-    public Byte getIsTip() {
+    public int getIsTip() {
         return isTip;
     }
 
-    public void setIsTip(Byte isTip) {
+    public void setIsTip(int isTip) {
         this.isTip = isTip;
     }
 
-    public Integer getLever() {
+    public int getLever() {
         return lever;
     }
 
-    public void setLever(Integer lever) {
+    public void setLever(int lever) {
         this.lever = lever;
     }
 
-    public Integer getStrategySequenceId() {
+    public int getStrategySequenceId() {
         return strategySequenceId;
     }
 
-    public void setStrategySequenceId(Integer strategySequenceId) {
+    public void setStrategySequenceId(int strategySequenceId) {
         this.strategySequenceId = strategySequenceId;
     }
 
-    public Integer getRate() {
+    public int getRate() {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(int rate) {
         this.rate = rate;
     }
 
-    public Byte getStopProfitRatio() {
+    public int getStopProfitRatio() {
         return stopProfitRatio;
     }
 
-    public void setStopProfitRatio(Byte stopProfitRatio) {
+    public void setStopProfitRatio(int stopProfitRatio) {
         this.stopProfitRatio = stopProfitRatio;
     }
 
-    public Byte getIsStopProfitTrace() {
+    public int getIsStopProfitTrace() {
         return isStopProfitTrace;
     }
 
-    public void setIsStopProfitTrace(Byte isStopProfitTrace) {
+    public void setIsStopProfitTrace(int isStopProfitTrace) {
         this.isStopProfitTrace = isStopProfitTrace;
     }
 
-    public Byte getStopProfitTraceTriggerRate() {
+    public int getStopProfitTraceTriggerRate() {
         return stopProfitTraceTriggerRate;
     }
 
-    public void setStopProfitTraceTriggerRate(Byte stopProfitTraceTriggerRate) {
+    public void setStopProfitTraceTriggerRate(int stopProfitTraceTriggerRate) {
         this.stopProfitTraceTriggerRate = stopProfitTraceTriggerRate;
     }
 
-    public Byte getStopProfitTraceDropRate() {
+    public int getStopProfitTraceDropRate() {
         return stopProfitTraceDropRate;
     }
 
-    public void setStopProfitTraceDropRate(Byte stopProfitTraceDropRate) {
+    public void setStopProfitTraceDropRate(int stopProfitTraceDropRate) {
         this.stopProfitTraceDropRate = stopProfitTraceDropRate;
     }
 
-    public Byte getIsStopProfitMoney() {
+    public int getIsStopProfitMoney() {
         return isStopProfitMoney;
     }
 
-    public void setIsStopProfitMoney(Byte isStopProfitMoney) {
+    public void setIsStopProfitMoney(int isStopProfitMoney) {
         this.isStopProfitMoney = isStopProfitMoney;
     }
 
-    public Byte getIsStopProfitGrid() {
+    public int getIsStopProfitGrid() {
         return isStopProfitGrid;
     }
 
-    public void setIsStopProfitGrid(Byte isStopProfitGrid) {
+    public void setIsStopProfitGrid(int isStopProfitGrid) {
         this.isStopProfitGrid = isStopProfitGrid;
     }
 
-    public Byte getBuildReference() {
+    public int getBuildReference() {
         return buildReference;
     }
 
-    public void setBuildReference(Byte buildReference) {
+    public void setBuildReference(int buildReference) {
         this.buildReference = buildReference;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
