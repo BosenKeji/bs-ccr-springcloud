@@ -32,7 +32,7 @@
         <module>bs-ccr-provider-strategy</module>
         <module>bs-ccr-provider-product</module>
         <module>bs-ccr-spring-security-server</module>
-        <module>bs-ccr-secutiry-client</module>
+        <module>bs-ccr-security-client</module>
         <module>bs-ccr-provider-transaction</module>
     </modules>
 
@@ -111,6 +111,11 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-security</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-security-client</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>

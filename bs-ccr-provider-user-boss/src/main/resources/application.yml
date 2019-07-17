@@ -5,7 +5,7 @@ mybatis:
     - classpath:mapping/*.xml
 spring:
   application:
-    name: bs-ccr-provider-coin
+    name: bs-ccr-provider-user-boss
   cloud:
     nacos:
       discovery:
@@ -16,6 +16,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: 123zxc
+  thymeleaf:
+    cache: false
 
 logging:
   level:
@@ -23,3 +25,13 @@ logging:
 
 pageSize:
   common: 10
+#
+#security:
+#  oauth2:
+#    client:
+#      clientId: SampleClientId
+#      clientSecret: secret
+#      accessTokenUri: http://localhost:8081/auth/oauth/token
+#      userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
+#    resource:
+#      userInfoUri: http://localhost:8081/auth/user/me
