@@ -37,6 +37,6 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
                 .authorizedGrantTypes("authorization_code")
                 .scopes("user_info")
                 .autoApprove(true)
-                .redirectUris("http://127.0.0.1:8090/login","http://127.0.0.1:8080/login");
+                .redirectUris("http://127.0.0.1/login","http://127.0.0.1:8080/login");
     }
 }

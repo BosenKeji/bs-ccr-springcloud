@@ -14,7 +14,6 @@
         <module>bs-ccr-consumer</module>
         <module>bs-ccr-flyway</module>
         <module>bs-ccr-api</module>
-        <module>bs-ccr-security</module>
         <module>bs-ccr-service</module>
         <module>bs-ccr-aliCloud-api-gateway</module>
         <module>bs-ccr-aliCloud-acm</module>
@@ -31,9 +30,12 @@
         <module>bs-ccr-provider-combo</module>
         <module>bs-ccr-provider-strategy</module>
         <module>bs-ccr-provider-product</module>
-        <module>bs-ccr-spring-security-server</module>
-        <module>bs-ccr-security-client</module>
+        <module>bs-ccr-security-server</module>
+        <module>bs-ccr-security-baseHttp-client</module>
+        <module>bs-ccr-security-sso-client</module>
+        <module>bs-ccr-security-jwt-client</module>
         <module>bs-ccr-provider-transaction</module>
+
     </modules>
 
     <properties>
@@ -110,14 +112,20 @@
             <!-- 模块依赖 -->
             <dependency>
                 <groupId>bosenCCR</groupId>
-                <artifactId>bs-ccr-security</artifactId>
+                <artifactId>bs-ccr-security-baseHttp-client</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>bosenCCR</groupId>
-                <artifactId>bs-ccr-security-client</artifactId>
+                <artifactId>bs-ccr-security-sso-client</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-security-jwt-client</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-api</artifactId>
