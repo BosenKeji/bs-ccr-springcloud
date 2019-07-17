@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.CoinPair;
 import cn.bosenkeji.vo.CoinSort;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 public interface CoinSortService {
     List<CoinSort> list();
+
+    PageInfo listByPage(int pageNum, int pageSize);
 
     Optional<CoinSort> get(int id);
 

@@ -1,7 +1,10 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.ProductEnum;
 import cn.bosenkeji.service.IProductService;
 import cn.bosenkeji.vo.Product;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -30,11 +33,14 @@ public class ProductController {
 
     @ApiOperation(value="获取产品列表api接口",notes = "获取产品列表api接口")
     @RequestMapping(value="/",method = RequestMethod.GET)
-    public List<Product> list() { return this.iProductService.list(); }
+    public PageInfo<Product> list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    {
+        return this.iProductService.list(pageNum,pageSize);
+    }
 
     @ApiOperation(value="获取产品详情api接口",notes = "获取产品详情api接口")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    public Product get(@PathVariable("id") @Min(1) int id) { return this.iProductService.get(id);}
+    public Product get(@PathVariable("id") @Min(1) int id) { return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));}
 
     @ApiOperation(value="添加产品api接口",notes = "添加产品表api接口")
     @RequestMapping(value="/",method = RequestMethod.POST)

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.TradePlatformCoinPairMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.TradePlatformCoinPair">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
+    <result column="coin_pair_id" jdbcType="INTEGER" property="coinPairId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, trade_platform_id, coin_pair_id, `status`, created_at, updated_at
+  </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from trade_platform_coin_pair
+  </select>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from trade_platform_coin_pair
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from trade_platform_coin_pair
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.TradePlatformCoinPair" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into trade_platform_coin_pair (trade_platform_id, coin_pair_id, `status`, 
+      created_at, updated_at)
+    values (#{tradePlatformId,jdbcType=INTEGER}, #{coinPairId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.TradePlatformCoinPair" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into trade_platform_coin_pair
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      trade_platform_id,
+      coin_pair_id,
+      `status`,
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{tradePlatformId,jdbcType=INTEGER},
+      #{coinPairId,jdbcType=INTEGER},
+      #{status,jdbcType=TINYINT},
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.TradePlatformCoinPair">
+    <!--@mbg.generated-->
+    update trade_platform_coin_pair
+    <set>
+      <if test="tradePlatformId != null">
+        trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
+      </if>
+      <if test="coinPairId != null">
+        coin_pair_id = #{coinPairId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.TradePlatformCoinPair">
+    <!--@mbg.generated-->
+    update trade_platform_coin_pair
+    set trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
+      coin_pair_id = #{coinPairId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

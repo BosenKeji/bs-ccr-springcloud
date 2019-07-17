@@ -1,12 +1,16 @@
 package cn.bosenkeji.vo;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
-public class ProductCombo {
+/**
+ * @author xivinChen
+ */
+
+public class ProductCombo implements Serializable {
     private int id;
 
-    private int productId;
+    private Integer productId;
 
     private String name;
 
@@ -22,6 +26,22 @@ public class ProductCombo {
 
     private Timestamp updatedAt;
 
+    /*public ProductCombo(int id, Integer productId, String name, int time, float price, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
+        this.id = id;
+        this.productId = productId;
+        this.name = name;
+        this.time = time;
+        this.price = price;
+        this.remark = remark;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }*/
+
+    public ProductCombo() {
+        super();
+    }
+
     public int getId() {
         return id;
     }
@@ -30,11 +50,11 @@ public class ProductCombo {
         this.id = id;
     }
 
-    public int getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 

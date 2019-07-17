@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.CoinPairCoin;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import java.util.Optional;
  */
 public interface CoinPairCoinService {
     List<CoinPairCoin> list();
+
+    PageInfo listByPage(int pageNum, int pageSize);
 
     Optional<CoinPairCoin> get(int id);
 

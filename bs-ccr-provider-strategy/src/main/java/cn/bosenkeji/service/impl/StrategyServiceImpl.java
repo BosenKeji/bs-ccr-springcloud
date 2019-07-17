@@ -5,38 +5,48 @@ import cn.bosenkeji.mapper.StrategyMapper;
 import cn.bosenkeji.service.StrategyService;
 import cn.bosenkeji.vo.Strategy;
 import cn.bosenkeji.vo.StrategyAttribute;
+import cn.bosenkeji.vo.StrategyVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class StrategyServiceImpl implements StrategyService {
+public class StrategyServiceImpl implements StrategyService{
+
 
     @Autowired
-    private StrategyMapper strategyMapper;
+    protected StrategyMapper strategyMapper;
 
     @Autowired
     private StrategyAttributeMapper strategyAttributeMapper;
 
+
     @Override
-    public Strategy getStrategy(Integer id) {
-        return strategyMapper.getStrategyByprimaryKey(id);
+    public StrategyVO getStrategy(Integer id) {
+        Strategy strategy = strategyMapper.findStrategy(id);
+        StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
+        StrategyVO strategyVO = convertStrategyVO(strategy, strategyAttribute);
+        return strategyVO;
     }
 
     @Override
-    public List<Strategy> getStrategies() {
-        return strategyMapper.getStrategies();
+    public PageInfo<Strategy> listBypage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(strategyMapper.findAll());
     }
 
-    @Override
-    public StrategyAttribute getStrategyAttribute(Integer strategyId) {
-        return strategyAttributeMapper.getStrategyAttributeByStrategyId(strategyId);
-    }
 
-    @Override
-    public Integer getLeverByStrategyId(Integer strategyId) {
-        return strategyAttributeMapper.getLevelByStrategyId(strategyId);
+    private StrategyVO convertStrategyVO(Strategy strategy,StrategyAttribute strategyAttribute) {
+        StrategyVO strategyVO = new StrategyVO();
+        strategyVO.setId(strategy.getId());
+        strategyVO.setName(strategy.getName());
+        strategyVO.setLever(strategyAttribute.getLever());
+        strategyVO.setRate(strategyAttribute.getRate());
+        strategyVO.setBuildReference(strategyAttribute.getBuildReference());
+        strategyVO.setStatus(strategy.getStatus());
+        return strategyVO;
     }
-
 }

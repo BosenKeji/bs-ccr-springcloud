@@ -7,7 +7,7 @@ import cn.bosenkeji.enums.IProviderEnum;
  * @create 2019-07-12 15:03
  */
 public enum ProductEnum implements IProviderEnum {
-    ;
+    NAME(1000,"产品");
 
     private Integer code;
     private String message;

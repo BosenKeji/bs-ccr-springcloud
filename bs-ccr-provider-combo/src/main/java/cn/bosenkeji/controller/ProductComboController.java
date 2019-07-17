@@ -1,9 +1,10 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.ProductComboEnum;
 import cn.bosenkeji.service.IProductComboService;
-import cn.bosenkeji.vo.Product;
 import cn.bosenkeji.vo.ProductCombo;
-import com.sun.org.apache.regexp.internal.RE;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xivin
@@ -30,17 +31,29 @@ public class ProductComboController {
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @ApiOperation(value ="获取产品套餐列表api接口",notes = "获取产品套餐列表api接口")
+    @ApiOperation(value ="获取产品套餐列表api",notes = "获取产品套餐列表api")
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public List<ProductCombo> list() { return this.iProductComboService.list();}
+    public PageInfo<ProductCombo> list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    {
+        return this.iProductComboService.list(pageNum,pageSize);
+    }
+
+    @ApiOperation(value ="获取 未停用|停用 产品套餐列表api",notes = "获取 未停用|停用 产品套餐列表api")
+    @RequestMapping(value = "/listbystatus",method = RequestMethod.GET)
+    public PageInfo<ProductCombo> listByStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize,@RequestParam("status") int status)
+    {
+        return this.iProductComboService.listByStatus(pageNum,pageSize,status);
+    }
 
     @ApiOperation(value ="获取产品套餐详情api接口",notes = "获取产品套餐详情api接口")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    public ProductCombo get(@PathVariable("id") @Min(1) int id) { return this.iProductComboService.get(id);}
+    public ProductCombo get(@PathVariable("id") @Min(1) int id) {
+        return this.iProductComboService.get(id).orElseThrow(()->new NotFoundException(ProductComboEnum.NAME));
+    }
 
     @ApiOperation(value ="获添加品套餐信息api接口",notes = "添加产品套餐信息api接口")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public boolean add(@RequestBody ProductCombo productCombo) { return this.iProductComboService.add(productCombo);}
+    public boolean add(@RequestBody @NotNull ProductCombo productCombo) { return this.iProductComboService.add(productCombo);}
 
     @ApiOperation(value ="更新产品套餐信息api接口",notes = "更新产品套餐信息api接口")
     @RequestMapping(value="/",method = RequestMethod.PUT)

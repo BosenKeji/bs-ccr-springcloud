@@ -3,11 +3,13 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.ProductMapper;
 import cn.bosenkeji.service.IProductService;
 import cn.bosenkeji.vo.Product;
-import cn.bosenkeji.vo.ProductExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -20,12 +22,13 @@ public class ProductServiceImpl implements IProductService {
     private ProductMapper productMapper;
 
     @Override
-    public List<Product> list() {
-        return this.productMapper.selectByExample(new ProductExample());
+    public PageInfo<Product> list(int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<Product>(this.productMapper.findAll());
     }
 
-    public Product get(int id) {
-        return this.productMapper.selectByPrimaryKey(id);
+    public Optional<Product> get(int id) {
+        return Optional.ofNullable(this.productMapper.selectByPrimaryKey(id));
     }
     @Override
     public boolean add(Product product) {

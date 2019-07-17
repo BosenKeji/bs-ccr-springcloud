@@ -1,17 +1,15 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
-import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
-import cn.bosenkeji.service.IUserProductComboService;
-import cn.bosenkeji.vo.UserProductCombo;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
-import cn.bosenkeji.vo.UserProductComboDayByAdminExample;
-import cn.bosenkeji.vo.UserProductComboExample;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -36,12 +34,13 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     }
 
     @Override
-    public List<UserProductComboDayByAdmin> list() {
-        return userProductComboDayByAdminMapper.selectByExample(new UserProductComboDayByAdminExample());
+    public PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo(userProductComboDayByAdminMapper.findAll());
     }
 
     @Override
-    public UserProductComboDayByAdmin get(int id) {
-        return userProductComboDayByAdminMapper.selectByPrimaryKey(id);
+    public Optional<UserProductComboDayByAdmin> get(int id) {
+        return Optional.ofNullable(userProductComboDayByAdminMapper.selectByPrimaryKey(id));
     }
 }

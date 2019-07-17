@@ -20,6 +20,9 @@ public class TradePlatform {
 
     private Timestamp updatedAt;
 
+    /*非数据库字段*/
+    private TradePlatformApi tradePlatformApi;
+
     public int getId() {
         return id;
     }
@@ -66,5 +69,13 @@ public class TradePlatform {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public TradePlatformApi getTradePlatformApi() {
+        return tradePlatformApi;
+    }
+
+    public void setTradePlatformApi(TradePlatformApi tradePlatformApi) {
+        this.tradePlatformApi = tradePlatformApi;
     }
 }

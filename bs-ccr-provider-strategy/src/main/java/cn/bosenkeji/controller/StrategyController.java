@@ -1,67 +1,49 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.StrategyService;
-import cn.bosenkeji.vo.ResponseResult;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
+import cn.bosenkeji.vo.StrategyVO;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 
 
 @RestController
+@RequestMapping("/strategy")
+@Validated
 public class StrategyController {
 
     @Autowired
     private StrategyService strategyService;
 
-    @RequestMapping(value = "/strategy/{id}",method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseResult<Strategy> getStrategy(@PathVariable("id") Integer id){
-        Strategy strategy = strategyService.getStrategy(id);
-        ResponseResult responseResult = new ResponseResult<>(HttpStatus.OK,strategy);;
-        if (strategy == null) {
-            responseResult.setHttpStatus(HttpStatus.BAD_REQUEST);
-            responseResult.setData(null);
-        }
-        return responseResult;
+    @Value("${pageSize.common}")
+    private int pageSizeCommon;
+
+    @Resource
+    private DiscoveryClient client;
+
+    @RequestMapping(value = "{id}",method = RequestMethod.GET)
+    @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息")
+    public StrategyVO get(@PathVariable("id") @Min(value = 1) Integer id) {
+        return strategyService.getStrategy(id);
     }
 
-    @RequestMapping(value = "/strategies",method = RequestMethod.GET)
-    public ResponseResult<List> getStrategies() {
-        List<Strategy> strategies = strategyService.getStrategies();
-        ResponseResult responseResult = new ResponseResult<>(HttpStatus.OK.value(),HttpStatus.OK.getReasonPhrase(),strategies);;
-        if (CollectionUtils.isEmpty(strategies)){
-            responseResult.setHttpStatus(HttpStatus.BAD_REQUEST);
-            responseResult.setData(null);
-        }
-        return responseResult;
+    @RequestMapping(value="/" , method = RequestMethod.GET)
+    @ApiOperation(value = "获取策略列表", notes = "带分页，默认从第一页开始，每页10条记录")
+    public PageInfo listByPage(){
+        return strategyService.listBypage(0,pageSizeCommon);
     }
 
-    @RequestMapping(value = "/strategy/lever/{strategyid}",method = RequestMethod.GET)
-    public ResponseResult<Integer> getLevelByStrategyId(@PathVariable("strategyid") Integer strategyId){
-        Integer result = strategyService.getLeverByStrategyId(strategyId);
-        ResponseResult responseResult = new ResponseResult<>(HttpStatus.OK,result);
-        if (result == null) {
-            responseResult.setHttpStatus(HttpStatus.BAD_REQUEST);
-            responseResult.setData(null);
-        }
-        return responseResult;
-    }
-
-
-    @RequestMapping(value = "/strategy/attribute/{strategyid}",method = RequestMethod.GET)
-    public ResponseResult<StrategyAttribute> getStrategyAttribute(@PathVariable("strategyid") Integer strategyId) {
-        StrategyAttribute strategyAttribute = strategyService.getStrategyAttribute(strategyId);
-        ResponseResult responseResult = new ResponseResult<>(HttpStatus.OK,strategyAttribute);
-        if (strategyAttribute == null) {
-            responseResult.setData(null);
-            responseResult.setHttpStatus(HttpStatus.BAD_REQUEST);
-        }
-        return responseResult;
+    @RequestMapping(value = "/discover" , method = RequestMethod.GET)
+    @ApiOperation(value = "获取当前服务的API接口" , notes = "获取当前服务API接口")
+    public Object discover() { // 直接返回发现服务信息
+        return this.client ;
     }
 
 }

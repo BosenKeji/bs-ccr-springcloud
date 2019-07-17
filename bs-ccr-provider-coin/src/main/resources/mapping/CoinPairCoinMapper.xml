@@ -15,7 +15,9 @@
     id, coin_pair_id, coin_id, `status`, created_at, updated_at
   </sql>
   <select id="findAll" resultMap="BaseResultMap">
-    select * from coin_pair_coin
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_coin
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->

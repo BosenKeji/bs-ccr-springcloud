@@ -1,8 +1,10 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.UserProductCombo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -14,6 +16,8 @@ public interface IUserProductComboService {
 
     boolean add(UserProductCombo userProductCombo);
     boolean update(UserProductCombo userProductCombo);
-    List<UserProductCombo> list();
-    UserProductCombo get(int id);
+    PageInfo<UserProductCombo> list(int pageNum,int pageSize);
+    Optional<UserProductCombo> get(int id);
+
+    List<UserProductCombo> getByUserId(int userId);
 }

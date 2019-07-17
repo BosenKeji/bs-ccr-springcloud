@@ -3,9 +3,12 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.CoinPairCoinMapper;
 import cn.bosenkeji.service.CoinPairCoinService;
 import cn.bosenkeji.vo.CoinPairCoin;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +19,18 @@ import java.util.Optional;
 @Service
 public class CoinPairCoinServiceImpl implements CoinPairCoinService {
 
-    @Autowired
+    @Resource
     CoinPairCoinMapper coinPairCoinMapper;
 
     @Override
     public List<CoinPairCoin> list() {
         return coinPairCoinMapper.findAll();
+    }
+
+    @Override
+    public PageInfo listByPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo(list());
     }
 
     @Override
