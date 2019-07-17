@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bs-ccr-provider-TradePlatformApi</artifactId>
+    <artifactId>bs-ccr-provider-tradeplatform</artifactId>
 
-    <name>bs-ccr-provider-TradePlatformApi</name>
+    <name>bs-ccr-provider-tradeplatform</name>
 
 
     <dependencies>
