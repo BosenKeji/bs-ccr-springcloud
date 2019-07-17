@@ -24,13 +24,14 @@
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
-        <module>bs-ccr-provider-TradePlatformApi</module>
+        <module>bs-ccr-provider-tradeplatform</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-mybatis-generator</module>
         <module>bs-ccr-provider-combo</module>
         <module>bs-ccr-provider-strategy</module>
         <module>bs-ccr-provider-product</module>
+        <module>bs-ccr-provider-transaction</module>
     </modules>
 
     <properties>

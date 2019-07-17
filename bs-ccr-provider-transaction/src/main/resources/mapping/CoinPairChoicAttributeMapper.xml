@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.CoinPairChoicAttributeMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.CoinPairChoicAttribute">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="coin_partner_choic_id" jdbcType="INTEGER" property="coinPartnerChoicId" />
+    <result column="expect_money" jdbcType="INTEGER" property="expectMoney" />
+    <result column="strategy_id" jdbcType="INTEGER" property="strategyId" />
+    <result column="is_custom" jdbcType="TINYINT" property="isCustom" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, coin_partner_choic_id, expect_money, strategy_id, is_custom, `status`, created_at, 
+    updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from coin_pair_choic_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from coin_pair_choic_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairChoicAttribute" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_choic_attribute (coin_partner_choic_id, expect_money, 
+      strategy_id, is_custom, `status`, 
+      created_at, updated_at)
+    values (#{coinPartnerChoicId,jdbcType=INTEGER}, #{expectMoney,jdbcType=INTEGER}, 
+      #{strategyId,jdbcType=INTEGER}, #{isCustom,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairChoicAttribute" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_choic_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      coin_partner_choic_id,
+      expect_money,
+      strategy_id,
+      is_custom,
+      `status`,
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{coinPartnerChoicId,jdbcType=INTEGER},
+      #{expectMoney,jdbcType=INTEGER},
+      #{strategyId,jdbcType=INTEGER},
+      #{isCustom,jdbcType=TINYINT},
+      #{status,jdbcType=TINYINT},
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.CoinPairChoicAttribute">
+    <!--@mbg.generated-->
+    update coin_pair_choic_attribute
+    <set>
+      <if test="coinPartnerChoicId != null">
+        coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+      </if>
+      <if test="expectMoney != null">
+        expect_money = #{expectMoney,jdbcType=INTEGER},
+      </if>
+      <if test="strategyId != null">
+        strategy_id = #{strategyId,jdbcType=INTEGER},
+      </if>
+      <if test="isCustom != null">
+        is_custom = #{isCustom,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.CoinPairChoicAttribute">
+    <!--@mbg.generated-->
+    update coin_pair_choic_attribute
+    set coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+      expect_money = #{expectMoney,jdbcType=INTEGER},
+      strategy_id = #{strategyId,jdbcType=INTEGER},
+      is_custom = #{isCustom,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
