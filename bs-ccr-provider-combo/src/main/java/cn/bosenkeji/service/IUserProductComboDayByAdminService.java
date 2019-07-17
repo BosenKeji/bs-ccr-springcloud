@@ -20,4 +20,6 @@ public interface IUserProductComboDayByAdminService {
     boolean update(UserProductComboDayByAdmin userProductComboDayByAdmin);
     PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize);
     Optional<UserProductComboDayByAdmin> get(int id);
+    List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId);
+
 }

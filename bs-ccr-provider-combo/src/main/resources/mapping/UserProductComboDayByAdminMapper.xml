@@ -9,6 +9,27 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
+
+  <resultMap id="ComboDayAdminResultMap" type="cn.bosenkeji.vo.UserProductComboDayByAdmin">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="user_product_combo_day_id" jdbcType="INTEGER" property="userProductComboDayId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+    <association property="userProductComboDay" javaType="cn.bosenkeji.vo.UserProductComboDay">
+      <id column="did" property="id" />
+      <result column="number" property="number" />
+      <result column="user_product_combo_id" property="userProductComboId" />
+    </association>
+    <!--<association property="userProductComboDayByAdmin" javaType="cn.bosenkeji.vo.userProductComboDayByAdmin">
+      <id column="upcdbaid" property="id" />
+      <result column="admin_id" property="adminId"/>
+    </association>-->
+
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, admin_id, user_product_combo_day_id, status, created_at, updated_at
   </sql>
@@ -106,6 +127,15 @@
     select
     <include refid="Base_Column_List" />
     from user_product_combo_day_by_admin
+  </select>
 
+  <select id="selectUserProductComboDayByUserProductComboId" resultMap="ComboDayAdminResultMap" parameterType="java.lang.Integer">
+    select
+    dba.id,dba.admin_id,dba.status,dba.created_at,dba.updated_at,
+    d.id,d.number,d.user_product_combo_id
+    from user_product_combo_day_by_admin dba
+    left join user_product_combo_day d
+    on dba.user_product_combo_day_id=d.id
+    where d.user_product_combo_id=#{userProductComboId}
   </select>
 </mapper>

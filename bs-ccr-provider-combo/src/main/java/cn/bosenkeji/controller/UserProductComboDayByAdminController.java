@@ -57,4 +57,10 @@ public class UserProductComboDayByAdminController {
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口")
     @RequestMapping(value="/discover")
     public Object discover() { return this.discoveryClient;}
+
+    @ApiOperation(value="通过用户套餐查询时长操作列表api接口",notes = "用户套餐时长操作量表联合查询")
+    @RequestMapping(value = "/listbyuserproductcomboid",method = RequestMethod.GET)
+    public List<UserProductComboDayByAdmin> getByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId) {
+        return this.iUserProductComboDayByAdminService.getByUserProductComboId(userProductComboId);
+    }
 }

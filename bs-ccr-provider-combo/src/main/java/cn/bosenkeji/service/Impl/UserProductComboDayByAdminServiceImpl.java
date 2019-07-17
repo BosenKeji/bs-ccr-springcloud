@@ -32,6 +32,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
         //新增用户套餐时长
         userProductComboDayMapper.insert(userProductComboDay);
+
         //新增用户套餐时长操作
         UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
         userProductComboDayByAdmin.setAdminId(adminId);
@@ -54,5 +55,10 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Override
     public Optional<UserProductComboDayByAdmin> get(int id) {
         return Optional.ofNullable(userProductComboDayByAdminMapper.selectByPrimaryKey(id));
+    }
+
+    @Override
+    public List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId) {
+        return this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserProductComboId(userProductComboId);
     }
 }

@@ -21,6 +21,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
     <association property="productCombo" javaType="cn.bosenkeji.vo.ProductCombo">
       <id column="pcid" property="id" />
       <result column="pcname" property="name" />

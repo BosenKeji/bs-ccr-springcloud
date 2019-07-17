@@ -18,4 +18,6 @@ public interface UserProductComboDayByAdminMapper {
     int updateByPrimaryKey(UserProductComboDayByAdmin record);
 
     List<UserProductComboDayByAdmin> findAll();
+
+    List<UserProductComboDayByAdmin> selectUserProductComboDayByUserProductComboId(int userProductComboId);
 }

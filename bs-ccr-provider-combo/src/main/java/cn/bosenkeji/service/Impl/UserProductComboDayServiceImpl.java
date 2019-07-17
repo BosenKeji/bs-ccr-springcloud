@@ -5,11 +5,13 @@ import cn.bosenkeji.service.IUserProductComboDayService;
 import cn.bosenkeji.vo.UserProductComboDay;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xivin
@@ -22,11 +24,23 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
     @Resource
     private UserProductComboDayMapper userProductComboDayMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public boolean add(UserProductComboDay userProductComboDay) {
         //添加缓存
-        return userProductComboDayMapper.insert(userProductComboDay);
+        int id = userProductComboDay.getUserProductComboId();
+        String key="userproductcombo:id_"+id;
+        Long expire = redisTemplate.getExpire(key, TimeUnit.DAYS);
+
+        if(expire>0) {
+            //设置有效时间
+            redisTemplate.expire(key,expire+userProductComboDay.getNumber(),TimeUnit.DAYS);
+            return userProductComboDayMapper.insert(userProductComboDay);
+        }
+        //当原来的用户套餐已过时时返回false
+        return false;
     }
 
     @Override
