@@ -1,12 +1,12 @@
 server:
-  port: 8083
+  port: 8091
 
 mybatis:
   mapper-locations:
     - classpath:mapping/*.xml
 spring:
   application:
-    name: bs-ccr-provider-tradeplatform
+    name: bs-ccr-provider-transaction
   cloud:
     nacos:
       discovery:
@@ -25,4 +25,4 @@ logging:
     cn.bosenkeji.mapper: debug
 
 pageSize:
-    common: 10
+  common: 10
