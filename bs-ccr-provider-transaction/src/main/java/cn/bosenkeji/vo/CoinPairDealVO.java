@@ -1,17 +1,8 @@
 package cn.bosenkeji.vo;
 
-import java.sql.Timestamp;
-import java.util.Date;
+public class CoinPairDealVO {
 
-/**
- * @Author CAJR
- * @create 2019/7/17 10:13
- */
-
-public class CoinPairDeal {
     private int id;
-
-    private int userId;
 
     private int coinPartnerChoicId;
 
@@ -21,9 +12,15 @@ public class CoinPairDeal {
 
     private int status;
 
-    private Timestamp createdAt;
+    public CoinPairDealVO() { }
 
-    private Date updatedAt;
+    public CoinPairDealVO(int id, int coinPartnerChoicId, int type, int quantity, int status) {
+        this.id = id;
+        this.coinPartnerChoicId = coinPartnerChoicId;
+        this.type = type;
+        this.quantity = quantity;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -31,14 +28,6 @@ public class CoinPairDeal {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getCoinPartnerChoicId() {
@@ -73,21 +62,14 @@ public class CoinPairDeal {
         this.status = status;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    @Override
+    public String toString() {
+        return "CoinPairDealVO{" +
+                "id=" + id +
+                ", coinPartnerChoicId=" + coinPartnerChoicId +
+                ", type=" + type +
+                ", quantity=" + quantity +
+                ", status=" + status +
+                '}';
     }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-
 }

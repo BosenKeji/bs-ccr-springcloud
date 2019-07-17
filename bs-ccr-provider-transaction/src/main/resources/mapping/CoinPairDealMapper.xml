@@ -107,4 +107,43 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="findCoinPairDealByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_deal
+    where user_id = #{userId}
+  </select>
+
+  <select id="findCoinPairDealByUserIdAndChoicId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_deal
+    where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+  </select>
+
+
+  <select id="findCoinPairDealByUserIdAndStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_deal
+    where userId = #{userId} and status = #{status}
+  </select>
+  <select id="countCoinPair" resultType="int">
+    select count(coin_partner_choic_id)
+    from
+      (select DISTINCT coin_partner_choic_id
+          from coin_pair_deal where user_id = #{userId}) t;
+  </select>
+
+  <select id="countCoinPairDeal" resultType="int">
+    select count(0)
+    from coin_pair_deal
+    where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+  </select>
+
+
+
+
 </mapper>
