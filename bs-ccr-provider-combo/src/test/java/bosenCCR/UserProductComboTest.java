@@ -2,6 +2,7 @@ package bosenCCR;
 
 import cn.bosenkeji.ComboApplication;
 import cn.bosenkeji.mapper.UserProductComboMapper;
+import cn.bosenkeji.vo.ProductCombo;
 import cn.bosenkeji.vo.UserProductCombo;
 import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.junit.Test;
@@ -25,6 +26,9 @@ public class UserProductComboTest {
     @Resource
     private UserProductComboMapper userProductComboMapper;
 
+
+
+    //测试通过用户id查询id列表
     @Test
     public void testSelectPrimaryKeyByUserId() {
         List ids=userProductComboMapper.selectPrimaryKeyByUserId(1);
@@ -32,4 +36,16 @@ public class UserProductComboTest {
             System.err.println(id.toString());
         }
     }
+
+    //测试产品套餐联合查询
+    @Test
+    public void testSelectProductCombo() {
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectProductCombo();
+        for (UserProductCombo userProductCombo : userProductCombos) {
+            System.err.println(userProductCombo);
+
+        }
+
+    }
+
 }

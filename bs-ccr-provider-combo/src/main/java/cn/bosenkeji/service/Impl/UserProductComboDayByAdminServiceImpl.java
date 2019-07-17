@@ -1,7 +1,9 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
+import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
+import cn.bosenkeji.vo.UserProductComboDay;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,10 +24,20 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
     @Resource
     private UserProductComboDayByAdminMapper userProductComboDayByAdminMapper;
+    @Resource
+    private UserProductComboDayMapper userProductComboDayMapper;
 
     @Override
-    public boolean add(UserProductComboDayByAdmin userProductComboDayByAdmin) {
+    public boolean add(UserProductComboDay userProductComboDay,int adminId) {
+
+        //新增用户套餐时长
+        userProductComboDayMapper.insert(userProductComboDay);
+        //新增用户套餐时长操作
+        UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
+        userProductComboDayByAdmin.setAdminId(adminId);
+        userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
         return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
+
     }
 
     @Override

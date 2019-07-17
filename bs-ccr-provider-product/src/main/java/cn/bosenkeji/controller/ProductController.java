@@ -60,7 +60,7 @@ public class ProductController {
 
     @ApiOperation(value="启用、关闭产品api接口",notes = "启用、关闭产品api接口")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public boolean updateStatus(@PathVariable("id") int id,int status) { return this.iProductService.updateStatus(id,status);}
+    public boolean updateStatus(@PathVariable("id") int id,@RequestParam("status") int status) { return this.iProductService.updateStatus(id,status);}
 
 
 

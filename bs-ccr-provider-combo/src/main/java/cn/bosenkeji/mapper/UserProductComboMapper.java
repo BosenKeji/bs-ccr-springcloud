@@ -20,4 +20,6 @@ public interface UserProductComboMapper {
     List<UserProductCombo> findAll();
     List<Integer> selectPrimaryKeyByUserId(Integer userId);
 
+    List<UserProductCombo> selectProductCombo();
+
 }

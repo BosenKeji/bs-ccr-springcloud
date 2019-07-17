@@ -20,4 +20,5 @@ public interface IUserProductComboService {
     Optional<UserProductCombo> get(int id);
 
     List<UserProductCombo> getByUserId(int userId);
+    PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId);
 }

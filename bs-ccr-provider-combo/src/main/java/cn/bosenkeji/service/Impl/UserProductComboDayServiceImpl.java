@@ -25,6 +25,7 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
     @Override
     public boolean add(UserProductComboDay userProductComboDay) {
+        //添加缓存
         return userProductComboDayMapper.insert(userProductComboDay);
     }
 

@@ -87,6 +87,11 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     }
 
+    /**
+     * 单表查询，不满足需求
+     * @param userId
+     * @return
+     */
     @Override
     public List<UserProductCombo> getByUserId(int userId) {
 
@@ -116,6 +121,24 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         return list;
 
+    }
+
+
+    @Override
+    public PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId) {
+
+        //从数据库查询
+        PageHelper.startPage(pageNum,pageSize);
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectProductCombo();
+
+        for (UserProductCombo userProductCombo : userProductCombos) {
+            //设置有效时间
+            int time = userProductCombo.getProductCombo().getTime();
+            int id = userProductCombo.getId();
+            String key="userproductcombo:id_"+id;
+            userProductCombo.setRemainTime(redisTemplate.getExpire(key,TimeUnit.DAYS).intValue());
+        }
+        return new PageInfo<>(userProductCombos);
     }
 
 

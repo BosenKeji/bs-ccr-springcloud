@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.vo.UserProductComboDay;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
  */
 public interface IUserProductComboDayByAdminService {
 
-    boolean add(UserProductComboDayByAdmin userProductComboDayByAdmin);
+    boolean add(UserProductComboDay userProductComboDay,int adminId);
     boolean update(UserProductComboDayByAdmin userProductComboDayByAdmin);
     PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize);
     Optional<UserProductComboDayByAdmin> get(int id);

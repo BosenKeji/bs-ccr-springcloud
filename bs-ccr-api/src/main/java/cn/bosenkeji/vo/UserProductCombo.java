@@ -24,6 +24,9 @@ public class UserProductCombo implements Serializable {
     //非数据库属性 剩余时长
     private int remainTime=0;
 
+    //一对一
+    private ProductCombo productCombo;
+
 
     public UserProductCombo(int id, int userId, String orderNumber, int productComboId, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
@@ -34,6 +37,14 @@ public class UserProductCombo implements Serializable {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public ProductCombo getProductCombo() {
+        return productCombo;
+    }
+
+    public void setProductCombo(ProductCombo productCombo) {
+        this.productCombo = productCombo;
     }
 
     public int getRemainTime() {
@@ -110,5 +121,21 @@ public class UserProductCombo implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProductCombo{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", productComboId=" + productComboId +
+                ", remark='" + remark + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", remainTime=" + remainTime +
+                ", productCombo=" + productCombo +
+                '}';
     }
 }

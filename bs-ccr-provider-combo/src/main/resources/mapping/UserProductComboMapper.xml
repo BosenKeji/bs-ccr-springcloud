@@ -11,6 +11,27 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
+
+  <resultMap id="ProductComboResultMap" type="cn.bosenkeji.vo.UserProductCombo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <association property="productCombo" javaType="cn.bosenkeji.vo.ProductCombo">
+      <id column="pcid" property="id" />
+      <result column="pcname" property="name" />
+      <result column="pctime" property="time" />
+      <association property="product" javaType="cn.bosenkeji.vo.Product">
+        <id column="pid" property="id" />
+        <result column="pname" property="name"/>
+        <result column="version_name" property="versionName"/>
+      </association>
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at
   </sql>
@@ -138,5 +159,14 @@
     from user_product_combo
     where user_id = #{userId,jdbcType=INTEGER}
 
+  </select>
+
+  <!--产品套餐时长联合查询-->
+  <select id="selectProductCombo" resultMap="ProductComboResultMap">
+    select user_product_combo.id,
+    product_combo.id pcid,product_combo.name pcname,product_combo.time pctime,
+    product.id pid,product.name pname,version_name
+    from user_product_combo,product_combo,product
+    where user_product_combo.product_combo_id=product_combo.id and product_combo.product_id=product.id
   </select>
 </mapper>
