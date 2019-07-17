@@ -10,6 +10,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.UserProductComboDayByAdminEnum;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
+import cn.bosenkeji.vo.UserProductComboDay;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -47,7 +48,7 @@ public class UserProductComboDayByAdminController {
 
     @ApiOperation(value="添加用户套餐时长操作信息api接口",notes="添加用户套餐时长操作信息api接口")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public boolean add(@RequestBody UserProductComboDayByAdmin UserProductComboDayByAdmin) { return this.iUserProductComboDayByAdminService.add(UserProductComboDayByAdmin);}
+    public boolean add(@RequestBody UserProductComboDay UserProductComboDay,@RequestParam("adminId") int adminId) { return this.iUserProductComboDayByAdminService.add(UserProductComboDay,adminId);}
 
     @ApiOperation(value="更新用户套餐时长api接口",notes="更新用户套餐时长api接口")
     @RequestMapping(value="/",method = RequestMethod.PUT)
@@ -56,4 +57,10 @@ public class UserProductComboDayByAdminController {
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口")
     @RequestMapping(value="/discover")
     public Object discover() { return this.discoveryClient;}
+
+    @ApiOperation(value="通过用户套餐查询时长操作列表api接口",notes = "用户套餐时长操作量表联合查询")
+    @RequestMapping(value = "/listbyuserproductcomboid",method = RequestMethod.GET)
+    public List<UserProductComboDayByAdmin> getByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId) {
+        return this.iUserProductComboDayByAdminService.getByUserProductComboId(userProductComboId);
+    }
 }

@@ -26,7 +26,7 @@ public class ProductServiceImpl implements IProductService {
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<Product>(this.productMapper.findAll());
     }
-
+    @Override
     public Optional<Product> get(int id) {
         return Optional.ofNullable(this.productMapper.selectByPrimaryKey(id));
     }

@@ -26,6 +26,9 @@ public class ProductCombo implements Serializable {
 
     private Timestamp updatedAt;
 
+    //一对一
+    private Product product;
+
     /*public ProductCombo(int id, Integer productId, String name, int time, float price, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.productId = productId;
@@ -37,6 +40,14 @@ public class ProductCombo implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }*/
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public ProductCombo() {
         super();
@@ -112,5 +123,21 @@ public class ProductCombo implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductCombo{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", name='" + name + '\'' +
+                ", time=" + time +
+                ", price=" + price +
+                ", remark='" + remark + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", product=" + product +
+                '}';
     }
 }

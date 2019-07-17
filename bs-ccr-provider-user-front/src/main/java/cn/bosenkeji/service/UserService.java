@@ -1,4 +1,7 @@
 package cn.bosenkeji.service;
 
-public class UserService {
+
+public interface UserService {
+
+
 }

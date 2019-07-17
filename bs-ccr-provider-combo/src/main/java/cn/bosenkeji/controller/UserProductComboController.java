@@ -50,8 +50,9 @@ public class UserProductComboController {
 
     @ApiOperation(value="根据用户id查询用户套餐时长api接口",notes="根据用户id查询用户套餐时长api接口")
     @RequestMapping(value="/listbyuserid",method = RequestMethod.GET)
-    public List<UserProductCombo> listByUserId(@RequestParam("userId") int userId) {
-        return this.iUserProductComboService.getByUserId(userId);
+    public PageInfo<UserProductCombo> listByUserId(@RequestParam("userId") int userId) {
+        //return this.iUserProductComboService.getByUserId(userId);
+        return this.iUserProductComboService.selectUserProductComboByUserId(1,15,userId);
     }
 
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口")

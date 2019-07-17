@@ -15,6 +15,11 @@
     <!--@mbg.generated-->
     id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at
   </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from coin_pair_choic
+  </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 

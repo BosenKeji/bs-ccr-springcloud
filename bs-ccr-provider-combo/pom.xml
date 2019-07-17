@@ -73,10 +73,10 @@
             <artifactId>bs-ccr-exception</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-flyway</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>

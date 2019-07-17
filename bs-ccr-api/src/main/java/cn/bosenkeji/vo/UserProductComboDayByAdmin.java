@@ -20,6 +20,17 @@ public class UserProductComboDayByAdmin implements Serializable {
 
     private Timestamp updatedAt;
 
+    //关联属性
+    private UserProductComboDay userProductComboDay;
+
+    public UserProductComboDay getUserProductComboDay() {
+        return userProductComboDay;
+    }
+
+    public void setUserProductComboDay(UserProductComboDay userProductComboDay) {
+        this.userProductComboDay = userProductComboDay;
+    }
+
     public UserProductComboDayByAdmin(int id, int adminId, int userProductComboDayId, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.adminId = adminId;
@@ -79,5 +90,18 @@ public class UserProductComboDayByAdmin implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProductComboDayByAdmin{" +
+                "id=" + id +
+                ", adminId=" + adminId +
+                ", userProductComboDayId=" + userProductComboDayId +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", userProductComboDay=" + userProductComboDay +
+                '}';
     }
 }
