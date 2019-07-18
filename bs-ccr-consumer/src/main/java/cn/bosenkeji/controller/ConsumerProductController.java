@@ -18,6 +18,7 @@ public class ConsumerProductController {
     @Resource
     private IProductClientService iProductClientService;
 
+
     @GetMapping("/product")
     public Object listProduct() { return this.iProductClientService.listProduct();}
 

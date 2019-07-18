@@ -76,6 +76,7 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-flyway</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>

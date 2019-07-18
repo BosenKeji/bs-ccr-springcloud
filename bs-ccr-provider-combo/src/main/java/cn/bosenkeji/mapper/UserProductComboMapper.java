@@ -18,8 +18,9 @@ public interface UserProductComboMapper {
     boolean updateByPrimaryKey(UserProductCombo record);
 
     List<UserProductCombo> findAll();
-    List<Integer> selectPrimaryKeyByUserId(Integer userId);
+    List<Integer> selectPrimaryKeyByUserId(int userId);
 
-    List<UserProductCombo> selectProductCombo();
+
+    List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
 
 }

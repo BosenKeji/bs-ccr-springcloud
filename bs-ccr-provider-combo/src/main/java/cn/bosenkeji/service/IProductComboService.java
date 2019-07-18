@@ -12,6 +12,7 @@ import java.util.Optional;
  */
 public interface IProductComboService {
     PageInfo<ProductCombo> list(int pageNum,int pageSize);
+    PageInfo<ProductCombo> listByProductId(int pageNum,int pageSize,int productId);
     PageInfo<ProductCombo> listByStatus(int pageNum,int pageSize,int status);
     Optional<ProductCombo> get(int id);
     boolean add(ProductCombo productCombo);

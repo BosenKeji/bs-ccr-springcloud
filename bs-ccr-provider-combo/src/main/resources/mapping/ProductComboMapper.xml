@@ -156,4 +156,11 @@
     from product_combo
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="findByProductId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_combo
+    where product_id=#{productId}
+  </select>
 </mapper>

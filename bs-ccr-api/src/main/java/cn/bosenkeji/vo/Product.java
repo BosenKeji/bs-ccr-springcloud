@@ -1,11 +1,15 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @author: xivinChen
  */
+@Api
 public class Product implements Serializable {
     private int id;
 
@@ -19,8 +23,10 @@ public class Product implements Serializable {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     public Product(int id, String name, String versionName, String logo, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {

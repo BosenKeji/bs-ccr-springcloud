@@ -30,6 +30,13 @@ public class ProductComboServiceImpl implements IProductComboService {
     }
 
     @Override
+    public PageInfo<ProductCombo> listByProductId(int pageNum, int pageSize, int productId) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(productComboMapper.findByProductId(productId));
+    }
+
+    @Override
     public PageInfo<ProductCombo> listByStatus(int pageNum,int pageSize,int status) {
 
         PageHelper.startPage(pageNum,pageSize);

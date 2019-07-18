@@ -125,11 +125,11 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
     @Override
-    public PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId) {
+    public PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel) {
 
         //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
-        List<UserProductCombo> userProductCombos = userProductComboMapper.selectProductCombo();
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserTel(userTel);
 
         for (UserProductCombo userProductCombo : userProductCombos) {
             //设置有效时间

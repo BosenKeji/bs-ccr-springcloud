@@ -1,5 +1,8 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.engine.HibernateIterator;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -20,9 +23,22 @@ public class UserProductComboDay implements Serializable {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
+
+    @ApiModelProperty(hidden = true)
+    private UserProductCombo userProductCombo;
+
+    public UserProductCombo getUserProductCombo() {
+        return userProductCombo;
+    }
+
+    public void setUserProductCombo(UserProductCombo userProductCombo) {
+        this.userProductCombo = userProductCombo;
+    }
 
     public UserProductComboDay(int id, int userId, int userProductComboId, int type, int number, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
@@ -114,6 +130,7 @@ public class UserProductComboDay implements Serializable {
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", userProductCombo=" + userProductCombo +
                 '}';
     }
 }

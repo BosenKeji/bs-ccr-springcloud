@@ -29,7 +29,7 @@
       <association property="product" javaType="cn.bosenkeji.vo.Product">
         <id column="pid" property="id" />
         <result column="pname" property="name"/>
-        <result column="version_name" property="versionName"/>
+        <result column="pversion_name" property="versionName"/>
       </association>
     </association>
   </resultMap>
@@ -162,12 +162,19 @@
 
   </select>
 
-  <!--产品套餐时长联合查询-->
-  <select id="selectProductCombo" resultMap="ProductComboResultMap">
-    select user_product_combo.id,
-    product_combo.id pcid,product_combo.name pcname,product_combo.time pctime,
-    product.id pid,product.name pname,version_name
-    from user_product_combo,product_combo,product
-    where user_product_combo.product_combo_id=product_combo.id and product_combo.product_id=product.id
+  <!--通过电话号码 产品套餐时长联合查询-->
+  <select id="selectUserProductComboByUserTel" resultMap="ProductComboResultMap" parameterType="java.lang.String">
+
+    select u.id uid,u.tel,
+    upc.id,upc.status,upc.created_at,upc.updated_at,upc.order_number,upc.remark,upc.status,
+    pc.id pcid,pc.time pctime,
+    p.id pid,p.name pname,p.version_name pversion_name
+    from `user` u LEFT JOIN user_product_combo upc
+    on u.id=upc.user_id
+    LEFT JOIN product_combo pc
+    on upc.product_combo_id=pc.id
+    LEFT JOIN product p
+    on pc.product_id=p.id
+    where u.tel=#{userTel}
   </select>
 </mapper>
