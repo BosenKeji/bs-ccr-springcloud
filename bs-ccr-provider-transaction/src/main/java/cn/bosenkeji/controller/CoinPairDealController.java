@@ -2,23 +2,20 @@ package cn.bosenkeji.controller;
 
 
 import cn.bosenkeji.service.CoinPairDealService;
+import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/coinpairdeal")
@@ -62,7 +59,7 @@ public class CoinPairDealController {
 
     @RequestMapping(value = "/status", method = RequestMethod.PUT)
     @ApiOperation(value = "更新货币对交易状态",notes = "指定货币对交易ID，通过ID更新交易状态")
-    public boolean updateCoinPairDealStartsById(@Param("id") @Min(1) Integer id ,@Param("status") @Min(1) Integer status) {
+    public boolean updateCoinPairDealStartsById(@RequestParam("id") @Min(1) Integer id , @RequestParam("status") @Min(1) Integer status) {
         return coinPairDealService.updateCoinPairDealStartsById(id,status);
     }
 
@@ -78,6 +75,11 @@ public class CoinPairDealController {
         return coinPairDealService.countCoinPairDeal(userId,choicId);
     }
 
+    @RequestMapping(value = "/",method = RequestMethod.POST)
+    @ApiOperation(value = "添加货币对交易信息",notes = "对于一个货币对每下一单的信息")
+    public boolean insertCoinPairDealBySelective(@RequestBody @NotNull CoinPairDeal coinPairDeal) {
+        return coinPairDealService.insertCoinPairDealBySelective(coinPairDeal);
+    }
 
     @RequestMapping(value = "/discover" , method = RequestMethod.GET)
     @ApiOperation(value = "获取当前服务的API接口" , notes = "获取当前服务API接口")
