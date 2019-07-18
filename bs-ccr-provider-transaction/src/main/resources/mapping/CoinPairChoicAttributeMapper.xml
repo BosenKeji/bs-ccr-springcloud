@@ -17,6 +17,12 @@
     id, coin_partner_choic_id, expect_money, strategy_id, is_custom, `status`, created_at, 
     updated_at
   </sql>
+  <select id="selectBycoinPartnerChoicId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from coin_pair_choic_attribute
+   where coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER}
+  </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 

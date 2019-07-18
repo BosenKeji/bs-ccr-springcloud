@@ -51,7 +51,6 @@ public class CoinController {
         return this.coinService.listByPage(0,pageSizeCommon) ;
     }
 
-
     @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET")
     @RequestMapping(value="/{id}")
     public Coin get( @PathVariable("id")  @Min(value = 1) @ApiParam(value = "币种ID", required = true) int id) {

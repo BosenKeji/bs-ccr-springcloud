@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,31 +36,34 @@ public class CoinPairCoinController {
     @Value("${pageSize.common}")
     private int pageSizeCommon;
 
-    @ApiOperation(value = "获取货币对货币列表接口")
+    @ApiOperation(value = "获取货币对货币列表接口",httpMethod = "GET")
     @GetMapping("/")
     public PageInfo list(){
         return this.coinPairCoinService.listByPage(0,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取单个货币对货币列表接口")
+    @ApiOperation(value = "获取单个货币对货币列表接口",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairCoin get(@PathVariable("id") @Min(1) int id){
         return this.coinPairCoinService.get(id).orElseThrow(()-> new NotFoundException(CoinPairCoinEnum.NAME));
     }
 
-    @ApiOperation(value = "添加货币对货币接口")
+    @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST")
     @PostMapping("/")
     public boolean add(@RequestBody CoinPairCoin coinPairCoin){
+        coinPairCoin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairCoinService.add(coinPairCoin);
     }
 
-    @ApiOperation(value = "更新货币对货币接口")
+    @ApiOperation(value = "更新货币对货币接口",httpMethod = "PUT")
     @PutMapping("/")
     public boolean update(@RequestBody CoinPairCoin coinPairCoin){
+        coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairCoinService.update(coinPairCoin);
     }
 
-    @ApiOperation(value = "删除货币对货币接口")
+    @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE")
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable("id") int id){
         return this.coinPairCoinService.delete(id);
