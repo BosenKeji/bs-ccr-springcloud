@@ -1,7 +1,5 @@
 package cn.bosenkeji.vo;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,8 +12,6 @@ import java.util.Date;
 public class CoinPair implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue
     private int id;
 
     private String name;
