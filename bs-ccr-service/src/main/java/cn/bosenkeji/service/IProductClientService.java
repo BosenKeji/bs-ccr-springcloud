@@ -8,18 +8,19 @@ import cn.bosenkeji.vo.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @ClassName ICoinClientService
+ * @ClassName IProductClientService
  * @Description TODO
- * @Author Yu XueWen
- * @Email yuxuewen23@qq.com
+ * @Author Xivin
  * @Versio V1.0
  **/
 @FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProdcutClientServiceFallbackFactory.class)
 public interface IProductClientService {
 
+    @Resource
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable("id") int id);
 

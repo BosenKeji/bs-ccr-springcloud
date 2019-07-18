@@ -26,6 +26,7 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -51,10 +52,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-security-sso-client</artifactId>
-        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>bosenCCR</groupId>-->
+            <!--<artifactId>bs-ccr-security-sso-client</artifactId>-->
+        <!--</dependency>-->
 
         <!-- 模块依赖 -->
         <dependency>

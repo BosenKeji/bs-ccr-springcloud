@@ -32,3 +32,6 @@ spring:
 logging:
   level:
     cn.bosenkeji.mapper: debug
+
+pageSize:
+  common: 10

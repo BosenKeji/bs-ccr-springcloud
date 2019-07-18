@@ -11,6 +11,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Service
 public class StrategySequenceServiceImpl implements StrategySequenceService {
 
@@ -20,6 +23,33 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
     @Autowired
     private StrategySequenceValueMapper strategySequenceValueMapper;
 
+
+    @Override
+    public boolean insertStrategySequenceBySelective(StrategySequence sequence) {
+        boolean b = false;
+        sequence.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        sequence.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        int result = strategySequenceMapper.insertSelective(sequence);
+        if ( result > 0 ) {
+            b = true;
+        }
+        return b;
+    }
+
+    @Override
+    public boolean insertSequenceServiceValueBySelective(StrategySequenceValue sequenceValue) {
+        boolean b = false;
+        StrategySequence checkSequence = strategySequenceMapper.findSequenceByPrimaryKey(sequenceValue.getStrategySequenceId());
+        if ( checkSequence != null ) {
+            sequenceValue.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            sequenceValue.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            int result = strategySequenceValueMapper.insertSelective(sequenceValue);
+            if ( result > 0 ) {
+                b = true;
+            }
+        }
+        return b;
+    }
 
     @Override
     public PageInfo<StrategySequence> findAll(Integer pageNum, Integer pageSize) {

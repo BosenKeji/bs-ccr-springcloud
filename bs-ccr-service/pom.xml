@@ -13,6 +13,7 @@
     <version>1.0.0</version>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>

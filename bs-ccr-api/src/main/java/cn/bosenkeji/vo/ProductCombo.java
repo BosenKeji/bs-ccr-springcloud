@@ -1,16 +1,19 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @author xivinChen
  */
-
+@Api
 public class ProductCombo implements Serializable {
     private int id;
 
-    private Integer productId;
+    private int productId;
 
     private String name;
 
@@ -22,11 +25,14 @@ public class ProductCombo implements Serializable {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     //一对一
+    @ApiModelProperty(hidden = true)
     private Product product;
 
     /*public ProductCombo(int id, Integer productId, String name, int time, float price, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
@@ -61,11 +67,11 @@ public class ProductCombo implements Serializable {
         this.id = id;
     }
 
-    public Integer getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 

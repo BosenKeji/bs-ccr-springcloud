@@ -85,8 +85,9 @@ public class CoinController {
                 })
             })
     @RequestMapping(value="/")
-    public PageInfo list() {
-        return this.coinService.listByPage(0,pageSizeCommon) ;
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
+        return this.coinService.listByPage(pageNum,pageSizeCommon) ;
     }
 
     @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET",extensions = {

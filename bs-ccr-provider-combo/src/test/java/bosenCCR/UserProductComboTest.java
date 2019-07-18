@@ -40,7 +40,7 @@ public class UserProductComboTest {
     //测试产品套餐联合查询
     @Test
     public void testSelectProductCombo() {
-        List<UserProductCombo> userProductCombos = userProductComboMapper.selectProductCombo();
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserTel("135645");
         for (UserProductCombo userProductCombo : userProductCombos) {
             System.err.println(userProductCombo);
 

@@ -1,9 +1,12 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-
+@Api
 public class UserProductCombo implements Serializable {
     private int id;
 
@@ -17,14 +20,18 @@ public class UserProductCombo implements Serializable {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     //非数据库属性 剩余时长
+    @ApiModelProperty(hidden = true)
     private int remainTime=0;
 
     //一对一
+    @ApiModelProperty(hidden = true)
     private ProductCombo productCombo;
 
 

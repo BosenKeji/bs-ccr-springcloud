@@ -12,10 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @ClassName ICoinClientServiceFallbackFactory
+ * @ClassName IProductClientServiceFallbackFactory
  * @Description TODO
- * @Author Yu XueWen
- * @Email 8586826@qq.com
+ * @Author Xivin
  * @Versio V1.0
  **/
 @Component

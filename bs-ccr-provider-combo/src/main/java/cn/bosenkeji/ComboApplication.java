@@ -11,7 +11,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-@EnableCaching
+//@EnableCaching
 public class ComboApplication {
 
     public static void main(String[] args) {
