@@ -40,11 +40,8 @@ public class CoinPairChoicAttributeController {
     @Value("${pageSize.common}")
     private int pageSizeCommon;
 
-    @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET")
-    @GetMapping("/{id}")
-    public CoinPairChoicAttribute getByCoinPartnerChoicId(@PathVariable("id") @Min(1) int coinPartnerChoicId){
-        return this.coinPairChoicAttributeService.getByCoinPartnerChoicId(coinPartnerChoicId);
-    }
+
+
 
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET")
     @GetMapping("/{id}")
@@ -79,6 +76,9 @@ public class CoinPairChoicAttributeController {
 
         return true;
 
+    }
+    public CoinPairChoicAttribute getByCoinPartnerChoicId(@PathVariable("id") @Min(1) int coinPartnerChoicId){
+        return this.coinPairChoicAttributeService.getByCoinPartnerChoicId(coinPartnerChoicId);
     }
 
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT")
