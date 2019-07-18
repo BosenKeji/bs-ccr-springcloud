@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @Author CAJR
@@ -36,24 +38,26 @@ public class CoinPairChoicController {
     @Value("${pageSize.common}")
     private int pageSizeCommon;
 
-    @ApiOperation(value = "获取自选货币分页接口")
+    @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET")
     @GetMapping("/")
     public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum){
         return this.coinPairChoicService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取单个自选货币接口")
+    @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairChoic get(@PathVariable("id") @Min(1) int id){
         return this.coinPairChoicService.get(id).orElseThrow(()->new NotFoundException(CoinPairChoicEnum.NAME));
     }
 
-    @ApiOperation(value = "添加自选货币接口")
+    @ApiOperation(value = "添加自选货币接口",httpMethod = "POST")
     @PostMapping("/")
     public boolean add(@RequestBody @NotNull User user, @RequestBody @NotNull Strategy strategy, @RequestBody @NotNull CoinPair coinPair){
         CoinPairChoic coinPairChoic=new CoinPairChoic();
         coinPairChoic.setUserId(user.getId());
         coinPairChoic.setCoinPartnerId(coinPair.getId());
+        coinPairChoic.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        coinPairChoic.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
         if (strategy.getStatus() == 1){
             coinPairChoic.setIsStart(1);
@@ -62,13 +66,14 @@ public class CoinPairChoicController {
         return this.coinPairChoicService.add(coinPairChoic);
     }
 
-    @ApiOperation(value = "更新自选货币接口")
+    @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT")
     @PutMapping("/")
     public boolean update(@RequestBody CoinPairChoic coinPairChoic){
+        coinPairChoic.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairChoicService.update(coinPairChoic);
     }
 
-    @ApiOperation(value = "删除自选货币接口")
+    @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE")
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable("id") @Min(1) int id){
         return this.coinPairChoicService.delete(id);

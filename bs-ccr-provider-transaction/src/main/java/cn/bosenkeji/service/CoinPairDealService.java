@@ -11,9 +11,9 @@ public interface CoinPairDealService {
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId, Integer pageNum, Integer pageSize);
 
-    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndStatus(Integer userId, Integer status, Integer pageNum, Integer pageSize);
+    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize);
 
-    boolean updataCoinPairDealStartsById(Integer id, Integer status);
+    boolean updateCoinPairDealStartsById(Integer id, Integer status);
 
     int countCoinPair(Integer userId);
 

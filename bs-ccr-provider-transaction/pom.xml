@@ -59,6 +59,7 @@
         </dependency>
 
 
+
         <!-- 模块依赖 -->
         <dependency>
             <groupId>bosenCCR</groupId>
@@ -72,7 +73,16 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-provider-strategy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-provider-strategy</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

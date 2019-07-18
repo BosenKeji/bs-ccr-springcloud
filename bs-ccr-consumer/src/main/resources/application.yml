@@ -20,3 +20,15 @@ feign:
         - application/xml
         - application/json
       min-request-size: 2048 # 超过2048的字节进行压缩
+
+
+
+security:
+  oauth2:
+    client:
+      clientId: SampleClientId
+      clientSecret: secret
+      accessTokenUri: http://localhost:8081/auth/oauth/token
+      userAuthorizationUri: http://localhost:8081/auth/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/auth/user/me

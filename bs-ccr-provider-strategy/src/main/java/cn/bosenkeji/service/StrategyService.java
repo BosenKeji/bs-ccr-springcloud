@@ -10,7 +10,7 @@ public interface StrategyService {
 
     StrategyVO getStrategy(Integer id);
 
-    PageInfo<Strategy>  listBypage(Integer pageNum, Integer pageSize);
+    PageInfo<Strategy>  listByPage(Integer pageNum, Integer pageSize);
 
 
 }

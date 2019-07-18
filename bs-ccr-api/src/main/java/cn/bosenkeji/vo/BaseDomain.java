@@ -8,4 +8,5 @@ package cn.bosenkeji.vo;
  * @Versio V1.0
  **/
 public class BaseDomain {
+
 }
