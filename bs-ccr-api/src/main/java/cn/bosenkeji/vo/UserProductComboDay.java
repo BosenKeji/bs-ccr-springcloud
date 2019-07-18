@@ -1,12 +1,10 @@
 package cn.bosenkeji.vo;
 
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.engine.HibernateIterator;
+
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
-
 /**
  * @author xivinChen
  */

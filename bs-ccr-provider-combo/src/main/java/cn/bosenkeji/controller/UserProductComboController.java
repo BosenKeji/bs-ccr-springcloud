@@ -62,9 +62,9 @@ public class UserProductComboController {
 
     @ApiOperation(value="根据用户电话查询用户套餐时长api接口",httpMethod = "GET")
     @RequestMapping(value="/listbyusertel",method = RequestMethod.GET)
-    public PageInfo<UserProductCombo> listByUserId(@RequestParam("userTel") String userTel) {
+    public PageInfo<UserProductCombo> listByUserTel(@RequestParam("userTel") String userTel,@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue = "10") int pageSize) {
         //return this.iUserProductComboService.getByUserId(userId);
-        return this.iUserProductComboService.selectUserProductComboByUserTel(1,15,userTel);
+        return this.iUserProductComboService.selectUserProductComboByUserTel(pageNum,pageSize,userTel);
     }
 
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口",httpMethod = "GET")

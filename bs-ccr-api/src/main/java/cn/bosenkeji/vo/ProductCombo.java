@@ -2,9 +2,7 @@ package cn.bosenkeji.vo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.sql.Timestamp;
 

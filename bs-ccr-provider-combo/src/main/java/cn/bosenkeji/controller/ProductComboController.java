@@ -88,7 +88,7 @@ public class ProductComboController {
 
     @ApiOperation(value ="启用、关闭产品套餐api接口",notes = "启用、关闭产品套餐api接口",httpMethod = "PUT")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public boolean updateStatus(@PathVariable("id") @Min(1) int id, int status) {
+    public boolean updateStatus(@PathVariable("id") @Min(1) int id,@RequestParam("status") int status) {
         ProductCombo productCombo=new ProductCombo();
         productCombo.setId(id);
         productCombo.setStatus(status);
