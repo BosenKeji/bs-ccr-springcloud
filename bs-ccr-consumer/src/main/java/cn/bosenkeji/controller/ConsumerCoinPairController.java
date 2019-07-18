@@ -3,6 +3,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.ICoinPairCoinClientService;
 import cn.bosenkeji.vo.CoinPair;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,35 +12,36 @@ import org.springframework.web.bind.annotation.*;
  * @create 2019/7/11 15:43
  */
 @RestController
-@RequestMapping("/consumer")
+@RequestMapping("/consumer/coinpair")
 public class ConsumerCoinPairController {
 
     @Autowired
     ICoinPairClientService iCoinPairClientService;
 
-    @GetMapping("/coinpair/{id}")
-    public Object getCoinPair(@PathVariable("id") int id) {
+    @GetMapping("/{id}")
+    public CoinPair getCoinPair(@PathVariable("id") int id) {
         return iCoinPairClientService.getCoinPair(id);
     }
 
-    @GetMapping("/coinpair")
-    public  Object listCoinPair() {
-        return iCoinPairClientService.listCoinPair();
+    @GetMapping("/")
+    public PageInfo listCoinPair(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
+        return iCoinPairClientService.listCoinPair(pageNum, pageSizeCommon);
     }
 
-    @PostMapping("/coinpair")
-    public Object addCoinPair(@RequestBody CoinPair coinPair) {
+    @PostMapping("/")
+    public boolean addCoinPair(@RequestBody CoinPair coinPair) {
 
         return iCoinPairClientService.addCoinPair(coinPair);
     }
 
-    @PutMapping("/coinpair")
-    public Object updateCoinPair(@RequestBody CoinPair coinPair){
+    @PutMapping("/")
+    public boolean updateCoinPair(@RequestBody CoinPair coinPair){
         return iCoinPairClientService.updateCoinPair(coinPair);
     }
 
-    @DeleteMapping("/coinpair/{id}")
-    public Object deleteCoinPair(@PathVariable int id){
+    @DeleteMapping("/{id}")
+    public boolean deleteCoinPair(@PathVariable int id){
         return iCoinPairClientService.deleteCoinPair(id);
     }
 }

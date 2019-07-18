@@ -3,24 +3,21 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinPairChoicAttributeEnum;
 import cn.bosenkeji.service.CoinPairChoicAttributeService;
-import cn.bosenkeji.vo.CoinPairChoic;
 import cn.bosenkeji.vo.CoinPairChoicAttribute;
-import cn.bosenkeji.vo.Strategy;
 import cn.bosenkeji.vo.StrategyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @Author CAJR
@@ -41,8 +38,6 @@ public class CoinPairChoicAttributeController {
     private int pageSizeCommon;
 
 
-
-
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairChoicAttribute get(@PathVariable("id") @Min(1) int id){
@@ -51,33 +46,44 @@ public class CoinPairChoicAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST")
     @PostMapping("/")
-    public boolean add(@RequestBody @NotNull List<CoinPairChoic> coinPairChoics, @RequestBody @NotNull StrategyVO strategyVO, @RequestBody int money , @RequestBody int is_custom){
-        int lever=strategyVO.getLever();
-        int expectMoney=(money*lever)/coinPairChoics.size();
+    public boolean add(HttpServletRequest request,@RequestParam("lever") int lever,@RequestParam("money") int money ,@RequestParam("is_custom") int is_custom){
+        //获取自选币id字符串数组
+        String [] coinPairChoicIdstr=request.getParameterValues("oinPartnerChoicId");
+        int[] coinPairChoicIds=new int[coinPairChoicIdstr.length];
+        for (int i=0;i<coinPairChoicIdstr.length;i++){
+            coinPairChoicIds[i]=Integer.parseInt(coinPairChoicIdstr[i]);
+            System.out.println("coinPairChoicIds[i] = " + coinPairChoicIds[i]);
+        }
+        System.out.println("coinPairChoicIds = " + coinPairChoicIds.length);
 
-        for (CoinPairChoic coinPairChoic:coinPairChoics){
+        if (coinPairChoicIds.length == 0){
+            return false;
+        }
 
-            if (getByCoinPartnerChoicId(coinPairChoic.getId()) != null){
-                CoinPairChoicAttribute coinPairChoicAttribute=getByCoinPartnerChoicId(coinPairChoic.getId());
+        int expectMoney=(money*lever)/coinPairChoicIds.length;
+
+        for (int i=0;i<coinPairChoicIds.length;i++){
+            CoinPairChoicAttribute coinPairChoicAttribute=getByCoinPartnerChoicId(coinPairChoicIds[i]);
+            if (coinPairChoicAttribute!= null){
                 coinPairChoicAttribute.setExpectMoney(expectMoney);
                 coinPairChoicAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                return update(coinPairChoicAttribute);
+                update(coinPairChoicAttribute);
+            }else {
+                CoinPairChoicAttribute coinPairChoicAttribute1 = new CoinPairChoicAttribute();
+                coinPairChoicAttribute1.setCoinPartnerChoicId(coinPairChoicIds[i]);
+                coinPairChoicAttribute1.setIsCustom(is_custom);
+                coinPairChoicAttribute1.setExpectMoney(expectMoney);
+                coinPairChoicAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                coinPairChoicAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+                coinPairChoicAttributeService.add(coinPairChoicAttribute1);
             }
-
-            CoinPairChoicAttribute coinPairChoicAttribute=new CoinPairChoicAttribute();
-            coinPairChoicAttribute.setCoinPartnerChoicId(coinPairChoic.getId());
-            coinPairChoicAttribute.setIsCustom(is_custom);
-            coinPairChoicAttribute.setExpectMoney(expectMoney);
-            coinPairChoicAttribute.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            coinPairChoicAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
-            coinPairChoicAttributeService.add(coinPairChoicAttribute);
         }
 
         return true;
 
     }
-    public CoinPairChoicAttribute getByCoinPartnerChoicId(@PathVariable("id") @Min(1) int coinPartnerChoicId){
+    public CoinPairChoicAttribute getByCoinPartnerChoicId(int coinPartnerChoicId){
         return this.coinPairChoicAttributeService.getByCoinPartnerChoicId(coinPartnerChoicId);
     }
 
