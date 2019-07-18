@@ -18,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,32 +44,35 @@ public class CoinController {
     @Value("${pageSize.common}")
     private int pageSizeCommon;
 
-    @ApiOperation(value = "获取货币列表接口")
+    @ApiOperation(value = "获取货币列表接口",httpMethod = "GET")
     @RequestMapping(value="/")
     public PageInfo list() {
         return this.coinService.listByPage(0,pageSizeCommon) ;
     }
 
 
-    @ApiOperation(value = "获取单个货币信息列表接口")
+    @ApiOperation(value = "获取单个货币信息列表接口",httpMethod = "GET")
     @RequestMapping(value="/{id}")
     public Coin get( @PathVariable("id")  @Min(value = 1)  int id) {
         return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
     }
 
-    @ApiOperation(value = "添加单个货币信息列表接口")
+    @ApiOperation(value = "添加单个货币信息列表接口",httpMethod = "POST")
     @RequestMapping(value="/", method = RequestMethod.POST)
     public boolean add(@RequestBody @NotNull Coin coin) {
+        coin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinService.add(coin) ;
     }
 
-    @ApiOperation(value = "更新单个货币信息列表接口")
+    @ApiOperation(value = "更新单个货币信息列表接口",httpMethod = "PUT")
     @RequestMapping(value="/", method = RequestMethod.PUT)
     public boolean put(@RequestBody Coin coin) {
+        coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinService.update(coin) ;
     }
 
-    @ApiOperation(value = "删除单个货币信息列表接口")
+    @ApiOperation(value = "删除单个货币信息列表接口",httpMethod = "DELETE")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public boolean delete(@PathVariable("id") int id) {
         return this.coinService.delete(id) ;
