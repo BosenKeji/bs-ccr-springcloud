@@ -1,9 +1,13 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Coin implements Serializable{
+    @ApiModelProperty("货币 id")
     private int id;
     private String name;
     private int status;

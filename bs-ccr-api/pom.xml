@@ -12,7 +12,10 @@
     <artifactId>bs-ccr-api</artifactId>
     <version>1.0.0</version>
     <dependencies>
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
     </dependencies>
 
 

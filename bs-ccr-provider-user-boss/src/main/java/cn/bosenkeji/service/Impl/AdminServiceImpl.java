@@ -55,33 +55,4 @@ public class AdminServiceImpl implements AdminService {
     public boolean delete(int id) {
         return false;
     }
-
-//    @Autowired
-//    private AdminMapper adminMapper;
-//
-//    @Override
-//    public List<Admin> list() {
-//        PageHelper.startPage(1,10);
-//        return adminMapper.findAll();
-//    }
-//
-//    @Override
-//    public Optional<Coin> get(int id) {
-//        return Optional.ofNullable(coinMapper.selectByPrimaryKey(id)) ;
-//    }
-//
-//    @Override
-//    public boolean add(Coin coin) {
-//        return coinMapper.insert(coin)==1;
-//    }
-//
-//    @Override
-//    public boolean update(Coin coin) {
-//        return coinMapper.updateByPrimaryKeySelective(coin)==1;
-//    }
-//
-//    @Override
-//    public boolean delete(int id) {
-//        return coinMapper.deleteByPrimaryKey(id)==1;
-//    }
 }
