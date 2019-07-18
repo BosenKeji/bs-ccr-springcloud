@@ -23,7 +23,7 @@
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
-        <module>bs-ccr-provider-tradeplatform</module>
+        <module>bs-ccr-provider-tradePlatform</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-mybatis-generator</module>
