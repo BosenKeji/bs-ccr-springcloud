@@ -43,9 +43,9 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndStatus(Integer userId, Integer status, Integer pageNum, Integer pageSize) {
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndStatus(userId,status);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
         List<CoinPairDealVO> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
@@ -54,7 +54,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public boolean updataCoinPairDealStartsById(Integer id, Integer status) {
+    public boolean updateCoinPairDealStartsById(Integer id, Integer status) {
         CoinPairDeal c = new CoinPairDeal();
         c.setId(id);
         c.setStatus(status);

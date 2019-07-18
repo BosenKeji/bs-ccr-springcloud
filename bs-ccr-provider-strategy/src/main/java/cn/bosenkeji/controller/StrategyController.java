@@ -37,7 +37,7 @@ public class StrategyController {
     @RequestMapping(value="/" , method = RequestMethod.GET)
     @ApiOperation(value = "获取策略列表", notes = "带分页，默认从第一页开始，每页10条记录")
     public PageInfo listByPage(){
-        return strategyService.listBypage(0,pageSizeCommon);
+        return strategyService.listByPage(0,pageSizeCommon);
     }
 
     @RequestMapping(value = "/discover" , method = RequestMethod.GET)

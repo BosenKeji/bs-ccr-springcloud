@@ -33,7 +33,7 @@ public class StrategyServiceImpl implements StrategyService{
     }
 
     @Override
-    public PageInfo<Strategy> listBypage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Strategy> listByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(strategyMapper.findAll());
     }

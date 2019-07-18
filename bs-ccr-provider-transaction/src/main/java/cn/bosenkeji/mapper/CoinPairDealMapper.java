@@ -28,7 +28,7 @@ public interface CoinPairDealMapper {
 
     List<CoinPairDeal> findCoinPairDealByUserIdAndChoicId(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
 
-    List<CoinPairDeal> findCoinPairDealByUserIdAndStatus(@Param("userId") Integer userId, @Param("status") Integer status);
+    List<CoinPairDeal> findCoinPairDealByUserIdAndType(@Param("userId") Integer userId, @Param("type") Integer type);
 
     int countCoinPair(Integer userId);
 
