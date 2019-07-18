@@ -35,14 +35,13 @@ public class TradePlatformController {
     @Resource
     private DiscoveryClient client ;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @ApiOperation(value = "获取交易平台分页信息",httpMethod = "GET")
     @GetMapping("/")
-    public PageInfo list(){
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
 
-        return this.tradePlatformService.listByPage(0,pageSizeCommon);
+        return this.tradePlatformService.listByPage(pageNum,pageSizeCommon);
     }
 
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET")

@@ -1,12 +1,11 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinPairDealService;
+import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/coinpairdeal")
@@ -31,8 +30,8 @@ public class ConsumerCoinPairDealController {
 
     @GetMapping(value = "/{userId}/type/{type}")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
-            @PathVariable("userId") @Min(1) Integer userId,
-            @PathVariable("type") @Min(1) @Max(2) Integer type
+            @PathVariable("userId") Integer userId,
+            @PathVariable("type") Integer type
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,0,10);
     }
@@ -40,6 +39,11 @@ public class ConsumerCoinPairDealController {
     @PutMapping(value = "/status")
     public boolean updateCoinPairDealStartsById(@RequestParam("id") Integer id ,@RequestParam("status") Integer status) {
         return coinPairDealService.updateCoinPairDealStartsById(id,status);
+    }
+
+    @RequestMapping(value = "/",method = RequestMethod.POST)
+    public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+        return coinPairDealService.insertCoinPairDealBySelective(coinPairDeal);
     }
 
     @GetMapping(value = "/count/{userId}")

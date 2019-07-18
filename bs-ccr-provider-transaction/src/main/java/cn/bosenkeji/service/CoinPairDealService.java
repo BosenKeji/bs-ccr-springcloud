@@ -1,11 +1,14 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 
 
 
 public interface CoinPairDealService {
+
+    boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal);
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId , Integer pageNum , Integer pageSize);
 

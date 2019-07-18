@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairDealServiceFallbackFactory;
+import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -34,6 +35,9 @@ public interface ICoinPairDealService {
     boolean updateCoinPairDealStartsById(
             @RequestParam("id") Integer id,
             @RequestParam("status") Integer status);
+
+    @RequestMapping(value = "/coinpairdeal/",method = RequestMethod.POST)
+    boolean insertCoinPairDealBySelective(@RequestBody CoinPairDeal coinPairDeal);
 
     @GetMapping("/coinpairdeal/count/{userId}")
     int countCoinPair(@PathVariable("userId") Integer userId);

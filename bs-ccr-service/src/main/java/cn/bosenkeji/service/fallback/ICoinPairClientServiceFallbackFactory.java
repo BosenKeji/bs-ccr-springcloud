@@ -2,6 +2,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.vo.CoinPair;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +28,12 @@ public class ICoinPairClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
-            public List<CoinPair> listCoinPair() {
+            public PageInfo listCoinPair(int pageNum,int pageSize) {
                 CoinPair coinPair=new CoinPair();
                 coinPair.setName("hystrix provider-coin");
                 List<CoinPair> coinPairs=new ArrayList<>();
                 coinPairs.add(coinPair);
-                return coinPairs;
+                return new PageInfo(coinPairs);
             }
 
             @Override

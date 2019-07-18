@@ -3,6 +3,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.service.StrategySequenceService;
 import cn.bosenkeji.vo.StrategySequence;
 import cn.bosenkeji.vo.StrategySequenceVO;
+import cn.bosenkeji.vo.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,20 @@ public class StrategySequenceController {
 
     @Resource
     private DiscoveryClient client;
+
+
+
+    @RequestMapping(value = "/",method = RequestMethod.POST)
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加")
+    public boolean insertStrategySequence(StrategySequence sequence) {
+        return strategySequenceService.insertStrategySequenceBySelective(sequence);
+    }
+
+    @RequestMapping(value = "/value/",method = RequestMethod.POST)
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加")
+    public boolean insertStrategySequence(StrategySequenceValue sequenceValue) {
+        return strategySequenceService.insertSequenceServiceValueBySelective(sequenceValue);
+    }
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     @ApiOperation(value = "获取数列列表",notes = "带分页，默认从第一页开始，每页10条")

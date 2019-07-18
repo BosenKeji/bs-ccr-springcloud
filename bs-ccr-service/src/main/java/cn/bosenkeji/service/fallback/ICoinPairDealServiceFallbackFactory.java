@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairDealService;
+import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -43,6 +44,11 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
 
             @Override
             public boolean updateCoinPairDealStartsById(Integer id, Integer status) {
+                return false;
+            }
+
+            @Override
+            public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
                 return false;
             }
 

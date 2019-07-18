@@ -1,6 +1,8 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.StrategyService;
+import cn.bosenkeji.vo.Strategy;
+import cn.bosenkeji.vo.StrategyAttribute;
 import cn.bosenkeji.vo.StrategyVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -9,9 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 
 @RestController
@@ -27,6 +29,18 @@ public class StrategyController {
 
     @Resource
     private DiscoveryClient client;
+
+    @RequestMapping(value = "/" , method = RequestMethod.POST)
+    @ApiOperation(value = "添加策略信息",notes = "对策略基本属性的添加")
+    public boolean addStrategyBySelective(@NotNull Strategy strategy) {
+        return strategyService.addStrategyAttributeBySelective(strategy);
+    }
+
+    @RequestMapping(value = "/attribute/",method = RequestMethod.POST)
+    @ApiOperation(value = "添加策略的详细信息",notes = "对策略的详细属性的添加")
+    public boolean addStrategyAttribute(@NotNull StrategyAttribute strategyAttribute) {
+        return strategyService.insertStrategyAttributeBySelective(strategyAttribute);
+    }
 
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息")

@@ -2,6 +2,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinSortClientService;
 import cn.bosenkeji.vo.CoinSort;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +25,11 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
-            public List<CoinSort> listCoinSort() {
+            public PageInfo listCoinSort(int pageNum,int pageSize) {
                 CoinSort coinSort=new CoinSort();
                 List<CoinSort> coinSorts = new ArrayList<>();
                 coinSorts.add(coinSort);
-                return coinSorts;
+                return new PageInfo(coinSorts);
             }
 
             @Override
