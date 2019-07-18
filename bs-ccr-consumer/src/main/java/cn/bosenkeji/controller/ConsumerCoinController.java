@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.vo.Coin;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,34 +15,35 @@ import javax.annotation.Resource;
  * @Versio V1.0
  **/
 @RestController
-@RequestMapping("/consumer")
+@RequestMapping("/consumer/coin")
 public class ConsumerCoinController {
     @Resource
     private ICoinClientService iCoinClientService;
 
-    @GetMapping("/coin/{id}")
-    public Object getCoin(@PathVariable("id") int id) {
+    @GetMapping("/{id}")
+    public Coin getCoin(@PathVariable("id") int id) {
         return iCoinClientService.getCoin(id);
     }
 
-    @GetMapping("/coin")
-    public  Object listCoin() {
-        return iCoinClientService.listCoin();
+    @GetMapping("/")
+    public PageInfo listCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                             @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
+        return iCoinClientService.listCoin(pageNum, pageSizeCommon);
     }
 
-    @PostMapping("/coin")
-    public Object addCoin(@RequestBody Coin coin) {
+    @PostMapping("/")
+    public boolean addCoin(@RequestBody Coin coin) {
 
         return iCoinClientService.addCoin(coin);
     }
 
-    @PutMapping("/coin")
-    public Object updateCoin(@RequestBody Coin coin){
+    @PutMapping("/")
+    public boolean updateCoin(@RequestBody Coin coin){
         return iCoinClientService.updateCoin(coin);
     }
 
-    @DeleteMapping("/coin/{id}")
-    public Object deleteCoin(@PathVariable("id") int id){
+    @DeleteMapping("/{id}")
+    public boolean deleteCoin(@PathVariable("id") int id){
         return iCoinClientService.deleteCoin(id);
     }
 

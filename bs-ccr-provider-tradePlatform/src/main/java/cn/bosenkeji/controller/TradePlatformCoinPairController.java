@@ -34,13 +34,12 @@ public class TradePlatformCoinPairController {
     @Resource
     DiscoveryClient client;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @ApiOperation(value = "获取平台货币对列表接口",httpMethod = "GET")
     @GetMapping("/")
-    public PageInfo list(){
-        return this.tradePlatformCoinPairService.listByPage(0,pageSizeCommon);
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+        return this.tradePlatformCoinPairService.listByPage(pageNum,pageSizeCommon);
     }
 
     @ApiOperation(value = "获取平台货币对单个信息接口",httpMethod = "GET")

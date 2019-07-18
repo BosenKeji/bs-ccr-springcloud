@@ -35,12 +35,10 @@ public class CoinPairChoicController {
     @Resource
     DiscoveryClient client;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET")
     @GetMapping("/")
-    public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum){
+    public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinPairChoicService.listByPage(pageNum,pageSizeCommon);
     }
 

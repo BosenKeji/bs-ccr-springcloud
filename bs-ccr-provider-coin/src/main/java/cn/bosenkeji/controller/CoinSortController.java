@@ -33,13 +33,11 @@ public class CoinSortController {
     @Resource
     DiscoveryClient discoveryClient;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
-
     @ApiOperation(value = "获取货币排序列表接口",httpMethod = "GET")
     @GetMapping("/")
-    public PageInfo list(){
-        return this.coinSortService.listByPage(0,pageSizeCommon);
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+        return this.coinSortService.listByPage(pageNum,pageSizeCommon);
     }
 
     @ApiOperation(value = "获取单个货币排序接口",httpMethod = "GET")

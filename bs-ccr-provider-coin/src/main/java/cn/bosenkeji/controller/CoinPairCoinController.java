@@ -33,13 +33,12 @@ public class CoinPairCoinController {
     @Resource
     CoinPairCoinService coinPairCoinService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @ApiOperation(value = "获取货币对货币列表接口",httpMethod = "GET")
     @GetMapping("/")
-    public PageInfo list(){
-        return this.coinPairCoinService.listByPage(0,pageSizeCommon);
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+        return this.coinPairCoinService.listByPage(pageNum,pageSizeCommon);
     }
 
     @ApiOperation(value = "获取单个货币对货币列表接口",httpMethod = "GET")

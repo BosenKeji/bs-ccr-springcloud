@@ -51,6 +51,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+
         <!--<dependency>-->
             <!--<groupId>bosenCCR</groupId>-->
             <!--<artifactId>bs-ccr-security-sso-client</artifactId>-->
