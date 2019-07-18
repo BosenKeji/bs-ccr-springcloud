@@ -5,10 +5,12 @@ import cn.bosenkeji.vo.StrategySequence;
 import cn.bosenkeji.vo.StrategySequenceVO;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<IStrategySequenceService> {
     @Override
     public IStrategySequenceService create(Throwable throwable) {

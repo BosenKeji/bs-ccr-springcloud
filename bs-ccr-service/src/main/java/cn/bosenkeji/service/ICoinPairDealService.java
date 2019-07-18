@@ -1,12 +1,13 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
+import cn.bosenkeji.service.fallback.ICoinPairDealServiceFallbackFactory;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class)
+@FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class,fallbackFactory = ICoinPairDealServiceFallbackFactory.class)
 public interface ICoinPairDealService {
 
     @GetMapping("/coinpairdeal/{userId}")

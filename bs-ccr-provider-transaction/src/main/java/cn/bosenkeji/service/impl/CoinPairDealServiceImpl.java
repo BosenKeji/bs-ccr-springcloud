@@ -23,6 +23,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
+        double b = 1/0;
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
         List<CoinPairDealVO> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
