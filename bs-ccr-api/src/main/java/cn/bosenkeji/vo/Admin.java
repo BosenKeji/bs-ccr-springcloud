@@ -15,6 +15,18 @@ public class Admin {
 
     private Date updatedAt;
 
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
     public Admin(Integer id, String account, String password, Byte status, Date createdAt, Date updatedAt) {
         this.id = id;
         this.account = account;

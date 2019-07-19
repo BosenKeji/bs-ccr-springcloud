@@ -33,4 +33,12 @@ public class UserProductComboDayByAdminTest {
             System.err.println(userProductComboDayByAdmin);
         }
     }
+
+    @Test
+    public void testTelectUserProductComboDayByUserTel() {
+        List<UserProductComboDayByAdmin> userProductComboDayByAdmins = userProductComboDayByAdminMapper.selectUserProductComboDayByUserTel("13556559840");
+        for (UserProductComboDayByAdmin userProductComboDayByAdmin : userProductComboDayByAdmins) {
+            System.out.println("userProductComboDayByAdmin = " + userProductComboDayByAdmin);
+        }
+    }
 }

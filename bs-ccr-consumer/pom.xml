@@ -67,6 +67,10 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-swagger</artifactId>
+        </dependency>
     </dependencies>
 
 

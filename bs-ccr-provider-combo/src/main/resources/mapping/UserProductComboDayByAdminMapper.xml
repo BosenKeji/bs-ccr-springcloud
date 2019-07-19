@@ -20,18 +20,41 @@
 
     <association property="userProductComboDay" javaType="cn.bosenkeji.vo.UserProductComboDay">
       <id column="did" property="id" />
+      <result column="userId" property="userId" />
       <result column="number" property="number" />
+      <result column="type" property="type" />
+      <result column="status" property="status" />
       <result column="user_product_combo_id" property="userProductComboId" />
+
+      <association property="user" javaType="cn.bosenkeji.vo.User">
+        <id column="uid" property="id" />
+        <result column="username" property="username"/>
+        <result column="tel" property="tel" />
+      </association>
     </association>
-    <!--<association property="userProductComboDayByAdmin" javaType="cn.bosenkeji.vo.userProductComboDayByAdmin">
-      <id column="upcdbaid" property="id" />
-      <result column="admin_id" property="adminId"/>
-    </association>-->
+    <association property="admin" javaType="cn.bosenkeji.vo.Admin">
+      <id column="aid" property="id" />
+      <result column="account" property="account"/>
+    </association>
 
   </resultMap>
 
   <sql id="Base_Column_List">
     id, admin_id, user_product_combo_day_id, status, created_at, updated_at
+  </sql>
+
+  <sql id="UserProductComboDayByAdminSELECT">
+    select
+    dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
+    d.id did,d.number,d.user_product_combo_id,
+    u.id uid,u.username,u.tel,
+    a.id aid,a.account
+    from user_product_combo_day_by_admin dba
+    left join admin a on dba.admin_id=a.id
+    left join user_product_combo_day d
+    on dba.user_product_combo_day_id=d.id
+    left join user u
+    on d.user_id=u.id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -131,11 +154,21 @@
 
   <select id="selectUserProductComboDayByUserProductComboId" resultMap="ComboDayAdminResultMap" parameterType="java.lang.Integer">
     select
-    dba.id,dba.admin_id,dba.status,dba.created_at,dba.updated_at,
-    d.id,d.number,d.user_product_combo_id
+    dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
+    d.id did,d.number,d.user_product_combo_id,
+    a.id aid,a.account
     from user_product_combo_day_by_admin dba
+    left join admin a on dba.admin_id=a.id
     left join user_product_combo_day d
     on dba.user_product_combo_day_id=d.id
     where d.user_product_combo_id=#{userProductComboId}
+  </select>
+
+  <select id="selectUserProductComboDayByUserTel" resultMap="ComboDayAdminResultMap" parameterType="java.lang.String">
+    <include refid="UserProductComboDayByAdminSELECT" />
+    where u.tel=#{userTel}
+  </select>
+  <select id="selectUserProductComboDayByAdminList" resultMap="ComboDayAdminResultMap">
+    <include refid="UserProductComboDayByAdminSELECT" />
   </select>
 </mapper>

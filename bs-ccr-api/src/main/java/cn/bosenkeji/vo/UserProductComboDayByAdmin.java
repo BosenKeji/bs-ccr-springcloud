@@ -26,6 +26,9 @@ public class UserProductComboDayByAdmin implements Serializable {
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
+    @ApiModelProperty(hidden = true)
+    private Admin admin;
+
     //关联属性
     @ApiModelProperty(hidden = true)
     private UserProductComboDay userProductComboDay;
@@ -45,6 +48,14 @@ public class UserProductComboDayByAdmin implements Serializable {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
     public UserProductComboDayByAdmin() {
@@ -108,6 +119,7 @@ public class UserProductComboDayByAdmin implements Serializable {
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", admin=" + admin +
                 ", userProductComboDay=" + userProductComboDay +
                 '}';
     }

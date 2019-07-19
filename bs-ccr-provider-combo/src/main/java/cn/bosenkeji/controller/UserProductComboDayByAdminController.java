@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/userproductcombodaybyadmin")
 @Validated
-@Api("用户套餐时长操作api接口")
+@Api(tags = "UserProductCobmoDayByAdmin 用户套餐时长操作相关接口",value="提供用户套餐时长操作相关的 Rest API")
 public class UserProductComboDayByAdminController {
 
     @Resource
@@ -37,19 +37,19 @@ public class UserProductComboDayByAdminController {
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @ApiOperation(value="获取用户套餐时长操作列表api接口",notes="获取用户套餐时长操作列表api接口",httpMethod = "GET")
+    @ApiOperation(value="获取用户套餐时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListWithPage")
     @RequestMapping(value="/",method = RequestMethod.GET)
     public PageInfo<UserProductComboDayByAdmin> list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
         return this.iUserProductComboDayByAdminService.list(pageNum,pageSize);
     }
 
-    @ApiOperation(value="获取用户套餐时长操作详情api接口",notes="获取用户套餐时长操作详情api接口",httpMethod = "GET")
+    @ApiOperation(value="获取用户套餐时长操作详情api接口",httpMethod = "GET")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public UserProductComboDayByAdmin get(@PathVariable("id") int id) {
         return this.iUserProductComboDayByAdminService.get(id).orElseThrow(()->new NotFoundException(UserProductComboDayByAdminEnum.NAME));
     }
 
-    @ApiOperation(value="添加用户套餐时长操作信息api接口",notes="添加用户套餐时长操作信息api接口",httpMethod = "POST")
+    @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public boolean add(@RequestBody UserProductComboDay UserProductComboDay,@RequestParam("adminId") int adminId) {
         UserProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -62,9 +62,15 @@ public class UserProductComboDayByAdminController {
     @RequestMapping(value="/discover")
     public Object discover() { return this.discoveryClient;}
 
-    @ApiOperation(value="通过用户套餐查询时长操作列表api接口",notes = "用户套餐时长操作量表联合查询",httpMethod = "GET")
+    @ApiOperation(value="通过用户套餐id查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserProductComboId")
     @RequestMapping(value = "/listbyuserproductcomboid",method = RequestMethod.GET)
     public List<UserProductComboDayByAdmin> getByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId) {
         return this.iUserProductComboDayByAdminService.getByUserProductComboId(userProductComboId);
+    }
+
+    @ApiOperation(value="通过用户电话查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserTelWithPage")
+    @RequestMapping(value = "/listbyusertel",method = RequestMethod.GET)
+    public PageInfo<UserProductComboDayByAdmin> getByUserTel(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize,@RequestParam("userTel") String userTel) {
+        return this.iUserProductComboDayByAdminService.getByUserTel(userTel,pageNum,pageSize);
     }
 }

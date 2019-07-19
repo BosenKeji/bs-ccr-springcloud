@@ -46,10 +46,16 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         return userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin);
     }
 
+    /**
+     * 多表联合查询
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
     public PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(userProductComboDayByAdminMapper.findAll());
+        return new PageInfo(userProductComboDayByAdminMapper.selectUserProductComboDayByAdminList());
     }
 
     @Override
@@ -60,5 +66,11 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Override
     public List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId) {
         return this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserProductComboId(userProductComboId);
+    }
+
+    @Override
+    public PageInfo<UserProductComboDayByAdmin> getByUserTel(String userTel,int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserTel(userTel));
     }
 }

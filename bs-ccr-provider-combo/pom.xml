@@ -76,7 +76,6 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
-
         </dependency>
 
 
