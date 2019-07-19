@@ -37,7 +37,7 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
     }
 
     @Override
-    public boolean insertSequenceServiceValueBySelective(StrategySequenceValue sequenceValue) {
+    public boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
         boolean b = false;
         StrategySequence checkSequence = strategySequenceMapper.findSequenceByPrimaryKey(sequenceValue.getStrategySequenceId());
         if ( checkSequence != null ) {

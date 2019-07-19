@@ -14,26 +14,35 @@ public class ConsumerCoinPairDealController {
     @Resource
     private ICoinPairDealService coinPairDealService;
 
-    @GetMapping(value = "/{userId}")
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(@PathVariable("userId") Integer userId) {
-        return coinPairDealService.findCoinPairDealByUserId(userId, 0 ,10);
+    @GetMapping(value = "/{userId}/{pageNum}/{pageSize}")
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
+            @PathVariable("userId") Integer userId,
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
+
+    ) {
+        return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
 
-    @GetMapping(value = "/{userId}/choic/{choicId}")
+    @GetMapping(value = "/{userId}/choic/{choicId}/{pageNum}/{pageSize}")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") Integer userId,
-            @PathVariable("choicId") Integer choicId
+            @PathVariable("choicId") Integer choicId,
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
     ) {
-        return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,0,10);
+        return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,pageNum,pageSize);
     }
 
 
-    @GetMapping(value = "/{userId}/type/{type}")
+    @GetMapping(value = "/{userId}/type/{type}/{pageNum}/{pageSize}")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") Integer userId,
-            @PathVariable("type") Integer type
+            @PathVariable("type") Integer type,
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
     ) {
-        return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,0,10);
+        return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }
 
     @PutMapping(value = "/status")

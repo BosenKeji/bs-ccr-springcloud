@@ -8,28 +8,33 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class,fallbackFactory = ICoinPairDealServiceFallbackFactory.class)
+
+
+@FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class
+        , fallbackFactory = ICoinPairDealServiceFallbackFactory.class
+)
 public interface ICoinPairDealService {
 
-    @GetMapping("/coinpairdeal/{userId}")
+    @GetMapping("/coinpairdeal/{userId}/{pageNum}/{pageSize}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
             @PathVariable("userId") Integer userId,
-            @RequestParam(value = "pageNum" ,defaultValue = "0",required = false) Integer pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize);
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize);
 
-    @GetMapping("/coinpairdeal/{userId}/choic/{choicId}")
+    @PostMapping("/coinpairdeal/{userId}/choic/{choicId}/{pageNum}/{pageSize}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") Integer userId,
             @PathVariable("choicId") Integer choicId,
-            @RequestParam(value = "pageNum" ,defaultValue = "0",required = false) Integer pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize);
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
+            );
 
-    @GetMapping("/coinpairdeal/{userId}/type/{type}")
+    @GetMapping("/coinpairdeal/{userId}/type/{type}/{pageNum}/{pageSize}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") Integer userId,
             @PathVariable("type") Integer type,
-            @RequestParam(value = "pageNum" ,defaultValue = "0",required = false) Integer pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize);
+            @PathVariable("pageNum" ) Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize);
 
     @PutMapping("/coinpairdeal/status")
     boolean updateCoinPairDealStartsById(
@@ -37,12 +42,12 @@ public interface ICoinPairDealService {
             @RequestParam("status") Integer status);
 
     @RequestMapping(value = "/coinpairdeal/",method = RequestMethod.POST)
-    boolean insertCoinPairDealBySelective(@RequestBody CoinPairDeal coinPairDeal);
+    boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal);
 
     @GetMapping("/coinpairdeal/count/{userId}")
-    int countCoinPair(@PathVariable("userId") Integer userId);
+    int countCoinPair(@RequestParam("userId") Integer userId);
 
     @GetMapping("/coinpairdeal/count/{userId}/choic/{choicId}")
-    int countCoinPairDeal(@PathVariable("userId") Integer userId,@PathVariable("choicId") Integer choicId);
+    int countCoinPairDeal(@RequestParam("userId") Integer userId,@RequestParam("choicId") Integer choicId);
 
 }

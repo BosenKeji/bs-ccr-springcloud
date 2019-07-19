@@ -17,15 +17,15 @@ public interface IStrategyService {
     @GetMapping("/strategy/{id}")
     StrategyVO getStrategy(@PathVariable("id") Integer id);
 
-    @GetMapping("/strategy/")
+    @GetMapping("/strategy/{pageNum}/{pageSize}")
     PageInfo<Strategy>  listByPage(
-            @RequestParam(value = "pageNum",defaultValue = "0",required = false) Integer pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize);
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize);
 
     @PostMapping("/strategy/")
-    boolean addStrategyBySelective(@RequestBody Strategy strategy);
+    boolean addStrategyBySelective(Strategy strategy);
 
     @PostMapping("/strategy/attribute/")
-    boolean addStrategyAttributeBySelective(@RequestBody StrategyAttribute strategyAttribute);
+    boolean addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
 
 }

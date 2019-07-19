@@ -30,13 +30,13 @@ public class ConsumerStrategySequenceController {
         return strategySequenceService.getSequenceValueByStrategyId(strategyId);
     }
 
-    @PostMapping("/strategysequence/")
+    @PostMapping("/")
     boolean insertStrategySequenceBySelective(StrategySequence sequence) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
-    @PostMapping("/strategysequence/value/")
-    boolean insertStrategySequenceBySelective(StrategySequenceValue sequenceValue) {
-        return strategySequenceService.insertStrategySequenceBySelective(sequenceValue);
+    @PostMapping("/value/")
+    boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+        return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 }

@@ -18,12 +18,12 @@ public class ConsumerStrategyController {
     private IStrategyService strategyService;
 
     @PostMapping(value = "/")
-    boolean addStrategyBySelective(@RequestBody Strategy strategy) {
+    boolean addStrategyBySelective(Strategy strategy) {
         return strategyService.addStrategyBySelective(strategy);
     }
 
     @PostMapping(value = "/attribute/")
-    boolean addStrategyAttributeBySelective(@RequestBody StrategyAttribute strategyAttribute) {
+    boolean addStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
         return strategyService.addStrategyAttributeBySelective(strategyAttribute);
     }
 
@@ -32,9 +32,12 @@ public class ConsumerStrategyController {
         return strategyService.getStrategy(id);
     }
 
-    @GetMapping(value="/" )
-    public PageInfo listByPage(){
-        return strategyService.listByPage(0,10);
+    @GetMapping(value="/{pageNum}/{pageSize}" )
+    public PageInfo listByPage(
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
+    ){
+        return strategyService.listByPage(pageNum,pageSize);
     }
 
 

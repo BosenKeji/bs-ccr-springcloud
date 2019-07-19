@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -38,21 +35,24 @@ public class StrategySequenceController {
 
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
-    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加")
-    public boolean insertStrategySequence(StrategySequence sequence) {
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
+    public boolean insertStrategySequence(@RequestBody StrategySequence sequence) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
     @RequestMapping(value = "/value/",method = RequestMethod.POST)
-    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加")
-    public boolean insertStrategySequence(StrategySequenceValue sequenceValue) {
-        return strategySequenceService.insertSequenceServiceValueBySelective(sequenceValue);
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
+    public boolean insertStrategySequenceValue(@RequestBody StrategySequenceValue sequenceValue) {
+        return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    @ApiOperation(value = "获取数列列表",notes = "带分页，默认从第一页开始，每页10条")
-    public PageInfo<StrategySequence> findAll() {
-        return strategySequenceService.findAll(0, pageSizeCommon);
+    @RequestMapping(value = "/{pageNum}/{pageSize}",method = RequestMethod.GET)
+    @ApiOperation(value = "获取数列列表",notes = "带分页")
+    public PageInfo<StrategySequence> findAll(
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize
+    ) {
+        return strategySequenceService.findAll(pageNum, pageSize);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)

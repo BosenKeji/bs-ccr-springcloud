@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.StrategySequenceValue">
     <constructor>
       <arg column="id" javaType="_int" jdbcType="INTEGER" />
-      <arg column="strategy_sequence_id" javaType="int" jdbcType="INTEGER" />
+      <arg column="strategy_sequence_id" javaType="_int" jdbcType="INTEGER" />
       <arg column="value" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="sort_num" javaType="_int" jdbcType="INTEGER" />
       <arg column="status" javaType="_int" jdbcType="TINYINT" />

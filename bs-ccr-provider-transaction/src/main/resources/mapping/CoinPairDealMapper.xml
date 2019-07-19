@@ -128,7 +128,7 @@
     select
     <include refid="Base_Column_List" />
     from coin_pair_deal
-    where userId = #{userId} and type = #{type}
+    where user_id = #{userId} and type = #{type}
   </select>
   <select id="countCoinPair" resultType="int">
     select count(coin_partner_choic_id)
