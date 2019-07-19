@@ -48,6 +48,13 @@ public class ProductComboController {
         return this.iProductComboService.listByProductId(pageNum,pageSize,productId);
     }
 
+    @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表api",httpMethod = "GET")
+    @RequestMapping(value = "/listbyproductidandstatus",method = RequestMethod.GET)
+    public PageInfo<ProductCombo> listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize,@RequestParam("productId") int productId,@RequestParam("status") int status)
+    {
+        return this.iProductComboService.listByProductIdAndStauts(pageNum,pageSize,productId,status);
+    }
+
 
     @ApiOperation(value ="获取 未停用|停用 产品套餐列表api",notes = "获取 未停用|停用 产品套餐列表api",httpMethod = "GET")
     @RequestMapping(value = "/listbystatus",method = RequestMethod.GET)

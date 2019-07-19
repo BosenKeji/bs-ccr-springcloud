@@ -71,12 +71,12 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
-            <version>1.0.0</version>
+
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
+
         </dependency>
 
 
@@ -91,12 +91,7 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
-        <!--<dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>-->
+
     </dependencies>
 
 

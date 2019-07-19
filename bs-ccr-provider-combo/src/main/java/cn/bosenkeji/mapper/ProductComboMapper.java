@@ -21,6 +21,7 @@ public interface ProductComboMapper {
     List<ProductCombo> findAllByStatus(Integer status);
 
     List<ProductCombo> findByProductId(Integer productId);
+    List<ProductCombo> findByProductIdAndStatus(Integer productId,Integer status);
 
     int selectTimeByPrimaryKey(Integer id);
 

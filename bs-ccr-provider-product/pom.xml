@@ -11,15 +11,6 @@
 
     <artifactId>bs-ccr-provider-product</artifactId>
 
-    <!--<name>bs-ccr-provider-product</name>
-    &lt;!&ndash; FIXME change it to the project's website &ndash;&gt;
-    <url>http://www.example.com</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>-->
 
     <dependencies>
         <dependency>
@@ -74,17 +65,10 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-flyway</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 

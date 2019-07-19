@@ -163,4 +163,12 @@
     from product_combo
     where product_id=#{productId}
   </select>
+
+  <select id="listByProductIdAndStauts" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_combo
+    where product_id=#{productId}
+    and status=#{status}
+  </select>
 </mapper>
