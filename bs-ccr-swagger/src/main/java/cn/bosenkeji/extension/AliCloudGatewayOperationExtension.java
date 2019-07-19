@@ -41,25 +41,32 @@ public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin
 
         String[] groupNameArray = context.getGroupName().split("-");
 
-        String mock_result = "OK";
+        String mock_result;
+        String mock_handler = "";
         if (groupNameArray.length > 0){
-            StringUtils.capitalize(groupNameArray[0]);
-            try {
-                Class classType = forName("cn.bosenkeji.result."+groupNameArray[0]+"."+StringUtils.capitalize(groupNameArray[0])+"ResultMock");
-                Object obj = classType.newInstance();
-
-                Method method = classType.getDeclaredMethod(context.getName());
-                method.setAccessible(true);
-                mock_result = (String) method.invoke(obj);
-            } catch (Exception e) {
-                mock_result = "OK";
+            for (String name: groupNameArray) {
+                mock_handler += StringUtils.capitalize(name);
             }
+
+        } else {
+            mock_handler = context.getGroupName();
+        }
+
+        try {
+            Class classType = forName("cn.bosenkeji.result.mock."+mock_handler+"ResultMock");
+            Object obj = classType.newInstance();
+
+            Method method = classType.getDeclaredMethod(context.getName());
+            method.setAccessible(true);
+            mock_result = (String) method.invoke(obj);
+        } catch (Exception e) {
+            mock_result = "OK";
         }
 
         ObjectVendorExtension extension1 = new ObjectVendorExtension(ensurePrefixed(X_ALIYUN_APIGATEWAY_BACKEND));
         extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_TYPE, "MOCK"));;
         extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_RESULT, mock_result));;
-        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE, "200"));;
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE, "200"));
 
         StringVendorExtension extension2 = new StringVendorExtension(
                 ensurePrefixed(X_ALIYUN_APIGATEWAY_PARAMATER_HANDLING), "MAPPING");
