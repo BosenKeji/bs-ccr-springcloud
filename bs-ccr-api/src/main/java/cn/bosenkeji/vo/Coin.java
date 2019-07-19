@@ -9,9 +9,17 @@ import java.sql.Timestamp;
 public class Coin implements Serializable{
     @ApiModelProperty("货币 id")
     private int id;
+
+    @ApiModelProperty("货币名")
     private String name;
+
+    @ApiModelProperty("货币状态")
     private int status;
+
+    @ApiModelProperty("货币创建时间")
     private Timestamp createdAt;
+
+    @ApiModelProperty("货币更新时间")
     private Timestamp updatedAt;
 
     public int getId() {

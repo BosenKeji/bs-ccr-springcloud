@@ -17,7 +17,7 @@ public interface IStrategySequenceService {
     boolean insertStrategySequenceBySelective(@RequestBody StrategySequence sequence);
 
     @PostMapping("/strategysequence/value/")
-    boolean insertStrategySequenceBySelective(@RequestBody StrategySequenceValue sequenceValue);
+    boolean insertStrategySequenceValueBySelective(@RequestBody StrategySequenceValue sequenceValue);
 
     @GetMapping("/strategysequence/")
     PageInfo<StrategySequence> findAll(

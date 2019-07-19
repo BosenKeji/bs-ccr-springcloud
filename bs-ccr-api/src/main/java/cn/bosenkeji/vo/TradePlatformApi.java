@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -12,18 +14,25 @@ import java.util.Date;
 public class TradePlatformApi implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("交易平台api id")
     private int id;
 
+    @ApiModelProperty("用户 id")
     private int userId;
 
+    @ApiModelProperty("交易平台id")
     private int tradePlatformId;
 
+    @ApiModelProperty("标识")
     private String sign;
 
+    @ApiModelProperty("访问密钥")
     private String accessKey;
 
+    @ApiModelProperty("加密后密钥")
     private String secretKey;
 
+    @ApiModelProperty("别名")
     private String nickname;
 
     private int status;

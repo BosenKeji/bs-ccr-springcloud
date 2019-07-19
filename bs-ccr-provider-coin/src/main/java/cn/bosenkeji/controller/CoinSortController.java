@@ -7,6 +7,7 @@ import cn.bosenkeji.vo.CoinSort;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/coinsort")
-@Api(value = "货币排序接口")
+@Api(tags = "CoinSort 货币排序接口" ,value = "提供货币排序的 Rest API")
 public class CoinSortController {
 
     @Resource
@@ -34,37 +35,37 @@ public class CoinSortController {
     @Resource
     DiscoveryClient discoveryClient;
 
-    @ApiOperation(value = "获取货币排序列表接口",httpMethod = "GET")
+    @ApiOperation(value = "获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinSortService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取单个货币排序接口",httpMethod = "GET")
+    @ApiOperation(value = "获取单个货币排序接口",httpMethod = "GET",nickname = "getOneCoinSort")
     @GetMapping("/{id}")
-    public CoinSort get(@PathVariable @Min(1) int id){
+    public CoinSort get(@PathVariable @Min(1) @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1")  int id){
         return this.coinSortService.get(id).orElseThrow(()-> new NotFoundException(CoinSortEnum.NAME));
     }
 
-    @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST")
+    @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
-    public boolean add(@RequestBody CoinSort coinSort){
+    public boolean add(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
         coinSort.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinSortService.add(coinSort);
     }
 
-    @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT")
+    @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT",nickname = "updateCoinSort")
     @PutMapping("/")
-    public boolean update(@RequestBody CoinSort coinSort){
+    public boolean update(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinSortService.update(coinSort);
     }
 
-    @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE")
+    @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE",nickname = "deleteOneCoinSort")
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") int id){
+    public boolean delete(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
         return this.coinSortService.delete(id);
     }
 

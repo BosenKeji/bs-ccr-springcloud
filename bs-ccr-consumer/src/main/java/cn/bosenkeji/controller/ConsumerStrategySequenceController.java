@@ -16,8 +16,11 @@ public class ConsumerStrategySequenceController {
     private IStrategySequenceService strategySequenceService;
 
     @GetMapping(value = "/")
-    public PageInfo<StrategySequence> findAll() {
-        return strategySequenceService.findAll(0, 10);
+    public PageInfo<StrategySequence> findAll(
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
+    ) {
+        return strategySequenceService.findAll(pageNum, pageSize);
     }
 
     @GetMapping(value = "/{id}")
@@ -30,13 +33,13 @@ public class ConsumerStrategySequenceController {
         return strategySequenceService.getSequenceValueByStrategyId(strategyId);
     }
 
-    @PostMapping("/strategysequence/")
+    @PostMapping("/")
     boolean insertStrategySequenceBySelective(StrategySequence sequence) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
-    @PostMapping("/strategysequence/value/")
-    boolean insertStrategySequenceBySelective(StrategySequenceValue sequenceValue) {
-        return strategySequenceService.insertStrategySequenceBySelective(sequenceValue);
+    @PostMapping("/value/")
+    boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+        return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 }

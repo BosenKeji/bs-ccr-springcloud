@@ -15,25 +15,34 @@ public class ConsumerCoinPairDealController {
     private ICoinPairDealService coinPairDealService;
 
     @GetMapping(value = "/{userId}")
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(@PathVariable("userId") Integer userId) {
-        return coinPairDealService.findCoinPairDealByUserId(userId, 0 ,10);
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
+            @PathVariable("userId") Integer userId,
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
+
+    ) {
+        return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
 
     @GetMapping(value = "/{userId}/choic/{choicId}")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") Integer userId,
-            @PathVariable("choicId") Integer choicId
+            @PathVariable("choicId") Integer choicId,
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ) {
-        return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,0,10);
+        return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,pageNum,pageSize);
     }
 
 
     @GetMapping(value = "/{userId}/type/{type}")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") Integer userId,
-            @PathVariable("type") Integer type
+            @PathVariable("type") Integer type,
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ) {
-        return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,0,10);
+        return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }
 
     @PutMapping(value = "/status")

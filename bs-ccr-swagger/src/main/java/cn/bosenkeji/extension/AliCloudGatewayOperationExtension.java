@@ -80,6 +80,7 @@ public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin
 
 
     private String ensurePrefixed(String name) {
+
         if (!isNullOrEmpty(name)) {
             if (!name.startsWith("x-")) {
                 name = "x-" + name;

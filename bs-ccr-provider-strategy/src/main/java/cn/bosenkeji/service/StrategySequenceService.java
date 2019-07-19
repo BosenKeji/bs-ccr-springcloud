@@ -10,7 +10,7 @@ public interface StrategySequenceService {
 
     boolean insertStrategySequenceBySelective(StrategySequence sequence);
 
-    boolean insertSequenceServiceValueBySelective(StrategySequenceValue sequenceValue);
+    boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue);
 
     PageInfo<StrategySequence> findAll(Integer pageNum, Integer pageSize);
 

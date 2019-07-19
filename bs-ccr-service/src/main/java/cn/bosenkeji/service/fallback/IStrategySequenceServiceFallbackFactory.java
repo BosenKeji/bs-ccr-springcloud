@@ -22,7 +22,7 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public boolean insertStrategySequenceBySelective(StrategySequenceValue sequenceValue) {
+            public boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
                 return false;
             }
 

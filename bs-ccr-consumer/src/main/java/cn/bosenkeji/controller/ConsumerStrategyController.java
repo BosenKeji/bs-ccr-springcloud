@@ -8,7 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
+
 
 @RequestMapping("/strategy")
 @RestController
@@ -18,12 +18,12 @@ public class ConsumerStrategyController {
     private IStrategyService strategyService;
 
     @PostMapping(value = "/")
-    boolean addStrategyBySelective(@RequestBody Strategy strategy) {
+    boolean addStrategyBySelective(Strategy strategy) {
         return strategyService.addStrategyBySelective(strategy);
     }
 
     @PostMapping(value = "/attribute/")
-    boolean addStrategyAttributeBySelective(@RequestBody StrategyAttribute strategyAttribute) {
+    boolean addStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
         return strategyService.addStrategyAttributeBySelective(strategyAttribute);
     }
 
@@ -33,8 +33,11 @@ public class ConsumerStrategyController {
     }
 
     @GetMapping(value="/" )
-    public PageInfo listByPage(){
-        return strategyService.listByPage(0,10);
+    public PageInfo listByPage(
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
+    ){
+        return strategyService.listByPage(pageNum,pageSize);
     }
 
 

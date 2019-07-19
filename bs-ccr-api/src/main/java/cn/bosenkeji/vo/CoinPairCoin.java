@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -13,12 +15,16 @@ public class CoinPairCoin implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("货币对货币 id")
     private int id;
 
+    @ApiModelProperty("货币对 id")
     private int coinPairId;
 
+    @ApiModelProperty("货币 id")
     private int coinId;
 
+    @ApiModelProperty("货币对货币 状态")
     private int status;
 
     private Timestamp createdAt;

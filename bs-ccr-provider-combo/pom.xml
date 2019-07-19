@@ -71,7 +71,6 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
-
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>

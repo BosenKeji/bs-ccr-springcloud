@@ -23,4 +23,5 @@ public interface TradePlatformMapper {
     int updateByPrimaryKey(TradePlatform record);
 
     List<TradePlatform> findAll();
+
 }
