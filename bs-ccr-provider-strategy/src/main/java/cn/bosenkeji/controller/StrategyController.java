@@ -24,9 +24,6 @@ public class StrategyController {
     @Autowired
     private StrategyService strategyService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
-
     @Resource
     private DiscoveryClient client;
 
@@ -46,7 +43,7 @@ public class StrategyController {
         return strategyService.insertStrategyAttributeBySelective(strategyAttribute);
     }
 
-    @RequestMapping(value = "{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息",
             nickname = "getStrategyById",httpMethod = "GET"
     )
@@ -54,13 +51,13 @@ public class StrategyController {
         return strategyService.getStrategy(id);
     }
 
-    @RequestMapping(value="/{pageNum}/{pageSize}" , method = RequestMethod.GET)
+    @RequestMapping(value="/" , method = RequestMethod.GET)
     @ApiOperation(value = "获取策略列表", notes = "带分页，默认从第一页开始，每页10条记录",
             nickname = "findStrategyByPage",httpMethod = "GET"
     )
     public PageInfo listByPage(
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
             ){
         return strategyService.listByPage(pageNum,pageSize);
     }

@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.*;
 
 
 @FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class
-        , fallbackFactory = ICoinPairDealServiceFallbackFactory.class
+        //, fallbackFactory = ICoinPairDealServiceFallbackFactory.class
 )
 public interface ICoinPairDealService {
 
-    @GetMapping("/coinpairdeal/{userId}/{pageNum}/{pageSize}")
+    @GetMapping("/coinpairdeal/{userId}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
             @PathVariable("userId") Integer userId,
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize);
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize);
 
-    @PostMapping("/coinpairdeal/{userId}/choic/{choicId}/{pageNum}/{pageSize}")
+    @PostMapping("/coinpairdeal/{userId}/choic/{choicId}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") Integer userId,
             @PathVariable("choicId") Integer choicId,
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
             );
 
-    @GetMapping("/coinpairdeal/{userId}/type/{type}/{pageNum}/{pageSize}")
+    @GetMapping("/coinpairdeal/{userId}/type/{type}")
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") Integer userId,
             @PathVariable("type") Integer type,
-            @PathVariable("pageNum" ) Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize);
+            @RequestParam("pageNum" ) Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize);
 
     @PutMapping("/coinpairdeal/status")
     boolean updateCoinPairDealStartsById(

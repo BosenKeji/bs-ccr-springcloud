@@ -17,10 +17,10 @@ public interface IStrategyService {
     @GetMapping("/strategy/{id}")
     StrategyVO getStrategy(@PathVariable("id") Integer id);
 
-    @GetMapping("/strategy/{pageNum}/{pageSize}")
+    @GetMapping("/strategy/")
     PageInfo<Strategy>  listByPage(
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize);
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize);
 
     @PostMapping("/strategy/")
     boolean addStrategyBySelective(Strategy strategy);

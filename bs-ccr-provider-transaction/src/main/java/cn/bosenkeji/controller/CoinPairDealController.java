@@ -32,38 +32,38 @@ public class CoinPairDealController {
     private DiscoveryClient client;
 
 
-    @RequestMapping(value = "/{userId}/{pageNum}/{pageSize}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ApiOperation(value = "获取货币对交易信息",notes = "指定用户ID，获取其所有的交易货币对的信息",
             nickname = "findCoinPairDealByUserId",httpMethod = "GET")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
             @PathVariable("userId") @Min(1) Integer userId,
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
             ) {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
 
-    @RequestMapping(value = "/{userId}/choic/{choicId}/{pageNum}/{pageSize}",method = RequestMethod.POST)
+    @RequestMapping(value = "/{userId}/choic/{choicId}",method = RequestMethod.POST)
     @ApiOperation(value = "获取指定货币对交易信息",notes = "指定用户ID和货币对ID，获取该用户某货币对交易信息",
             nickname = "findCoinPairDealByUserIdAndChoicId",httpMethod = "GET")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") @Min(1) Integer userId,
             @PathVariable("choicId") @Min(1) Integer choicId,
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,pageNum,pageSize);
     }
 
 
-    @RequestMapping(value = "/{userId}/type/{type}/{pageNum}/{pageSize}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}/type/{type}",method = RequestMethod.GET)
     @ApiOperation(value = "获取指定类型的交易信息",notes = "指定用户ID和交易类型，获取对应的交易信息",
             nickname = "findCoinPairDealByUserIdAndType",httpMethod = "GET")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") @Min(1) Integer userId,
             @PathVariable("type") @Min(1) @Max(2) Integer type,
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }

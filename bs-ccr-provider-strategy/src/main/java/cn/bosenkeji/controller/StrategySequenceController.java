@@ -26,8 +26,6 @@ public class StrategySequenceController {
     @Autowired
     private StrategySequenceService strategySequenceService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @Resource
     private DiscoveryClient client;
@@ -46,18 +44,18 @@ public class StrategySequenceController {
         return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 
-    @RequestMapping(value = "/{pageNum}/{pageSize}",method = RequestMethod.GET)
+    @RequestMapping(value = "/",method = RequestMethod.GET)
     @ApiOperation(value = "获取数列列表",notes = "带分页")
     public PageInfo<StrategySequence> findAll(
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ) {
         return strategySequenceService.findAll(pageNum, pageSize);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     @ApiOperation(value = "获取指定数列信息",notes = "通过数列Id获取指定数列的信息")
-    public StrategySequenceVO findSequenceByPrimaryKey(@PathVariable("id") @Min(value = 1) Integer id){
+    public StrategySequenceVO findSequenceByPrimaryKey(@PathVariable("id") @Min(value = 0) Integer id){
         return strategySequenceService.findSequenceByPrimaryKey(id);
     }
 

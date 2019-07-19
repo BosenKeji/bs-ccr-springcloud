@@ -8,7 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
+
 
 @RequestMapping("/strategy")
 @RestController
@@ -32,10 +32,10 @@ public class ConsumerStrategyController {
         return strategyService.getStrategy(id);
     }
 
-    @GetMapping(value="/{pageNum}/{pageSize}" )
+    @GetMapping(value="/" )
     public PageInfo listByPage(
-            @PathVariable("pageNum") Integer pageNum,
-            @PathVariable("pageSize") Integer pageSize
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
     ){
         return strategyService.listByPage(pageNum,pageSize);
     }

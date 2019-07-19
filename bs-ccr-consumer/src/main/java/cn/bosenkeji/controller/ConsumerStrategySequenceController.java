@@ -16,8 +16,11 @@ public class ConsumerStrategySequenceController {
     private IStrategySequenceService strategySequenceService;
 
     @GetMapping(value = "/")
-    public PageInfo<StrategySequence> findAll() {
-        return strategySequenceService.findAll(0, 10);
+    public PageInfo<StrategySequence> findAll(
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam("pageSize") Integer pageSize
+    ) {
+        return strategySequenceService.findAll(pageNum, pageSize);
     }
 
     @GetMapping(value = "/{id}")
