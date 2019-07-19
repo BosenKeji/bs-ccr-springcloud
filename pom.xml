@@ -20,9 +20,6 @@
         <module>bs-ccr-exception</module>
         <module>bs-ccr-jwt</module>
         <module>bs-ccr-swagger</module>
-        <module>bs-ccr-provider-user-boss</module>
-        <module>bs-ccr-provider-user-boss</module>
-        <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-provider-tradePlatform</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
@@ -91,12 +88,12 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>2.5.0</version>
+                <version>2.9.2</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>2.5.0</version>
+                <version>2.9.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
@@ -107,6 +104,13 @@
                 <groupId>org.springframework.security.oauth</groupId>
                 <artifactId>spring-security-oauth2</artifactId>
                 <version>2.3.6.RELEASE</version>
+            </dependency>
+
+            <!-- 包冲突解决 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>23.0</version>
             </dependency>
 
             <!-- 模块依赖 -->

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -69,6 +70,7 @@ public class CoinSortController {
 
     @ApiOperation(value = "发现服务")
     @RequestMapping("/discover")
+    @ApiIgnore
     public Object discover(){
         return this.discoveryClient;
     }

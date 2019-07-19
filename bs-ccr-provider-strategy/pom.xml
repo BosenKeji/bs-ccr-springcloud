@@ -63,10 +63,6 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-api</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>bosenCCR</groupId>-->
-            <!--<artifactId>bs-ccr-security</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>

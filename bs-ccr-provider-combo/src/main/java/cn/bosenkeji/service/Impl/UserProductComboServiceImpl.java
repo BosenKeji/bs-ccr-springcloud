@@ -6,17 +6,10 @@ import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.vo.UserProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import javassist.bytecode.stackmap.BasicBlock;
-import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
-import jdk.nashorn.internal.runtime.regexp.joni.encoding.ObjPtr;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

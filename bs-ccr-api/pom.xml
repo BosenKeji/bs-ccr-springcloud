@@ -13,9 +13,8 @@
     <version>1.0.0</version>
     <dependencies>
         <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
         </dependency>
     </dependencies>
 

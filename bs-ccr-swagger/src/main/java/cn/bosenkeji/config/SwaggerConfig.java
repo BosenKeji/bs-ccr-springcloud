@@ -3,13 +3,19 @@ package cn.bosenkeji.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @ClassName SwaggerConfig
@@ -24,12 +30,32 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2).extensions(getExtension())
                 .apiInfo(getApiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.bosenkeji.controller"))
-                .paths(PathSelectors.any())
-                .build();
+                    .select()
+                    .apis(RequestHandlerSelectors.basePackage("cn.bosenkeji.controller"))
+                    .paths(PathSelectors.any())
+                    .build()
+                ;
+    }
+
+    /**
+     * @Description 增加顶级扩展，ListVendorExtension表示以列表形式
+     * @Author Yu XueWen
+     * @return List<VendorExtension>
+     */
+    private List<VendorExtension> getExtension(){
+
+        List<VendorExtension> vendorExtensionsList = new ArrayList<>();
+
+        List<String> stringList = new ArrayList<>();
+        stringList.add("http");
+
+        VendorExtension listVendorExtension = new ListVendorExtension<String>("schemes", stringList);
+
+        vendorExtensionsList.add(listVendorExtension);
+
+        return vendorExtensionsList;
     }
 
     private ApiInfo getApiInfo() {
