@@ -1,6 +1,10 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
+import java.beans.Transient;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -8,10 +12,13 @@ import java.sql.Timestamp;
  */
 
 public class TradePlatform {
+    @ApiModelProperty("交易平台id")
     private int id;
 
+    @ApiModelProperty("交易平台name")
     private String name;
 
+    @ApiModelProperty("交易平台图片url")
     private String logo;
 
     private int status;
@@ -22,6 +29,8 @@ public class TradePlatform {
 
     /*非数据库字段*/
     private TradePlatformApi tradePlatformApi;
+
+    private List<CoinPair> coinPairs;
 
     public int getId() {
         return id;
@@ -78,4 +87,13 @@ public class TradePlatform {
     public void setTradePlatformApi(TradePlatformApi tradePlatformApi) {
         this.tradePlatformApi = tradePlatformApi;
     }
+    public List<CoinPair> getCoinPairs() {
+        return coinPairs;
+    }
+
+    public void setCoinPairs(List<CoinPair> coinPairs) {
+        this.coinPairs = coinPairs;
+    }
+
+
 }

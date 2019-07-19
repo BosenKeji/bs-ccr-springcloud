@@ -7,10 +7,12 @@ import cn.bosenkeji.vo.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -25,7 +27,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/tradeplatformcoinpairs")
 @Validated
-@Api(value = "平台货币对接口")
+@Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
 public class TradePlatformCoinPairController {
 
     @Resource
@@ -35,42 +37,43 @@ public class TradePlatformCoinPairController {
     DiscoveryClient client;
 
 
-    @ApiOperation(value = "获取平台货币对列表接口",httpMethod = "GET")
+    @ApiOperation(value = "获取平台货币对列表接口",httpMethod = "GET",nickname = "getTradePlatformCoinPairWithPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.tradePlatformCoinPairService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取平台货币对单个信息接口",httpMethod = "GET")
+    @ApiOperation(value = "获取平台货币对单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformCoinPair")
     @GetMapping("/{id}")
-    public TradePlatformCoinPair get(@PathVariable("id") @Min(1) int id){
+    public TradePlatformCoinPair get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
         return this.tradePlatformCoinPairService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformCoinPairEnum.NAME));
     }
 
-    @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST")
+    @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
-    public boolean add(@RequestBody @NotNull TradePlatformCoinPair tradePlatformCoinPair){
+    public boolean add(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
         tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformCoinPairService.add(tradePlatformCoinPair);
     }
 
-    @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT")
+    @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT",nickname = "updateTradePlatformCoinPair")
     @PutMapping("/")
-    public boolean update(@RequestBody @NotNull TradePlatformCoinPair tradePlatformCoinPair){
+    public boolean update(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformCoinPairService.update(tradePlatformCoinPair);
     }
 
-    @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE")
+    @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformCoinPair")
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @Min(1) int id){
+    public boolean delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
         return this.tradePlatformCoinPairService.delete(id);
     }
 
     @ApiOperation(value = "发现服务")
     @RequestMapping("/discover")
+    @ApiIgnore
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
     }

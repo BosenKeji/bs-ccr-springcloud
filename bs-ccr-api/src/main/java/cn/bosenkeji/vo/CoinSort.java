@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -11,15 +13,19 @@ import java.util.Date;
 
 public class CoinSort implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @ApiModelProperty("货币排序 id")
     private int id;
 
-    private int tradePlatformId;
-
+    @ApiModelProperty("交易平台 id")
+    private int tradePlatformId
+            ;
+    @ApiModelProperty("货币 id")
     private int coinId;
 
+    @ApiModelProperty("货币类型 1计价货币  2交易货币")
     private int type;
 
+    @ApiModelProperty("排序序号")
     private int sortNum;
 
     private int status;

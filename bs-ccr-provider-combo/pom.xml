@@ -71,12 +71,10 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
 

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +86,7 @@ public class CoinPairChoicAttributeCustomController {
 
     @ApiOperation(value = "发现服务")
     @RequestMapping("/discover")
+    @ApiIgnore
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
     }

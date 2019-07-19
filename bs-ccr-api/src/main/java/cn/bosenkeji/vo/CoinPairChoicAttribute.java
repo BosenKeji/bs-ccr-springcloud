@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -9,14 +11,19 @@ import java.util.Date;
  */
 
 public class CoinPairChoicAttribute {
+    @ApiModelProperty("自选货币对属性 id")
     private int id;
 
+    @ApiModelProperty("货币对 id")
     private int coinPartnerChoicId;
 
+    @ApiModelProperty("预算")
     private int expectMoney;
 
+    @ApiModelProperty("策略 id")
     private int strategyId;
 
+    @ApiModelProperty("是否自定义属性")
     private int isCustom;
 
     private int status;

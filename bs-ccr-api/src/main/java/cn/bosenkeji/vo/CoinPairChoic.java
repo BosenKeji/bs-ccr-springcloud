@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -9,12 +11,16 @@ import java.util.Date;
  */
 
 public class CoinPairChoic {
+    @ApiModelProperty("自选币 id")
     private int id;
 
+    @ApiModelProperty("货币对 id")
     private int coinPartnerId;
 
+    @ApiModelProperty("用户id")
     private int userId;
 
+    @ApiModelProperty("是否开始策略")
     private int isStart;
 
     private int status;
@@ -22,6 +28,11 @@ public class CoinPairChoic {
     private Timestamp createdAt;
 
     private Date updatedAt;
+
+    /*非数据库字段*/
+    private CoinPairChoicAttribute coinPairChoicAttribute;
+
+    private CoinPairChoicAttributeCustom coinPairChoicAttributeCustom;
 
     public int getId() {
         return id;
@@ -77,5 +88,21 @@ public class CoinPairChoic {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public CoinPairChoicAttribute getCoinPairChoicAttribute() {
+        return coinPairChoicAttribute;
+    }
+
+    public void setCoinPairChoicAttribute(CoinPairChoicAttribute coinPairChoicAttribute) {
+        this.coinPairChoicAttribute = coinPairChoicAttribute;
+    }
+
+    public CoinPairChoicAttributeCustom getCoinPairChoicAttributeCustom() {
+        return coinPairChoicAttributeCustom;
+    }
+
+    public void setCoinPairChoicAttributeCustom(CoinPairChoicAttributeCustom coinPairChoicAttributeCustom) {
+        this.coinPairChoicAttributeCustom = coinPairChoicAttributeCustom;
     }
 }
