@@ -25,16 +25,21 @@
       <result column="type" property="type" />
       <result column="status" property="status" />
       <result column="user_product_combo_id" property="userProductComboId" />
-
+      <result column="dcreated_at" property="createdAt" />
+      <result column="dupdated_at" property="updatedAt" />
       <association property="user" javaType="cn.bosenkeji.vo.User">
         <id column="uid" property="id" />
-        <result column="username" property="username"/>
-        <result column="tel" property="tel" />
+        <result column="uusername" property="username" />
+        <result column="utel" property="tel" />
+        <result column="ustatus" property="status" />
+        <result column="ucreated_at" property="createdAt" />
+        <result column="uupdated_at" property="updatedAt" />
       </association>
     </association>
     <association property="admin" javaType="cn.bosenkeji.vo.Admin">
       <id column="aid" property="id" />
       <result column="account" property="account"/>
+
     </association>
 
   </resultMap>
@@ -46,8 +51,8 @@
   <sql id="UserProductComboDayByAdminSELECT">
     select
     dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
-    d.id did,d.number,d.user_product_combo_id,
-    u.id uid,u.username,u.tel,
+    d.id did,d.number,d.user_product_combo_id,d.created_at dcreated_at,d.updated_at dupdated_at,
+    u.id uid,u.username uusername,u.tel utel,u.status ustatus,u.created_at ucreated_at,u.updated_at uupdated_at,
     a.id aid,a.account
     from user_product_combo_day_by_admin dba
     left join admin a on dba.admin_id=a.id
@@ -155,7 +160,7 @@
   <select id="selectUserProductComboDayByUserProductComboId" resultMap="ComboDayAdminResultMap" parameterType="java.lang.Integer">
     select
     dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
-    d.id did,d.number,d.user_product_combo_id,
+    d.id did,d.number,d.user_product_combo_id,d.created_at dcreated_at,d.updated_at dupdated_at,
     a.id aid,a.account
     from user_product_combo_day_by_admin dba
     left join admin a on dba.admin_id=a.id

@@ -22,14 +22,33 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
+    <association property="user" javaType="cn.bosenkeji.vo.User">
+      <id column="uid" property="id" />
+      <result column="uusername" property="username" />
+      <result column="utel" property="tel" />
+      <result column="ustatus" property="status" />
+      <result column="ucreated_at" property="createdAt" />
+      <result column="uupdated_at" property="updatedAt" />
+    </association>
     <association property="productCombo" javaType="cn.bosenkeji.vo.ProductCombo">
       <id column="pcid" property="id" />
-      <result column="pcname" property="name" />
-      <result column="pctime" property="time" />
+      <result column="product_id" jdbcType="INTEGER" property="productId" />
+      <result column="pcname" jdbcType="VARCHAR" property="name" />
+      <result column="pctime" jdbcType="REAL" property="time" />
+      <result column="pcprice" jdbcType="REAL" property="price" />
+      <result column="pcremark" jdbcType="VARCHAR" property="remark" />
+      <result column="pcstatus" jdbcType="TINYINT" property="status" />
+      <result column="pccreated_at" jdbcType="TIMESTAMP" property="createdAt" />
+      <result column="pcupdated_at" jdbcType="TIMESTAMP" property="updatedAt" />
       <association property="product" javaType="cn.bosenkeji.vo.Product">
         <id column="pid" property="id" />
         <result column="pname" property="name"/>
         <result column="pversion_name" property="versionName"/>
+        <result column="plogo" jdbcType="VARCHAR" property="logo" />
+        <result column="premark" jdbcType="VARCHAR" property="remark" />
+        <result column="pstatus" jdbcType="TINYINT" property="status" />
+        <result column="pcreated_at" jdbcType="TIMESTAMP" property="createdAt" />
+        <result column="pupdated_at" jdbcType="TIMESTAMP" property="updatedAt" />
       </association>
     </association>
   </resultMap>
@@ -167,8 +186,11 @@
 
     select u.id uid,u.tel,
     upc.id,upc.status,upc.created_at,upc.updated_at,upc.order_number,upc.remark,upc.status,
-    pc.id pcid,pc.time pctime,
-    p.id pid,p.name pname,p.version_name pversion_name
+    pc.id pcid,pc.product_id,pc.name pcname,pc.time pctime,pc.price pcprice,
+    pc.remark pcremark,pc.status pcstatus,pc.created_at pccreated_at,pc.updated_at pcupdated_at,
+    p.id pid,p.name pname,p.version_name pversion_name,p.logo plogo,
+    p.remark premark,p.status pstatus,p.created_at pcreated_at,p.updated_at pupdated_at,
+    u.id uid,u.username uusername,u.tel utel,u.status ustatus,u.created_at ucreated_at,u.updated_at uupdated_at
     from `user` u LEFT JOIN user_product_combo upc
     on u.id=upc.user_id
     LEFT JOIN product_combo pc
