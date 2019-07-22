@@ -25,7 +25,7 @@ public class CoinPairChoicAttributeServiceImpl implements CoinPairChoicAttribute
 
     @Override
     public Optional<CoinPairChoicAttribute> get(int id) {
-        return Optional.ofNullable(coinPairChoicAttributeMapper.selectByPrimaryKey(id));
+        return Optional.ofNullable(coinPairChoicAttributeMapper.selectBycoinPartnerChoicId(id));
     }
 
     @Override

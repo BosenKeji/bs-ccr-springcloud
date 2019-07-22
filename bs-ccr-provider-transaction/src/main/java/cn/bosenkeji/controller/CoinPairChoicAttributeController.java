@@ -36,30 +36,19 @@ public class CoinPairChoicAttributeController {
     @Resource
     DiscoveryClient client;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
-
-    @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET")
-    @GetMapping("/{id}")
-    public CoinPairChoicAttribute get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
-        return this.coinPairChoicAttributeService.get(id).orElseThrow(()->new NotFoundException(CoinPairChoicAttributeEnum.NAME));
+    @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET",nickname = "getOneCoinPairChoicAttributeByCoinPatnerChoicID")
+    @GetMapping("/{coinPartnerChoicId}")
+    public CoinPairChoicAttribute get(@PathVariable("coinPartnerChoicId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoicId){
+        return this.coinPairChoicAttributeService.get(coinPartnerChoicId).orElseThrow(()->new NotFoundException(CoinPairChoicAttributeEnum.NAME));
     }
 
-    @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST")
+    @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoicAttribute")
     @PostMapping("/")
-    public boolean add(@ApiParam(value = "多选框获取多个自选币的id 多选框命名为:'oinPartnerChoicId'", required = true, type = "string") HttpServletRequest request,
+    public boolean add(@RequestParam(value = "coinPairChoicIds[]") @ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoicId'", required = true, type = "string") int[] coinPairChoicIds,
                        @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                        @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                        @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
-        //获取自选币id字符串数组
-        String [] coinPairChoicIdstr=request.getParameterValues("oinPartnerChoicId");
-        int[] coinPairChoicIds=new int[coinPairChoicIdstr.length];
-        for (int i=0;i<coinPairChoicIdstr.length;i++){
-            coinPairChoicIds[i]=Integer.parseInt(coinPairChoicIdstr[i]);
-            System.out.println("coinPairChoicIds[i] = " + coinPairChoicIds[i]);
-        }
-        System.out.println("coinPairChoicIds = " + coinPairChoicIds.length);
 
         if (coinPairChoicIds.length == 0){
             return false;
@@ -100,17 +89,17 @@ public class CoinPairChoicAttributeController {
         return this.coinPairChoicAttributeService.getByCoinPartnerChoicId(coinPartnerChoicId);
     }
 
-    @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT")
+    @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoicAttribute")
     @PutMapping("/")
     public boolean update(@RequestBody  @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoicAttribute coinPairChoicAttribute){
         coinPairChoicAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairChoicAttributeService.update(coinPairChoicAttribute);
     }
 
-    @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE")
-    @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
-        return this.coinPairChoicAttributeService.delete(id);
+    @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoicAttributeByCoinPartnerChoicId")
+    @DeleteMapping("/{coinPartnerChoicId}")
+    public boolean delete(@PathVariable("coinPartnerChoicId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoicId){
+        return this.coinPairChoicAttributeService.delete(coinPartnerChoicId);
     }
 
 

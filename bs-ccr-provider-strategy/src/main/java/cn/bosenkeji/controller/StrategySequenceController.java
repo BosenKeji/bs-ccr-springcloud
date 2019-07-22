@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 
 @RestController
 @RequestMapping("/strategysequence")
 @Validated
-@Api
+@Api(tags = "策略数列相关接口", value = "提供策略数列的相关接口 Rest API")
 public class StrategySequenceController {
 
     @Autowired
@@ -34,21 +35,21 @@ public class StrategySequenceController {
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
-    public boolean insertStrategySequence(@RequestBody StrategySequence sequence) {
+    public boolean insertStrategySequence(@RequestBody @NotNull StrategySequence sequence) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
     @RequestMapping(value = "/value/",method = RequestMethod.POST)
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
-    public boolean insertStrategySequenceValue(@RequestBody StrategySequenceValue sequenceValue) {
+    public boolean insertStrategySequenceValue(@RequestBody @NotNull StrategySequenceValue sequenceValue) {
         return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     @ApiOperation(value = "获取数列列表",notes = "带分页")
     public PageInfo<StrategySequence> findAll(
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(value = 1) Integer pageNum,
+            @RequestParam("pageSize") @Min(value = 1) Integer pageSize
     ) {
         return strategySequenceService.findAll(pageNum, pageSize);
     }

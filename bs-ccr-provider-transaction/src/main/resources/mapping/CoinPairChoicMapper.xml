@@ -54,16 +54,51 @@
     cpca.is_custom,
     cpca.status 'cpcastatus',
     cpca.created_at 'cpcacreatedat',
-    cpca.updated_at 'cpcaupdatedat'
-
+    cpca.updated_at 'cpcaupdatedat',
+    cpcac.id 'cpcacid',
+    cpcac.coin_partner_choic_id,
+    cpcac.stop_profit_type,
+    cpcac.stop_profit_money,
+    cpcac.stop_profit_trace_trigger_rate,
+    cpcac.stop_profit_trace_drop_rate,
+    cpcac.stop_profit_fixed_rate,
+    cpcac.status 'cpcacstatus',
+    cpcac.created_at 'cpcaccreatedat',
+    cpcac.updated_at 'cpcacupdatedat'
     from coin_pair_choic cpc left join coin_pair_choic_attribute cpca on cpc.id = cpca.coin_partner_choic_id
+    left join coin_pair_choic_attribute_custom  cpcac on cpc.id = cpcac.coin_partner_choic_id
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from coin_pair_choic
-    where id = #{id,jdbcType=INTEGER}
+    select
+    cpc.id,
+    cpc.coin_partner_id,
+    cpc.user_id,
+    cpc.is_start,
+    cpc.status,
+    cpc.created_at,
+    cpc.updated_at,
+    cpca.id 'cpcaid',
+    cpca.coin_partner_choic_id,
+    cpca.expect_money,
+    cpca.strategy_id,
+    cpca.is_custom,
+    cpca.status 'cpcastatus',
+    cpca.created_at 'cpcacreatedat',
+    cpca.updated_at 'cpcaupdatedat',
+    cpcac.id 'cpcacid',
+    cpcac.coin_partner_choic_id,
+    cpcac.stop_profit_type,
+    cpcac.stop_profit_money,
+    cpcac.stop_profit_trace_trigger_rate,
+    cpcac.stop_profit_trace_drop_rate,
+    cpcac.stop_profit_fixed_rate,
+    cpcac.status 'cpcacstatus',
+    cpcac.created_at 'cpcaccreatedat',
+    cpcac.updated_at 'cpcacupdatedat'
+    from coin_pair_choic cpc left join coin_pair_choic_attribute cpca on cpc.id = cpca.coin_partner_choic_id
+    left join coin_pair_choic_attribute_custom  cpcac on cpc.id = cpcac.coin_partner_choic_id
+    where cpc.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->

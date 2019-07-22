@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class
-        //, fallbackFactory = ICoinPairDealServiceFallbackFactory.class
+        , fallbackFactory = ICoinPairDealServiceFallbackFactory.class
 )
 public interface ICoinPairDealService {
 
@@ -49,5 +49,11 @@ public interface ICoinPairDealService {
 
     @GetMapping("/coinpairdeal/count/{userId}/choic/{choicId}")
     int countCoinPairDeal(@RequestParam("userId") Integer userId,@RequestParam("choicId") Integer choicId);
+
+    @DeleteMapping("/coinpairdeal/{id}")
+    boolean deleteCoinPairDealByPrimaryKey(@PathVariable("id") Integer id);
+
+    @DeleteMapping("/coinpairdeal/{userId}/choic/{choicId}")
+    boolean deleteBatchCoinPairDealByUserIdAndChoicId(@PathVariable("userId") Integer userId, @PathVariable("choicId") Integer choicId);
 
 }

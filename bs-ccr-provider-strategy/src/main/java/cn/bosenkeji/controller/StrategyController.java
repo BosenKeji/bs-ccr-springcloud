@@ -5,9 +5,9 @@ import cn.bosenkeji.vo.Strategy;
 import cn.bosenkeji.vo.StrategyAttribute;
 import cn.bosenkeji.vo.StrategyVO;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/strategy")
 @Validated
+@Api(tags = "strategy 策略相关接口" , value = "提供策略相关的接口 Rest API")
 public class StrategyController {
 
     @Autowired
@@ -56,8 +57,8 @@ public class StrategyController {
             nickname = "findStrategyByPage",httpMethod = "GET"
     )
     public PageInfo listByPage(
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(value = 1) Integer pageNum,
+            @RequestParam("pageSize") @Min(value = 1) Integer pageSize
             ){
         return strategyService.listByPage(pageNum,pageSize);
     }

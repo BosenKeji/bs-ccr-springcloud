@@ -5,6 +5,7 @@ import cn.bosenkeji.service.CoinPairDealService;
 import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +21,12 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/coinpairdeal")
 @Validated
+@Api(tags = "coinpairdeal 货币对交易相关接口", value = "提供货币对交易的相关接口 Rest API")
 public class CoinPairDealController {
 
     @Autowired
     private CoinPairDealService coinPairDealService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @Resource
     private DiscoveryClient client;
@@ -37,8 +37,8 @@ public class CoinPairDealController {
             nickname = "findCoinPairDealByUserId",httpMethod = "GET")
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(
             @PathVariable("userId") @Min(1) Integer userId,
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(1) Integer pageNum,
+            @RequestParam("pageSize") @Min(1) Integer pageSize
             ) {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
@@ -49,8 +49,8 @@ public class CoinPairDealController {
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
             @PathVariable("userId") @Min(1) Integer userId,
             @PathVariable("choicId") @Min(1) Integer choicId,
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(1) Integer pageNum,
+            @RequestParam("pageSize") @Min(1) Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,pageNum,pageSize);
     }
@@ -62,8 +62,8 @@ public class CoinPairDealController {
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") @Min(1) Integer userId,
             @PathVariable("type") @Min(1) @Max(2) Integer type,
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(1) Integer pageNum,
+            @RequestParam("pageSize") @Min(1) Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }
@@ -94,6 +94,24 @@ public class CoinPairDealController {
             nickname = "insertCoinPairDealBySelective",httpMethod = "POST")
     public boolean insertCoinPairDealBySelective(@RequestBody @NotNull CoinPairDeal coinPairDeal) {
         return coinPairDealService.insertCoinPairDealBySelective(coinPairDeal);
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @ApiOperation(value = "删除指定id的货币对交易信息",notes = "删除指定id的交易信息",
+            nickname = "deleteCoinPairDealByPrimaryKey",httpMethod = "DELETE"
+    )
+    public boolean deleteCoinPairDealByPrimaryKey(@PathVariable("id") @Min(1) Integer id) {
+        return coinPairDealService.deleteCoinPairDealByPrimaryKey(id);
+    }
+
+    @RequestMapping(value = "/{userId}/choic/{choicId}",method = RequestMethod.DELETE)
+    @ApiOperation(value = "批量删除货币对交易信息",notes = "指定用户的Id和货币对的Id，删除匹配的货币对交易信息",
+            nickname = "deleteBatchCoinPairDealByUserIdAndCoinPairId",httpMethod = "DELETE"
+    )
+    public boolean deleteBatchCoinPairDealByUserIdAndChoicId(
+            @PathVariable("userId") @Min(1) Integer userId, @PathVariable("choicId") @Min(1) Integer choicId
+    ) {
+        return coinPairDealService.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choicId);
     }
 
     @RequestMapping(value = "/discover" , method = RequestMethod.GET)

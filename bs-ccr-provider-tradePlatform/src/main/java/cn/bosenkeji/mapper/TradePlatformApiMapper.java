@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public interface TradePlatformApiMapper {
-    int deleteByPrimaryKey(int id);
+    int deleteByTradePlatformKey(int id);
 
     int insert(TradePlatformApi record);
 

@@ -12,6 +12,8 @@ public interface CoinPairChoicAttributeCustomService {
 
     Optional<CoinPairChoicAttributeCustom> get(int id);
 
+    Optional<CoinPairChoicAttributeCustom> getByCoinPartnerChoicId(int coinPartnerChoicId);
+
     boolean update(CoinPairChoicAttributeCustom coinPairChoicAttributeCustom);
 
     boolean add(CoinPairChoicAttributeCustom coinPairChoicAttributeCustom);

@@ -143,7 +143,9 @@
     where user_id = #{userId} and coin_partner_choic_id = #{choicId}
   </select>
 
-
+  <delete id="deleteBatchCoinPairDealByUserIdAndChoicId">
+    delete from coin_pair_deal where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+  </delete>
 
 
 </mapper>

@@ -6,7 +6,7 @@ mybatis:
     - classpath:mapping/*.xml
 spring:
   application:
-    name: bs-ccr-provider-tradeplatform
+    name: bs-ccr-provider-tradePlatform
   cloud:
     nacos:
       discovery:

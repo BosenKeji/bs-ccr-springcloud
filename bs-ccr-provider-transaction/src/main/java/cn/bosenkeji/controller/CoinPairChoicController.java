@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 @Validated
 @Api(tags = "CoinPairChoic 自选货币接口",value = "自选货币相关功能 rest接口")
 public class CoinPairChoicController {
+
     @Resource
     CoinPairChoicService coinPairChoicService;
     @Resource
@@ -40,11 +41,12 @@ public class CoinPairChoicController {
 
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoicWithPage")
     @GetMapping("/")
-    public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+    public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinPairChoicService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET")
+    @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoic")
     @GetMapping("/{id}")
     public CoinPairChoic get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
         return this.coinPairChoicService.get(id).orElseThrow(()->new NotFoundException(CoinPairChoicEnum.NAME));
@@ -52,16 +54,16 @@ public class CoinPairChoicController {
 
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoic")
     @PostMapping("/")
-    public boolean add(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user,
-                       @RequestBody @NotNull @ApiParam(value = "策略实体", required = true, type = "string") Strategy strategy,
-                       @RequestBody @NotNull @ApiParam(value = "货币对实体", required = true, type = "string") CoinPair coinPair){
+    public boolean add(@RequestParam("userId")  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
+                       @RequestParam("strategyId")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int strategyStatus,
+                       @RequestParam("coinPairId")  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
         CoinPairChoic coinPairChoic=new CoinPairChoic();
-        coinPairChoic.setUserId(user.getId());
-        coinPairChoic.setCoinPartnerId(coinPair.getId());
+        coinPairChoic.setUserId(userId);
+        coinPairChoic.setCoinPartnerId(coinPairId);
         coinPairChoic.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoic.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-        if (strategy.getStatus() == 1){
+        if (strategyStatus == 1){
             coinPairChoic.setIsStart(1);
         }
 

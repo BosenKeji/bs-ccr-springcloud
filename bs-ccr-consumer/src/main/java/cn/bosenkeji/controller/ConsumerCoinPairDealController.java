@@ -65,4 +65,17 @@ public class ConsumerCoinPairDealController {
         return coinPairDealService.countCoinPairDeal(userId,choicId);
     }
 
+
+    @DeleteMapping("/{id}")
+    public boolean deleteCoinPairDealByPrimaryKey(@PathVariable("id") Integer id) {
+        return coinPairDealService.deleteCoinPairDealByPrimaryKey(id);
+    }
+
+    @DeleteMapping(value = "/{userId}/choic/{choicId}")
+    public boolean deleteBatchCoinPairDealByUserIdAndChoicId(
+            @PathVariable("userId") Integer userId, @PathVariable("choicId") Integer choicId
+    ) {
+        return coinPairDealService.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choicId);
+    }
+
 }

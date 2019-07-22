@@ -152,4 +152,8 @@ public class CoinPairDealControllerResultMock {
     public String insertCoinPairDealBySelective() {
         return "true";
     }
+
+    public String deleteCoinPairDealByPrimaryKey() { return "true"; }
+
+    public String deleteBatchCoinPairDealByUserIdAndChoicId() { return "true"; }
 }

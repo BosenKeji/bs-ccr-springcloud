@@ -19,6 +19,12 @@
     id, coin_partner_choic_id, stop_profit_type, stop_profit_money, stop_profit_trace_trigger_rate, 
     stop_profit_trace_drop_rate, stop_profit_fixed_rate, `status`, created_at, updated_at
   </sql>
+  <select id="selectByCoinPartnerChoicId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_choic_attribute_custom
+    where coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER}
+  </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
@@ -29,7 +35,7 @@
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choic_attribute_custom
-    where id = #{id,jdbcType=INTEGER}
+    where coin_partner_choic_id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairChoicAttributeCustom" useGeneratedKeys="true">
     <!--@mbg.generated-->

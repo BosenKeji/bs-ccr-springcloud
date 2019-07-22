@@ -23,6 +23,11 @@ public class CoinPairChoicAttributeCustomServiceImpl implements CoinPairChoicAtt
     }
 
     @Override
+    public Optional<CoinPairChoicAttributeCustom> getByCoinPartnerChoicId(int coinPartnerChoicId) {
+        return Optional.ofNullable(coinPairChoicAttributeCustomMapper.selectByCoinPartnerChoicId(coinPartnerChoicId));
+    }
+
+    @Override
     public boolean update(CoinPairChoicAttributeCustom coinPairChoicAttributeCustom) {
         return coinPairChoicAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoicAttributeCustom) == 1;
     }

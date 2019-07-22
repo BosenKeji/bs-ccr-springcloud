@@ -74,11 +74,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         c.setStatus(status);
         c.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         int i = coinPairDealMapper.updateByPrimaryKeySelective(c);
-        boolean b = false;
-        if (i > 0) {
-            b = true;
-        }
-        return b;
+        return checkIntResult(i);
     }
 
     @Override
@@ -91,6 +87,16 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         return coinPairDealMapper.countCoinPairDeal(userId,choicId);
     }
 
+    @Override
+    public boolean deleteCoinPairDealByPrimaryKey(Integer id) {
+        return checkIntResult(coinPairDealMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId) {
+        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choicId));
+    }
+
     private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
         CoinPairDealVO vo = new CoinPairDealVO();
         vo.setId(coinPairDeal.getId());
@@ -99,5 +105,13 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         vo.setQuantity(coinPairDeal.getQuantity());
         vo.setStatus(coinPairDeal.getStatus());
         return vo;
+    }
+
+    private boolean checkIntResult(Integer result) {
+        boolean b = false;
+        if (result > 0) {
+            b = true;
+        }
+        return b;
     }
 }

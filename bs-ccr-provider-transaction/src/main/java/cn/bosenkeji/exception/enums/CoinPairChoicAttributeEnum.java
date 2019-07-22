@@ -7,7 +7,7 @@ import cn.bosenkeji.enums.IProviderEnum;
  * @create 2019/7/18 11:01
  */
 public enum CoinPairChoicAttributeEnum implements IProviderEnum {
-    NAME(10000, "自选货币属性");
+    NAME(10000, "该自选货币属性");
 
     private Integer code;
 
