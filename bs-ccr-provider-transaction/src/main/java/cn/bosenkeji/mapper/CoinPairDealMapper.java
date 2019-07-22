@@ -34,7 +34,6 @@ public interface CoinPairDealMapper {
 
     int countCoinPairDeal(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
 
-
-
+    int deleteBatchCoinPairDealByUserIdAndChoicId(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
 
 }

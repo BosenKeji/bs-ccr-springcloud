@@ -61,6 +61,16 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
             public int countCoinPairDeal(Integer userId, Integer choicId) {
                 return 0;
             }
+
+            @Override
+            public boolean deleteCoinPairDealByPrimaryKey(Integer id) {
+                return false;
+            }
+
+            @Override
+            public boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId) {
+                return false;
+            }
         };
     }
 }

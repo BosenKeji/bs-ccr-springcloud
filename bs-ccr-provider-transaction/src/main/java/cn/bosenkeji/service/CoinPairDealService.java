@@ -22,4 +22,8 @@ public interface CoinPairDealService {
 
     int countCoinPairDeal(Integer userId, Integer choicId);
 
+    boolean deleteCoinPairDealByPrimaryKey(Integer id);
+
+    boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId,Integer choicId);
+
 }
