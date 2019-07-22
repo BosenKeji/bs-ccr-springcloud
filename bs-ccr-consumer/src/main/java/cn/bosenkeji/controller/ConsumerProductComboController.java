@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/consumer")
-@Api("产品套餐api接口")
+@Api(tags = "产品套餐api接口",value = "提供产品套餐相关 rest API")
 public class ConsumerProductComboController {
 
     @Resource

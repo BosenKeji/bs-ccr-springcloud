@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.vo.Product;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/consumer")
+@Api(tags = "产品相关接口",value = "提供产品相关的 rest API")
 public class ConsumerProductController {
 
     @Resource

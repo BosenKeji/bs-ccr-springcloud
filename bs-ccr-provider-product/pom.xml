@@ -11,15 +11,6 @@
 
     <artifactId>bs-ccr-provider-product</artifactId>
 
-    <!--<name>bs-ccr-provider-product</name>
-    &lt;!&ndash; FIXME change it to the project's website &ndash;&gt;
-    <url>http://www.example.com</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>-->
 
     <dependencies>
         <dependency>
@@ -66,28 +57,6 @@
         </dependency>
 
 
-        <!-- 模块依赖 -->
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-exception</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-swagger</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-flyway</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,12 +68,22 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <!-- 模块依赖 -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-swagger</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
 

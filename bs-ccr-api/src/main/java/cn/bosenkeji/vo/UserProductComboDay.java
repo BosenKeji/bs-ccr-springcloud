@@ -30,6 +30,17 @@ public class UserProductComboDay implements Serializable {
     @ApiModelProperty(hidden = true)
     private UserProductCombo userProductCombo;
 
+    @ApiModelProperty(hidden = true)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public UserProductCombo getUserProductCombo() {
         return userProductCombo;
     }
@@ -129,6 +140,7 @@ public class UserProductComboDay implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", userProductCombo=" + userProductCombo +
+                ", user=" + user +
                 '}';
     }
 }

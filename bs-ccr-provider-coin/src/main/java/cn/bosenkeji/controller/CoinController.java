@@ -38,8 +38,7 @@ public class CoinController {
     @Resource
     private CoinService coinService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
+
 
     @ApiOperation(value = "获取货币列表接口", httpMethod = "GET", nickname = "getCoinListWithPage")
     @RequestMapping(value="/")
@@ -48,13 +47,13 @@ public class CoinController {
         return this.coinService.listByPage(pageNum,pageSizeCommon) ;
     }
 
-    @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET")
+    @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET",nickname = "getOneCoin")
     @RequestMapping(value="/{id}")
-    public Coin get( @PathVariable("id")  @Min(value = 1) @ApiParam(value = "币种ID", required = true, type = "integer") int id) {
+    public Coin get( @PathVariable("id")  @Min(value = 1) @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
         return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
     }
 
-    @ApiOperation(value = "添加单个货币信息列表接口", httpMethod = "POST")
+    @ApiOperation(value = "添加单个货币信息列表接口", httpMethod = "POST",nickname = "addCoin")
     @RequestMapping(value="/", method = RequestMethod.POST)
     public boolean add(@RequestBody @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
         coin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -62,16 +61,16 @@ public class CoinController {
         return this.coinService.add(coin) ;
     }
 
-    @ApiOperation(value = "更新单个货币信息列表接口", httpMethod = "PUT")
+    @ApiOperation(value = "更新单个货币信息列表接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @RequestMapping(value="/", method = RequestMethod.PUT)
     public boolean put(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinService.update(coin) ;
     }
 
-    @ApiOperation(value = "删除单个货币信息列表接口", httpMethod = "DELETE")
+    @ApiOperation(value = "删除单个货币信息列表接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer") int id) {
+    public boolean delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
         return this.coinService.delete(id) ;
     }
 

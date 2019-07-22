@@ -34,6 +34,16 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private ProductCombo productCombo;
 
+    @ApiModelProperty(hidden = true)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public UserProductCombo(int id, int userId, String orderNumber, int productComboId, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
@@ -143,6 +153,7 @@ public class UserProductCombo implements Serializable {
                 ", updatedAt=" + updatedAt +
                 ", remainTime=" + remainTime +
                 ", productCombo=" + productCombo +
+                ", user=" + user +
                 '}';
     }
 }

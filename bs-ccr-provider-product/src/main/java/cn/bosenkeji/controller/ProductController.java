@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @Validated
-@Api("产品api接口")
+@Api(tags = "Product 产品相关接口",value="提供产品相关的 Rest API")
 public class ProductController {
 
     @Resource
@@ -33,18 +33,18 @@ public class ProductController {
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @ApiOperation(value="获取产品列表api接口",notes = "获取产品列表api接口",httpMethod = "GET")
+    @ApiOperation(value="获取产品列表api接口",httpMethod = "GET",nickname = "getProductListWithPage")
     @RequestMapping(value="/",method = RequestMethod.GET)
     public PageInfo<Product> list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize)
     {
         return this.iProductService.list(pageNum,pageSize);
     }
 
-    @ApiOperation(value="获取产品详情api接口",notes = "获取产品详情api接口",httpMethod = "GET")
+    @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getProductInfo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public Product get(@PathVariable("id") @Min(1) int id) { return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));}
 
-    @ApiOperation(value="添加产品api接口",notes = "添加产品表api接口",httpMethod = "POST")
+    @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProductInfo")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public boolean add(@RequestBody Product product) {
         product.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -52,11 +52,11 @@ public class ProductController {
         return this.iProductService.add(product);
     }
 
-    @ApiOperation(value="根据id删除产品api接口",notes = "根据id删除产品api接口",httpMethod = "DELETE")
+    @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public boolean delete(@PathVariable("id") @Min(1) int id) { return this.iProductService.delete(id);}
 
-    @ApiOperation(value="更新产品api接口",notes = "更新产品api接口",httpMethod = "PUT")
+    @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProductInfo")
     @RequestMapping(value="/",method = RequestMethod.PUT)
     public boolean update(@RequestBody Product product) {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -67,7 +67,7 @@ public class ProductController {
     @RequestMapping(value="/discover")
     public Object discover() { return this.discoveryClient;}
 
-    @ApiOperation(value="启用、关闭产品api接口",notes = "启用、关闭产品api接口",httpMethod = "PUT")
+    @ApiOperation(value="启用、关闭产品api接口",httpMethod = "PUT",nickname = "updateProductStatus")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
     public boolean updateStatus(@PathVariable("id") @Min(1) int id,@RequestParam("status") int status) {
         Product product=new Product();

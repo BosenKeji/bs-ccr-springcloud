@@ -28,7 +28,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/userproductcomboday")
 @Validated
-@Api("用户套餐时长api接口")
+@Api(tags = "UserProductCobmoDay 用户套餐时长相关接口",value="提供用户套餐时长相关的 Rest API")
 public class UserProductComboDayController {
 
     @Resource

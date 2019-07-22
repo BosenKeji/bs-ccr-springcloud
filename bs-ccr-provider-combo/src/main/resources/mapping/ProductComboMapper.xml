@@ -163,4 +163,12 @@
     from product_combo
     where product_id=#{productId}
   </select>
+
+  <select id="findByProductIdAndStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_combo
+    where product_id=#{param1}
+    and status=#{param2}
+  </select>
 </mapper>

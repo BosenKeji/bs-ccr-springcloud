@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -9,10 +11,12 @@ import java.util.Date;
  */
 
 public class TradePlatformCoinPair {
+    @ApiModelProperty("交易平台货币对 id")
     private int id;
-
+    @ApiModelProperty("交易平台id")
     private int tradePlatformId;
 
+    @ApiModelProperty("货币对 id")
     private int coinPairId;
 
     private int status;

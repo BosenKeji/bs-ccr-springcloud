@@ -1,5 +1,7 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -9,18 +11,25 @@ import java.util.Date;
  */
 
 public class CoinPairChoicAttributeCustom {
+    @ApiModelProperty("自定义属性 id")
     private int id;
 
+    @ApiModelProperty("货币对 id")
     private int coinPartnerChoicId;
 
+    @ApiModelProperty("止盈方式  1追踪止盈  2固定止盈")
     private int stopProfitType;
 
-    private int stopProfitMoney;
-
+    @ApiModelProperty("止盈金额")
+    private int stopProfitMoney
+            ;
+    @ApiModelProperty("追踪止盈触发比例")
     private Double stopProfitTraceTriggerRate;
 
+    @ApiModelProperty("追踪止盈回降比例")
     private Double stopProfitTraceDropRate;
 
+    @ApiModelProperty("固定止盈比例")
     private Double stopProfitFixedRate;
 
     private int status;
