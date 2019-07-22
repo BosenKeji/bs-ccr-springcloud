@@ -53,7 +53,7 @@ public class TradePlatformApiController {
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
-    public boolean add(@RequestBody @ApiParam(value = "user实体", required = true, type = "string") User user, @RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+    public boolean add(@RequestBody @ApiParam(value = "user实体", required = true, type = "string") User user, @RequestParam("tradePlatformApi")  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         tradePlatformApi.setUserId(user.getId());
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -68,9 +68,9 @@ public class TradePlatformApiController {
     }
 
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
-    @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台API id", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformApiService.delete(id);
+    @DeleteMapping("/{tradePlatformId}")
+    public boolean delete(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
+        return this.tradePlatformApiService.delete(tradePlatformId);
     }
 
     @RequestMapping("/discover")

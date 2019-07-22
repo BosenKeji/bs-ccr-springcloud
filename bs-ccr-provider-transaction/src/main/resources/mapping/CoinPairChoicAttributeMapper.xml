@@ -33,7 +33,7 @@
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choic_attribute
-    where id = #{id,jdbcType=INTEGER}
+    where coin_partner_choic_id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairChoicAttribute" useGeneratedKeys="true">
     <!--@mbg.generated-->

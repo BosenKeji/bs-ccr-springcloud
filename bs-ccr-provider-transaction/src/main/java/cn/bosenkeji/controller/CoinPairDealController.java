@@ -27,8 +27,6 @@ public class CoinPairDealController {
     @Autowired
     private CoinPairDealService coinPairDealService;
 
-    @Value("${pageSize.common}")
-    private int pageSizeCommon;
 
     @Resource
     private DiscoveryClient client;

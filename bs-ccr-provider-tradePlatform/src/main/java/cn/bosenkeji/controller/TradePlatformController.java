@@ -26,7 +26,7 @@ import java.util.List;
  * @create 2019/7/15 18:01
  */
 @RestController
-@RequestMapping("/apis")
+@RequestMapping("/tradeplatform")
 @Validated
 @Api(tags = "tradePlatform 交易平台接口",value = "提供交易平台相关功能 Rest接口")
 public class TradePlatformController {

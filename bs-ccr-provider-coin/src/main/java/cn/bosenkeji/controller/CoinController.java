@@ -39,7 +39,6 @@ public class CoinController {
     private CoinService coinService;
 
 
-
     @ApiOperation(value = "获取货币列表接口", httpMethod = "GET", nickname = "getCoinListWithPage")
     @RequestMapping(value="/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,

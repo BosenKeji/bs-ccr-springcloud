@@ -50,6 +50,6 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public boolean delete(int id) {
-        return tradePlatformApiMapper.deleteByPrimaryKey(id) == 1 ;
+        return tradePlatformApiMapper.deleteByTradePlatformKey(id) == 1 ;
     }
 }

@@ -31,10 +31,10 @@
     from trade_platform_api
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="int">
+  <delete id="deleteByTradePlatformKey" parameterType="int">
     <!--@mbg.generated-->
     delete from trade_platform_api
-    where id = #{id,jdbcType=INTEGER}
+    where trade_platform_id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.TradePlatformApi" useGeneratedKeys="true">
     <!--@mbg.generated-->
