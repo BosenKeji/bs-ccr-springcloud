@@ -73,13 +73,13 @@ public class ProductComboController {
         return this.iProductComboService.listByStatus(pageNum,pageSize,status);
     }
 
-    @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getProductComboDetail")
+    @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getOneProductCombo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public ProductCombo get(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
         return this.iProductComboService.get(id).orElseThrow(()->new NotFoundException(ProductComboEnum.NAME));
     }
 
-    @ApiOperation(value ="获添加品套餐信息api接口",httpMethod = "POST",nickname = "addProductComboInfo")
+    @ApiOperation(value ="获添加品套餐信息api接口",httpMethod = "POST",nickname = "addProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         productCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -89,7 +89,7 @@ public class ProductComboController {
 
     }
 
-    @ApiOperation(value ="更新产品套餐信息api接口",httpMethod = "PUT",nickname = "updateProductComboInfo")
+    @ApiOperation(value ="更新产品套餐信息api接口",httpMethod = "PUT",nickname = "updateProductCombo")
     @RequestMapping(value="/",method = RequestMethod.PUT)
     public Optional<Integer> update(@RequestBody @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

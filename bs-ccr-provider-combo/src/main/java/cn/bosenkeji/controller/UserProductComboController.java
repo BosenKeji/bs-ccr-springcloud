@@ -57,7 +57,7 @@ public class UserProductComboController {
 
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Optional<Integer> add(@RequestBody @NotNull UserProductCombo userProductCombo) {
+    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo) {
         userProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setStatus(1);
