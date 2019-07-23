@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/strategysequence")
+@RequestMapping("/strategy_sequence")
 public class ConsumerStrategySequenceController {
 
     @Resource

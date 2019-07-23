@@ -23,4 +23,6 @@ public interface TradePlatformCoinPairMapper {
     int updateByPrimaryKey(TradePlatformCoinPair record);
 
     List<TradePlatformCoinPair> findAll();
+
+    int deleteByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);
 }

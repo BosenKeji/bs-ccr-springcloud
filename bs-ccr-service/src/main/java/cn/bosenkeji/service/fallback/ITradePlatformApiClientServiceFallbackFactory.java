@@ -23,7 +23,7 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public boolean addOneTradePlatformApi(User user,TradePlatformApi tradePlatformApi) {
+            public boolean addOneTradePlatformApi(int userId,TradePlatformApi tradePlatformApi) {
                 return false;
             }
 

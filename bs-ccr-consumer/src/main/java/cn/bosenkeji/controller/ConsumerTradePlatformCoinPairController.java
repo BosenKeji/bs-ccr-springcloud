@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @create 2019/7/22 11:26
  */
 @RestController
-@RequestMapping("/consumer/trade_platform_coinpair")
+@RequestMapping("/consumer/trade_platform_coin_pair")
 @Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
 public class ConsumerTradePlatformCoinPairController {
     @Resource
@@ -47,8 +47,9 @@ public class ConsumerTradePlatformCoinPairController {
     }
 
     @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformCoinPair")
-    @DeleteMapping("/{id}")
-    public boolean deleteOneTradePlatformCoinPair(@PathVariable("id") @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
-        return this.iTradePlatformCoinPairClientService.deleteOneTradePlatformCoinPair(id);
+    @DeleteMapping("/")
+    public boolean deleteOneTradePlatformCoinPair(@RequestParam("tradePlatformId")  @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int tradePlatformId,
+                                                  @RequestParam("coinPairId")  @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int coinPairId){
+        return this.iTradePlatformCoinPairClientService.deleteOneTradePlatformCoinPair(tradePlatformId, coinPairId);
     }
 }

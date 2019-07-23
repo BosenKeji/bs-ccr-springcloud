@@ -65,9 +65,10 @@ public class TradePlatformCoinPairController {
     }
 
     @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformCoinPair")
-    @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformCoinPairService.delete(id);
+    @DeleteMapping("/")
+    public boolean delete(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int tradePlatformId,
+            @RequestParam("coinPairId") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int coinPairId){
+        return this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId);
     }
 
     @ApiOperation(value = "发现服务")

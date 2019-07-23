@@ -1,7 +1,6 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.enums.CoinPairChoicAttributeCustomEnum;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import io.swagger.annotations.Api;
