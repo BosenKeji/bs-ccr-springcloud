@@ -74,4 +74,13 @@ public class UserProductComboTest {
         System.out.println("insert = " + insert);
     }
 
+    @Test
+    public void testSelectCountByProductId() {
+        Integer productId=1;
+        Integer userId=3;
+        Integer count = userProductComboMapper.selectCountByProductId(productId, userId);
+        System.out.println("count = " + count);//count=0
+
+    }
+
 }

@@ -2,7 +2,9 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
+import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
+import cn.bosenkeji.vo.UserProductCombo;
 import cn.bosenkeji.vo.UserProductComboDay;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageHelper;
@@ -30,7 +32,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Resource
     private UserProductComboDayMapper userProductComboDayMapper;
     @Resource
-    private RedisTemplate redisTemplate;
+    private UserProductComboRedisTemplate userProductComboRedisTemplate;
 
 
     @Override
@@ -40,14 +42,14 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         userProductComboDayMapper.insert(userProductComboDay);
         //添加缓存
         int id = userProductComboDay.getUserProductComboId();
-        String key="userproductcombo:id_"+id;
-        Long expire = redisTemplate.getExpire(key, TimeUnit.DAYS);
 
-        if(expire>0) {
+        Long expire = userProductComboRedisTemplate.getExpire(id);
+
+        /*if(expire>0) {
             //设置有效时间
-            redisTemplate.expire(key,expire+userProductComboDay.getNumber(),TimeUnit.DAYS);
+            userProductComboRedisTemplate.setExpire(id,expire+userProductComboDay.getNumber());
             //return userProductComboDayMapper.insert(userProductComboDay);
-        }
+        }*/
 
         //新增用户套餐时长操作
         UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
