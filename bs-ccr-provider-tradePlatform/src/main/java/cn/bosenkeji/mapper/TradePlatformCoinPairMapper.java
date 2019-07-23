@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 
 import java.util.List;
 
@@ -23,4 +23,6 @@ public interface TradePlatformCoinPairMapper {
     int updateByPrimaryKey(TradePlatformCoinPair record);
 
     List<TradePlatformCoinPair> findAll();
+
+    int deleteByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);
 }

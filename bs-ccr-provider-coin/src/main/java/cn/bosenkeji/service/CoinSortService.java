@@ -1,7 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.CoinPair;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -19,9 +18,9 @@ public interface CoinSortService {
 
     Optional<CoinSort> get(int id);
 
-    boolean add(CoinSort coinSort);
+    Optional<Integer> add(CoinSort coinSort);
 
-    boolean update(CoinSort coinSort);
+    Optional<Integer> update(CoinSort coinSort);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

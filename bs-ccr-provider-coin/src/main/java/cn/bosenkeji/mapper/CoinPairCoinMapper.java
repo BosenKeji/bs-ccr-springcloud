@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoin;
 
 import java.util.List;
 

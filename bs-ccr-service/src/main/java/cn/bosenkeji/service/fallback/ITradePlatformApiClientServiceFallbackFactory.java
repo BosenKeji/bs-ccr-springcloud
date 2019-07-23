@@ -1,10 +1,12 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformApiClientService;
-import cn.bosenkeji.vo.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import cn.bosenkeji.vo.User;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -23,18 +25,18 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public boolean addOneTradePlatformApi(User user,TradePlatformApi tradePlatformApi) {
-                return false;
+            public Optional<Integer> addOneTradePlatformApi(int userId,TradePlatformApi tradePlatformApi) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateTradePlatform(TradePlatformApi tradePlatformApi) {
-                return false;
+            public Optional<Integer> updateTradePlatform(TradePlatformApi tradePlatformApi) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteOneTradePlatform(int tradePlatformId) {
-                return false;
+            public Optional<Integer> deleteOneTradePlatform(int tradePlatformId) {
+                return Optional.of(0);
             }
         };
     }

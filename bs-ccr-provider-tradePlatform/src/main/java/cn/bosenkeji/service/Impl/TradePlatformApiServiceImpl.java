@@ -2,7 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
-import cn.bosenkeji.vo.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -39,17 +39,17 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public boolean update(TradePlatformApi tradePlatformApi) {
-        return tradePlatformApiMapper.updateByPrimaryKeySelective(tradePlatformApi) == 1;
+    public Optional<Integer> update(TradePlatformApi tradePlatformApi) {
+        return Optional.ofNullable(tradePlatformApiMapper.updateByPrimaryKeySelective(tradePlatformApi));
     }
 
     @Override
-    public boolean add(TradePlatformApi tradePlatformApi) {
-        return tradePlatformApiMapper.insertSelective(tradePlatformApi) == 1;
+    public Optional<Integer> add(TradePlatformApi tradePlatformApi) {
+        return Optional.ofNullable(tradePlatformApiMapper.insertSelective(tradePlatformApi));
     }
 
     @Override
-    public boolean delete(int id) {
-        return tradePlatformApiMapper.deleteByTradePlatformKey(id) == 1 ;
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(tradePlatformApiMapper.deleteByTradePlatformKey(id)) ;
     }
 }

@@ -5,15 +5,15 @@ import cn.bosenkeji.vo.ProductCombo;
 import java.util.List;
 
 public interface ProductComboMapper {
-    boolean deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer id);
 
-    boolean insert(ProductCombo record);
+    int insert(ProductCombo record);
 
     int insertSelective(ProductCombo record);
 
     ProductCombo selectByPrimaryKey(Integer id);
 
-    boolean updateByPrimaryKeySelective(ProductCombo record);
+    int updateByPrimaryKeySelective(ProductCombo record);
 
     int updateByPrimaryKey(ProductCombo record);
 

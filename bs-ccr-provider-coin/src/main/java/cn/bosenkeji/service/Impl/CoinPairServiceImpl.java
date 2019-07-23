@@ -2,10 +2,9 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairMapper;
 import cn.bosenkeji.service.CoinPairService;
-import cn.bosenkeji.vo.CoinPair;
+import cn.bosenkeji.vo.coin.CoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,17 +38,17 @@ public class CoinPairServiceImpl implements CoinPairService {
     }
 
     @Override
-    public boolean add(CoinPair coinPair) {
-        return coinPairMapper.insertSelective(coinPair) == 1;
+    public Optional<Integer> add(CoinPair coinPair) {
+        return Optional.ofNullable(coinPairMapper.insertSelective(coinPair));
     }
 
     @Override
-    public boolean update(CoinPair coinPair) {
-        return coinPairMapper.updateByPrimaryKeySelective(coinPair) == 1;
+    public Optional<Integer> update(CoinPair coinPair) {
+        return Optional.ofNullable(coinPairMapper.updateByPrimaryKeySelective(coinPair));
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinPairMapper.deleteByPrimaryKey(id) == 1;
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(coinPairMapper.deleteByPrimaryKey(id));
     }
 }

@@ -7,9 +7,10 @@ import cn.bosenkeji.vo.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/strategysequence")
+@RequestMapping("/strategy_sequence")
 public class ConsumerStrategySequenceController {
 
     @Resource
@@ -34,12 +35,12 @@ public class ConsumerStrategySequenceController {
     }
 
     @PostMapping("/")
-    boolean insertStrategySequenceBySelective(StrategySequence sequence) {
+    Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
     @PostMapping("/value/")
-    boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+    Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
         return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 }

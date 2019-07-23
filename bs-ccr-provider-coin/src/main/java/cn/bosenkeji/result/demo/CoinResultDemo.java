@@ -1,13 +1,6 @@
 package cn.bosenkeji.result.demo;
 
-import cn.bosenkeji.vo.Coin;
 import cn.bosenkeji.vo.result.demo.BaseResultDemo;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ClassName CoinResultDemo

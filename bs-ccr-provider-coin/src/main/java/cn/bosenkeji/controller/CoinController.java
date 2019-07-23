@@ -1,10 +1,13 @@
 package cn.bosenkeji.controller;
 
+<<<<<<< HEAD
 import cn.bosenkeji.exception.AddException;
+=======
+>>>>>>> 998b30ddf8ded93d85dacc604ed06c8759e75f89
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
-import cn.bosenkeji.vo.Coin;
+import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +54,8 @@ public class CoinController {
 
     @ApiOperation(value = "添加单个货币接口", httpMethod = "POST",nickname = "addCoin")
     @RequestMapping(value="/", method = RequestMethod.POST)
-    public Integer add(@RequestBody @Valid @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+
+    public Integer add(@RequestBody @Valid @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
         coin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinService.add(coin).orElseThrow(()->new AddException(CoinEnum.NAME)) ;
@@ -59,14 +63,14 @@ public class CoinController {
 
     @ApiOperation(value = "更新单个货币接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @RequestMapping(value="/", method = RequestMethod.PUT)
-    public boolean put(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+    public Optional<Integer> put(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinService.update(coin) ;
     }
 
     @ApiOperation(value = "删除单个货币接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
+    public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
         return this.coinService.delete(id) ;
     }
 

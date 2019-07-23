@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.CoinPairChoic;
+import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -11,15 +11,15 @@ import java.util.Optional;
  * @create 2019/7/17 11:48
  */
 public interface CoinPairChoicService {
-    List<CoinPairChoic> list();
+    List<CoinPairChoice> list();
 
     PageInfo listByPage(int pageNum,int pageSize);
 
-    Optional<CoinPairChoic> get(int id);
+    Optional<CoinPairChoice> get(int id);
 
-    boolean add(CoinPairChoic coinPairChoic);
+    Optional<Integer> add(CoinPairChoice coinPairChoice);
 
-    boolean update(CoinPairChoic coinPairChoic);
+    Optional<Integer> update(CoinPairChoice coinPairChoice);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

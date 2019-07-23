@@ -57,18 +57,18 @@ public class ProductComboServiceImpl implements IProductComboService {
     }
 
     @Override
-    public boolean add(ProductCombo productCombo) {
-        return this.productComboMapper.insert(productCombo);
+    public Optional<Integer> add(ProductCombo productCombo) {
+        return Optional.ofNullable(this.productComboMapper.insert(productCombo));
     }
 
     @Override
-    public boolean update(ProductCombo productCombo) {
+    public Optional<Integer> update(ProductCombo productCombo) {
 
-        return this.productComboMapper.updateByPrimaryKeySelective(productCombo);
+        return Optional.ofNullable(this.productComboMapper.updateByPrimaryKeySelective(productCombo));
     }
 
     @Override
-    public boolean delete(int id) {
-        return this.productComboMapper.deleteByPrimaryKey(id);
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(this.productComboMapper.deleteByPrimaryKey(id));
     }
 }

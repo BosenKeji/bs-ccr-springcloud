@@ -2,10 +2,9 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinSortMapper;
 import cn.bosenkeji.service.CoinSortService;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,17 +37,17 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
-    public boolean add(CoinSort coinSort) {
-        return coinSortMapper.insertSelective(coinSort) == 1;
+    public Optional<Integer> add(CoinSort coinSort) {
+        return Optional.ofNullable(coinSortMapper.insertSelective(coinSort));
     }
 
     @Override
-    public boolean update(CoinSort coinSort) {
-        return coinSortMapper.updateByPrimaryKeySelective(coinSort) == 1;
+    public Optional<Integer> update(CoinSort coinSort) {
+        return  Optional.ofNullable(coinSortMapper.updateByPrimaryKeySelective(coinSort) );
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinSortMapper.deleteByPrimaryKey(id) == 1;
+    public Optional<Integer> delete(int id) {
+        return  Optional.ofNullable(coinSortMapper.deleteByPrimaryKey(id));
     }
 }

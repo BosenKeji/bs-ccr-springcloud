@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -24,9 +24,15 @@ public interface TradePlatformCoinPairService {
 
     Optional<TradePlatformCoinPair> get(int id);
 
-    boolean add(TradePlatformCoinPair tradePlatformCoinPair);
+    Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair);
 
-    boolean update(TradePlatformCoinPair tradePlatformCoinPair);
+    Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair);
 
-    boolean delete(int id);
+    /**
+     *
+     * @param tradePlatformId
+     * @param coinPairId
+     * @return
+     */
+    Optional<Integer> delete(int tradePlatformId, int coinPairId);
 }

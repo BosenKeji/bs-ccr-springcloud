@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.Coin;
+import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public interface CoinService {
 
     Optional<Integer> add(Coin coin);
 
-    boolean update(Coin coin);
+    Optional<Integer> update(Coin coin);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 
 }

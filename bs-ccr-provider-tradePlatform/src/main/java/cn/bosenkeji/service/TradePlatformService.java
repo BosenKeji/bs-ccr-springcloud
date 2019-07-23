@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.TradePlatform;
+import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public interface TradePlatformService {
 
     Optional<TradePlatform> get(int id);
 
-    boolean add(TradePlatform tradePlatform);
+    Optional<Integer> add(TradePlatform tradePlatform);
 
-    boolean update(TradePlatform tradePlatform);
+    Optional<Integer> update(TradePlatform tradePlatform);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

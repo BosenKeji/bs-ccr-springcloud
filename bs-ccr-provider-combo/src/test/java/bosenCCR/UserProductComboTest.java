@@ -47,5 +47,31 @@ public class UserProductComboTest {
         }
 
     }
+    
+    //测试懒加载策略
+    @Test
+    public void testLazyLoading() {
+        List<UserProductCombo> list = userProductComboMapper.findAll();
+        for (UserProductCombo userProductCombo : list) {
+            System.err.println("userProductCombo.getUserId() = " + userProductCombo.getUserId());
+        }
+    }
+    //测试按需加载策略
+    @Test
+    public void testNoLazyLoading() {
+        List<UserProductCombo> list = userProductComboMapper.findAll();
+        for (UserProductCombo userProductCombo : list) {
+            System.err.println("userProductCombo.getProductCombo() = " + userProductCombo.getProductCombo());
+        }
+    }
+
+    @Test
+    public void testAddUserProductCombo() {
+        UserProductCombo userProductCombo = new UserProductCombo();
+        userProductCombo.setId(1);
+        userProductCombo.setRemark("beizhu");
+        int insert = userProductComboMapper.updateByPrimaryKeySelective(userProductCombo);
+        System.out.println("insert = " + insert);
+    }
 
 }

@@ -52,7 +52,7 @@ create table oauth_approvals (
     scope VARCHAR(255),
     status VARCHAR(10),
     expiresAt TIMESTAMP,
-    lastModifiedAt TIMESTAMP
+    lastModifiedAt TIMESTAMP default '1970-01-01 08:00:01'
 );
  
 drop table if exists ClientDetails;

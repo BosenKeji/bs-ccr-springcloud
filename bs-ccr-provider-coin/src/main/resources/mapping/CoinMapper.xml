@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.CoinMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.Coin">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.coin.Coin">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -28,14 +28,14 @@
     delete from coin
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.Coin" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.coin.Coin" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin (`name`, `status`, created_at, 
       updated_at)
     values (#{name,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.Coin" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.coin.Coin" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -67,7 +67,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.Coin">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.coin.Coin">
     <!--@mbg.generated-->
     update coin
     <set>
@@ -86,7 +86,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.Coin">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.coin.Coin">
     <!--@mbg.generated-->
     update coin
     set `name` = #{name,jdbcType=VARCHAR},

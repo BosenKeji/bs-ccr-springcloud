@@ -2,12 +2,12 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairCoinClientServiceFallbackFactory;
-import cn.bosenkeji.vo.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoin;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName ICoinPairCoinClientService
@@ -17,19 +17,19 @@ import java.util.List;
 @FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinPairCoinClientServiceFallbackFactory.class)
 public interface ICoinPairCoinClientService {
 
-    @GetMapping("/coinpaircoin/{id}")
+    @GetMapping("/coin_pair_coin/{id}")
     public CoinPairCoin getCoinPairCoin(@PathVariable("id") int id);
 
-    @GetMapping("/coinpaircoin/")
+    @GetMapping("/coin_pair_coin/")
     public PageInfo listCoinPairCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                      @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
-    @PostMapping("/coinpaircoin/")
-    public boolean addCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin) ;
+    @PostMapping("/coin_pair_coin/")
+    public Optional<Integer> addCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin) ;
 
-    @PutMapping("/coinpaircoin/")
-    public boolean updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
+    @PutMapping("/coin_pair_coin/")
+    public Optional<Integer> updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
 
-    @DeleteMapping("/coinpaircoin/{id}")
-    public boolean deleteCoinPairCoin(@PathVariable("id") int id);
+    @DeleteMapping("/coin_pair_coin/{id}")
+    public Optional<Integer> deleteCoinPairCoin(@PathVariable("id") int id);
 }

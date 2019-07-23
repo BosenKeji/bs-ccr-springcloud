@@ -2,10 +2,12 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformClientServiceFallbackFactory;
-import cn.bosenkeji.vo.TradePlatform;
+import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -13,19 +15,19 @@ import org.springframework.web.bind.annotation.*;
  */
 @FeignClient(name = "bs-ccr-provider-tradePlatform",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformClientServiceFallbackFactory.class)
 public interface ITradePlatformClientService {
-    @GetMapping("/tradeplatform/")
+    @GetMapping("/trade_platform/")
     public PageInfo listTradePlatformWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon);
-    @GetMapping("/tradeplatform/{id}")
+    @GetMapping("/trade_platform/{id}")
     public TradePlatform getOneTrdPatform(@PathVariable("id") int id);
 
-    @PostMapping("/tradeplatform/")
-    public boolean addOneTradePlatform(@RequestBody TradePlatform tradePlatform);
+    @PostMapping("/trade_platform/")
+    public Optional<Integer> addOneTradePlatform(@RequestBody TradePlatform tradePlatform);
 
-    @PutMapping("/tradeplatform/")
-    public boolean updateTradePlatform(@RequestBody TradePlatform tradePlatform);
+    @PutMapping("/trade_platform/")
+    public Optional<Integer> updateTradePlatform(@RequestBody TradePlatform tradePlatform);
 
-    @DeleteMapping("/tradeplatform/{id}")
-    public boolean deleteOneTradePlatform(@PathVariable("id") int id);
+    @DeleteMapping("/trade_platform/{id}")
+    public Optional<Integer> deleteOneTradePlatform(@PathVariable("id") int id);
 
 }

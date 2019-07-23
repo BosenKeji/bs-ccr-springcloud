@@ -2,7 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformCoinPairMapper;
 import cn.bosenkeji.service.TradePlatformCoinPairService;
-import cn.bosenkeji.vo.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -37,17 +37,19 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public boolean add(TradePlatformCoinPair tradePlatformCoinPair) {
-        return tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair) == 1;
+    public Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair));
     }
 
     @Override
-    public boolean update(TradePlatformCoinPair tradePlatformCoinPair) {
-        return tradePlatformCoinPairMapper.updateByPrimaryKeySelective(tradePlatformCoinPair) == 1;
+    public Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.updateByPrimaryKeySelective(tradePlatformCoinPair));
     }
 
     @Override
-    public boolean delete(int id) {
-        return tradePlatformCoinPairMapper.deleteByPrimaryKey(id) == 1;
+    public Optional<Integer> delete(int tradePlatformId, int coinPairId) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
     }
+
+
 }

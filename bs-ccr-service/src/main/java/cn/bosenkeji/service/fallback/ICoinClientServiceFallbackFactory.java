@@ -1,14 +1,14 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinClientService;
-import cn.bosenkeji.vo.Coin;
+import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName ICoinClientServiceFallbackFactory
@@ -39,18 +39,18 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
             }
 
             @Override
-            public boolean addCoin(Coin coin) {
-                return false;
+            public Optional<Integer> addCoin(Coin coin) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateCoin(Coin coin) {
-                return false;
+            public Optional<Integer> updateCoin(Coin coin) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteCoin(int id) {
-                return false;
+            public Optional<Integer> deleteCoin(int id) {
+                return Optional.of(0);
             }
         };
     }

@@ -36,7 +36,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
    // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
-    public boolean add(UserProductCombo userProductCombo) {
+    public Optional<Integer> add(UserProductCombo userProductCombo) {
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
 
@@ -45,13 +45,13 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //添加缓存
         redisTemplate.opsForValue().set("userproductcombo:id_"+userProductCombo.getId(),userProductCombo,time,TimeUnit.DAYS);
-        return true;
+        return Optional.ofNullable(1);
 
     }
 
     @Override
-    public boolean update(UserProductCombo userProductCombo) {
-        return userProductComboMapper.updateByPrimaryKeySelective(userProductCombo);
+    public Optional<Integer> update(UserProductCombo userProductCombo) {
+        return Optional.ofNullable(userProductComboMapper.updateByPrimaryKeySelective(userProductCombo));
     }
 
     @Override

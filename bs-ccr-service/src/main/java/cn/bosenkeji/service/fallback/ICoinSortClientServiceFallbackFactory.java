@@ -1,13 +1,14 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinSortClientService;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -33,18 +34,18 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
-            public boolean addCoinSort(CoinSort coinSort) {
-                return false;
+            public Optional<Integer> addCoinSort(CoinSort coinSort) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateCoinSort(CoinSort coinSort) {
-                return false;
+            public Optional<Integer> updateCoinSort(CoinSort coinSort) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteCoinSort(int id) {
-                return false;
+            public Optional<Integer> deleteCoinSort(int id) {
+                return Optional.of(0);
             }
         };
     }
