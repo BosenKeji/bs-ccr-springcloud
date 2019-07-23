@@ -23,6 +23,7 @@ public interface CoinPairDealService {
 
     Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId);
 
+
     Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id);
 
     Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId,Integer choiceId);
