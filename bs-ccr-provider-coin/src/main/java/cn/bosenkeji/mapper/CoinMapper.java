@@ -18,6 +18,8 @@ public interface CoinMapper {
 
     Coin selectByPrimaryKey(Integer id);
 
+    Coin selectByField(String field);
+
     int updateByPrimaryKeySelective(Coin record);
 
     int updateByPrimaryKey(Coin record);

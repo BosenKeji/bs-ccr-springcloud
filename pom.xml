@@ -32,6 +32,7 @@
         <module>bs-ccr-security-sso-client</module>
         <module>bs-ccr-security-jwt-client</module>
         <module>bs-ccr-provider-transaction</module>
+        <module>bs-ccr-validator</module>
 
     </modules>
 
@@ -163,6 +164,11 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-provider-product</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-validator</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>
