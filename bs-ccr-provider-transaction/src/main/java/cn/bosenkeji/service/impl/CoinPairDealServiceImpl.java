@@ -8,7 +8,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,8 +25,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
         coinPairDeal.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairDeal.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int result = coinPairDealMapper.insertSelective(coinPairDeal);
-        return Optional.of(result);
+        return Optional.of(coinPairDealMapper.insertSelective(coinPairDeal));
     }
 
 
