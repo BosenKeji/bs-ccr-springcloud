@@ -34,7 +34,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
 
     @Override
-    public boolean add(UserProductComboDay userProductComboDay,int adminId) {
+    public Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId) {
 
         //新增用户套餐时长
         userProductComboDayMapper.insert(userProductComboDay);
@@ -53,13 +53,13 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
         userProductComboDayByAdmin.setAdminId(adminId);
         userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
-        return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
+        return Optional.ofNullable(userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin));
 
     }
 
     @Override
-    public boolean update(UserProductComboDayByAdmin userProductComboDayByAdmin) {
-        return userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin);
+    public Optional<Integer> update(UserProductComboDayByAdmin userProductComboDayByAdmin) {
+        return Optional.ofNullable(userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin));
     }
 
     /**

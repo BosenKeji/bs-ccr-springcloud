@@ -26,12 +26,12 @@ public class IUserProdcutComboDayByAdminClientServiceFallbackFactory implements 
     public IUserProductComboDayByAdminClientService create(Throwable throwable) {
         return new IUserProductComboDayByAdminClientService() {
             @Override
-            public boolean add(UserProductComboDay userProductComboDay,int adminId) {
-                return false;
+            public Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId) {
+                return Optional.empty();
             }
 
             @Override
-            public List<UserProductComboDayByAdmin> listByUserProductComboId(int userProductComboId) {
+            public List listByUserProductComboId(int userProductComboId) {
                 List list=new ArrayList();
                 UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
                 list.add(userProductComboDayByAdmin);
@@ -39,7 +39,7 @@ public class IUserProdcutComboDayByAdminClientServiceFallbackFactory implements 
             }
 
             @Override
-            public PageInfo<UserProductComboDayByAdmin> list(int pageNum, int pageSize) {
+            public PageInfo list(int pageNum, int pageSize) {
                 List list=new ArrayList();
                 UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
                 list.add(userProductComboDayByAdmin);
@@ -48,7 +48,7 @@ public class IUserProdcutComboDayByAdminClientServiceFallbackFactory implements 
 
 
             @Override
-            public PageInfo<UserProductComboDayByAdmin> listByUserTel(int pageNum, int pageSize, String userTel) {
+            public PageInfo listByUserTel(int pageNum, int pageSize, String userTel) {
                 List list=new ArrayList();
                 UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
                 list.add(userProductComboDayByAdmin);

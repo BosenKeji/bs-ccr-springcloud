@@ -31,6 +31,10 @@
     delete from trade_platform_coin_pair
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByTradePlatformIdAndCoinPairId" parameterType="int">
+    delete from trade_platform_coin_pair
+    where trade_platform_id = #{param1,jdbcType=INTEGER}  and coin_pair_id =#{param2,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform_coin_pair (trade_platform_id, coin_pair_id, `status`, 

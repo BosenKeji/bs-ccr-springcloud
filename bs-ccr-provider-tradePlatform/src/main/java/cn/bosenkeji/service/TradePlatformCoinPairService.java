@@ -28,5 +28,11 @@ public interface TradePlatformCoinPairService {
 
     boolean update(TradePlatformCoinPair tradePlatformCoinPair);
 
-    boolean delete(int id);
+    /**
+     *
+     * @param tradePlatformId
+     * @param coinPairId
+     * @return
+     */
+    boolean delete(int tradePlatformId, int coinPairId);
 }

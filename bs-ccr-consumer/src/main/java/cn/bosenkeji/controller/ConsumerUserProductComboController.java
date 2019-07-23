@@ -15,19 +15,23 @@ import javax.annotation.Resource;
  * @create 2019-07-18 19:47
  */
 @RestController
-@RequestMapping("/consumer")
-@Api(tags = "用户套餐api接口",value = "提供用户套餐相关的 rest API")
+@RequestMapping("/consumer/user_product_combo")
+@Api(tags = "UserProductCombo 用户套餐api接口",value = "提供用户套餐相关的 rest API")
 public class ConsumerUserProductComboController {
 
     @Resource
     private IUserProductComboClientService iUserProductComboClientService;
 
     @ApiOperation(value = "新增用户套餐api接口",httpMethod = "POST")
-    @PostMapping("/userproductcombo")
+    @PostMapping("/")
     public Object add(@RequestBody UserProductCombo userProductCombo) { return this.iUserProductComboClientService.add(userProductCombo);}
 
     @ApiOperation(value = "通过电话号码查询用户套餐列表api接口",notes="不传分页参数默认查询前十五条记录",httpMethod = "GET")
-    @GetMapping("/userproductcombo/listbyusertel")
-    public Object listByUserTel(@RequestParam("userTel") String userTel,@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize) { return this.iUserProductComboClientService.listByUserTel(userTel,pageNum,pageSize);}
+    @GetMapping("/list_by_user_tel")
+    public Object listByUserTel(@RequestParam("userTel") String userTel,
+                                @RequestParam(value="pageNum",defaultValue = "1") int pageNum,
+                                @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+        return this.iUserProductComboClientService.listByUserTel(userTel,pageNum,pageSize);
+    }
 
 }

@@ -16,7 +16,7 @@ public interface IProductComboService {
     PageInfo<ProductCombo> listByProductIdAndStauts(int pageNum,int pageSize,int productId,int status);
     PageInfo<ProductCombo> listByStatus(int pageNum,int pageSize,int status);
     Optional<ProductCombo> get(int id);
-    boolean add(ProductCombo productCombo);
-    boolean update(ProductCombo productCombo);
-    boolean delete(int id);
+    Optional<Integer> add(ProductCombo productCombo);
+    Optional<Integer> update(ProductCombo productCombo);
+    Optional<Integer> delete(int id);
 }
