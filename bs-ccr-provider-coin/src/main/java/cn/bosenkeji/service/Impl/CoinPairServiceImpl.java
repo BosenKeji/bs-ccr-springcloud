@@ -2,10 +2,9 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairMapper;
 import cn.bosenkeji.service.CoinPairService;
-import cn.bosenkeji.vo.CoinPair;
+import cn.bosenkeji.vo.coin.CoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

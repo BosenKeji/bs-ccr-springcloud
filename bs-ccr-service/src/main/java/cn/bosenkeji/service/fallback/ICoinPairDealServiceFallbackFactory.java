@@ -1,7 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairDealService;
-import cn.bosenkeji.vo.CoinPairDeal;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoinPairDealService> {
@@ -33,7 +34,7 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
             }
 
             @Override
-            public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId, Integer pageNum, Integer pageSize) {
+            public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
                 return hystrixResult(userId);
             }
 
@@ -43,33 +44,39 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
             }
 
             @Override
-            public boolean updateCoinPairDealStartsById(Integer id, Integer status) {
-                return false;
+            public Optional<Integer> updateCoinPairDealStartsById(Integer id, Integer status) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
 
             @Override
-            public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
-                return false;
+            public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
 
             @Override
-            public int countCoinPair(Integer userId) {
-                return 0;
+            public Optional<Integer> countCoinPair(Integer userId) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
 
             @Override
-            public int countCoinPairDeal(Integer userId, Integer choicId) {
-                return 0;
+            public Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
 
             @Override
-            public boolean deleteCoinPairDealByPrimaryKey(Integer id) {
-                return false;
+            public Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
 
             @Override
-            public boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId) {
-                return false;
+            public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
+                Optional<Integer> result = Optional.of(0);
+                return result;
             }
         };
     }

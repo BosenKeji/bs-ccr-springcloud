@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.CoinPairDealMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.CoinPairDeal">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.CoinPairDeal">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="coin_partner_choic_id" jdbcType="INTEGER" property="coinPartnerChoicId" />
+    <result column="coin_partner_choice_id" jdbcType="INTEGER" property="coinPartnerChoiceId" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -14,7 +14,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, coin_partner_choic_id, `type`, quantity, `status`, created_at, updated_at
+    id, user_id, coin_partner_choice_id, `type`, quantity, `status`, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -28,21 +28,21 @@
     delete from coin_pair_deal
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairDeal" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairDeal" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into coin_pair_deal (user_id, coin_partner_choic_id, `type`, 
+    insert into coin_pair_deal (user_id, coin_partner_choice_id, `type`,
       quantity, `status`, created_at, 
       updated_at)
-    values (#{userId,jdbcType=INTEGER}, #{coinPartnerChoicId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
+    values (#{userId,jdbcType=INTEGER}, #{coinPartnerChoiceId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT},
       #{quantity,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinPairDeal" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairDeal" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_pair_deal
     <trim prefix="(" suffix=")" suffixOverrides=",">
       user_id,
-      coin_partner_choic_id,
+      coin_partner_choice_id,
       `type`,
       quantity,
       `status`,
@@ -55,7 +55,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       #{userId,jdbcType=INTEGER},
-      #{coinPartnerChoicId,jdbcType=INTEGER},
+      #{coinPartnerChoiceId,jdbcType=INTEGER},
       #{type,jdbcType=TINYINT},
       #{quantity,jdbcType=INTEGER},
       #{status,jdbcType=TINYINT},
@@ -67,7 +67,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.CoinPairDeal">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.transaction.CoinPairDeal">
     <!--@mbg.generated-->
     update coin_pair_deal
     <set>
@@ -75,7 +75,11 @@
         user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="coinPartnerChoicId != null">
-        coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+<<<<<<< HEAD
+        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+=======
+        coin_partner_choice_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
@@ -95,11 +99,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.CoinPairDeal">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairDeal">
     <!--@mbg.generated-->
     update coin_pair_deal
     set user_id = #{userId,jdbcType=INTEGER},
-      coin_partner_choic_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+<<<<<<< HEAD
+      coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+=======
+      coin_partner_choice_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
       `type` = #{type,jdbcType=TINYINT},
       quantity = #{quantity,jdbcType=INTEGER},
       `status` = #{status,jdbcType=TINYINT},
@@ -116,11 +124,15 @@
     where user_id = #{userId}
   </select>
 
-  <select id="findCoinPairDealByUserIdAndChoicId" resultMap="BaseResultMap">
+  <select id="findCoinPairDealByUserIdAndChoiceId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from coin_pair_deal
-    where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+<<<<<<< HEAD
+    where user_id = #{userId} and coin_partner_choice_id = #{choiceId}
+=======
+    where user_id = #{userId} and coin_partner_choice_id = #{choicId}
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
   </select>
 
 
@@ -131,20 +143,25 @@
     where user_id = #{userId} and type = #{type}
   </select>
   <select id="countCoinPair" resultType="int">
-    select count(coin_partner_choic_id)
+    select count(coin_partner_choice_id)
     from
-      (select DISTINCT coin_partner_choic_id
+      (select DISTINCT coin_partner_choice_id
           from coin_pair_deal where user_id = #{userId}) t;
   </select>
 
   <select id="countCoinPairDeal" resultType="int">
     select count(0)
     from coin_pair_deal
-    where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+    where user_id = #{userId} and coin_partner_choice_id = #{choicId}
   </select>
 
+<<<<<<< HEAD
+  <delete id="deleteBatchCoinPairDealByUserIdAndChoiceId">
+    delete from coin_pair_deal where user_id = #{userId} and coin_partner_choice_id = #{choiceId}
+=======
   <delete id="deleteBatchCoinPairDealByUserIdAndChoicId">
-    delete from coin_pair_deal where user_id = #{userId} and coin_partner_choic_id = #{choicId}
+    delete from coin_pair_deal where user_id = #{userId} and coin_partner_choice_id = #{choicId}
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
   </delete>
 
 

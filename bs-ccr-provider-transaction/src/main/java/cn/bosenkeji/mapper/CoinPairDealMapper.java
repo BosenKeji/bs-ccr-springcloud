@@ -1,7 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.CoinPairDeal;
-import com.github.pagehelper.PageInfo;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,14 +25,14 @@ public interface CoinPairDealMapper {
 
     List<CoinPairDeal> findCoinPairDealByUserId(Integer userId);
 
-    List<CoinPairDeal> findCoinPairDealByUserIdAndChoicId(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
+    List<CoinPairDeal> findCoinPairDealByUserIdAndChoiceId(@Param("userId") Integer userId, @Param("choiceId") Integer choicId);
 
     List<CoinPairDeal> findCoinPairDealByUserIdAndType(@Param("userId") Integer userId, @Param("type") Integer type);
 
     int countCoinPair(Integer userId);
 
-    int countCoinPairDeal(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
+    int countCoinPairDeal(@Param("userId") Integer userId, @Param("choiceId") Integer choiceId);
 
-    int deleteBatchCoinPairDealByUserIdAndChoicId(@Param("userId") Integer userId, @Param("choicId") Integer choicId);
+    int deleteBatchCoinPairDealByUserIdAndChoiceId(@Param("userId") Integer userId, @Param("choiceId") Integer choicId);
 
 }

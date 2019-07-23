@@ -1,7 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
-import cn.bosenkeji.vo.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @create 2019/7/22 11:26
  */
 @RestController
-@RequestMapping("/consumer/tradeplatformcoinpair")
+@RequestMapping("/consumer/trade_platform_coinpair")
 @Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
 public class ConsumerTradePlatformCoinPairController {
     @Resource

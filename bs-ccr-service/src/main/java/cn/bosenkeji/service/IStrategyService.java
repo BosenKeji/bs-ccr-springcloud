@@ -10,8 +10,11 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "bs-ccr-provider-strategy",configuration = FeignClientConfig.class,
-        fallbackFactory = IStrategyServiceFallbackFactory.class)
+import java.util.Optional;
+
+@FeignClient(name = "bs-ccr-provider-strategy",configuration = FeignClientConfig.class
+        //, fallbackFactory = IStrategyServiceFallbackFactory.class
+        )
 public interface IStrategyService {
 
     @GetMapping("/strategy/{id}")
@@ -23,9 +26,9 @@ public interface IStrategyService {
             @RequestParam("pageSize") Integer pageSize);
 
     @PostMapping("/strategy/")
-    boolean addStrategyBySelective(Strategy strategy);
+    Optional<Integer> addStrategyBySelective(Strategy strategy);
 
     @PostMapping("/strategy/attribute/")
-    boolean addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
+    Optional<Integer> addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
 
 }

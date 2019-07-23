@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.CoinSortMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.CoinSort">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.coin.CoinSort">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
@@ -33,7 +33,7 @@
     delete from coin_sort
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinSort" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.coin.CoinSort" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_sort (trade_platform_id, coin_id, `type`, 
       sort_num, `status`, created_at, 
@@ -42,7 +42,7 @@
       #{sortNum,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.CoinSort" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.coin.CoinSort" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_sort
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -92,7 +92,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.CoinSort">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.coin.CoinSort">
     <!--@mbg.generated-->
     update coin_sort
     <set>
@@ -120,7 +120,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.CoinSort">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.coin.CoinSort">
     <!--@mbg.generated-->
     update coin_sort
     set trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},

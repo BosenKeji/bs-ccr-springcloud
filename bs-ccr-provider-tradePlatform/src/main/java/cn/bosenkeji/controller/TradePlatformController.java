@@ -3,12 +3,11 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.TradePlatformEnum;
 import cn.bosenkeji.service.TradePlatformService;
-import cn.bosenkeji.vo.TradePlatform;
+import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +18,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @Author CAJR
  * @create 2019/7/15 18:01
  */
 @RestController
-@RequestMapping("/tradeplatform")
+@RequestMapping("/trade_platform")
 @Validated
 @Api(tags = "tradePlatform 交易平台接口",value = "提供交易平台相关功能 Rest接口")
 public class TradePlatformController {

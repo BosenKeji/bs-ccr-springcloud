@@ -2,12 +2,10 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinSortClientServiceFallbackFactory;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @ClassName ICoinSortClientService
@@ -17,20 +15,20 @@ import java.util.List;
 @FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
 public interface ICoinSortClientService {
 
-    @GetMapping("/coinsort/{id}")
+    @GetMapping("/coin_sort/{id}")
     public CoinSort getCoinSort(@PathVariable("id") int id);
 
-    @GetMapping("/coinsort/")
+    @GetMapping("/coin_sort/")
     public PageInfo listCoinSort(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
-    @PostMapping("/coinsort/")
+    @PostMapping("/coin_sort/")
     public boolean addCoinSort(@RequestBody CoinSort coinSort) ;
 
-    @PutMapping("/coinsort/")
+    @PutMapping("/coin_sort/")
     public boolean updateCoinSort(@RequestBody CoinSort coinSort);
 
-    @DeleteMapping("/coinsort/{id}")
+    @DeleteMapping("/coin_sort/{id}")
     public boolean deleteCoinSort(@PathVariable("id") int id);
 
 }
