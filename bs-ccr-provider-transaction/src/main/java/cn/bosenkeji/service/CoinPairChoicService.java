@@ -17,9 +17,9 @@ public interface CoinPairChoicService {
 
     Optional<CoinPairChoice> get(int id);
 
-    boolean add(CoinPairChoice coinPairChoice);
+    Optional<Integer> add(CoinPairChoice coinPairChoice);
 
-    boolean update(CoinPairChoice coinPairChoice);
+    Optional<Integer> update(CoinPairChoice coinPairChoice);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

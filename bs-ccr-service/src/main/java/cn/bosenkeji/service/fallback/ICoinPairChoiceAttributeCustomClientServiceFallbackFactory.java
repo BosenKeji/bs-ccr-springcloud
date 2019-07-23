@@ -5,6 +5,8 @@ import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/22 15:26
@@ -22,18 +24,18 @@ public class ICoinPairChoiceAttributeCustomClientServiceFallbackFactory implemen
             }
 
             @Override
-            public boolean settingParameters(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-                return false;
+            public Optional<Integer> settingParameters(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-                return false;
+            public Optional<Integer> updateCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(int coinPairChoiceId) {
-                return false;
+            public Optional<Integer> deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(int coinPairChoiceId) {
+                return Optional.of(0);
             }
         };
     }

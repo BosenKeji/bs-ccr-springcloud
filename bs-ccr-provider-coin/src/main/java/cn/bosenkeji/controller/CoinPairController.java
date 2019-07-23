@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -49,7 +50,7 @@ public class CoinPairController {
 
     @ApiOperation(value = "添加单个货币对接口",httpMethod = "POST",nickname = "addOneCoinPair")
     @PostMapping("/")
-    public boolean add(@RequestBody @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+    public Optional<Integer> add(@RequestBody @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
         coinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairService.add(coinPair);
@@ -57,14 +58,14 @@ public class CoinPairController {
 
     @ApiOperation(value = "更新单个货币对接口",httpMethod = "PUT",nickname = "updateOneCoinPair")
     @PutMapping("/")
-    public boolean update(@RequestBody  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+    public Optional<Integer> update(@RequestBody  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairService.update(coinPair);
     }
 
     @ApiOperation(value = "删除单个货币对接口",httpMethod = "DELETE",nickname = "deleteOneCoinPair")
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id")  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
+    public Optional<Integer> delete(@PathVariable("id")  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
         return this.coinPairService.delete(id);
     }
 

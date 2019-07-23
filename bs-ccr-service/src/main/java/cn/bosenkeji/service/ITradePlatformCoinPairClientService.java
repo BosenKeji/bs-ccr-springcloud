@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/22 10:37
@@ -22,12 +24,12 @@ public interface ITradePlatformCoinPairClientService {
     public TradePlatformCoinPair getOneTradePlatformCoinPair(@PathVariable("id") int id);
 
     @PostMapping("/trade_platform_coin_pairs/")
-    public boolean addOneTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
+    public Optional<Integer> addOneTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
 
     @PutMapping("/trade_platform_coin_pairs/")
-    public boolean updateTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
+    public Optional<Integer> updateTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
 
     @DeleteMapping("/trade_platform_coin_pairs/")
-    public boolean deleteOneTradePlatformCoinPair(@RequestParam("tradePlatformId") int tradePlatformId,@RequestParam("coinPairId") int coinPairId);
+    public Optional<Integer> deleteOneTradePlatformCoinPair(@RequestParam("tradePlatformId") int tradePlatformId, @RequestParam("coinPairId") int coinPairId);
 
 }

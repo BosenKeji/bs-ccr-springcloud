@@ -18,9 +18,9 @@ public interface CoinSortService {
 
     Optional<CoinSort> get(int id);
 
-    boolean add(CoinSort coinSort);
+    Optional<Integer> add(CoinSort coinSort);
 
-    boolean update(CoinSort coinSort);
+    Optional<Integer> update(CoinSort coinSort);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

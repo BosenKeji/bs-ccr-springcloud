@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -35,18 +36,18 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public boolean addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
-                return false;
+            public Optional<Integer> addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateCoinPairChoice(CoinPairChoice coinPairChoice) {
-                return false;
+            public Optional<Integer> updateCoinPairChoice(CoinPairChoice coinPairChoice) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteOneCoinPairChoice(int id) {
-                return false;
+            public Optional<Integer> deleteOneCoinPairChoice(int id) {
+                return Optional.of(0);
             }
         };
     }
