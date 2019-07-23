@@ -41,17 +41,17 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public boolean add(Coin coin) {
-        return coinMapper.insert(coin)==1;
+    public Optional<Integer> add(Coin coin) {
+        return Optional.ofNullable(coinMapper.insert(coin));
     }
 
     @Override
-    public boolean update(Coin coin) {
-        return coinMapper.updateByPrimaryKeySelective(coin)==1;
+    public Optional<Integer> update(Coin coin) {
+        return Optional.ofNullable(coinMapper.updateByPrimaryKeySelective(coin));
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinMapper.deleteByPrimaryKey(id)==1;
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(coinMapper.deleteByPrimaryKey(id));
     }
 }

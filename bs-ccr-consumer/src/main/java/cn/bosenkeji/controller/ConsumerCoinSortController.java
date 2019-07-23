@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/11 15:47
@@ -36,20 +38,20 @@ public class ConsumerCoinSortController {
 
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
-    public boolean addCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort) {
+    public Optional<Integer> addCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort) {
 
         return iCoinSortClientService.addCoinSort(coinSort);
     }
 
     @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT",nickname = "updateCoinSort")
     @PutMapping("/")
-    public boolean updateCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
+    public Optional<Integer> updateCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
         return iCoinSortClientService.updateCoinSort(coinSort);
     }
 
     @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE",nickname = "deleteOneCoinSort")
     @DeleteMapping("/{id}")
-    public boolean deleteCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
+    public Optional<Integer> deleteCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
         return iCoinSortClientService.deleteCoinSort(id);
     }
 }

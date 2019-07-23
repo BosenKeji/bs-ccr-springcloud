@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.enums.CoinPairChoicAttributeCustomEnum;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -39,7 +41,7 @@ public class CoinPairChoiceAttributeCustomController {
 
     @ApiOperation(value = "设置交易参数接口",httpMethod = "POST",nickname = "settingParameters")
     @PostMapping("/")
-    public boolean settingParameters(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Optional<Integer> settingParameters(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
         coinPairChoiceAttributeCustom.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom);
@@ -47,7 +49,7 @@ public class CoinPairChoiceAttributeCustomController {
 
     @ApiOperation(value = "更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
-    public boolean update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Optional<Integer> update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
         int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
 
         if (stopProfitType == 1){
@@ -68,7 +70,7 @@ public class CoinPairChoiceAttributeCustomController {
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
-    public boolean delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){
+    public Optional<Integer> delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){
         return this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId);
     }
 

@@ -23,9 +23,9 @@ public interface TradePlatformService {
 
     Optional<TradePlatform> get(int id);
 
-    boolean add(TradePlatform tradePlatform);
+    Optional<Integer> add(TradePlatform tradePlatform);
 
-    boolean update(TradePlatform tradePlatform);
+    Optional<Integer> update(TradePlatform tradePlatform);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 }

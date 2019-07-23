@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -38,60 +39,30 @@ public class CoinPairCoinController {
         return this.coinPairCoinService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET",extensions = {
-            @Extension(properties={@ExtensionProperty(name = "x-aliyun-apigateway-paramater-handling", value = "MAPPING")}),
-            @Extension(name = "aliyun-apigateway-backend",  properties={@ExtensionProperty(name = "type", value = "MOCK"),
-                    @ExtensionProperty(name = "mockResult", value = "{\n" +
-                            "  \"id\": 1,\n" +
-                            "  \"name\": \"btc\",\n" +
-                            "  \"status\": 0,\n" +
-                            "  \"createdAt\": \"2019-07-17T19:13:37.000+0000\",\n" +
-                            "  \"updatedAt\": \"2019-07-17T19:13:37.000+0000\"\n" +
-                            "}"),
-                    @ExtensionProperty(name = "mockStatusCode", value = "200")
-            })
-    })
+    @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairCoin get(@PathVariable("id") @Min(1) @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
         return this.coinPairCoinService.get(id).orElseThrow(()-> new NotFoundException(CoinPairCoinEnum.NAME));
     }
 
-    @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST",nickname = "addOneCoinPairCoin",extensions = {
-            @Extension(properties={@ExtensionProperty(name = "x-aliyun-apigateway-paramater-handling", value = "MAPPING")}),
-            @Extension(name = "aliyun-apigateway-backend",  properties={@ExtensionProperty(name = "type", value = "MOCK"),
-                    @ExtensionProperty(name = "mockResult", value = "ok"),
-                    @ExtensionProperty(name = "mockStatusCode", value = "200")
-            })
-    })
+    @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST",nickname = "addOneCoinPairCoin")
     @PostMapping("/")
-    public boolean add(@RequestBody @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
+    public Optional<Integer> add(@RequestBody @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
         coinPairCoin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairCoinService.add(coinPairCoin);
     }
 
-    @ApiOperation(value = "更新货币对货币接口",httpMethod = "PUT",nickname = "updateCoinPairCoin",extensions = {
-            @Extension(properties={@ExtensionProperty(name = "x-aliyun-apigateway-paramater-handling", value = "MAPPING")}),
-            @Extension(name = "aliyun-apigateway-backend",  properties={@ExtensionProperty(name = "type", value = "MOCK"),
-                    @ExtensionProperty(name = "mockResult", value = "ok"),
-                    @ExtensionProperty(name = "mockStatusCode", value = "200")
-            })
-    })
+    @ApiOperation(value = "更新货币对货币接口",httpMethod = "PUT",nickname = "updateCoinPairCoin")
     @PutMapping("/")
-    public boolean update(@RequestBody @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
+    public Optional<Integer> update(@RequestBody @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairCoinService.update(coinPairCoin);
     }
 
-    @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin",extensions = {
-            @Extension(properties={@ExtensionProperty(name = "x-aliyun-apigateway-paramater-handling", value = "MAPPING")}),
-            @Extension(name = "aliyun-apigateway-backend",  properties={@ExtensionProperty(name = "type", value = "MOCK"),
-                    @ExtensionProperty(name = "mockResult", value = "ok"),
-                    @ExtensionProperty(name = "mockStatusCode", value = "200")
-            })
-    })
+    @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin")
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
+    public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
         return this.coinPairCoinService.delete(id);
     }
 

@@ -29,17 +29,17 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     }
 
     @Override
-    public boolean update(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return coinPairChoiceAttributeMapper.updateByCoinPartnerChoiceIdSelective(coinPairChoiceAttribute) == 1;
+    public Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute) {
+        return Optional.ofNullable(coinPairChoiceAttributeMapper.updateByCoinPartnerChoiceIdSelective(coinPairChoiceAttribute));
     }
 
     @Override
-    public boolean add(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute) == 1;
+    public Optional<Integer> add(CoinPairChoiceAttribute coinPairChoiceAttribute) {
+        return Optional.ofNullable(coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute));
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinPairChoiceAttributeMapper.deleteByPrimaryKey(id) ==1;
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(coinPairChoiceAttributeMapper.deleteByPrimaryKey(id));
     }
 }

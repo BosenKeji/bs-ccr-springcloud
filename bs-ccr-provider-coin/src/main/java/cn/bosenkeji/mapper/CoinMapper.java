@@ -12,7 +12,7 @@ import java.util.List;
 public interface CoinMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Coin record);
+    Integer insert(Coin record);
 
     int insertSelective(Coin record);
 

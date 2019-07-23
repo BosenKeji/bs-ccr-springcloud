@@ -14,10 +14,10 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<CoinPairChoiceAttribute> get(int id);
 
-    boolean update(CoinPairChoiceAttribute coinPairChoiceAttribute);
+    Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute);
 
-    boolean add(CoinPairChoiceAttribute coinPairChoiceAttribute);
+    Optional<Integer> add(CoinPairChoiceAttribute coinPairChoiceAttribute);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 
 }
