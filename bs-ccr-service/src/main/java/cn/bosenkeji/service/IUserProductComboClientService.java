@@ -22,11 +22,11 @@ public interface IUserProductComboClientService {
 
 
 
-    @PostMapping("/userproductcombo/")
-    boolean add(@RequestBody UserProductCombo userProductCombo);
+    @PostMapping("/user_product_combo/")
+    Optional<Integer> add(@RequestBody UserProductCombo userProductCombo);
 
-    @GetMapping("/userproductcombo/listbyusertel/")
-    PageInfo<UserProductCombo> listByUserTel(@RequestParam("userTel") String userTel,@RequestParam(value="pageNum",defaultValue = "1") int pageNum,@RequestParam(value="pageSize",defaultValue = "15") int pageSize);
+    @GetMapping("/user_product_combo/list_by_user_tel/")
+    PageInfo listByUserTel(@RequestParam("userTel") String userTel,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
 
 
 

@@ -16,8 +16,8 @@ import java.util.Optional;
  */
 public interface IUserProductComboDayByAdminService {
 
-    boolean add(UserProductComboDay userProductComboDay,int adminId);
-    boolean update(UserProductComboDayByAdmin userProductComboDayByAdmin);
+    Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId);
+    Optional<Integer> update(UserProductComboDayByAdmin userProductComboDayByAdmin);
     PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize);
     Optional<UserProductComboDayByAdmin> get(int id);
     List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId);

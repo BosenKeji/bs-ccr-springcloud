@@ -23,12 +23,12 @@ public class IUserProdcutComboClientServiceFallbackFactory implements FallbackFa
     public IUserProductComboClientService create(Throwable throwable) {
         return new IUserProductComboClientService() {
             @Override
-            public boolean add(UserProductCombo userProductCombo) {
-                return false;
+            public Optional<Integer> add(UserProductCombo userProductCombo) {
+                return Optional.empty();
             }
 
             @Override
-            public PageInfo<UserProductCombo> listByUserTel(String userTel, int pageNum, int pageSize) {
+            public PageInfo listByUserTel(String userTel, int pageNum, int pageSize) {
                 List<UserProductCombo> list=new ArrayList<>();
                 UserProductCombo userProductCombo=new UserProductCombo();
                 userProductCombo.setRemark("hystrixName");

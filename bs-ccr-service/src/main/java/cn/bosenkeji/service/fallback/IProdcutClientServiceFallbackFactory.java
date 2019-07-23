@@ -5,11 +5,13 @@ import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.vo.Coin;
 import cn.bosenkeji.vo.Product;
 import cn.bosenkeji.vo.ProductCombo;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName IProductClientServiceFallbackFactory
@@ -30,26 +32,31 @@ public class IProdcutClientServiceFallbackFactory implements FallbackFactory<IPr
             }
 
             @Override
-            public List<Product> listProduct() {
+            public PageInfo listProduct(int pageNum, int pageSize) {
                 Product product = new Product();
                 product.setName("hystrixName");
                 List<Product> list = new ArrayList<>();
                 list.add(product);
-                return list;
+                return new PageInfo<>(list);
             }
             @Override
-            public boolean addProduct(Product product) {
-                return false;
-            }
-
-            @Override
-            public boolean updateProduct(Product product) {
-                return false;
+            public Optional<Integer> addProduct(Product product) {
+                return Optional.ofNullable(0);
             }
 
             @Override
-            public boolean deleteProduct(int id) {
-                return false;
+            public Optional<Integer> updateProduct(Product product) {
+                return Optional.ofNullable(0);
+            }
+
+            @Override
+            public Optional<Integer> deleteProduct(int id) {
+                return Optional.ofNullable(0);
+            }
+
+            @Override
+            public Optional<Integer> updateProductStatus(int id, int status) {
+                return Optional.empty();
             }
         };
 

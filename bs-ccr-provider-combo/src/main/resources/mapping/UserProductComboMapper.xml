@@ -10,6 +10,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
   </resultMap>
 
   <resultMap id="ProductComboResultMap" type="cn.bosenkeji.vo.UserProductCombo">

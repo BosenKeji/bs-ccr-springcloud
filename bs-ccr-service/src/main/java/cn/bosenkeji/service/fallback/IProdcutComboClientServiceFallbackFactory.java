@@ -23,7 +23,7 @@ public class IProdcutComboClientServiceFallbackFactory implements FallbackFactor
     public IProductComboClientService create(Throwable throwable) {
         return new IProductComboClientService() {
             @Override
-            public PageInfo<ProductCombo> listByProductId(int productId) {
+            public PageInfo listByProductId(int productId) {
                 List<ProductCombo> list=new ArrayList<>();
                 ProductCombo productCombo=new ProductCombo();
                 productCombo.setName("hystrixName");
@@ -32,28 +32,28 @@ public class IProdcutComboClientServiceFallbackFactory implements FallbackFactor
             }
 
             @Override
-            public boolean add(ProductCombo productCombo) {
-                return false;
+            public Optional<Integer> add(ProductCombo productCombo) {
+                return Optional.ofNullable(0);
             }
 
             @Override
-            public boolean update(ProductCombo productCombo) {
-                return false;
+            public Optional<Integer> update(ProductCombo productCombo) {
+                return Optional.ofNullable(0);
             }
 
             @Override
-            public boolean delete(int id) {
-                return false;
+            public Optional<Integer> delete(int id) {
+                return Optional.ofNullable(0);
             }
 
             @Override
-            public Optional<ProductCombo> get(int id) {
+            public Optional get(int id) {
                 return Optional.empty();
             }
 
             @Override
-            public boolean updateByStatus(int id, int status) {
-                return false;
+            public Optional<Integer> updateByStatus(int id, int status) {
+               return Optional.empty();
             }
         };
     }

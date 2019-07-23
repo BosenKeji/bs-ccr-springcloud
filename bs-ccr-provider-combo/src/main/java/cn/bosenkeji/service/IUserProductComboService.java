@@ -14,8 +14,8 @@ import java.util.Optional;
  */
 public interface IUserProductComboService {
 
-    boolean add(UserProductCombo userProductCombo);
-    boolean update(UserProductCombo userProductCombo);
+    Optional<Integer> add(UserProductCombo userProductCombo);
+    Optional<Integer> update(UserProductCombo userProductCombo);
     PageInfo<UserProductCombo> list(int pageNum,int pageSize);
     Optional<UserProductCombo> get(int id);
 

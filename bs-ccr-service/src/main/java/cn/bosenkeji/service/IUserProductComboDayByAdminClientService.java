@@ -23,17 +23,17 @@ import java.util.Optional;
 @FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProdcutComboDayByAdminClientServiceFallbackFactory.class)
 public interface IUserProductComboDayByAdminClientService {
 
-    @PostMapping("/userproductcombodaybyadmin/")
-    boolean add(@RequestBody UserProductComboDay userProductComboDay,@RequestParam("adminId") int adminId);
+    @PostMapping("/user_product_combo_day_by_admin/")
+    Optional<Integer> add(@RequestBody UserProductComboDay userProductComboDay,@RequestParam("adminId") int adminId);
 
-    @GetMapping("/userproductcombodaybyadmin/listbyuserproductcomboid")
-    List<UserProductComboDayByAdmin> listByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId);
+    @GetMapping("/user_product_combo_day_by_admin/list_by_user_product_combo_id")
+    List listByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId);
 
-    @GetMapping("/userproductcombodaybyadmin/")
-    PageInfo<UserProductComboDayByAdmin> list(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize);
+    @GetMapping("/user_product_combo_day_by_admin/")
+    PageInfo list(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize);
 
-    @GetMapping("/userproductcombodaybyadmin/listbyusertel/")
-    PageInfo<UserProductComboDayByAdmin> listByUserTel(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize,@RequestParam("userTel") String userTel);
+    @GetMapping("/user_product_combo_day_by_admin/list_by_user_tel/")
+    PageInfo listByUserTel(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize,@RequestParam("userTel") String userTel);
 
 
 }

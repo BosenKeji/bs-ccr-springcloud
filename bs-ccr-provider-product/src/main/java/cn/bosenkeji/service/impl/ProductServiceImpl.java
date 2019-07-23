@@ -31,27 +31,27 @@ public class ProductServiceImpl implements IProductService {
         return Optional.ofNullable(this.productMapper.selectByPrimaryKey(id));
     }
     @Override
-    public boolean add(Product product) {
+    public Optional<Integer> add(Product product) {
 
-        return productMapper.insert(product);
+        return Optional.ofNullable(productMapper.insert(product));
        // return flag==1?true:false;
     }
 
     @Override
-    public boolean delete(int id) {
+    public Optional<Integer> delete(int id) {
 
-        return productMapper.deleteByPrimaryKey(id);
+        return Optional.ofNullable(productMapper.deleteByPrimaryKey(id));
         //return flag==1?true:false;
     }
 
     @Override
-    public boolean update(Product product) {
-         return this.productMapper.updateByPrimaryKeySelective(product);
+    public Optional<Integer> update(Product product) {
+         return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
     }
 
     @Override
-    public boolean updateStatus(Product product) {
+    public Optional<Integer> updateStatus(Product product) {
 
-        return this.productMapper.updateByPrimaryKeySelective(product);
+        return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
     }
 }

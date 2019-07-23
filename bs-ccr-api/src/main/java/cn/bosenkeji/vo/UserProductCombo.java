@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -7,6 +8,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 @Api
+@JsonIgnoreProperties(value = {"handler"})
 public class UserProductCombo implements Serializable {
     private int id;
 
