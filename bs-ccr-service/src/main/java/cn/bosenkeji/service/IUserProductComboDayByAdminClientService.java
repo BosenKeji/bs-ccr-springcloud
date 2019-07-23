@@ -1,12 +1,8 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
-import cn.bosenkeji.service.fallback.IProdcutComboClientServiceFallbackFactory;
-import cn.bosenkeji.service.fallback.IUserProdcutComboClientServiceFallbackFactory;
-import cn.bosenkeji.service.fallback.IUserProdcutComboDayByAdminClientServiceFallbackFactory;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.service.fallback.IUserProductComboDayByAdminClientServiceFallbackFactory;
 import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +16,7 @@ import java.util.Optional;
  * @Version V1.0
  * @create 2019-07-18 11:29
  */
-@FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProdcutComboDayByAdminClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProductComboDayByAdminClientServiceFallbackFactory.class)
 public interface IUserProductComboDayByAdminClientService {
 
     @PostMapping("/user_product_combo_day_by_admin/")

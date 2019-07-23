@@ -5,9 +5,11 @@ import cn.bosenkeji.vo.UserProductComboDay;
 import cn.bosenkeji.vo.UserProductComboDayByAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xivin
@@ -23,25 +25,34 @@ public class ConsumerUserProductComboDayByAdminController {
     @Resource
     private IUserProductComboDayByAdminClientService iUserProductComboDayByAdminClientService;
 
-    @ApiOperation(value = "新增用户时长api接口",httpMethod = "POST")
+    @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @PostMapping("/")
-    public Object add(@RequestBody UserProductComboDay userProductComboDay, @RequestParam("adminId") int adminId)
+    public Object add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay userProductComboDay,
+                      @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId)
     {
         return this.iUserProductComboDayByAdminClientService.add(userProductComboDay,adminId);
     }
 
+    @ApiOperation(value="获取用户套餐时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListWithPage")
     @GetMapping(value = "/")
-    public Object list(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                       @RequestParam(value = "pageSize",defaultValue = "15") int pageSize){
-        return this.iUserProductComboDayByAdminClientService.list(pageNum,pageSize);}
+    public Object list(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                       @RequestParam(value="pageSize",defaultValue="15") int pageSize){
+        return this.iUserProductComboDayByAdminClientService.list(pageNum,pageSize);
+    }
 
+    @ApiOperation(value="通过用户套餐id查询时长操作列表api接口 多表联合查询",httpMethod = "GET",
+            nickname = "getUserProductComboDayByAdminListByUserProductComboId")
     @GetMapping("/list_by_user_product_combo_id")
-    public Object listByUserProductComboId(int userProductComboId) {
+    public Object listByUserProductComboId(@RequestParam("userProductComboId")
+                                               @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId) {
         return this.iUserProductComboDayByAdminClientService.listByUserProductComboId(userProductComboId);
     }
 
+    @ApiOperation(value="通过用户电话查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserTelWithPage")
     @GetMapping("/list_by_user_tel")
-    public Object listByUserTel(int pageNum,int pageSize,@RequestParam("userTel") String userTel) {
+    public Object listByUserTel(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                                @RequestParam("userTel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String userTel) {
         return this.iUserProductComboDayByAdminClientService.listByUserTel(pageNum,pageSize,userTel);
     }
 }

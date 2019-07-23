@@ -18,7 +18,7 @@ import java.util.Optional;
  * @create 2019-07-18 11:30
  */
 @Component
-public class IProdcutComboClientServiceFallbackFactory implements FallbackFactory<IProductComboClientService> {
+public class IProductComboClientServiceFallbackFactory implements FallbackFactory<IProductComboClientService> {
     @Override
     public IProductComboClientService create(Throwable throwable) {
         return new IProductComboClientService() {

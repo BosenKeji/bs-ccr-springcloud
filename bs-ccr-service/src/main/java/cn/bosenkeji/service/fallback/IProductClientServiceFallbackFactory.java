@@ -2,11 +2,13 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.vo.Product;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName IProductClientServiceFallbackFactory
@@ -15,7 +17,7 @@ import java.util.List;
  * @Versio V1.0
  **/
 @Component
-public class IProdcutClientServiceFallbackFactory implements FallbackFactory<IProductClientService> {
+public class IProductClientServiceFallbackFactory implements FallbackFactory<IProductClientService> {
     @Override
     public IProductClientService create(Throwable throwable) {
         return new IProductClientService() {
@@ -26,27 +28,35 @@ public class IProdcutClientServiceFallbackFactory implements FallbackFactory<IPr
                 return product;
             }
 
+
+
             @Override
-            public List<Product> listProduct() {
+            public PageInfo listProduct(int pageNum, int pageSize) {
                 Product product = new Product();
                 product.setName("hystrixName");
                 List<Product> list = new ArrayList<>();
                 list.add(product);
-                return list;
-            }
-            @Override
-            public boolean addProduct(Product product) {
-                return false;
+                return new PageInfo(list);
             }
 
             @Override
-            public boolean updateProduct(Product product) {
-                return false;
+            public Optional<Integer> updateProductStatus(int id, int status) {
+                return Optional.empty();
             }
 
             @Override
-            public boolean deleteProduct(int id) {
-                return false;
+            public Optional<Integer> addProduct(Product product) {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<Integer> updateProduct(Product product) {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<Integer> deleteProduct(int id) {
+                return Optional.empty();
             }
         };
 

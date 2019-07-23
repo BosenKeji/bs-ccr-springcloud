@@ -1,14 +1,13 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
-import cn.bosenkeji.service.fallback.IProdcutClientServiceFallbackFactory;
+import cn.bosenkeji.service.fallback.IProductClientServiceFallbackFactory;
 import cn.bosenkeji.vo.Product;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Optional;
  * @Author Xivin
  * @Versio V1.0
  **/
-@FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProdcutClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProductClientServiceFallbackFactory.class)
 public interface IProductClientService {
 
     @Resource
