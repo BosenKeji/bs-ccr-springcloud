@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -23,17 +22,21 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     private CoinPairDealMapper coinPairDealMapper;
 
     @Override
-    public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+    public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
         coinPairDeal.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairDeal.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         int result = coinPairDealMapper.insertSelective(coinPairDeal);
-        return Optional.of(result);
+        boolean b = false;
+        if (result > 0) {
+            b = true;
+        }
+        return b;
     }
 
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
         List<CoinPairDealVO> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
@@ -44,10 +47,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId,choiceId);
+        PageHelper.startPage(pageNum, pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId, choiceId);
         List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c: list) {
+        for (CoinPairDeal c : list) {
             voList.add(convertCoinPairDealVO(c));
         }
         return new PageInfo<>(voList);
@@ -55,43 +58,43 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
+        PageHelper.startPage(pageNum, pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId, type);
         List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c: list) {
+        for (CoinPairDeal c : list) {
             voList.add(convertCoinPairDealVO(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-    public Optional<Integer> updateCoinPairDealStartsById(Integer id, Integer status) {
+    public boolean updateCoinPairDealStartsById(Integer id, Integer status) {
         CoinPairDeal c = new CoinPairDeal();
         c.setId(id);
         c.setStatus(status);
         c.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         int i = coinPairDealMapper.updateByPrimaryKeySelective(c);
-        return Optional.of(i);
+        return checkIntResult(i);
     }
 
     @Override
-    public Optional<Integer> countCoinPair(Integer userId) {
-        return Optional.of(coinPairDealMapper.countCoinPair(userId));
+    public int countCoinPair(Integer userId) {
+        return coinPairDealMapper.countCoinPair(userId);
     }
 
     @Override
-    public Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId) {
-        return Optional.of(coinPairDealMapper.countCoinPairDeal(userId,choiceId));
+    public int countCoinPairDeal(Integer userId, Integer choiceId) {
+        return coinPairDealMapper.countCoinPairDeal(userId, choiceId);
     }
 
     @Override
-    public Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id) {
-        return Optional.of(coinPairDealMapper.deleteByPrimaryKey(id));
+    public boolean deleteCoinPairDealByPrimaryKey(Integer id) {
+        return checkIntResult(coinPairDealMapper.deleteByPrimaryKey(id));
     }
 
     @Override
-    public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
-        return Optional.of(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
+    public boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
+        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId, choiceId));
     }
 
     private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
@@ -104,4 +107,11 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         return vo;
     }
 
+    private boolean checkIntResult(Integer result) {
+        boolean b = false;
+        if (result > 0) {
+            b = true;
+        }
+        return b;
+    }
 }
