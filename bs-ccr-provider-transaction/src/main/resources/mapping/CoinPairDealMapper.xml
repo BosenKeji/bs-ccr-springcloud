@@ -75,11 +75,7 @@
         user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="coinPartnerChoicId != null">
-<<<<<<< HEAD
-        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
-=======
         coin_partner_choice_id = #{coinPartnerChoicId,jdbcType=INTEGER},
->>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
@@ -103,11 +99,7 @@
     <!--@mbg.generated-->
     update coin_pair_deal
     set user_id = #{userId,jdbcType=INTEGER},
-<<<<<<< HEAD
       coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
-=======
-      coin_partner_choice_id = #{coinPartnerChoicId,jdbcType=INTEGER},
->>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
       `type` = #{type,jdbcType=TINYINT},
       quantity = #{quantity,jdbcType=INTEGER},
       `status` = #{status,jdbcType=TINYINT},
@@ -128,11 +120,7 @@
     select
     <include refid="Base_Column_List" />
     from coin_pair_deal
-<<<<<<< HEAD
     where user_id = #{userId} and coin_partner_choice_id = #{choiceId}
-=======
-    where user_id = #{userId} and coin_partner_choice_id = #{choicId}
->>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
   </select>
 
 
@@ -155,13 +143,8 @@
     where user_id = #{userId} and coin_partner_choice_id = #{choicId}
   </select>
 
-<<<<<<< HEAD
   <delete id="deleteBatchCoinPairDealByUserIdAndChoiceId">
     delete from coin_pair_deal where user_id = #{userId} and coin_partner_choice_id = #{choiceId}
-=======
-  <delete id="deleteBatchCoinPairDealByUserIdAndChoicId">
-    delete from coin_pair_deal where user_id = #{userId} and coin_partner_choice_id = #{choicId}
->>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
   </delete>
 
 
