@@ -2,6 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
+import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.vo.UserProductCombo;
 import com.github.pagehelper.PageHelper;
@@ -32,11 +33,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     private ProductComboMapper productComboMapper;
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private UserProductComboRedisTemplate userProductComboRedisTemplate;
 
    // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
     public Optional<Integer> add(UserProductCombo userProductCombo) {
+
+        //判断用户是否已买过该产品  如果该用户已买过该产品，则不能部署机器人
+        if(userProductComboMapper.selectCountByProductId(userProductCombo.getProductCombo().getProductId(),userProductCombo.getUserId())>0)
+            return Optional.ofNullable(0);
+
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
 
@@ -44,7 +50,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         userProductComboMapper.insert(userProductCombo);
 
         //添加缓存
-        redisTemplate.opsForValue().set("userproductcombo:id_"+userProductCombo.getId(),userProductCombo,time,TimeUnit.DAYS);
+        userProductComboRedisTemplate.add(userProductCombo,time);
         return Optional.ofNullable(1);
 
     }
@@ -64,10 +70,13 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     public Optional<UserProductCombo> get(int id) {
 
         try {
+
             //从缓存中读取
-            String key="userproductcombo:id_"+id;
-            UserProductCombo userProductCombo = (UserProductCombo) redisTemplate.opsForValue().get(key);
-            long time = redisTemplate.getExpire(key, TimeUnit.DAYS);
+            UserProductCombo userProductCombo = userProductComboRedisTemplate.get(id);
+            final long time = userProductComboRedisTemplate.getExpire(id);
+
+
+
             userProductCombo.setRemainTime((int) time);
             if(userProductCombo==null||("").equals(userProductCombo))
                 return Optional.ofNullable(userProductComboMapper.selectByPrimaryKey(id));
@@ -95,16 +104,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         List<UserProductCombo> list=new ArrayList<>();
         for (Integer id : ids) {
 
-            //先查询redis
-            String key="userproductcombo:id_"+id;
-            UserProductCombo userProductCombo = (UserProductCombo) redisTemplate.opsForValue().get(key);
+            UserProductCombo userProductCombo = userProductComboRedisTemplate.get(id);
+
             if(userProductCombo==null||("").equals(userProductCombo)) {
                 //没有时从数据库拿
                 userProductCombo=userProductComboMapper.selectByPrimaryKey(id);
             }
             else {
                 //如果是从缓存取出的则取出有效时间，否则有效时间为0
-                long time = redisTemplate.getExpire(key, TimeUnit.DAYS);
+                long time = userProductComboRedisTemplate.getExpire(id);
+
                 userProductCombo.setRemainTime((int) time);
 
             }
@@ -117,6 +126,13 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     }
 
 
+    /**
+     * 联合查询用户套餐时长列表
+     * @param pageNum
+     * @param pageSize
+     * @param userTel
+     * @return
+     */
     @Override
     public PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel) {
 
@@ -125,11 +141,12 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserTel(userTel);
 
         for (UserProductCombo userProductCombo : userProductCombos) {
-            //设置有效时间
-            int time = userProductCombo.getProductCombo().getTime();
+
+            //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            String key="userproductcombo:id_"+id;
-            userProductCombo.setRemainTime(redisTemplate.getExpire(key,TimeUnit.DAYS).intValue());
+            long time=userProductComboRedisTemplate.getExpire(id);
+
+            userProductCombo.setRemainTime((int)time);
         }
         return new PageInfo<>(userProductCombos);
     }

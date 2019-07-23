@@ -3,12 +3,11 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.StrategySequenceMapper;
 import cn.bosenkeji.mapper.StrategySequenceValueMapper;
 import cn.bosenkeji.service.StrategySequenceService;
-import cn.bosenkeji.vo.StrategySequence;
-import cn.bosenkeji.vo.StrategySequenceVO;
-import cn.bosenkeji.vo.StrategySequenceValue;
+import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequenceOther;
+import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,11 +54,11 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
     }
 
     @Override
-    public StrategySequenceVO findSequenceByPrimaryKey(Integer id) {
+    public StrategySequenceOther findSequenceByPrimaryKey(Integer id) {
         StrategySequence sequence = strategySequenceMapper.findSequenceByPrimaryKey(id);
         StrategySequenceValue sequenceValue = strategySequenceValueMapper.findSequenceValueBySequenceId(id);
-        StrategySequenceVO sequenceVO = convertStrategySequenceVo(sequence,sequenceValue);
-        return sequenceVO;
+        StrategySequenceOther sequenceOther = convertStrategySequenceVo(sequence,sequenceValue);
+        return sequenceOther;
     }
 
     @Override
@@ -67,15 +66,15 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
         return strategySequenceValueMapper.getSequenceValueByStrategyId(strategyId);
     }
 
-    private StrategySequenceVO convertStrategySequenceVo(StrategySequence sequence, StrategySequenceValue sequenceValue) {
-        StrategySequenceVO sequenceVO = new StrategySequenceVO();
-        sequenceVO.setId(sequence.getId());
-        sequenceVO.setName(sequence.getName());
-        sequenceVO.getSortNum(sequenceValue.getSortNum());
-        sequenceVO.setTip(sequence.getTip());
-        sequenceVO.setValue(sequenceValue.getValue());
-        sequenceVO.setStatus(sequence.getStatus());
-        return sequenceVO;
+    private StrategySequenceOther convertStrategySequenceVo(StrategySequence sequence, StrategySequenceValue sequenceValue) {
+        StrategySequenceOther sequenceOther = new StrategySequenceOther();
+        sequenceOther.setId(sequence.getId());
+        sequenceOther.setName(sequence.getName());
+        sequenceOther.getSortNum(sequenceValue.getSortNum());
+        sequenceOther.setTip(sequence.getTip());
+        sequenceOther.setValue(sequenceValue.getValue());
+        sequenceOther.setStatus(sequence.getStatus());
+        return sequenceOther;
     }
 
 }

@@ -2,8 +2,11 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IProductComboClientServiceFallbackFactory;
+import cn.bosenkeji.vo.Product;
 import cn.bosenkeji.vo.ProductCombo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +35,16 @@ public interface IProductComboClientService {
     Optional<Integer> delete(@PathVariable("id") int id);
 
     @GetMapping("/product_combo/{id}")
-    Optional get(@PathVariable("id") int id);
+    ProductCombo get(@PathVariable("id") int id);
 
     @PutMapping("/product_combo/{id}")
     Optional<Integer> updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
+
+    @GetMapping(value = "/product_combo/list_by_product_id_and_status")
+    public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                             @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                                             @RequestParam("productId")int productId,
+                                             @RequestParam("status")  int status);
+
 
 }

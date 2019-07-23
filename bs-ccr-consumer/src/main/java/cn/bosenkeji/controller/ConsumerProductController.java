@@ -26,6 +26,7 @@ public class ConsumerProductController {
     @Resource
     private IProductClientService iProductClientService;
 
+
     @ApiOperation(value="获取产品列表api接口",httpMethod = "GET",nickname = "getProductListWithPage")
     @GetMapping("/")
     public Object listProduct(@RequestParam(value="pageNum",defaultValue="1") int pageNum,

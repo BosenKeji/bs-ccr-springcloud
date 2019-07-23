@@ -3,9 +3,9 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IStrategyServiceFallbackFactory;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
-import cn.bosenkeji.vo.StrategyVO;
+import cn.bosenkeji.vo.strategy.Strategy;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @FeignClient(name = "bs-ccr-provider-strategy",configuration = FeignClientConfig.class
-        //, fallbackFactory = IStrategyServiceFallbackFactory.class
+        , fallbackFactory = IStrategyServiceFallbackFactory.class
         )
 public interface IStrategyService {
 
     @GetMapping("/strategy/{id}")
-    StrategyVO getStrategy(@PathVariable("id") Integer id);
+    StrategyOther getStrategy(@PathVariable("id") Integer id);
 
     @GetMapping("/strategy/")
     PageInfo<Strategy>  listByPage(
