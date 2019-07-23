@@ -2,7 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairDealServiceFallbackFactory;
-import cn.bosenkeji.vo.CoinPairDeal;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;

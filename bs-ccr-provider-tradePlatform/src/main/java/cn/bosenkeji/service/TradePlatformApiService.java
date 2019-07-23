@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

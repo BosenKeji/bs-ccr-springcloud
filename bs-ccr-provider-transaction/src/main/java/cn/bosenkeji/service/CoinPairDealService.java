@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.CoinPairDeal;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 
@@ -12,7 +12,7 @@ public interface CoinPairDealService {
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId , Integer pageNum , Integer pageSize);
 
-    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId, Integer pageNum, Integer pageSize);
+    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize);
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize);
 
@@ -20,10 +20,10 @@ public interface CoinPairDealService {
 
     int countCoinPair(Integer userId);
 
-    int countCoinPairDeal(Integer userId, Integer choicId);
+    int countCoinPairDeal(Integer userId, Integer choiceId);
 
     boolean deleteCoinPairDealByPrimaryKey(Integer id);
 
-    boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId,Integer choicId);
+    boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId,Integer choicId);
 
 }

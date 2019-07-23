@@ -3,12 +3,11 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.TradePlatformCoinPairEnum;
 import cn.bosenkeji.service.TradePlatformCoinPairService;
-import cn.bosenkeji.vo.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ import java.time.LocalDateTime;
  * @create 2019/7/16 14:55
  */
 @RestController
-@RequestMapping("/tradeplatformcoinpairs")
+@RequestMapping("/trade_platform_coin_pairs")
 @Validated
 @Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
 public class TradePlatformCoinPairController {

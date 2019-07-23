@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoin;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

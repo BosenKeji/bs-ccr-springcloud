@@ -1,7 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinClientService;
-import cn.bosenkeji.vo.Coin;
+import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

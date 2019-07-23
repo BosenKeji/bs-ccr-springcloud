@@ -3,11 +3,9 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinPairCoinEnum;
 import cn.bosenkeji.service.CoinPairCoinService;
-import cn.bosenkeji.vo.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -16,14 +14,13 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @Author CAJR
  * @create 2019/7/11 12:14
  */
 @RestController
-@RequestMapping("/coinpaircoin")
+@RequestMapping("/coin_pair_coin")
 @Api(tags = "CoinPairCoin 货币对货币相关接口", value = "提供货币对货币相关接口的 Rest API")
 public class CoinPairCoinController {
 

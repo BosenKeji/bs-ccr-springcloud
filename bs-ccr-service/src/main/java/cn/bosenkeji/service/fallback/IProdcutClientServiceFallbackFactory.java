@@ -1,10 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
-import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.service.IProductClientService;
-import cn.bosenkeji.vo.Coin;
 import cn.bosenkeji.vo.Product;
-import cn.bosenkeji.vo.ProductCombo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 

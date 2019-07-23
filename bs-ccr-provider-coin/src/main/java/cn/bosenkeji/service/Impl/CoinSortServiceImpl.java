@@ -2,10 +2,9 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinSortMapper;
 import cn.bosenkeji.service.CoinSortService;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

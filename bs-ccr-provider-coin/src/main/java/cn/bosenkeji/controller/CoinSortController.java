@@ -3,13 +3,11 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinSortEnum;
 import cn.bosenkeji.service.CoinSortService;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -18,14 +16,13 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @Author CAJR
  * @create 2019/7/11 14:23
  */
 @RestController
-@RequestMapping("/coinsort")
+@RequestMapping("/coin_sort")
 @Api(tags = "CoinSort 货币排序接口" ,value = "提供货币排序的 Rest API")
 public class CoinSortController {
 

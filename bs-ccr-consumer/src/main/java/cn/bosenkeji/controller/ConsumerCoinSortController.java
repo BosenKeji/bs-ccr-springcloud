@@ -1,7 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinSortClientService;
-import cn.bosenkeji.vo.CoinSort;
+import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @create 2019/7/11 15:47
  */
 @RestController
-@RequestMapping("/consumer/coinsort")
+@RequestMapping("/consumer/coin_sort")
 @Api(tags = "CoinSort 货币排序接口" ,value = "提供货币排序的 Rest API")
 public class ConsumerCoinSortController {
 
