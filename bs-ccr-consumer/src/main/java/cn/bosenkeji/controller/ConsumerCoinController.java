@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * @ClassName ConsumerCoinController
@@ -39,20 +40,20 @@ public class ConsumerCoinController {
 
     @ApiOperation(value = "添加单个货币信息列表接口", httpMethod = "POST",nickname = "addCoin")
     @PostMapping("/")
-    public boolean addCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+    public Optional<Integer> addCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
 
         return iCoinClientService.addCoin(coin);
     }
 
     @ApiOperation(value = "更新单个货币信息列表接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @PutMapping("/")
-    public boolean updateCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin){
+    public Optional<Integer> updateCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin){
         return iCoinClientService.updateCoin(coin);
     }
 
     @ApiOperation(value = "删除单个货币信息列表接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @DeleteMapping("/{id}")
-    public boolean deleteCoin(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id){
+    public Optional<Integer> deleteCoin(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id){
         return iCoinClientService.deleteCoin(id);
     }
 

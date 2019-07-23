@@ -1,23 +1,26 @@
-package cn.bosenkeji.extension;
+package cn.bosenkeji.plugin;
 
-import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ObjectVendorExtension;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.service.StringVendorExtension;
 import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.OperationBuilderPlugin;
 import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
-import cn.bosenkeji.result.coin.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.Class.forName;
 
 /**
@@ -38,6 +41,7 @@ public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin
 
     @Override
     public void apply(OperationContext context) {
+
 
         String[] groupNameArray = context.getGroupName().split("-");
 
@@ -72,10 +76,19 @@ public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin
                 ensurePrefixed(X_ALIYUN_APIGATEWAY_PARAMATER_HANDLING), "MAPPING");
 
 
+
+
         List<VendorExtension> extensions = new ArrayList<VendorExtension>();
         extensions.add(extension1);
         extensions.add(extension2);
         context.operationBuilder().extensions(extensions);
+    }
+
+    private Set<ResponseMessage> responseMessages() {
+        return newHashSet(
+                    new ResponseMessageBuilder().code(200).message("Successfully received bug 1767 or 2219 response")
+                            .responseModel(new ModelRef("string")).build()
+        );
     }
 
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -35,18 +36,18 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
             }
 
             @Override
-            public boolean addOneTradePlatform(TradePlatform tradePlatform) {
-                return false;
+            public Optional<Integer> addOneTradePlatform(TradePlatform tradePlatform) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean updateTradePlatform(TradePlatform tradePlatform) {
-                return false;
+            public Optional<Integer> updateTradePlatform(TradePlatform tradePlatform) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean deleteOneTradePlatform(int id) {
-                return false;
+            public Optional<Integer> deleteOneTradePlatform(int id) {
+                return Optional.of(0);
             }
         };
     }

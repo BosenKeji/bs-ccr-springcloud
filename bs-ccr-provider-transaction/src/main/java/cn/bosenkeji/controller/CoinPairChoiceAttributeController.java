@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -41,13 +42,13 @@ public class CoinPairChoiceAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
-    public boolean add(@RequestParam(value = "coinPairChoiceIds[]") @ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") int[] coinPairChoiceIds,
+    public Optional<Integer> add(@RequestParam(value = "coinPairChoiceIds[]") @ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") int[] coinPairChoiceIds,
                        @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                        @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                        @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
 
         if (coinPairChoiceIds.length == 0){
-            return false;
+            return Optional.of(0);
         }
 
         int expectMoney=(money*lever)/coinPairChoiceIds.length;
@@ -72,7 +73,7 @@ public class CoinPairChoiceAttributeController {
             }
         }
 
-        return true;
+        return Optional.ofNullable(1);
 
     }
 
@@ -87,14 +88,14 @@ public class CoinPairChoiceAttributeController {
 
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoiceAttribute")
     @PutMapping("/")
-    public boolean update(@RequestBody  @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
+    public Optional<Integer> update(@RequestBody  @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
         coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.coinPairChoiceAttributeService.update(coinPairChoiceAttribute);
     }
 
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
-    public boolean delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
+    public Optional<Integer> delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
         return this.coinPairChoiceAttributeService.delete(coinPartnerChoiceId);
     }
 

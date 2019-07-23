@@ -37,17 +37,17 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
-    public boolean add(CoinSort coinSort) {
-        return coinSortMapper.insertSelective(coinSort) == 1;
+    public Optional<Integer> add(CoinSort coinSort) {
+        return Optional.ofNullable(coinSortMapper.insertSelective(coinSort));
     }
 
     @Override
-    public boolean update(CoinSort coinSort) {
-        return coinSortMapper.updateByPrimaryKeySelective(coinSort) == 1;
+    public Optional<Integer> update(CoinSort coinSort) {
+        return  Optional.ofNullable(coinSortMapper.updateByPrimaryKeySelective(coinSort) );
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinSortMapper.deleteByPrimaryKey(id) == 1;
+    public Optional<Integer> delete(int id) {
+        return  Optional.ofNullable(coinSortMapper.deleteByPrimaryKey(id));
     }
 }

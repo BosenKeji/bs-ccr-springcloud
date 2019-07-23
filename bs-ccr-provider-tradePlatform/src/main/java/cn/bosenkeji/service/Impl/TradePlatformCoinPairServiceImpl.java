@@ -37,18 +37,18 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public boolean add(TradePlatformCoinPair tradePlatformCoinPair) {
-        return tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair) == 1;
+    public Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair));
     }
 
     @Override
-    public boolean update(TradePlatformCoinPair tradePlatformCoinPair) {
-        return tradePlatformCoinPairMapper.updateByPrimaryKeySelective(tradePlatformCoinPair) == 1;
+    public Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.updateByPrimaryKeySelective(tradePlatformCoinPair));
     }
 
     @Override
-    public boolean delete(int tradePlatformId, int coinPairId) {
-        return tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId) == 1;
+    public Optional<Integer> delete(int tradePlatformId, int coinPairId) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
     }
 
 

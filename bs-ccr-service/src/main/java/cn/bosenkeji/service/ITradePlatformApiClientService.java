@@ -7,6 +7,8 @@ import cn.bosenkeji.vo.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/22 10:37
@@ -24,11 +26,11 @@ public interface ITradePlatformApiClientService {
      * @return boolean
      */
     @PostMapping("/trade_platform_apis/")
-    public boolean addOneTradePlatformApi(@RequestParam("userId") int user,@RequestBody TradePlatformApi tradePlatformApi);
+    public Optional<Integer> addOneTradePlatformApi(@RequestParam("userId") int user, @RequestBody TradePlatformApi tradePlatformApi);
 
     @PutMapping("/trade_platform_apis/")
-    public boolean updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
+    public Optional<Integer> updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
 
     @DeleteMapping("/trade_platform_apis/{tradePlatformId}")
-    public boolean deleteOneTradePlatform(@PathVariable("tradePlatformId") int tradePlatformId);
+    public Optional<Integer> deleteOneTradePlatform(@PathVariable("tradePlatformId") int tradePlatformId);
 }

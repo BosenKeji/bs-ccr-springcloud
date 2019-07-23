@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -30,19 +31,19 @@ public class ConsumerCoinPairChoiceAttributeCustomController {
 
     @ApiOperation(value = "设置交易参数接口",httpMethod = "POST",nickname = "settingParameters")
     @PostMapping("/")
-    public boolean settingParameters(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Optional<Integer> settingParameters(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
         return this.iCoinPairChoiceAttributeCustomClientService.settingParameters(coinPairChoiceAttributeCustom);
     }
 
     @ApiOperation(value = "编辑更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
-    public boolean updateCoinPairChoiceAttributeCustom(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Optional<Integer> updateCoinPairChoiceAttributeCustom(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
         return this.iCoinPairChoiceAttributeCustomClientService.updateCoinPairChoiceAttributeCustom(coinPairChoiceAttributeCustom);
     }
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPairChoiceId}")
-    public boolean  deleteOneCoinPairChoicAttributeCustom(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
+    public Optional<Integer> deleteOneCoinPairChoicAttributeCustom(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return this.iCoinPairChoiceAttributeCustomClientService.deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(coinPairChoiceId);
     }
 }

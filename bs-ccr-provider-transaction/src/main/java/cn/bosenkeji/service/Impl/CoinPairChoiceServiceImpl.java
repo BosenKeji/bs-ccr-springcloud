@@ -39,17 +39,17 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoicService {
     }
 
     @Override
-    public boolean add(CoinPairChoice coinPairChoice) {
-        return coinPairChoiceMapper.insertSelective(coinPairChoice) == 1;
+    public Optional<Integer> add(CoinPairChoice coinPairChoice) {
+        return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
     }
 
     @Override
-    public boolean update(CoinPairChoice coinPairChoice) {
-        return coinPairChoiceMapper.updateByPrimaryKeySelective(coinPairChoice) == 1;
+    public Optional<Integer> update(CoinPairChoice coinPairChoice) {
+        return Optional.ofNullable(coinPairChoiceMapper.updateByPrimaryKeySelective(coinPairChoice));
     }
 
     @Override
-    public boolean delete(int id) {
-        return coinPairChoiceMapper.deleteByPrimaryKey(id) == 1;
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(coinPairChoiceMapper.deleteByPrimaryKey(id));
     }
 }

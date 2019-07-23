@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @ClassName ICoinSortClientService
  * @Author CAJR
@@ -23,12 +25,12 @@ public interface ICoinSortClientService {
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_sort/")
-    public boolean addCoinSort(@RequestBody CoinSort coinSort) ;
+    public Optional<Integer> addCoinSort(@RequestBody CoinSort coinSort) ;
 
     @PutMapping("/coin_sort/")
-    public boolean updateCoinSort(@RequestBody CoinSort coinSort);
+    public Optional<Integer> updateCoinSort(@RequestBody CoinSort coinSort);
 
     @DeleteMapping("/coin_sort/{id}")
-    public boolean deleteCoinSort(@PathVariable("id") int id);
+    public Optional<Integer> deleteCoinSort(@PathVariable("id") int id);
 
 }

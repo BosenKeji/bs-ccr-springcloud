@@ -1,5 +1,11 @@
 package cn.bosenkeji.result.mock;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.result.mock
@@ -104,6 +110,7 @@ public class ProductComboControllerResultMock {
                 "  \"navigateLastPage\": 1\n" +
                 "}";
     }
+    
 
     public String get() {
         return "{\n" +
@@ -209,4 +216,5 @@ public class ProductComboControllerResultMock {
                 "  \"navigateLastPage\": 1\n" +
                 "}";
     }
+
 }

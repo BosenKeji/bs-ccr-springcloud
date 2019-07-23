@@ -13,7 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Versio V1.0
 **/
 @SpringBootApplication
-@MapperScan({"cn.bosenkeji.mapper","com.baomidou.mybatisplus.samples.quickstart.mapper"})
+@MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 public class CoinApp {
     public static void main(String[] args) {

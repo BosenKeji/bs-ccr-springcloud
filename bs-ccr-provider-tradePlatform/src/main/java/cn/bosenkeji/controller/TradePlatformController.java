@@ -18,6 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -53,7 +54,7 @@ public class TradePlatformController {
 
     @ApiOperation(value = "添加交易平台单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatform")
     @PostMapping("/")
-    public boolean add(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
         tradePlatform.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformService.add(tradePlatform);
@@ -61,14 +62,14 @@ public class TradePlatformController {
 
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
     @PutMapping("/")
-    public boolean update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Optional<Integer> update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformService.update(tradePlatform);
     }
 
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
+    public Optional<Integer> delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
         return this.tradePlatformService.delete(id);
     }
 

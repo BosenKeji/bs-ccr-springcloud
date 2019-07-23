@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/22 10:36
@@ -20,12 +22,12 @@ public interface ITradePlatformClientService {
     public TradePlatform getOneTrdPatform(@PathVariable("id") int id);
 
     @PostMapping("/trade_platform/")
-    public boolean addOneTradePlatform(@RequestBody TradePlatform tradePlatform);
+    public Optional<Integer> addOneTradePlatform(@RequestBody TradePlatform tradePlatform);
 
     @PutMapping("/trade_platform/")
-    public boolean updateTradePlatform(@RequestBody TradePlatform tradePlatform);
+    public Optional<Integer> updateTradePlatform(@RequestBody TradePlatform tradePlatform);
 
     @DeleteMapping("/trade_platform/{id}")
-    public boolean deleteOneTradePlatform(@PathVariable("id") int id);
+    public Optional<Integer> deleteOneTradePlatform(@PathVariable("id") int id);
 
 }

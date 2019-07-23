@@ -19,6 +19,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -51,7 +52,7 @@ public class TradePlatformApiController {
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
-    public boolean add(@RequestParam("userId") @ApiParam(value = "user实体", required = true, type = "integer",example = "1") int userId,
+    public Optional<Integer> add(@RequestParam("userId") @ApiParam(value = "user实体", required = true, type = "integer",example = "1") int userId,
                        @RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         tradePlatformApi.setUserId(userId);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -61,14 +62,14 @@ public class TradePlatformApiController {
 
     @ApiOperation(value = "更新交易平台api接口",notes = "更新交易平台api接口",httpMethod = "PUT",nickname = "updateOneTradePlatformApi")
     @PutMapping("/")
-    public boolean update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+    public Optional<Integer> update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformApiService.update(tradePlatformApi);
     }
 
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{tradePlatformId}")
-    public boolean delete(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
+    public Optional<Integer> delete(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
         return this.tradePlatformApiService.delete(tradePlatformId);
     }
 

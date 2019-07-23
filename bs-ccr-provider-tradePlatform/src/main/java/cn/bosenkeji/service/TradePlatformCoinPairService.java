@@ -24,9 +24,9 @@ public interface TradePlatformCoinPairService {
 
     Optional<TradePlatformCoinPair> get(int id);
 
-    boolean add(TradePlatformCoinPair tradePlatformCoinPair);
+    Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair);
 
-    boolean update(TradePlatformCoinPair tradePlatformCoinPair);
+    Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair);
 
     /**
      *
@@ -34,5 +34,5 @@ public interface TradePlatformCoinPairService {
      * @param coinPairId
      * @return
      */
-    boolean delete(int tradePlatformId, int coinPairId);
+    Optional<Integer> delete(int tradePlatformId, int coinPairId);
 }

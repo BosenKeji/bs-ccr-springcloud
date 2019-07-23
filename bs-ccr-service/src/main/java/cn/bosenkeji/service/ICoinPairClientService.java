@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * @Author CAJR
  * @create 2019/7/11 11:29
@@ -23,12 +25,12 @@ public interface ICoinPairClientService {
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_pair/")
-    public boolean addCoinPair(@RequestBody CoinPair coinPair) ;
+    public Optional<Integer> addCoinPair(@RequestBody CoinPair coinPair) ;
 
     @PutMapping("/coin_pair/")
-    public boolean updateCoinPair(@RequestBody CoinPair coinPair);
+    public Optional<Integer> updateCoinPair(@RequestBody CoinPair coinPair);
 
     @DeleteMapping("/coin_pair/{id}")
-    public boolean deleteCoinPair(@PathVariable("id") int id );
+    public Optional<Integer> deleteCoinPair(@PathVariable("id") int id );
 
 }
