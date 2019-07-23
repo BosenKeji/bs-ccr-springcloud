@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequence;
 
 import java.util.List;
 

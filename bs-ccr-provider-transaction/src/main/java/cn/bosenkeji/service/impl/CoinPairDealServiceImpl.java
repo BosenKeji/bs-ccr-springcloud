@@ -3,7 +3,7 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.CoinPairDealMapper;
 import cn.bosenkeji.service.CoinPairDealService;
 import cn.bosenkeji.vo.transaction.CoinPairDeal;
-import cn.bosenkeji.vo.CoinPairDealVO;
+import cn.bosenkeji.vo.transaction.CoinPairDealOther;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
-        List<CoinPairDealVO> voList = new ArrayList<>();
+        List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
             voList.add(convertCoinPairDealVO(c));
         }
@@ -43,10 +43,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId,choiceId);
-        List<CoinPairDealVO> voList = new ArrayList<>();
+        List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
         }
@@ -54,10 +54,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
-        List<CoinPairDealVO> voList = new ArrayList<>();
+        List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
         }
@@ -94,14 +94,14 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         return Optional.of(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
     }
 
-    private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
-        CoinPairDealVO vo = new CoinPairDealVO();
-        vo.setId(coinPairDeal.getId());
-        vo.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
-        vo.setType(coinPairDeal.getType());
-        vo.setQuantity(coinPairDeal.getQuantity());
-        vo.setStatus(coinPairDeal.getStatus());
-        return vo;
+    private CoinPairDealOther convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
+        CoinPairDealOther other = new CoinPairDealOther();
+        other.setId(coinPairDeal.getId());
+        other.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
+        other.setType(coinPairDeal.getType());
+        other.setQuantity(coinPairDeal.getQuantity());
+        other.setStatus(coinPairDeal.getStatus());
+        return other;
     }
 
 }

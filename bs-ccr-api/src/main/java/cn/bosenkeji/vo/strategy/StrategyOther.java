@@ -1,6 +1,6 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.strategy;
 
-public class StrategyVO {
+public class StrategyOther {
 
     private int id;
     private String name;
@@ -10,7 +10,7 @@ public class StrategyVO {
     private int rate;
     private int buildReference;
 
-    public StrategyVO(int id, String name, int status, int lever, int rate, int buildReference) {
+    public StrategyOther(int id, String name, int status, int lever, int rate, int buildReference) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -19,7 +19,7 @@ public class StrategyVO {
         this.buildReference = buildReference;
     }
 
-    public StrategyVO() { }
+    public StrategyOther() { }
 
     public int getId() {
         return id;
@@ -72,7 +72,7 @@ public class StrategyVO {
 
     @Override
     public String toString() {
-        return "StrategyVO{" +
+        return "StrategyOther{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", status=" + status +

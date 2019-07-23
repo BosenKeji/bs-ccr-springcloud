@@ -1,9 +1,9 @@
 package cn.bosenkeji.service;
 
 
-import cn.bosenkeji.vo.StrategySequence;
-import cn.bosenkeji.vo.StrategySequenceVO;
-import cn.bosenkeji.vo.StrategySequenceValue;
+import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequenceOther;
+import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Optional;
@@ -16,7 +16,7 @@ public interface StrategySequenceService {
 
     PageInfo<StrategySequence> findAll(Integer pageNum, Integer pageSize);
 
-    StrategySequenceVO findSequenceByPrimaryKey(Integer id);
+    StrategySequenceOther findSequenceByPrimaryKey(Integer id);
 
     String getSequenceValueByStrategyId(Integer strategyId);
 }

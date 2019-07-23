@@ -1,9 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IStrategyService;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
-import cn.bosenkeji.vo.StrategyVO;
+import cn.bosenkeji.vo.strategy.Strategy;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 
@@ -28,7 +29,7 @@ public class ConsumerStrategyController {
             nickname = "addStrategyBySelective",httpMethod = "POST"
     )
     public Optional<Integer> addStrategyBySelective(
-            @ApiParam("策略基本属性映射的对象") Strategy strategy
+            @ApiParam("策略基本属性映射的对象") @NotNull Strategy strategy
     ) {
         return strategyService.addStrategyBySelective(strategy);
     }
@@ -38,7 +39,7 @@ public class ConsumerStrategyController {
             nickname = "addStrategyAttributeBySelective",httpMethod = "POST"
     )
     public Optional<Integer> addStrategyAttributeBySelective(
-            @ApiParam("策略的详细属性映射的对象") StrategyAttribute strategyAttribute
+            @ApiParam("策略的详细属性映射的对象") @NotNull StrategyAttribute strategyAttribute
     ) {
         return strategyService.addStrategyAttributeBySelective(strategyAttribute);
     }
@@ -47,7 +48,7 @@ public class ConsumerStrategyController {
     @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息",
             nickname = "getStrategyById",httpMethod = "GET"
     )
-    public StrategyVO get(
+    public StrategyOther get(
             @PathVariable("id") @Min(value = 1) @ApiParam(value = "策略的ID值",example = "1",required = true) Integer id
     ) {
         return strategyService.getStrategy(id);

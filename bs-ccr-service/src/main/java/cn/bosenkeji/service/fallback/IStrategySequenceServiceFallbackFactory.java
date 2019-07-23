@@ -1,9 +1,9 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.IStrategySequenceService;
-import cn.bosenkeji.vo.StrategySequence;
-import cn.bosenkeji.vo.StrategySequenceVO;
-import cn.bosenkeji.vo.StrategySequenceValue;
+import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequenceOther;
+import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -39,10 +39,10 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public StrategySequenceVO findSequenceByPrimaryKey(Integer id) {
-                StrategySequenceVO sequenceVO = new StrategySequenceVO();
-                sequenceVO.setName("strategy sequence hystrix");
-                return sequenceVO;
+            public StrategySequenceOther findSequenceByPrimaryKey(Integer id) {
+                StrategySequenceOther sequenceOther = new StrategySequenceOther();
+                sequenceOther.setName("strategy sequence hystrix");
+                return sequenceOther;
             }
 
             @Override

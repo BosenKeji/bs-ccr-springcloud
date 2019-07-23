@@ -1,9 +1,9 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.IStrategyService;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
-import cn.bosenkeji.vo.StrategyVO;
+import cn.bosenkeji.vo.strategy.Strategy;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -18,8 +18,8 @@ public class IStrategyServiceFallbackFactory implements FallbackFactory<IStrateg
     public IStrategyService create(Throwable throwable) {
         return new IStrategyService() {
             @Override
-            public StrategyVO getStrategy(Integer id) {
-                StrategyVO strategyVO = new StrategyVO();
+            public StrategyOther getStrategy(Integer id) {
+                StrategyOther strategyVO = new StrategyOther();
                 strategyVO.setName("strategy hystrix");
                 return strategyVO;
             }

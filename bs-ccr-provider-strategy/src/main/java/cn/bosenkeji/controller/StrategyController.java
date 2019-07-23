@@ -1,9 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.StrategyService;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
-import cn.bosenkeji.vo.StrategyVO;
+import cn.bosenkeji.vo.strategy.Strategy;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,7 +55,7 @@ public class StrategyController {
     @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息",
             nickname = "getStrategyById",httpMethod = "GET"
     )
-    public StrategyVO get(
+    public StrategyOther get(
             @PathVariable("id") @Min(value = 1) @ApiParam(value = "策略的ID值",example = "1",required = true) Integer id
     ) {
         return strategyService.getStrategy(id);

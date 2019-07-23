@@ -1,4 +1,4 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.strategy;
 
 
 import java.sql.Timestamp;
