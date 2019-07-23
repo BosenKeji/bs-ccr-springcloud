@@ -42,8 +42,9 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public boolean add(Coin coin) {
-        return coinMapper.insert(coin)==1;
+    public Optional<Integer> add(Coin coin) {
+        return Optional.ofNullable(coinMapper.insert(coin)) ;
+//        return coinMapper.insert(coin)==1;
     }
 
     @Override

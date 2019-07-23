@@ -20,7 +20,7 @@ public interface CoinService {
 
     Optional<Coin> get(int id);
 
-    boolean add(Coin coin);
+    Optional<Integer> add(Coin coin);
 
     boolean update(Coin coin);
 
