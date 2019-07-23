@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<IStrategySequenceService> {
@@ -17,13 +18,13 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
     public IStrategySequenceService create(Throwable throwable) {
         return new IStrategySequenceService() {
             @Override
-            public boolean insertStrategySequenceBySelective(StrategySequence sequence) {
-                return false;
+            public Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence) {
+                return Optional.of(0);
             }
 
             @Override
-            public boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
-                return false;
+            public Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+                return Optional.of(0);
             }
 
             @Override

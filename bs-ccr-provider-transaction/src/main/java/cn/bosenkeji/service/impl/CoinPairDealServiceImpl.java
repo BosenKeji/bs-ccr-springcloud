@@ -2,7 +2,7 @@ package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.CoinPairDealMapper;
 import cn.bosenkeji.service.CoinPairDealService;
-import cn.bosenkeji.vo.CoinPairDeal;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -46,9 +46,9 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId, Integer pageNum, Integer pageSize) {
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoicId(userId,choicId);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoicId(userId,choiceId);
         List<CoinPairDealVO> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
@@ -83,8 +83,8 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public int countCoinPairDeal(Integer userId, Integer choicId) {
-        return coinPairDealMapper.countCoinPairDeal(userId,choicId);
+    public int countCoinPairDeal(Integer userId, Integer choiceId) {
+        return coinPairDealMapper.countCoinPairDeal(userId,choiceId);
     }
 
     @Override
@@ -93,14 +93,14 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-    public boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId) {
-        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choicId));
+    public boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
+        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choiceId));
     }
 
     private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
         CoinPairDealVO vo = new CoinPairDealVO();
         vo.setId(coinPairDeal.getId());
-        vo.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoicId());
+        vo.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
         vo.setType(coinPairDeal.getType());
         vo.setQuantity(coinPairDeal.getQuantity());
         vo.setStatus(coinPairDeal.getStatus());

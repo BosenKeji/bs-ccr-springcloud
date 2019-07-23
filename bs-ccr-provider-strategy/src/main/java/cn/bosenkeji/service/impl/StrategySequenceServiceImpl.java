@@ -8,11 +8,13 @@ import cn.bosenkeji.vo.StrategySequenceVO;
 import cn.bosenkeji.vo.StrategySequenceValue;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class StrategySequenceServiceImpl implements StrategySequenceService {
@@ -25,30 +27,25 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
 
 
     @Override
-    public boolean insertStrategySequenceBySelective(StrategySequence sequence) {
-        boolean b = false;
+    public Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence) {
         sequence.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         sequence.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int result = strategySequenceMapper.insertSelective(sequence);
-        if ( result > 0 ) {
-            b = true;
-        }
-        return b;
+        return Optional.of(strategySequenceMapper.insertSelective(sequence));
     }
 
     @Override
-    public boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
-        boolean b = false;
+    public Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+        Optional<Integer> o = Optional.of(0);
         StrategySequence checkSequence = strategySequenceMapper.findSequenceByPrimaryKey(sequenceValue.getStrategySequenceId());
+        sequenceValue.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        sequenceValue.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         if ( checkSequence != null ) {
-            sequenceValue.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            sequenceValue.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            int result = strategySequenceValueMapper.insertSelective(sequenceValue);
-            if ( result > 0 ) {
-                b = true;
+            int i = strategySequenceValueMapper.insertSelective(sequenceValue);
+            if ( i > 0 ) {
+                o = Optional.of(i);
             }
         }
-        return b;
+        return o;
     }
 
     @Override

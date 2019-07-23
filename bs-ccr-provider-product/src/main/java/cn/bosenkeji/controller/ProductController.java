@@ -7,15 +7,19 @@ import cn.bosenkeji.vo.Product;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author xivin
@@ -35,47 +39,54 @@ public class ProductController {
 
     @ApiOperation(value="获取产品列表api接口",httpMethod = "GET",nickname = "getProductListWithPage")
     @RequestMapping(value="/",method = RequestMethod.GET)
-    public PageInfo<Product> list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                  @RequestParam(value="pageSize",defaultValue="15") int pageSize)
     {
         return this.iProductService.list(pageNum,pageSize);
     }
 
-    @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getProductInfo")
+    @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    public Product get(@PathVariable("id") @Min(1) int id) { return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));}
+    public Product get(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) { return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));}
 
-    @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProductInfo")
+    @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProduct")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public boolean add(@RequestBody Product product) {
+    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
         product.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        product.setStatus(1);
         return this.iProductService.add(product);
     }
 
-    @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE")
+    @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable("id") @Min(1) int id) { return this.iProductService.delete(id);}
+    public Optional<Integer> delete(@PathVariable("id") @Min(1)
+                                        @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+        return this.iProductService.delete(id);
+    }
 
-    @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProductInfo")
+    @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProduct")
     @RequestMapping(value="/",method = RequestMethod.PUT)
-    public boolean update(@RequestBody Product product) {
+    public Optional<Integer> update(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.iProductService.update(product);
     }
 
-    @ApiOperation(value="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")
-    @RequestMapping(value="/discover")
-    public Object discover() { return this.discoveryClient;}
-
     @ApiOperation(value="启用、关闭产品api接口",httpMethod = "PUT",nickname = "updateProductStatus")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public boolean updateStatus(@PathVariable("id") @Min(1) int id,@RequestParam("status") int status) {
+    public Optional<Integer> updateProductStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id,@RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
         Product product=new Product();
         product.setId(id);
         product.setStatus(status);
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.iProductService.updateStatus(product);
     }
+
+
+    @ApiOperation(value="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")
+    @RequestMapping(value="/discover")
+    @ApiIgnore
+    public Object discover() { return this.discoveryClient;}
 
 
 

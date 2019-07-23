@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -25,8 +26,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/userproductcomboday")
+//@RestController
+//@RequestMapping("/userproductcomboday")
 @Validated
 @Api(tags = "UserProductCobmoDay 用户套餐时长相关接口",value="提供用户套餐时长相关的 Rest API")
 public class UserProductComboDayController {
@@ -58,5 +59,6 @@ public class UserProductComboDayController {
 
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口",httpMethod = "GET")
     @RequestMapping(value="/discover")
+    @ApiIgnore
     public Object discover() { return this.discoveryClient;}
 }

@@ -17,6 +17,7 @@ import java.security.acl.LastOwnerException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StrategyServiceImpl implements StrategyService{
@@ -33,20 +34,15 @@ public class StrategyServiceImpl implements StrategyService{
 
 
     @Override
-    public boolean addStrategyAttributeBySelective(Strategy strategy) {
+    public Optional<Integer> addStrategyAttributeBySelective(Strategy strategy) {
         strategy.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         strategy.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int result = strategyMapper.insertSelective(strategy);
-        boolean b = false;
-        if (result > 0) {
-            b = true;
-        }
-        return b;
+        return Optional.of(strategyMapper.insertSelective(strategy));
     }
 
     @Override
-    public boolean insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
-        boolean b = false;
+    public Optional<Integer> insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
+        Optional result = Optional.ofNullable(null);
         boolean checkStrategy = false , checkSequence = false;
         Strategy strategy = strategyMapper.findStrategy(strategyAttribute.getStrategyId());
         StrategySequence sequence = strategySequenceMapper.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId());
@@ -59,12 +55,12 @@ public class StrategyServiceImpl implements StrategyService{
         if (checkStrategy && checkSequence) {
             strategyAttribute.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
             strategyAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            int result = strategyAttributeMapper.insertSelective(strategyAttribute);
-            if (result > 0) {
-                b = true;
+            int i = strategyAttributeMapper.insertSelective(strategyAttribute);
+            if (i > 0) {
+                result = Optional.of(i);
             }
         }
-        return b;
+        return result;
     }
 
     @Override

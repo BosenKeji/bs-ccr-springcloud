@@ -15,12 +15,12 @@ public interface IProductService {
     PageInfo<Product> list(int pageNum,int pageSize);
     Optional<Product> get(int id);
 
-    boolean add(Product product);
+    Optional<Integer> add(Product product);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 
-    boolean update(Product product);
+    Optional<Integer> update(Product product);
 
-    boolean updateStatus(Product product);
+    Optional<Integer> updateStatus(Product product);
 
 }
