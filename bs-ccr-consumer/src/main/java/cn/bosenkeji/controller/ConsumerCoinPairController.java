@@ -1,8 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinPairClientService;
-import cn.bosenkeji.service.ICoinPairCoinClientService;
-import cn.bosenkeji.vo.CoinPair;
+import cn.bosenkeji.vo.coin.CoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @create 2019/7/11 15:43
  */
 @RestController
-@RequestMapping("/consumer/coinpair")
+@RequestMapping("/consumer/coin_pair")
 @Api(tags = "CoinPair 货币对相关接口", value = "提供货币对相关接口的 Rest API")
 public class ConsumerCoinPairController {
 

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.CoinPairChoiceAttributeCustomMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="coin_partner_choice_id" jdbcType="INTEGER" property="coinPartnerChoiceId" />
+    <result column="stop_profit_type" jdbcType="TINYINT" property="stopProfitType" />
+    <result column="stop_profit_money" jdbcType="INTEGER" property="stopProfitMoney" />
+    <result column="stop_profit_trace_trigger_rate" jdbcType="FLOAT" property="stopProfitTraceTriggerRate" />
+    <result column="stop_profit_trace_drop_rate" jdbcType="FLOAT" property="stopProfitTraceDropRate" />
+    <result column="stop_profit_fixed_rate" jdbcType="FLOAT" property="stopProfitFixedRate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, coin_partner_choice_id, stop_profit_type, stop_profit_money, stop_profit_trace_trigger_rate,
+    stop_profit_trace_drop_rate, stop_profit_fixed_rate, `status`, created_at, updated_at
+  </sql>
+  <select id="selectByCoinPartnerChoiceId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin_pair_choice_attribute_custom
+    where coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from coin_pair_choice_attribute_custom
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from coin_pair_choice_attribute_custom
+    where coin_partner_choice_id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_choice_attribute_custom (coin_partner_choice_id, stop_profit_type,
+      stop_profit_money, stop_profit_trace_trigger_rate, 
+      stop_profit_trace_drop_rate, stop_profit_fixed_rate, 
+      `status`, created_at, updated_at
+      )
+    values (#{coinPartnerChoiceId,jdbcType=INTEGER}, #{stopProfitType,jdbcType=TINYINT},
+      #{stopProfitMoney,jdbcType=INTEGER}, #{stopProfitTraceTriggerRate,jdbcType=FLOAT}, 
+      #{stopProfitTraceDropRate,jdbcType=FLOAT}, #{stopProfitFixedRate,jdbcType=FLOAT}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into coin_pair_choice_attribute_custom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      coin_partner_choice_id,
+      stop_profit_type,
+      stop_profit_money,
+      <if test="stopProfitTraceTriggerRate != null">
+        stop_profit_trace_trigger_rate,
+      </if>
+      <if test="stopProfitTraceDropRate != null">
+        stop_profit_trace_drop_rate,
+      </if>
+      <if test="stopProfitFixedRate != null">
+        stop_profit_fixed_rate,
+      </if>
+      `status`,
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{coinPartnerChoiceId,jdbcType=INTEGER},
+      #{stopProfitType,jdbcType=TINYINT},
+      #{stopProfitMoney,jdbcType=INTEGER},
+      <if test="stopProfitTraceTriggerRate != null">
+        #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitTraceDropRate != null">
+        #{stopProfitTraceDropRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitFixedRate != null">
+        #{stopProfitFixedRate,jdbcType=FLOAT},
+      </if>
+      #{status,jdbcType=TINYINT},
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
+    <!--@mbg.generated-->
+    update coin_pair_choice_attribute_custom
+    <set>
+      <if test="coinPartnerChoicId != null">
+        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="stopProfitType != null">
+        stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
+      </if>
+      <if test="stopProfitMoney != null">
+        stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
+      </if>
+      <if test="stopProfitTraceTriggerRate != null">
+        stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitTraceDropRate != null">
+        stop_profit_trace_drop_rate = #{stopProfitTraceDropRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitFixedRate != null">
+        stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByCoinPartnerChoiceId" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
+    <!--@mbg.generated-->
+    update coin_pair_choice_attribute_custom
+    <set>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stopProfitType != null">
+        stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
+      </if>
+      <if test="stopProfitMoney != null">
+        stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
+      </if>
+      <if test="stopProfitTraceTriggerRate != null">
+        stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitTraceDropRate != null">
+        stop_profit_trace_drop_rate = #{stopProfitTraceDropRate,jdbcType=FLOAT},
+      </if>
+      <if test="stopProfitFixedRate != null">
+        stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
+    <!--@mbg.generated-->
+    update coin_pair_choice_attribute_custom
+    set coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+      stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
+      stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
+      stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
+      stop_profit_trace_drop_rate = #{stopProfitTraceDropRate,jdbcType=FLOAT},
+      stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

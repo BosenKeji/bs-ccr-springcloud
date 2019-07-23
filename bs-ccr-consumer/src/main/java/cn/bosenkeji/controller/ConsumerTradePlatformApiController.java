@@ -1,7 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiClientService;
-import cn.bosenkeji.vo.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @create 2019/7/22 11:25
  */
 @RestController
-@RequestMapping("/consumer/tradeplatformapi")
+@RequestMapping("/consumer/trade_platform_api")
 @Api(tags = "tradePlatformApi 交易平台api接口",value = "提供交易平台api相关功能 Rest接口")
 public class ConsumerTradePlatformApiController {
 

@@ -1,9 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
-import cn.bosenkeji.service.fallback.ICoinClientServiceFallbackFactory;
 import cn.bosenkeji.service.fallback.IProdcutClientServiceFallbackFactory;
-import cn.bosenkeji.vo.Coin;
 import cn.bosenkeji.vo.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;

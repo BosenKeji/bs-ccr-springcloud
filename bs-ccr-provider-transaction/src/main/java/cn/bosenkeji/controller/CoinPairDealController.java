@@ -2,7 +2,7 @@ package cn.bosenkeji.controller;
 
 
 import cn.bosenkeji.service.CoinPairDealService;
-import cn.bosenkeji.vo.CoinPairDeal;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -43,6 +43,7 @@ public class CoinPairDealController {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
 
+<<<<<<< HEAD
     @PostMapping(value = "/{userId}/choice/{choiceId}")
     @ApiOperation(value = "获取指定货币对交易信息",notes = "指定用户ID和货币对ID，获取该用户某货币对交易信息",
             nickname = "findCoinPairDealByUserIdAndChoiceId",httpMethod = "GET")
@@ -53,6 +54,18 @@ public class CoinPairDealController {
             @RequestParam("pageSize") @Min(1) Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndChoiceId(userId,choicId,pageNum,pageSize);
+=======
+    @RequestMapping(value = "/{userId}/choice/{choiceId}",method = RequestMethod.POST)
+    @ApiOperation(value = "获取指定货币对交易信息",notes = "指定用户ID和货币对ID，获取该用户某货币对交易信息",
+            nickname = "findCoinPairDealByUserIdAndChoiceId",httpMethod = "GET")
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(
+            @PathVariable("userId") @Min(1) Integer userId,
+            @PathVariable("choiceId") @Min(1) Integer choiceId,
+            @RequestParam("pageNum") @Min(1) Integer pageNum,
+            @RequestParam("pageSize") @Min(1) Integer pageSize
+    ) {
+        return coinPairDealService.findCoinPairDealByUserIdAndChoiceId(userId,choiceId,pageNum,pageSize);
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
     }
 
 
@@ -82,11 +95,19 @@ public class CoinPairDealController {
         return coinPairDealService.countCoinPair(userId);
     }
 
+<<<<<<< HEAD
     @GetMapping(value = "/count/{userId}/choice/{choiceId}")
     @ApiOperation(value = "获取货币对交易的下单数",notes = "指定用户ID和货币对ID，统计已下单数",
             nickname = "countCoinPairDeal",httpMethod = "GET")
     public Optional<Integer> countCoinPairDeal(@PathVariable("userId") @Min(1) Integer userId, @PathVariable("choiceId") @Min(1) Integer choicId) {
         return coinPairDealService.countCoinPairDeal(userId,choicId);
+=======
+    @RequestMapping(value = "/count/{userId}/choice/{choiceId}", method = RequestMethod.GET)
+    @ApiOperation(value = "获取货币对交易的下单数",notes = "指定用户ID和货币对ID，统计已下单数",
+            nickname = "countCoinPairDeal",httpMethod = "GET")
+    public int countCoinPairDeal(@PathVariable("userId") @Min(1) Integer userId, @PathVariable("choiceId") @Min(1) Integer choiceId) {
+        return coinPairDealService.countCoinPairDeal(userId,choiceId);
+>>>>>>> 44f17741ddcf02033387e1bc9c08f7f89b1e11f0
     }
 
     @PostMapping(value = "/")

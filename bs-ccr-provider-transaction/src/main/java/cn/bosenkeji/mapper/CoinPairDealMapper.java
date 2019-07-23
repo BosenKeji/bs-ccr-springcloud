@@ -1,7 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.CoinPairDeal;
-import com.github.pagehelper.PageInfo;
+import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
