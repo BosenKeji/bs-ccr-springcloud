@@ -51,8 +51,9 @@ public class TradePlatformApiController {
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
-    public boolean add(@RequestBody @ApiParam(value = "user实体", required = true, type = "string") User user, @RequestParam("tradePlatformApi")  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
-        tradePlatformApi.setUserId(user.getId());
+    public boolean add(@RequestParam("userId") @ApiParam(value = "user实体", required = true, type = "integer",example = "1") int userId,
+                       @RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+        tradePlatformApi.setUserId(userId);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return this.tradePlatformApiService.add(tradePlatformApi);

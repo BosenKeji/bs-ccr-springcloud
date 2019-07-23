@@ -45,7 +45,7 @@ public class ITradePlatformCoinPairClientServiceFallbackFactory implements Fallb
             }
 
             @Override
-            public boolean deleteOneTradePlatformCoinPair(int id) {
+            public boolean deleteOneTradePlatformCoinPair(int tradePlatformId,int coinPairId) {
                 return false;
             }
         };

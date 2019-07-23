@@ -47,7 +47,9 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public boolean delete(int id) {
-        return tradePlatformCoinPairMapper.deleteByPrimaryKey(id) == 1;
+    public boolean delete(int tradePlatformId, int coinPairId) {
+        return tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId) == 1;
     }
+
+
 }

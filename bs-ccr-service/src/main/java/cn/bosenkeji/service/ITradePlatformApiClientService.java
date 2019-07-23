@@ -24,7 +24,7 @@ public interface ITradePlatformApiClientService {
      * @return boolean
      */
     @PostMapping("/trade_platform_apis/")
-    public boolean addOneTradePlatformApi(@RequestParam("user") User user,@RequestParam("tradePlatformApi") TradePlatformApi tradePlatformApi);
+    public boolean addOneTradePlatformApi(@RequestParam("userId") int user,@RequestBody TradePlatformApi tradePlatformApi);
 
     @PutMapping("/trade_platform_apis/")
     public boolean updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
