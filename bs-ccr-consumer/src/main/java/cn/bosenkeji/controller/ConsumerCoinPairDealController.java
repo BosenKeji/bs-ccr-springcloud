@@ -6,9 +6,10 @@ import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/coinpairdeal")
+@RequestMapping("/coin_pair_deal")
 public class ConsumerCoinPairDealController {
 
     @Resource
@@ -24,14 +25,14 @@ public class ConsumerCoinPairDealController {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
 
-    @GetMapping(value = "/{userId}/choic/{choicId}")
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(
+    @GetMapping(value = "/{userId}/choice/{choiceId}")
+    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(
             @PathVariable("userId") Integer userId,
-            @PathVariable("choicId") Integer choicId,
+            @PathVariable("choiceId") Integer choiceId,
             @RequestParam("pageNum") Integer pageNum,
             @RequestParam("pageSize") Integer pageSize
     ) {
-        return coinPairDealService.findCoinPairDealByUserIdAndChoicId(userId,choicId,pageNum,pageSize);
+        return coinPairDealService.findCoinPairDealByUserIdAndChoiceId(userId,choiceId,pageNum,pageSize);
     }
 
 
@@ -46,36 +47,36 @@ public class ConsumerCoinPairDealController {
     }
 
     @PutMapping(value = "/status")
-    public boolean updateCoinPairDealStartsById(@RequestParam("id") Integer id ,@RequestParam("status") Integer status) {
+    public Optional<Integer> updateCoinPairDealStartsById(@RequestParam("id") Integer id , @RequestParam("status") Integer status) {
         return coinPairDealService.updateCoinPairDealStartsById(id,status);
     }
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
-    public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+    public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
         return coinPairDealService.insertCoinPairDealBySelective(coinPairDeal);
     }
 
     @GetMapping(value = "/count/{userId}")
-    public int countCoinPair(@PathVariable("userId") Integer userId) {
+    public Optional<Integer> countCoinPair(@PathVariable("userId") Integer userId) {
         return coinPairDealService.countCoinPair(userId);
     }
 
-    @GetMapping(value = "/count/{userId}/choic/{choicId}")
-    public int countCoinPairDeal(@PathVariable("userId")Integer userId, @PathVariable("choicId") Integer choicId) {
-        return coinPairDealService.countCoinPairDeal(userId,choicId);
+    @GetMapping(value = "/count/{userId}/choice/{choiceId}")
+    public Optional<Integer> countCoinPairDeal(@PathVariable("userId")Integer userId, @PathVariable("choiceId") Integer choiceId) {
+        return coinPairDealService.countCoinPairDeal(userId,choiceId);
     }
 
 
     @DeleteMapping("/{id}")
-    public boolean deleteCoinPairDealByPrimaryKey(@PathVariable("id") Integer id) {
+    public Optional<Integer> deleteCoinPairDealByPrimaryKey(@PathVariable("id") Integer id) {
         return coinPairDealService.deleteCoinPairDealByPrimaryKey(id);
     }
 
-    @DeleteMapping(value = "/{userId}/choic/{choicId}")
-    public boolean deleteBatchCoinPairDealByUserIdAndChoicId(
-            @PathVariable("userId") Integer userId, @PathVariable("choicId") Integer choicId
+    @DeleteMapping(value = "/{userId}/choice/{choiceId}")
+    public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(
+            @PathVariable("userId") Integer userId, @PathVariable("choiceId") Integer choiceId
     ) {
-        return coinPairDealService.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choicId);
+        return coinPairDealService.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId);
     }
 
 }

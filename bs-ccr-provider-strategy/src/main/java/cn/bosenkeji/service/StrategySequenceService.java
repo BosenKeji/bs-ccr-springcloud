@@ -6,11 +6,13 @@ import cn.bosenkeji.vo.StrategySequenceVO;
 import cn.bosenkeji.vo.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Optional;
+
 public interface StrategySequenceService {
 
-    boolean insertStrategySequenceBySelective(StrategySequence sequence);
+    Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence);
 
-    boolean insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue);
+    Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue);
 
     PageInfo<StrategySequence> findAll(Integer pageNum, Integer pageSize);
 

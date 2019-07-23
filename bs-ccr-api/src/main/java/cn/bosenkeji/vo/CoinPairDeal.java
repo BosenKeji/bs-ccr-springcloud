@@ -13,7 +13,7 @@ public class CoinPairDeal {
 
     private int userId;
 
-    private int coinPartnerChoicId;
+    private int coinPartnerChoiceId;
 
     private int type;
 
@@ -41,12 +41,12 @@ public class CoinPairDeal {
         this.userId = userId;
     }
 
-    public int getCoinPartnerChoicId() {
-        return coinPartnerChoicId;
+    public int getCoinPartnerChoiceId() {
+        return coinPartnerChoiceId;
     }
 
-    public void setCoinPartnerChoicId(int coinPartnerChoicId) {
-        this.coinPartnerChoicId = coinPartnerChoicId;
+    public void setCoinPartnerChoiceId(int coinPartnerChoiceId) {
+        this.coinPartnerChoiceId = coinPartnerChoiceId;
     }
 
     public int getType() {

@@ -4,26 +4,27 @@ import cn.bosenkeji.vo.CoinPairDeal;
 import cn.bosenkeji.vo.CoinPairDealVO;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Optional;
 
 
 public interface CoinPairDealService {
 
-    boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal);
+    Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal);
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId , Integer pageNum , Integer pageSize);
 
-    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoicId(Integer userId, Integer choicId, Integer pageNum, Integer pageSize);
+    PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize);
 
     PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize);
 
-    boolean updateCoinPairDealStartsById(Integer id, Integer status);
+    Optional<Integer> updateCoinPairDealStartsById(Integer id, Integer status);
 
-    int countCoinPair(Integer userId);
+    Optional<Integer> countCoinPair(Integer userId);
 
-    int countCoinPairDeal(Integer userId, Integer choicId);
+    Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId);
 
-    boolean deleteCoinPairDealByPrimaryKey(Integer id);
+    Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id);
 
-    boolean deleteBatchCoinPairDealByUserIdAndChoicId(Integer userId,Integer choicId);
+    Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId,Integer choiceId);
 
 }

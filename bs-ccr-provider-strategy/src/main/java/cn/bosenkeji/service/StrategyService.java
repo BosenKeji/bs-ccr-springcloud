@@ -6,12 +6,14 @@ import cn.bosenkeji.vo.StrategyAttribute;
 import cn.bosenkeji.vo.StrategyVO;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Optional;
+
 
 public interface StrategyService {
 
-    boolean addStrategyAttributeBySelective(Strategy strategy);
+    Optional<Integer> addStrategyAttributeBySelective(Strategy strategy);
 
-    boolean insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
+    Optional<Integer> insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
 
     StrategyVO getStrategy(Integer id);
 
