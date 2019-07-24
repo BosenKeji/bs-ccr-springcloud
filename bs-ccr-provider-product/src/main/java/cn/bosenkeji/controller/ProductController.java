@@ -1,9 +1,13 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.ProductEnum;
 import cn.bosenkeji.service.IProductService;
-import cn.bosenkeji.vo.Product;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.product.Product;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,39 +51,47 @@ public class ProductController {
 
     @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    public Product get(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) { return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));}
+    public Product get(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+        return this.iProductService.get(id).orElseThrow(()->new NotFoundException(ProductEnum.NAME));
+    }
 
     @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProduct")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
+    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
+       this.iProductService.checkExistByName(product.getName())
+               .filter((value)->value==0)
+               .orElseThrow(()->new AddException(ProductEnum.NAME));
         product.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setStatus(1);
-        return this.iProductService.add(product);
+        return new Result(this.iProductService.add(product)
+                .filter((value)->value==1)
+                .orElseThrow(()->new AddException(ProductEnum.NAME)));
     }
 
     @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
-    public Optional<Integer> delete(@PathVariable("id") @Min(1)
+    public Result delete(@PathVariable("id") @Min(1)
                                         @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
-        return this.iProductService.delete(id);
+        return new Result(this.iProductService.delete(id).filter((value)->value>=1).orElseThrow(()->new DeleteException(ProductEnum.NAME)));
     }
 
     @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProduct")
     @RequestMapping(value="/",method = RequestMethod.PUT)
-    public Optional<Integer> update(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
+    public Result update(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductService.update(product);
+        return new Result(this.iProductService.update(product).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductEnum.NAME)));
     }
 
     @ApiOperation(value="启用、关闭产品api接口",httpMethod = "PUT",nickname = "updateProductStatus")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public Optional<Integer> updateProductStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id,@RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
+    public Result updateProductStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id,@RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
+
         Product product=new Product();
         product.setId(id);
         product.setStatus(status);
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductService.updateStatus(product);
+        return new Result(this.iProductService.updateStatus(product).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductEnum.NAME)));
     }
 
 

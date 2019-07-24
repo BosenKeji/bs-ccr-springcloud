@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -36,19 +37,21 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
             }
 
             @Override
-            public Optional<Integer> addOneTradePlatform(TradePlatform tradePlatform) {
-                return Optional.of(0);
+            public Result addOneTradePlatform(TradePlatform tradePlatform) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> updateTradePlatform(TradePlatform tradePlatform) {
-                return Optional.of(0);
+            public Result updateTradePlatform(TradePlatform tradePlatform) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> deleteOneTradePlatform(int id) {
-                return Optional.of(0);
+            public Result deleteOneTradePlatform(int id) {
+                return  new Result("0","fail");
             }
+
+
         };
     }
 }

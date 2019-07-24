@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -21,5 +21,6 @@ public interface IUserProductComboService {
 
     List<UserProductCombo> getByUserId(int userId);
     PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel);
+    Optional<Integer> checkExistByProductIdAndUserId(int productId,int userId);
 
 }

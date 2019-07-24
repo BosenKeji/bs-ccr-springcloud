@@ -1,8 +1,7 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.UserProductCombo;
-import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

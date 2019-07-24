@@ -12,6 +12,8 @@ import java.util.List;
 public interface CoinPairCoinMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByCoinIdAndCoinPairId(int coinId,int coinPairId);
+
     int insert(CoinPairCoin record);
 
     int insertSelective(CoinPairCoin record);

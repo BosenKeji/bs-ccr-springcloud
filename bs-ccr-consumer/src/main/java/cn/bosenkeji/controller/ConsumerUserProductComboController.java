@@ -1,14 +1,13 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboClientService;
-import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author xivin
@@ -26,7 +25,10 @@ public class ConsumerUserProductComboController {
 
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @PostMapping("/")
-    public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo) { return this.iUserProductComboClientService.add(userProductCombo);}
+    public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
+                      ) {
+        return this.iUserProductComboClientService.add(userProductCombo);
+    }
 
     @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")
     @GetMapping("/list_by_user_tel")

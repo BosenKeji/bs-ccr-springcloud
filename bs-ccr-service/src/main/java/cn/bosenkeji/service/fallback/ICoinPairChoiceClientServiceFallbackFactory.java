@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -36,19 +37,21 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Optional<Integer> addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
-                return Optional.of(0);
+            public Result addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> updateCoinPairChoice(CoinPairChoice coinPairChoice) {
-                return Optional.of(0);
+            public Result updateCoinPairChoice(CoinPairChoice coinPairChoice) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> deleteOneCoinPairChoice(int id) {
-                return Optional.of(0);
+            public Result deleteOneCoinPairChoice(int id) {
+                return  new Result("0","fail");
             }
+
+
         };
     }
 }

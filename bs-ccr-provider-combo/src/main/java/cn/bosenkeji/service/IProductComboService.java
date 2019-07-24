@@ -1,9 +1,8 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,4 +18,5 @@ public interface IProductComboService {
     Optional<Integer> add(ProductCombo productCombo);
     Optional<Integer> update(ProductCombo productCombo);
     Optional<Integer> delete(int id);
+    Optional<Integer> checkExistByName(String name);
 }

@@ -1,5 +1,6 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.combo;
 
+import cn.bosenkeji.vo.product.Product;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -7,17 +8,19 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * @author: xivinChen
+ * @author xivinChen
  */
 @Api
-public class Product implements Serializable {
+public class ProductCombo implements Serializable {
     private int id;
+
+    private int productId;
 
     private String name;
 
-    private String versionName;
+    private int time;
 
-    private String logo;
+    private float price;
 
     private String remark;
 
@@ -29,18 +32,31 @@ public class Product implements Serializable {
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
-    public Product(int id, String name, String versionName, String logo, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
+    //一对一
+    @ApiModelProperty(hidden = true)
+    private Product product;
+
+    /*public ProductCombo(int id, Integer productId, String name, int time, float price, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
+        this.productId = productId;
         this.name = name;
-        this.versionName = versionName;
-        this.logo = logo;
+        this.time = time;
+        this.price = price;
         this.remark = remark;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }*/
+
+    public Product getProduct() {
+        return product;
     }
 
-    public Product() {
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public ProductCombo() {
         super();
     }
 
@@ -52,6 +68,14 @@ public class Product implements Serializable {
         this.id = id;
     }
 
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
     public String getName() {
         return name;
     }
@@ -60,20 +84,20 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public String getVersionName() {
-        return versionName;
+    public int getTime() {
+        return time;
     }
 
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
+    public void setTime(int time) {
+        this.time = time;
     }
 
-    public String getLogo() {
-        return logo;
+    public float getPrice() {
+        return price;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public String getRemark() {
@@ -110,15 +134,17 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "ProductCombo{" +
                 "id=" + id +
+                ", productId=" + productId +
                 ", name='" + name + '\'' +
-                ", versionName='" + versionName + '\'' +
-                ", logo='" + logo + '\'' +
+                ", time=" + time +
+                ", price=" + price +
                 ", remark='" + remark + '\'' +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", product=" + product +
                 '}';
     }
 }

@@ -2,11 +2,9 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IProductComboClientServiceFallbackFactory;
-import cn.bosenkeji.vo.Product;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,19 +24,19 @@ public interface IProductComboClientService {
 
 
     @PostMapping("/product_combo/")
-    Optional<Integer> add(@RequestBody ProductCombo productCombo);
+    Result add(@RequestBody ProductCombo productCombo);
 
     @PutMapping("/product_combo/")
-    Optional<Integer> update(@RequestBody ProductCombo productCombo);
+    Result update(@RequestBody ProductCombo productCombo);
 
     @DeleteMapping("/product_combo/{id}")
-    Optional<Integer> delete(@PathVariable("id") int id);
+    Result delete(@PathVariable("id") int id);
 
     @GetMapping("/product_combo/{id}")
     ProductCombo get(@PathVariable("id") int id);
 
     @PutMapping("/product_combo/{id}")
-    Optional<Integer> updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
+    Result updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
 
     @GetMapping(value = "/product_combo/list_by_product_id_and_status")
     public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,

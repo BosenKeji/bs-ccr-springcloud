@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.UserProductComboDayMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.UserProductComboDay">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.combo.UserProductComboDay">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
@@ -24,7 +24,7 @@
     delete from user_product_combo_day
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.bosenkeji.vo.UserProductComboDay">
+  <insert id="insert" parameterType="cn.bosenkeji.vo.combo.UserProductComboDay">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -35,7 +35,7 @@
       #{number,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.UserProductComboDay">
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.UserProductComboDay">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -87,7 +87,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.UserProductComboDay">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.combo.UserProductComboDay">
     update user_product_combo_day
     <set>
       <if test="userId != null">
@@ -114,7 +114,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.UserProductComboDay">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.combo.UserProductComboDay">
     update user_product_combo_day
     set user_id = #{userId,jdbcType=INTEGER},
       user_product_combo_id = #{userProductComboId,jdbcType=INTEGER},

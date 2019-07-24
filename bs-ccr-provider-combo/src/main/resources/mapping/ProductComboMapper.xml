@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.ProductComboMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.ProductCombo">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.combo.ProductCombo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -25,7 +25,7 @@
     delete from product_combo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.bosenkeji.vo.ProductCombo">
+  <insert id="insert" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -36,7 +36,7 @@
       #{price,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.ProductCombo">
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -94,7 +94,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.ProductCombo">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
     update product_combo
     <set>
       <if test="productId != null">
@@ -124,7 +124,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.ProductCombo">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
     update product_combo
     set product_id = #{productId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
@@ -171,4 +171,13 @@
     where product_id=#{param1}
     and status=#{param2}
   </select>
+
+  <select id="checkExistByName" parameterType="java.lang.String" resultType="java.lang.Integer" >
+    select EXISTS (select 1 from product_combo where `name`=#{name} limit 1)
+  </select>
+
+  <select id="selectProductIdByPrimaryKey" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+    select product_id from product_combo where `id`=#{id} limit 1
+  </select>
+
 </mapper>

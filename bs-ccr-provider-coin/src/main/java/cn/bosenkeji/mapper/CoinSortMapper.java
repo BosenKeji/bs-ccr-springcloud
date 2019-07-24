@@ -23,4 +23,6 @@ public interface CoinSortMapper {
     int updateByPrimaryKey(CoinSort record);
 
     List<CoinSort> findAll();
+
+    List<CoinSort> findAllByTradePlatformId(int tradePlatformId);
 }

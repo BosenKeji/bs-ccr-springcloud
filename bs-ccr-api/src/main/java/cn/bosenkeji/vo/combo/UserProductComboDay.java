@@ -1,5 +1,7 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.combo;
 
+import cn.bosenkeji.vo.User;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.ApiModelProperty;
 
 

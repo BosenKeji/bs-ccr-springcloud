@@ -4,19 +4,15 @@ import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
-import cn.bosenkeji.vo.UserProductCombo;
-import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author xivin

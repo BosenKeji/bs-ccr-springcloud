@@ -2,8 +2,7 @@ package bosenCCR;
 
 import cn.bosenkeji.ComboApplication;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

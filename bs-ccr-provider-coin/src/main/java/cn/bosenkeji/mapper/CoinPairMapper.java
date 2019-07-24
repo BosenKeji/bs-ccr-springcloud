@@ -18,6 +18,8 @@ public interface CoinPairMapper {
 
     CoinPair selectByPrimaryKey(Integer id);
 
+    Integer checkExistByName(String name);
+
     int updateByPrimaryKeySelective(CoinPair record);
 
     int updateByPrimaryKey(CoinPair record);

@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -37,7 +38,7 @@ public class ConsumerCoinPairChoiceController {
 
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
-    public Optional<Integer> addOneCoinPairChoice(@RequestParam("userId")  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
+    public Result addOneCoinPairChoice(@RequestParam("userId")  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
                                        @RequestParam("strategyId")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int strategyStatus,
                                        @RequestParam("coinPairId")  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
         return this.iCoinPairChoiceClientService.addOneCoinPairChoice(userId, strategyStatus, coinPairId);
@@ -45,13 +46,13 @@ public class ConsumerCoinPairChoiceController {
 
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")
     @PutMapping("/")
-    public Optional<Integer> updateCoinPairChoice(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
+    public Result updateCoinPairChoice(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
         return this.iCoinPairChoiceClientService.updateCoinPairChoice(coinPairChoice);
     }
 
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
-    public Optional<Integer> deleteOneCoinPairChoice(@PathVariable("id") @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id){
+    public Result deleteOneCoinPairChoice(@PathVariable("id") @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id){
         return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id);
     }
 }

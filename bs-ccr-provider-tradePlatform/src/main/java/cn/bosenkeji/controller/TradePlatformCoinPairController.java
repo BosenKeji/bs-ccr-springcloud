@@ -1,8 +1,12 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.TradePlatformCoinPairEnum;
 import cn.bosenkeji.service.TradePlatformCoinPairService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -52,24 +57,31 @@ public class TradePlatformCoinPairController {
 
     @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
+    public Result add(@RequestBody @NotNull @Valid @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
+
         tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.tradePlatformCoinPairService.add(tradePlatformCoinPair);
+        return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new AddException(TradePlatformCoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT",nickname = "updateTradePlatformCoinPair")
     @PutMapping("/")
-    public Optional<Integer> update(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
+    public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.tradePlatformCoinPairService.update(tradePlatformCoinPair);
+        return new Result<>(this.tradePlatformCoinPairService.update(tradePlatformCoinPair)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new UpdateException(TradePlatformCoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformCoinPair")
     @DeleteMapping("/")
-    public Optional<Integer> delete(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int tradePlatformId,
+    public Result delete(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int tradePlatformId,
             @RequestParam("coinPairId") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int coinPairId){
-        return this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId);
+        return new Result<>(this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new DeleteException(TradePlatformCoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "发现服务")

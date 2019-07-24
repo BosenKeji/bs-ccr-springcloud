@@ -17,6 +17,10 @@
     id, coin_partner_choice_id, expect_money, strategy_id, is_custom, `status`, created_at,
     updated_at
   </sql>
+
+  <select id="checkByCoinPartnerChoiceId" resultType="integer">
+    select exists (select 1 from coin_pair_choice_attribute where coin_partner_choice_id =#{coinPartnerChoiceId} limit 1)
+  </select>
   <select id="selectByCoinPartnerChoiceId" parameterType="int" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>

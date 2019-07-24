@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 
 import java.util.List;
 
@@ -23,6 +23,6 @@ public interface UserProductComboMapper {
 
     List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
 
-    Integer selectCountByProductId(Integer productId,Integer userId);
+    Integer checkExistByProductIdAndUserId(Integer productId,Integer userId);
 
 }

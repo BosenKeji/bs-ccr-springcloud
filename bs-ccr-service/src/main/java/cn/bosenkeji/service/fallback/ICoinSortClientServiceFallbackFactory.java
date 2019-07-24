@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinSortClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -34,19 +35,21 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
-            public Optional<Integer> addCoinSort(CoinSort coinSort) {
-                return Optional.of(0);
+            public Result addCoinSort(CoinSort coinSort) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> updateCoinSort(CoinSort coinSort) {
-                return Optional.of(0);
+            public Result updateCoinSort(CoinSort coinSort) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> deleteCoinSort(int id) {
-                return Optional.of(0);
+            public Result deleteCoinSort(int id) {
+                return  new Result("0","fail");
             }
+
+
         };
     }
 }

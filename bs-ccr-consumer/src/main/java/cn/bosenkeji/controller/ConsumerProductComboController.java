@@ -1,7 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductComboClientService;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 /**
  * @author xivin

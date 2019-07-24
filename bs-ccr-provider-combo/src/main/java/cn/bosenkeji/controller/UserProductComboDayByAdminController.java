@@ -7,16 +7,18 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
+import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.UserProductComboDayByAdminEnum;
+import cn.bosenkeji.exception.enums.UserProductComboEnum;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
-import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import net.sf.jsqlparser.expression.TimestampValue;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,12 +59,14 @@ public class UserProductComboDayByAdminController {
 
     @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay UserProductComboDay,
-                        @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId) {
+    public Result add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay UserProductComboDay,
+                      @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId) {
         UserProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         UserProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         UserProductComboDay.setStatus(1);
-        return this.iUserProductComboDayByAdminService.add(UserProductComboDay,adminId);
+        return new Result(this.iUserProductComboDayByAdminService.add(UserProductComboDay,adminId)
+                .filter((value)->value==1)
+                .orElseThrow(()->new AddException(UserProductComboEnum.NAME)));
     }
 
 

@@ -7,26 +7,27 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
+import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.UserProductComboEnum;
 import cn.bosenkeji.service.IUserProductComboService;
-import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -57,11 +58,19 @@ public class UserProductComboController {
 
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo) {
+    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
+                      ) {
+
+        //判断用户是否没过该产品
+        this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(UserProductComboEnum.NAME));
         userProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setStatus(1);
-        return this.iUserProductComboService.add(userProductCombo);
+        return new Result(this.iUserProductComboService.add(userProductCombo)
+                .filter((value)->value==1)
+                .orElseThrow(()->new AddException(UserProductComboEnum.NAME)));
     }
 
     @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")

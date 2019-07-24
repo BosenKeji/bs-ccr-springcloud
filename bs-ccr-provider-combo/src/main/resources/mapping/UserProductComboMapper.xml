@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.UserProductComboMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.UserProductCombo">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
@@ -10,10 +10,10 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
   </resultMap>
 
-  <resultMap id="ProductComboResultMap" type="cn.bosenkeji.vo.UserProductCombo">
+  <resultMap id="ProductComboResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
@@ -31,7 +31,7 @@
       <result column="ucreated_at" property="createdAt" />
       <result column="uupdated_at" property="updatedAt" />
     </association>
-    <association property="productCombo" javaType="cn.bosenkeji.vo.ProductCombo">
+    <association property="productCombo" javaType="cn.bosenkeji.vo.combo.ProductCombo">
       <id column="pcid" property="id" />
       <result column="product_id" jdbcType="INTEGER" property="productId" />
       <result column="pcname" jdbcType="VARCHAR" property="name" />
@@ -41,7 +41,7 @@
       <result column="pcstatus" jdbcType="TINYINT" property="status" />
       <result column="pccreated_at" jdbcType="TIMESTAMP" property="createdAt" />
       <result column="pcupdated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-      <association property="product" javaType="cn.bosenkeji.vo.Product">
+      <association property="product" javaType="cn.bosenkeji.vo.product.Product">
         <id column="pid" property="id" />
         <result column="pname" property="name"/>
         <result column="pversion_name" property="versionName"/>
@@ -66,7 +66,7 @@
     delete from user_product_combo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.bosenkeji.vo.UserProductCombo">
+  <insert id="insert" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -77,7 +77,7 @@
       #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.UserProductCombo">
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -129,7 +129,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.UserProductCombo">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     update user_product_combo
     <set>
       <if test="userId != null">
@@ -156,7 +156,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.UserProductCombo">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     update user_product_combo
     set user_id = #{userId,jdbcType=INTEGER},
       order_number = #{orderNumber,jdbcType=VARCHAR},
@@ -202,7 +202,7 @@
   </select>
 
   <!--通过联表查询用户的 -->
-  <select id="selectCountByProductId" parameterType="Integer" resultType="Integer">
+  <select id="checkExistByProductIdAndUserId" parameterType="Integer" resultType="Integer">
     SELECT count(upc.id) from user_product_combo upc LEFT JOIN
     product_combo pc
     on upc.product_combo_id=pc.id

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface StrategyService {
 
-    Optional<Integer> addStrategyAttributeBySelective(Strategy strategy);
+    Optional<Integer> addStrategyBySelective(Strategy strategy);
 
     Optional<Integer> insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
 
@@ -19,5 +19,7 @@ public interface StrategyService {
 
     PageInfo<Strategy>  listByPage(Integer pageNum, Integer pageSize);
 
+    Optional<Integer> checkStrategyByName(String name);
 
+    Optional<Integer> checkStrategyById(Integer id);
 }

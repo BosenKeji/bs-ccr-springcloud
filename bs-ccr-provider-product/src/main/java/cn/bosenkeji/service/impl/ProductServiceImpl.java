@@ -2,13 +2,12 @@ package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.ProductMapper;
 import cn.bosenkeji.service.IProductService;
-import cn.bosenkeji.vo.Product;
+import cn.bosenkeji.vo.product.Product;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,5 +52,10 @@ public class ProductServiceImpl implements IProductService {
     public Optional<Integer> updateStatus(Product product) {
 
         return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
+    }
+
+    @Override
+    public Optional<Integer> checkExistByName(String name) {
+        return Optional.ofNullable(productMapper.checkExistByName(name));
     }
 }

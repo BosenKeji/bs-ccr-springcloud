@@ -32,7 +32,7 @@ public class StrategyServiceImpl implements StrategyService{
 
 
     @Override
-    public Optional<Integer> addStrategyAttributeBySelective(Strategy strategy) {
+    public Optional<Integer> addStrategyBySelective(Strategy strategy) {
         strategy.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         strategy.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return Optional.of(strategyMapper.insertSelective(strategy));
@@ -65,8 +65,8 @@ public class StrategyServiceImpl implements StrategyService{
     public StrategyOther getStrategy(Integer id) {
         Strategy strategy = strategyMapper.findStrategy(id);
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        StrategyOther strategyVO = convertStrategyVO(strategy, strategyAttribute);
-        return strategyVO;
+        StrategyOther strategyOther = convertStrategyOther(strategy, strategyAttribute);
+        return strategyOther;
     }
 
     @Override
@@ -75,8 +75,18 @@ public class StrategyServiceImpl implements StrategyService{
         return new PageInfo<>(strategyMapper.findAll());
     }
 
+    @Override
+    public Optional<Integer> checkStrategyByName(String name) {
+        return Optional.ofNullable(strategyMapper.checkStrategyExistByName(name));
+    }
 
-    private StrategyOther convertStrategyVO(Strategy strategy,StrategyAttribute strategyAttribute) {
+
+    @Override
+    public Optional<Integer> checkStrategyById(Integer id) {
+        return Optional.of(strategyMapper.checkStrategyExistById(id));
+    }
+
+    private StrategyOther convertStrategyOther(Strategy strategy, StrategyAttribute strategyAttribute) {
         StrategyOther strategyOther = new StrategyOther();
         strategyOther.setId(strategy.getId());
         strategyOther.setName(strategy.getName());

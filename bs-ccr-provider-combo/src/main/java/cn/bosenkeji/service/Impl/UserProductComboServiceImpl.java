@@ -4,17 +4,15 @@ import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.IUserProductComboService;
-import cn.bosenkeji.vo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author xivin
@@ -40,8 +38,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     public Optional<Integer> add(UserProductCombo userProductCombo) {
 
         //判断用户是否已买过该产品  如果该用户已买过该产品，则不能部署机器人
-        if(userProductComboMapper.selectCountByProductId(userProductCombo.getProductCombo().getProductId(),userProductCombo.getUserId())>0)
-            return Optional.ofNullable(0);
+        /*if(userProductComboMapper.selectCountByProductId(userProductCombo.getProductCombo().getProductId(),userProductCombo.getUserId())>0)
+            return Optional.ofNullable(0);*/
 
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
@@ -151,5 +149,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return new PageInfo<>(userProductCombos);
     }
 
-
+    @Override
+    public Optional<Integer> checkExistByProductIdAndUserId(int productComboId,int userId) {
+        int productId=productComboMapper.selectProductIdByPrimaryKey(productComboId);
+        return Optional.ofNullable(userProductComboMapper.checkExistByProductIdAndUserId(productId,userId));
+    }
 }

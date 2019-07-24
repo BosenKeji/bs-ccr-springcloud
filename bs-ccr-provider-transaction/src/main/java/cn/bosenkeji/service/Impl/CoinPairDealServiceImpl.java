@@ -32,12 +32,13 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
 
     @Override
+
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
         List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
@@ -48,7 +49,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId,choiceId);
         List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
@@ -59,7 +60,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
         List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c: list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
@@ -94,7 +95,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         return Optional.of(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
     }
 
-    private CoinPairDealOther convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
+    private CoinPairDealOther convertCoinPairDealOther(CoinPairDeal coinPairDeal) {
         CoinPairDealOther other = new CoinPairDealOther();
         other.setId(coinPairDeal.getId());
         other.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());

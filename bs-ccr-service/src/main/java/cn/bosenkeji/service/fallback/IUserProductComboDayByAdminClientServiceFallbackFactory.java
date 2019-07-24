@@ -1,11 +1,9 @@
 package cn.bosenkeji.service.fallback;
 
-import cn.bosenkeji.service.IProductComboClientService;
-import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.IUserProductComboDayByAdminClientService;
-import cn.bosenkeji.vo.ProductCombo;
-import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -26,8 +24,8 @@ public class IUserProductComboDayByAdminClientServiceFallbackFactory implements 
     public IUserProductComboDayByAdminClientService create(Throwable throwable) {
         return new IUserProductComboDayByAdminClientService() {
             @Override
-            public Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId) {
-                return Optional.empty();
+            public Result add(UserProductComboDay userProductComboDay,int adminId) {
+                return new Result("hystrix","hystrix");
             }
 
             @Override

@@ -1,7 +1,7 @@
 package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
-import cn.bosenkeji.service.CoinPairChoicService;
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @create 2019/7/17 16:07
  */
 @Service
-public class CoinPairChoiceServiceImpl implements CoinPairChoicService {
+public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Resource
     CoinPairChoiceMapper coinPairChoiceMapper;
@@ -51,5 +51,10 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoicService {
     @Override
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(coinPairChoiceMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPartnerId, int userId) {
+        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPartnerId, userId));
     }
 }

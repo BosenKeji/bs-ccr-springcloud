@@ -23,4 +23,6 @@ public interface CoinPairChoiceAttributeCustomMapper {
     int updateByPrimaryKey(CoinPairChoiceAttributeCustom record);
 
     CoinPairChoiceAttributeCustom selectByCoinPartnerChoiceId(int coinPartnerChoiceId);
+
+    Integer checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
 }
