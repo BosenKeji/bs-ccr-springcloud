@@ -1,7 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.ProductEnum;
 import cn.bosenkeji.service.IProductService;
 import cn.bosenkeji.util.Result;
@@ -71,24 +73,25 @@ public class ProductController {
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public Result delete(@PathVariable("id") @Min(1)
                                         @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
-        return new Result(this.iProductService.delete(id));
+        return new Result(this.iProductService.delete(id).filter((value)->value>=1).orElseThrow(()->new DeleteException(ProductEnum.NAME)));
     }
 
     @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProduct")
     @RequestMapping(value="/",method = RequestMethod.PUT)
-    public Optional<Integer> update(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
+    public Result update(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductService.update(product);
+        return new Result(this.iProductService.update(product).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductEnum.NAME)));
     }
 
     @ApiOperation(value="启用、关闭产品api接口",httpMethod = "PUT",nickname = "updateProductStatus")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public Optional<Integer> updateProductStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id,@RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
+    public Result updateProductStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id,@RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
+
         Product product=new Product();
         product.setId(id);
         product.setStatus(status);
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductService.updateStatus(product);
+        return new Result(this.iProductService.updateStatus(product).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductEnum.NAME)));
     }
 
 

@@ -1,7 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.ProductComboEnum;
 import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.util.Result;
@@ -99,24 +101,26 @@ public class ProductComboController {
 
     @ApiOperation(value ="更新产品套餐信息api接口",httpMethod = "PUT",nickname = "updateProductCombo")
     @RequestMapping(value="/",method = RequestMethod.PUT)
-    public Optional<Integer> update(@RequestBody @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
+    public Result update(@RequestBody @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductComboService.update(productCombo);
+        return new Result(this.iProductComboService.update(productCombo).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductComboEnum.NAME)));
     }
 
     @ApiOperation(value ="删除产品套餐信息api接口",httpMethod = "DELETE",nickname = "deleteProductComboInfo")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
-    public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) { return this.iProductComboService.delete(id);}
+    public Result delete(@PathVariable("id") @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
+        return new Result(this.iProductComboService.delete(id).filter((value)->value>=1).orElseThrow(()->new DeleteException(ProductComboEnum.NAME)));
+    }
 
     @ApiOperation(value ="启用、关闭产品套餐api接口",httpMethod = "PUT",nickname = "updateProductComboStatus")
     @RequestMapping(value="/{id}",method = RequestMethod.PUT)
-    public Optional<Integer> updateStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id,
+    public Result updateStatus(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id,
                                           @RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
         ProductCombo productCombo=new ProductCombo();
         productCombo.setId(id);
         productCombo.setStatus(status);
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iProductComboService.update(productCombo);
+        return new Result(this.iProductComboService.update(productCombo).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductComboEnum.NAME)));
     }
 
     @ApiOperation(value ="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")

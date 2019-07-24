@@ -32,10 +32,10 @@ public interface IProductClientService {
     public Result addProduct(@RequestBody Product product) ;
 
     @PutMapping("/product/")
-    public Optional<Integer> updateProduct(@RequestBody Product product);
+    public Result updateProduct(@RequestBody Product product);
     @DeleteMapping("/product/{id}")
-    public Optional<Integer> deleteProduct(@PathVariable("id") int id);
+    public Result deleteProduct(@PathVariable("id") int id);
 
     @PutMapping("/product/{id}")
-    public Optional<Integer> updateProductStatus(@PathVariable("id") int id,@RequestParam("status") int status);
+    public Result updateProductStatus(@PathVariable("id") int id,@RequestParam("status") int status);
 }

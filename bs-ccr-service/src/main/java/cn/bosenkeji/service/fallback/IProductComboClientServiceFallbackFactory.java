@@ -46,13 +46,13 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
             }
 
             @Override
-            public Optional<Integer> update(ProductCombo productCombo) {
-                return Optional.ofNullable(0);
+            public Result update(ProductCombo productCombo) {
+                return new Result("hystrix","hystrix");
             }
 
             @Override
-            public Optional<Integer> delete(int id) {
-                return Optional.ofNullable(0);
+            public Result delete(int id) {
+                return new Result("hystrix","hystrix");
             }
 
             @Override
@@ -63,8 +63,8 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
             }
 
             @Override
-            public Optional<Integer> updateByStatus(int id, int status) {
-               return Optional.empty();
+            public Result updateByStatus(int id, int status) {
+               return new Result("hystrix","hystrix");
             }
         };
     }

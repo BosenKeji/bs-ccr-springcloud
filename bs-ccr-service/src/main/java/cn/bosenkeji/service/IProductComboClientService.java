@@ -27,16 +27,16 @@ public interface IProductComboClientService {
     Result add(@RequestBody ProductCombo productCombo);
 
     @PutMapping("/product_combo/")
-    Optional<Integer> update(@RequestBody ProductCombo productCombo);
+    Result update(@RequestBody ProductCombo productCombo);
 
     @DeleteMapping("/product_combo/{id}")
-    Optional<Integer> delete(@PathVariable("id") int id);
+    Result delete(@PathVariable("id") int id);
 
     @GetMapping("/product_combo/{id}")
     ProductCombo get(@PathVariable("id") int id);
 
     @PutMapping("/product_combo/{id}")
-    Optional<Integer> updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
+    Result updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
 
     @GetMapping(value = "/product_combo/list_by_product_id_and_status")
     public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
