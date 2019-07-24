@@ -36,7 +36,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+        PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
         List<CoinPairDealVO> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
@@ -47,10 +47,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId, choiceId);
+        PageHelper.startPage(pageNum,pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoicId(userId,choiceId);
         List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c : list) {
+        for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
         }
         return new PageInfo<>(voList);
@@ -58,10 +58,10 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId, type);
+        PageHelper.startPage(pageNum,pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
         List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c : list) {
+        for (CoinPairDeal c: list) {
             voList.add(convertCoinPairDealVO(c));
         }
         return new PageInfo<>(voList);
@@ -84,7 +84,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public int countCoinPairDeal(Integer userId, Integer choiceId) {
-        return coinPairDealMapper.countCoinPairDeal(userId, choiceId);
+        return coinPairDealMapper.countCoinPairDeal(userId,choiceId);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
     @Override
     public boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
-        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId, choiceId));
+        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choiceId));
     }
 
     private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
