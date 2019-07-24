@@ -12,4 +12,8 @@ public interface StrategyMapper {
     Strategy findStrategy(Integer id);
 
     List<Strategy> findAll();
+
+    int checkStrategyExistByName(String name);
+
+    int checkStrategyExistById(Integer id);
 }

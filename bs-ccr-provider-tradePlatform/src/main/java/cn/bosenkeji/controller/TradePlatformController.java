@@ -53,8 +53,8 @@ public class TradePlatformController {
 
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET" ,nickname = "getOneTradePlatform")
     @GetMapping("/{id}")
-    public Result<TradePlatform> get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
-        return new Result<>(this.tradePlatformService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformEnum.NAME)));
+    public TradePlatform get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
+        return this.tradePlatformService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformEnum.NAME));
     }
 
     @ApiOperation(value = "添加交易平台单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatform")
@@ -74,9 +74,6 @@ public class TradePlatformController {
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
-        this.tradePlatformService.checkExistByName(tradePlatform.getName())
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(TradePlatformEnum.NAME));
 
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformService.update(tradePlatform)

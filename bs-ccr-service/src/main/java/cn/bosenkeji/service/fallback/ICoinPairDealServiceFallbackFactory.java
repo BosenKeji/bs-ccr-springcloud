@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairDealService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.transaction.CoinPairDealOther;
 import com.github.pagehelper.PageInfo;
@@ -44,39 +45,39 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
             }
 
             @Override
-            public Optional<Integer> updateCoinPairDealStartsById(Integer id, Integer status) {
+            public Result updateCoinPairDealStartsById(Integer id, Integer status) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+            public Result insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> countCoinPair(Integer userId) {
+            public Result countCoinPair(Integer userId) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId) {
+            public Result countCoinPairDeal(Integer userId, Integer choiceId) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id) {
+            public Result deleteCoinPairDealByPrimaryKey(Integer id) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
+            public Result deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
         };
     }

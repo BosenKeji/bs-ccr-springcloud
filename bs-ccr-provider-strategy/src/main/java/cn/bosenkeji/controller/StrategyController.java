@@ -1,6 +1,10 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.enums.StrategyEnum;
+import cn.bosenkeji.exception.enums.StrategySequenceEnum;
 import cn.bosenkeji.service.StrategyService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
 import cn.bosenkeji.vo.strategy.StrategyAttribute;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -35,20 +39,26 @@ public class StrategyController {
     @ApiOperation(value = "添加策略信息",notes = "对策略基本属性的添加",
             nickname = "addStrategyBySelective",httpMethod = "POST"
     )
-    public Optional<Integer> addStrategyBySelective(
+    public Result addStrategyBySelective(
             @RequestBody Strategy strategy
     ) {
-        return strategyService.addStrategyAttributeBySelective(strategy);
+        return new Result(strategyService.addStrategyBySelective(strategy)
+                .filter((value)->value>=0)
+                .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
+        );
     }
 
     @PostMapping(value = "/attribute/")
     @ApiOperation(value = "添加策略的详细信息",notes = "对策略的详细属性的添加",
             nickname = "addStrategyAttributeBySelective",httpMethod = "POST"
     )
-    public Optional<Integer> addStrategyAttributeBySelective(
+    public Result addStrategyAttributeBySelective(
             @RequestBody StrategyAttribute strategyAttribute
     ) {
-        return strategyService.insertStrategyAttributeBySelective(strategyAttribute);
+        return new Result(strategyService.insertStrategyAttributeBySelective(strategyAttribute)
+                .filter((value)->value>=0)
+                .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
+        );
     }
 
     @GetMapping(value = "/{id}")

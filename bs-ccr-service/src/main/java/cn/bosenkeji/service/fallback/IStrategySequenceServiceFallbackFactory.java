@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.IStrategySequenceService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
 import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
@@ -18,13 +19,13 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
     public IStrategySequenceService create(Throwable throwable) {
         return new IStrategySequenceService() {
             @Override
-            public Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence) {
-                return Optional.of(0);
+            public Result insertStrategySequenceBySelective(StrategySequence sequence) {
+                return new Result(Optional.of(0),"failed");
             }
 
             @Override
-            public Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
-                return Optional.of(0);
+            public Result insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+                return new Result(Optional.of(0),"failed");
             }
 
             @Override
@@ -46,8 +47,8 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public String getSequenceValueByStrategyId(Integer strategyId) {
-                return "strategy sequence hystrix";
+            public Result getSequenceValueByStrategyId(Integer strategyId) {
+                return new Result("strategy sequence hystrix");
             }
         };
     }
