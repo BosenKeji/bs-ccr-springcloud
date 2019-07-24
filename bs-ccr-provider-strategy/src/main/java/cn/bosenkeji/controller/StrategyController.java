@@ -1,6 +1,9 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.enums.StrategyEnum;
 import cn.bosenkeji.service.StrategyService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
 import cn.bosenkeji.vo.strategy.StrategyAttribute;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -38,7 +41,7 @@ public class StrategyController {
     public Optional<Integer> addStrategyBySelective(
             @RequestBody Strategy strategy
     ) {
-        return strategyService.addStrategyAttributeBySelective(strategy);
+        return strategyService.addStrategyBySelective(strategy);
     }
 
     @PostMapping(value = "/attribute/")

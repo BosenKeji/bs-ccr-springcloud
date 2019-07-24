@@ -12,4 +12,8 @@ public interface StrategySequenceMapper {
     List<StrategySequence> findAll();
 
     StrategySequence findSequenceByPrimaryKey(Integer id);
+
+    int checkSequenceByName(String name);
+
+    int checkSequenceById(Integer id);
 }

@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinPairDealService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairDeal;
 import cn.bosenkeji.vo.transaction.CoinPairDealOther;
 import com.github.pagehelper.PageInfo;
@@ -25,8 +26,8 @@ public class ConsumerCoinPairDealController {
             nickname = "findCoinPairDealByUserId",httpMethod = "GET")
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(
             @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
@@ -37,8 +38,8 @@ public class ConsumerCoinPairDealController {
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(
             @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
             @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,example = "1") Integer choiceId,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndChoiceId(userId,choiceId,pageNum,pageSize);
     }
@@ -50,8 +51,8 @@ public class ConsumerCoinPairDealController {
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(
             @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
             @PathVariable("type") @Min(1) @Max(2) @ApiParam(value = "货币对交易类型",required = true,example = "1") Integer type,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "1") Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1) @ApiParam(value = "每页条数",required = true,example = "1") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }
@@ -70,7 +71,7 @@ public class ConsumerCoinPairDealController {
     @ApiOperation(value = "添加货币对交易信息",notes = "对于一个货币对每下一单的信息",
             nickname = "insertCoinPairDealBySelective",httpMethod = "POST")
     public Optional<Integer> insertCoinPairDealBySelective(
-            @RequestBody @NotNull @ApiParam(value = "货币对交易对象",required = true) CoinPairDeal coinPairDeal
+            @NotNull @ApiParam(value = "货币对交易对象",required = true) CoinPairDeal coinPairDeal
     ) {
         return coinPairDealService.insertCoinPairDealBySelective(coinPairDeal);
     }

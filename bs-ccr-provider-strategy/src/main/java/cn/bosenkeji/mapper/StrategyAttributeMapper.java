@@ -8,4 +8,5 @@ public interface StrategyAttributeMapper {
     int insertSelective(StrategyAttribute record);
 
     StrategyAttribute findStrategyAttributeByStrategyId(Integer strategyId);
+
 }

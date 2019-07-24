@@ -72,4 +72,12 @@
     <include refid="Base_Column_List" />
     from strategy
   </select>
+
+  <select id="checkStrategyExistByName" resultType="java.lang.Integer">
+    select EXISTS(select 1 from strategy where `name` = #{name} limit 1)
+  </select>
+
+  <select id="checkStrategyExistById" resultType="java.lang.Integer">
+    select EXISTS(select 1 from strategy where id = #{id} limit 1)
+  </select>
 </mapper>

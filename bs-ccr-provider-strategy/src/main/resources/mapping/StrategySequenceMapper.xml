@@ -78,4 +78,12 @@
     where id = #{id}
   </select>
 
+  <select id="checkSequenceByName" resultType="java.lang.Integer" >
+    select EXISTS(select 1 from strategy_sequence where name = #{name} limit 1)
+  </select>
+
+  <select id="checkSequenceById" resultType="java.lang.Integer">
+    select EXISTS(select 1 from strategy_sequence where id = #{id})
+  </select>
+
 </mapper>
