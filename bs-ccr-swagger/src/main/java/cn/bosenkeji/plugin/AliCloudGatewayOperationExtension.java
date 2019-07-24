@@ -75,9 +75,7 @@ public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin
         StringVendorExtension extension2 = new StringVendorExtension(
                 ensurePrefixed(X_ALIYUN_APIGATEWAY_PARAMATER_HANDLING), "MAPPING");
 
-
-
-
+        
         List<VendorExtension> extensions = new ArrayList<VendorExtension>();
         extensions.add(extension1);
         extensions.add(extension2);
