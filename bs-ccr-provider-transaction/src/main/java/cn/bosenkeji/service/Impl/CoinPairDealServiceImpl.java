@@ -3,7 +3,7 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.CoinPairDealMapper;
 import cn.bosenkeji.service.CoinPairDealService;
 import cn.bosenkeji.vo.transaction.CoinPairDeal;
-import cn.bosenkeji.vo.CoinPairDealVO;
+import cn.bosenkeji.vo.transaction.CoinPairDealOther;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -22,96 +23,86 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     private CoinPairDealMapper coinPairDealMapper;
 
     @Override
-    public boolean insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
+    public Optional<Integer> insertCoinPairDealBySelective(CoinPairDeal coinPairDeal) {
         coinPairDeal.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairDeal.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         int result = coinPairDealMapper.insertSelective(coinPairDeal);
-        boolean b = false;
-        if (result > 0) {
-            b = true;
-        }
-        return b;
+        return Optional.of(result);
     }
 
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
-        List<CoinPairDealVO> voList = new ArrayList<>();
+        List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId, choiceId);
-        List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c : list) {
-            voList.add(convertCoinPairDealVO(c));
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId,choiceId);
+        List<CoinPairDealOther> voList = new ArrayList<>();
+        for (CoinPairDeal c: list) {
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId, type);
-        List<CoinPairDealVO> voList = new ArrayList<>();
-        for (CoinPairDeal c : list) {
-            voList.add(convertCoinPairDealVO(c));
+    public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
+        List<CoinPairDealOther> voList = new ArrayList<>();
+        for (CoinPairDeal c: list) {
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-    public boolean updateCoinPairDealStartsById(Integer id, Integer status) {
+    public Optional<Integer> updateCoinPairDealStartsById(Integer id, Integer status) {
         CoinPairDeal c = new CoinPairDeal();
         c.setId(id);
         c.setStatus(status);
         c.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         int i = coinPairDealMapper.updateByPrimaryKeySelective(c);
-        return checkIntResult(i);
+        return Optional.of(i);
     }
 
     @Override
-    public int countCoinPair(Integer userId) {
-        return coinPairDealMapper.countCoinPair(userId);
+    public Optional<Integer> countCoinPair(Integer userId) {
+        return Optional.of(coinPairDealMapper.countCoinPair(userId));
     }
 
     @Override
-    public int countCoinPairDeal(Integer userId, Integer choiceId) {
-        return coinPairDealMapper.countCoinPairDeal(userId, choiceId);
+    public Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId) {
+        return Optional.of(coinPairDealMapper.countCoinPairDeal(userId,choiceId));
     }
 
     @Override
-    public boolean deleteCoinPairDealByPrimaryKey(Integer id) {
-        return checkIntResult(coinPairDealMapper.deleteByPrimaryKey(id));
+    public Optional<Integer> deleteCoinPairDealByPrimaryKey(Integer id) {
+        return Optional.of(coinPairDealMapper.deleteByPrimaryKey(id));
     }
 
     @Override
-    public boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
-        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId, choiceId));
+    public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
+        return Optional.of(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
     }
 
-    private CoinPairDealVO convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
-        CoinPairDealVO vo = new CoinPairDealVO();
-        vo.setId(coinPairDeal.getId());
-        vo.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
-        vo.setType(coinPairDeal.getType());
-        vo.setQuantity(coinPairDeal.getQuantity());
-        vo.setStatus(coinPairDeal.getStatus());
-        return vo;
+    private CoinPairDealOther convertCoinPairDealOther(CoinPairDeal coinPairDeal) {
+        CoinPairDealOther other = new CoinPairDealOther();
+        other.setId(coinPairDeal.getId());
+        other.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
+        other.setType(coinPairDeal.getType());
+        other.setQuantity(coinPairDeal.getQuantity());
+        other.setStatus(coinPairDeal.getStatus());
+        return other;
     }
 
-    private boolean checkIntResult(Integer result) {
-        boolean b = false;
-        if (result > 0) {
-            b = true;
-        }
-        return b;
-    }
 }

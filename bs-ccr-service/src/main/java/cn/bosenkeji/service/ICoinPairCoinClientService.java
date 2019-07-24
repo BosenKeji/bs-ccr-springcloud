@@ -30,6 +30,6 @@ public interface ICoinPairCoinClientService {
     @PutMapping("/coin_pair_coin/")
     public Optional<Integer> updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
 
-    @DeleteMapping("/coin_pair_coin/{id}")
-    public Optional<Integer> deleteCoinPairCoin(@PathVariable("id") int id);
+    @DeleteMapping("/coin_pair_coin/}")
+    public Optional<Integer> deleteCoinPairCoin(@RequestParam("coinId") int coinId,@RequestParam("coinPairId") int coinPairId);
 }

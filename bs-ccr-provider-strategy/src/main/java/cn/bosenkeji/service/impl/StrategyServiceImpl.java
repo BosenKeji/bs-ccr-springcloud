@@ -4,19 +4,17 @@ import cn.bosenkeji.mapper.StrategyAttributeMapper;
 import cn.bosenkeji.mapper.StrategyMapper;
 import cn.bosenkeji.mapper.StrategySequenceMapper;
 import cn.bosenkeji.service.StrategyService;
-import cn.bosenkeji.vo.Strategy;
-import cn.bosenkeji.vo.StrategyAttribute;
-import cn.bosenkeji.vo.StrategySequence;
-import cn.bosenkeji.vo.StrategyVO;
+import cn.bosenkeji.vo.strategy.Strategy;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.acl.LastOwnerException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,10 +62,10 @@ public class StrategyServiceImpl implements StrategyService{
     }
 
     @Override
-    public StrategyVO getStrategy(Integer id) {
+    public StrategyOther getStrategy(Integer id) {
         Strategy strategy = strategyMapper.findStrategy(id);
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        StrategyVO strategyVO = convertStrategyVO(strategy, strategyAttribute);
+        StrategyOther strategyVO = convertStrategyVO(strategy, strategyAttribute);
         return strategyVO;
     }
 
@@ -78,14 +76,14 @@ public class StrategyServiceImpl implements StrategyService{
     }
 
 
-    private StrategyVO convertStrategyVO(Strategy strategy,StrategyAttribute strategyAttribute) {
-        StrategyVO strategyVO = new StrategyVO();
-        strategyVO.setId(strategy.getId());
-        strategyVO.setName(strategy.getName());
-        strategyVO.setLever(strategyAttribute.getLever());
-        strategyVO.setRate(strategyAttribute.getRate());
-        strategyVO.setBuildReference(strategyAttribute.getBuildReference());
-        strategyVO.setStatus(strategy.getStatus());
-        return strategyVO;
+    private StrategyOther convertStrategyVO(Strategy strategy,StrategyAttribute strategyAttribute) {
+        StrategyOther strategyOther = new StrategyOther();
+        strategyOther.setId(strategy.getId());
+        strategyOther.setName(strategy.getName());
+        strategyOther.setLever(strategyAttribute.getLever());
+        strategyOther.setRate(strategyAttribute.getRate());
+        strategyOther.setBuildReference(strategyAttribute.getBuildReference());
+        strategyOther.setStatus(strategy.getStatus());
+        return strategyOther;
     }
 }

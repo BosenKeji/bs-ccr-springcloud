@@ -2,24 +2,24 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairDealService;
 import cn.bosenkeji.vo.transaction.CoinPairDeal;
-import cn.bosenkeji.vo.CoinPairDealVO;
+import cn.bosenkeji.vo.transaction.CoinPairDealOther;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @Component
 public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoinPairDealService> {
 
 
-    public static PageInfo<CoinPairDealVO> hystrixResult(Integer userId){
+    public static PageInfo<CoinPairDealOther> hystrixResult(Integer userId){
         PageInfo pageInfo = new PageInfo();
-        List<CoinPairDealVO> list = new ArrayList<>();
-        CoinPairDealVO coinPairDealVO = new CoinPairDealVO(userId,0,0,0,0);
-        list.add(coinPairDealVO);
+        List<CoinPairDealOther> list = new ArrayList<>();
+        CoinPairDealOther coinPairDealOther = new CoinPairDealOther(userId,0,0,0,0);
+        list.add(coinPairDealOther);
         pageInfo.setList(list);
         return pageInfo;
     }
@@ -29,17 +29,17 @@ public class ICoinPairDealServiceFallbackFactory implements FallbackFactory<ICoi
     public ICoinPairDealService create(Throwable throwable) {
         return new ICoinPairDealService() {
             @Override
-            public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+            public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
                 return hystrixResult(userId);
             }
 
             @Override
-            public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
+            public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
                 return hystrixResult(userId);
             }
 
             @Override
-            public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
+            public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
                 return hystrixResult(userId);
             }
 

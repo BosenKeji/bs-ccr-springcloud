@@ -31,27 +31,27 @@ public class ConsumerCoinController {
         return iCoinClientService.getCoin(id);
     }
 
-    @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET",nickname = "getOneCoin")
+    @ApiOperation(value = "获取单个货币信息接口", httpMethod = "GET",nickname = "getOneCoin")
     @GetMapping("/")
     public PageInfo listCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                              @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
         return iCoinClientService.listCoin(pageNum, pageSizeCommon);
     }
 
-    @ApiOperation(value = "添加单个货币信息列表接口", httpMethod = "POST",nickname = "addCoin")
+    @ApiOperation(value = "添加单个货币信息接口", httpMethod = "POST",nickname = "addCoin")
     @PostMapping("/")
     public Optional<Integer> addCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
 
         return iCoinClientService.addCoin(coin);
     }
 
-    @ApiOperation(value = "更新单个货币信息列表接口", httpMethod = "PUT" ,nickname = "updateCoin")
+    @ApiOperation(value = "更新单个货币信息接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @PutMapping("/")
     public Optional<Integer> updateCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin){
         return iCoinClientService.updateCoin(coin);
     }
 
-    @ApiOperation(value = "删除单个货币信息列表接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
+    @ApiOperation(value = "删除单个货币信息接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @DeleteMapping("/{id}")
     public Optional<Integer> deleteCoin(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id){
         return iCoinClientService.deleteCoin(id);

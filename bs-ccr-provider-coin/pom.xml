@@ -80,6 +80,10 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-validator</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>bosenCCR</groupId>-->
 <!--            <artifactId>bs-ccr-security-client</artifactId>-->

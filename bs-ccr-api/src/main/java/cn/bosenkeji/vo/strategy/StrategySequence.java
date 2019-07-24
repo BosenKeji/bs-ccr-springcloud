@@ -1,12 +1,14 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.strategy;
 
 import java.sql.Timestamp;
 
 
-public class Strategy {
+public class StrategySequence {
     private int id;
 
     private String name;
+
+    private String tip;
 
     private int status;
 
@@ -14,15 +16,16 @@ public class Strategy {
 
     private Timestamp updatedAt;
 
-    public Strategy(int id, String name, int status, Timestamp createdAt, Timestamp updatedAt) {
+    public StrategySequence(int id, String name, String tip, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.name = name;
+        this.tip = tip;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Strategy() {
+    public StrategySequence() {
         super();
     }
 
@@ -64,5 +67,13 @@ public class Strategy {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getTip() {
+        return tip;
+    }
+
+    public void setTip(String tip) {
+        this.tip = tip;
     }
 }

@@ -44,7 +44,7 @@ public class ICoinPairCoinClientServiceFallbackFactory implements FallbackFactor
             }
 
             @Override
-            public Optional<Integer> deleteCoinPairCoin(int id) {
+            public Optional<Integer> deleteCoinPairCoin( int coinId, int coinPairId) {
                 return Optional.of(0);
             }
         };

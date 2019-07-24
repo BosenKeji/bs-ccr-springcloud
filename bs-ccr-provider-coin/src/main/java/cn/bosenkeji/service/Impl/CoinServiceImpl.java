@@ -36,6 +36,11 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
+    public Optional<Integer> checkExistByName(String name) {
+        return Optional.of(coinMapper.checkExistByName(name));
+    }
+
+    @Override
     public Optional<Coin> get(int id) {
         return Optional.ofNullable(coinMapper.selectByPrimaryKey(id)) ;
     }

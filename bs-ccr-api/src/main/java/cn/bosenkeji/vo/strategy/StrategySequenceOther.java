@@ -1,6 +1,6 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.strategy;
 
-public class StrategySequenceVO {
+public class StrategySequenceOther {
 
     private int id;
     private String name;
@@ -10,9 +10,9 @@ public class StrategySequenceVO {
     private String value;
     private int sortNum;
 
-    public StrategySequenceVO() { }
+    public StrategySequenceOther() { }
 
-    public StrategySequenceVO(int id, String name, String tip, int status, String value, int sortNum) {
+    public StrategySequenceOther(int id, String name, String tip, int status, String value, int sortNum) {
         this.id = id;
         this.name = name;
         this.tip = tip;
@@ -72,7 +72,7 @@ public class StrategySequenceVO {
 
     @Override
     public String toString() {
-        return "StrategySequenceVO{" +
+        return "StrategySequenceOther{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", tip='" + tip + '\'' +

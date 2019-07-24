@@ -31,6 +31,11 @@
     delete from coin_pair_coin
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteByCoinIdAndCoinPairId" parameterType="int">
+    delete from coin_pair_coin
+    where coin_id = #{param1,jdbcType=INTEGER} and coin_pair_id =#{param2,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.coin.CoinPairCoin" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_pair_coin (coin_pair_id, coin_id, `status`, 

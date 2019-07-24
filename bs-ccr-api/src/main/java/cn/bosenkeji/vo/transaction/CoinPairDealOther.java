@@ -1,6 +1,6 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.transaction;
 
-public class CoinPairDealVO {
+public class CoinPairDealOther {
 
     private int id;
 
@@ -12,9 +12,9 @@ public class CoinPairDealVO {
 
     private int status;
 
-    public CoinPairDealVO() { }
+    public CoinPairDealOther() { }
 
-    public CoinPairDealVO(int id, int coinPartnerChoicId, int type, int quantity, int status) {
+    public CoinPairDealOther(int id, int coinPartnerChoicId, int type, int quantity, int status) {
         this.id = id;
         this.coinPartnerChoicId = coinPartnerChoicId;
         this.type = type;
@@ -64,7 +64,7 @@ public class CoinPairDealVO {
 
     @Override
     public String toString() {
-        return "CoinPairDealVO{" +
+        return "CoinPairDealOther{" +
                 "id=" + id +
                 ", coinPartnerChoicId=" + coinPartnerChoicId +
                 ", type=" + type +

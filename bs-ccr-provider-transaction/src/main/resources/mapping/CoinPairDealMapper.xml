@@ -74,8 +74,8 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="coinPartnerChoicId != null">
-        coin_partner_choice_id = #{coinPartnerChoicId,jdbcType=INTEGER},
+      <if test="coinPartnerChoiceId != null">
+        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         `type` = #{type,jdbcType=TINYINT},
