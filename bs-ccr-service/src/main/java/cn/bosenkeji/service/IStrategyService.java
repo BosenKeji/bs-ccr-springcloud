@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IStrategyServiceFallbackFactory;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
 import cn.bosenkeji.vo.strategy.StrategyAttribute;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -26,9 +27,9 @@ public interface IStrategyService {
             @RequestParam("pageSize") Integer pageSize);
 
     @PostMapping("/strategy/")
-    Optional<Integer> addStrategyBySelective(Strategy strategy);
+    Result addStrategyBySelective(Strategy strategy);
 
     @PostMapping("/strategy/attribute/")
-    Optional<Integer> addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
+    Result addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
 
 }

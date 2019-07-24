@@ -5,7 +5,6 @@ import cn.bosenkeji.exception.enums.StrategySequenceEnum;
 import cn.bosenkeji.service.StrategySequenceService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
-import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -20,7 +19,6 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 
 @RestController
@@ -46,7 +44,10 @@ public class StrategySequenceController {
         strategySequenceService.checkSequenceByName(sequence.getName())
                 .filter((value)->value==0)
                 .orElseThrow( ()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST));
-        return new Result(strategySequenceService.insertStrategySequenceBySelective(sequence));
+        return new Result(strategySequenceService.insertStrategySequenceBySelective(sequence)
+                .filter((value)->value>=0)
+                .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
+                );
     }
 
     @PostMapping(value = "/value/")
@@ -57,7 +58,10 @@ public class StrategySequenceController {
         strategySequenceService.checkSequenceById(sequenceValue.getStrategySequenceId())
                 .filter((v)->v!=0)
                 .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_NOT_FOUND));
-        return new Result(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue));
+        return new Result(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue)
+                .filter((value)->value>=0)
+                .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
+        );
     }
 
     @GetMapping(value = "/")

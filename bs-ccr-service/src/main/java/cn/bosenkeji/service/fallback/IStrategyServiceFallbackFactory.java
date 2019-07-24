@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.IStrategyService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
 import cn.bosenkeji.vo.strategy.StrategyAttribute;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -36,15 +37,15 @@ public class IStrategyServiceFallbackFactory implements FallbackFactory<IStrateg
             }
 
             @Override
-            public Optional<Integer> addStrategyBySelective(Strategy strategy) {
+            public Result addStrategyBySelective(Strategy strategy) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
 
             @Override
-            public Optional<Integer> addStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
+            public Result addStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
                 Optional<Integer> result = Optional.of(0);
-                return result;
+                return new Result(result,"failed");
             }
         };
     }

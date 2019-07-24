@@ -29,7 +29,7 @@ public class ConsumerStrategyController {
     @ApiOperation(value = "添加策略信息",notes = "对策略基本属性的添加",
             nickname = "addStrategyBySelective",httpMethod = "POST"
     )
-    public Optional<Integer> addStrategyBySelective(
+    public Result addStrategyBySelective(
            @ApiParam("策略基本属性映射的对象") @NotNull Strategy strategy
     ) {
         return strategyService.addStrategyBySelective(strategy);
@@ -39,7 +39,7 @@ public class ConsumerStrategyController {
     @ApiOperation(value = "添加策略的详细信息",notes = "对策略的详细属性的添加",
             nickname = "addStrategyAttributeBySelective",httpMethod = "POST"
     )
-    public Optional<Integer> addStrategyAttributeBySelective(
+    public Result addStrategyAttributeBySelective(
             @ApiParam("策略的详细属性映射的对象") @NotNull StrategyAttribute strategyAttribute
     ) {
         return strategyService.addStrategyAttributeBySelective(strategyAttribute);

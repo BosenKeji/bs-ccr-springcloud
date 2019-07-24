@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IStrategySequenceServiceFallbackFactory;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
 import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
@@ -16,10 +17,10 @@ import java.util.Optional;
 public interface IStrategySequenceService {
 
     @PostMapping("/strategy_sequence/")
-    Optional<Integer> insertStrategySequenceBySelective(@RequestBody StrategySequence sequence);
+    Result insertStrategySequenceBySelective(@RequestBody StrategySequence sequence);
 
     @PostMapping("/strategy_sequence/value/")
-    Optional<Integer> insertStrategySequenceValueBySelective(@RequestBody StrategySequenceValue sequenceValue);
+    Result insertStrategySequenceValueBySelective(@RequestBody StrategySequenceValue sequenceValue);
 
     @GetMapping("/strategy_sequence/")
     PageInfo<StrategySequence> findAll(
@@ -30,5 +31,5 @@ public interface IStrategySequenceService {
     StrategySequenceOther findSequenceByPrimaryKey(@PathVariable("id") Integer id);
 
     @GetMapping("/strategy_sequence/value/{strategyId}")
-    String getSequenceValueByStrategyId(@PathVariable("strategyId") Integer strategyId);
+    Result getSequenceValueByStrategyId(@PathVariable("strategyId") Integer strategyId);
 }
