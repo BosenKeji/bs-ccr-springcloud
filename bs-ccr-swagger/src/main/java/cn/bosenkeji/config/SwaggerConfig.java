@@ -2,10 +2,8 @@ package cn.bosenkeji.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
@@ -13,6 +11,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -28,6 +27,36 @@ import static com.google.common.collect.Lists.newArrayList;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+    final List<ResponseMessage> globalResponses = Arrays.asList(
+            new ResponseMessageBuilder()
+                    .code(200)
+                    .message("成功")
+                    .responseModel(new ModelRef("Success"))
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(201)
+                    .message("添加或者修改成功")
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(400)
+                    .message("错误请求")
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(401)
+                    .message("未授权")
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(403)
+                    .message("拒绝请求")
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(404)
+                    .message("未找到相关的请求")
+                    .build(),
+            new ResponseMessageBuilder()
+                    .code(500)
+                    .message("服务器内部错误")
+                    .build());
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).extensions(getExtension())
@@ -36,8 +65,14 @@ public class SwaggerConfig {
                     .apis(RequestHandlerSelectors.basePackage("cn.bosenkeji.controller"))
                     .paths(PathSelectors.any())
                     .build()
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET,globalResponses)
+                .globalResponseMessage(RequestMethod.POST,globalResponses)
+                .globalResponseMessage(RequestMethod.PUT,globalResponses)
+                .globalResponseMessage(RequestMethod.DELETE,globalResponses)
                 ;
     }
+
 
     /**
      * @Description 增加顶级扩展，ListVendorExtension表示以列表形式

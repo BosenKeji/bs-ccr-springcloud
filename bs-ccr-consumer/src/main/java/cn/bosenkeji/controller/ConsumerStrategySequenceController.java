@@ -1,12 +1,16 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IStrategySequenceService;
-import cn.bosenkeji.vo.StrategySequence;
-import cn.bosenkeji.vo.StrategySequenceVO;
-import cn.bosenkeji.vo.StrategySequenceValue;
+import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequenceOther;
+import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @RestController
@@ -17,30 +21,43 @@ public class ConsumerStrategySequenceController {
     private IStrategySequenceService strategySequenceService;
 
     @GetMapping(value = "/")
+    @ApiOperation(value = "获取数列列表",notes = "带分页")
     public PageInfo<StrategySequence> findAll(
-            @RequestParam("pageNum") Integer pageNum,
-            @RequestParam("pageSize") Integer pageSize
+            @RequestParam("pageNum") @Min(value = 1) @ApiParam(value = "分页起始页",example = "1",required = true)  Integer pageNum,
+            @RequestParam("pageSize") @Min(value = 1) @ApiParam(value = "每页条数",example = "3",required = true) Integer pageSize
     ) {
         return strategySequenceService.findAll(pageNum, pageSize);
     }
 
     @GetMapping(value = "/{id}")
-    public StrategySequenceVO findSequenceByPrimaryKey(@PathVariable("id") Integer id){
+    @ApiOperation(value = "获取指定数列信息",notes = "通过数列Id获取指定数列的信息")
+    public StrategySequenceOther findSequenceByPrimaryKey(
+            @PathVariable("id") @Min(value = 0) @ApiParam(value = "数列ID",required = true,example = "1") Integer id
+    ){
         return strategySequenceService.findSequenceByPrimaryKey(id);
     }
 
-    @GetMapping(value = "/value/{strategyId}" )
-    public String getSequenceValueByStrategyId(@PathVariable("strategyId") Integer strategyId) {
+    @GetMapping(value = "/value/{strategyId}")
+    @ApiOperation(value = "获取指定数列信息",notes = "通过策略Id获取对应的数列的值")
+    public String getSequenceValueByStrategyId(
+            @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
+    ) {
         return strategySequenceService.getSequenceValueByStrategyId(strategyId);
     }
 
-    @PostMapping("/")
-    Optional<Integer> insertStrategySequenceBySelective(StrategySequence sequence) {
+    @PostMapping(value = "/")
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
+    public Optional<Integer> insertStrategySequence(
+            @RequestBody @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
+    ) {
         return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
-    @PostMapping("/value/")
-    Optional<Integer> insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
+    @PostMapping(value = "/value/")
+    @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
+    public Optional<Integer> insertStrategySequenceValue(
+            @RequestBody @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
+    ) {
         return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 }

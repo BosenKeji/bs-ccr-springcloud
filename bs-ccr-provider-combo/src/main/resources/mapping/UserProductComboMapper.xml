@@ -200,4 +200,16 @@
     on pc.product_id=p.id
     where u.tel=#{userTel}
   </select>
+
+  <!--通过联表查询用户的 -->
+  <select id="selectCountByProductId" parameterType="Integer" resultType="Integer">
+    SELECT count(upc.id) from user_product_combo upc LEFT JOIN
+    product_combo pc
+    on upc.product_combo_id=pc.id
+     LEFT JOIN product p
+    on pc.product_id=p.id
+    WHERE
+    p.id=#{param1}
+    and user_id=#{param2}
+  </select>
 </mapper>

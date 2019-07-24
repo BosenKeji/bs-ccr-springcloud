@@ -36,6 +36,18 @@ public class ConsumerProductComboController {
         return this.iProductComboClientService.listByProductId(productId);
     }
 
+    @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListByProductIdAndStatusWithPage")
+    @RequestMapping(value = "/list_by_product_id_and_status",method = RequestMethod.GET)
+    public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                             @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                                             @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int productId,
+                                             @RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
+
+        return this.iProductComboClientService.listByProductIdAndStatus(pageNum,pageSize,productId,status);
+    }
+
+
+
     @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getOneProductCombo")
     @GetMapping("/{id}")
     public Object get(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {

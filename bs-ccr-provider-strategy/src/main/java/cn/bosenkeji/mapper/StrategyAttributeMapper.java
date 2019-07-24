@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.StrategyAttribute;
+import cn.bosenkeji.vo.strategy.StrategyAttribute;
 
 public interface StrategyAttributeMapper {
     int insert(StrategyAttribute record);

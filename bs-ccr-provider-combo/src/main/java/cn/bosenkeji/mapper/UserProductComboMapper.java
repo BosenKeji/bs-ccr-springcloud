@@ -23,4 +23,6 @@ public interface UserProductComboMapper {
 
     List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
 
+    Integer selectCountByProductId(Integer productId,Integer userId);
+
 }
