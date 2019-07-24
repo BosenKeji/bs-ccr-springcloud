@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 
 import java.util.List;
 

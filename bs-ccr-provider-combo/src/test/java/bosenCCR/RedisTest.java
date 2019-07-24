@@ -1,7 +1,7 @@
 package bosenCCR;
 
 import cn.bosenkeji.ComboApplication;
-import cn.bosenkeji.vo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

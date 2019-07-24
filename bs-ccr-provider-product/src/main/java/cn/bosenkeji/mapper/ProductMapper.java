@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.Product;
+import cn.bosenkeji.vo.product.Product;
 
 import java.util.List;
 
@@ -18,4 +18,6 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
     List<Product> findAll();
+
+    int checkExistByName(String name);
 }

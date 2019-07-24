@@ -1,8 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboDayByAdminClientService;
-import cn.bosenkeji.vo.UserProductComboDay;
-import cn.bosenkeji.vo.UserProductComboDayByAdmin;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

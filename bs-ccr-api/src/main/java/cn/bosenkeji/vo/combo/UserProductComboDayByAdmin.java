@@ -1,11 +1,12 @@
-package cn.bosenkeji.vo;
+package cn.bosenkeji.vo.combo;
 
+import cn.bosenkeji.vo.Admin;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @author xivinChen

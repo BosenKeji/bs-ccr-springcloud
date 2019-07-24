@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.vo.combo.ProductCombo;
 
 import java.util.List;
 
@@ -24,5 +24,8 @@ public interface ProductComboMapper {
     List<ProductCombo> findByProductIdAndStatus(Integer productId,Integer status);
 
     int selectTimeByPrimaryKey(Integer id);
+    int checkExistByName(String name);
+
+    int selectProductIdByPrimaryKey(Integer id);
 
 }

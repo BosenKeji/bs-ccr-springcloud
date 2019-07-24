@@ -1,9 +1,8 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.Product;
+import cn.bosenkeji.vo.product.Product;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,5 +21,7 @@ public interface IProductService {
     Optional<Integer> update(Product product);
 
     Optional<Integer> updateStatus(Product product);
+    Optional<Integer> checkExistByName(String name);
+
 
 }

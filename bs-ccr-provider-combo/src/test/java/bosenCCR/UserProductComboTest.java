@@ -2,9 +2,7 @@ package bosenCCR;
 
 import cn.bosenkeji.ComboApplication;
 import cn.bosenkeji.mapper.UserProductComboMapper;
-import cn.bosenkeji.vo.ProductCombo;
-import cn.bosenkeji.vo.UserProductCombo;
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,7 +76,7 @@ public class UserProductComboTest {
     public void testSelectCountByProductId() {
         Integer productId=1;
         Integer userId=3;
-        Integer count = userProductComboMapper.selectCountByProductId(productId, userId);
+        Integer count = userProductComboMapper.checkExistByProductIdAndUserId(productId, userId);
         System.out.println("count = " + count);//count=0
 
     }

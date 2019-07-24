@@ -1,18 +1,13 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductClientService;
-import cn.bosenkeji.vo.Product;
+import cn.bosenkeji.vo.product.Product;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.swing.tree.TreeCellEditor;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 /**
  * @author xivin

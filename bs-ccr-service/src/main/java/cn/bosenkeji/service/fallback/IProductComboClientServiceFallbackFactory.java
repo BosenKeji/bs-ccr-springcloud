@@ -1,8 +1,8 @@
 package cn.bosenkeji.service.fallback;
 
-import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.IProductComboClientService;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -41,8 +41,8 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
             }
 
             @Override
-            public Optional<Integer> add(ProductCombo productCombo) {
-                return Optional.ofNullable(0);
+            public Result add(ProductCombo productCombo) {
+                return new Result("hystrix","hystrix");
             }
 
             @Override

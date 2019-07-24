@@ -2,13 +2,12 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.service.IProductComboService;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -70,5 +69,10 @@ public class ProductComboServiceImpl implements IProductComboService {
     @Override
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(this.productComboMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Optional<Integer> checkExistByName(String name) {
+        return Optional.ofNullable(productComboMapper.checkExistByName(name));
     }
 }

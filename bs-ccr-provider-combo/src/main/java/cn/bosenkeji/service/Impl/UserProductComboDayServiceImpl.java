@@ -2,14 +2,13 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.service.IUserProductComboDayService;
-import cn.bosenkeji.vo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 

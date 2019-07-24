@@ -2,11 +2,9 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IProductComboClientServiceFallbackFactory;
-import cn.bosenkeji.vo.Product;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +24,7 @@ public interface IProductComboClientService {
 
 
     @PostMapping("/product_combo/")
-    Optional<Integer> add(@RequestBody ProductCombo productCombo);
+    Result add(@RequestBody ProductCombo productCombo);
 
     @PutMapping("/product_combo/")
     Optional<Integer> update(@RequestBody ProductCombo productCombo);

@@ -1,9 +1,11 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.ProductComboEnum;
 import cn.bosenkeji.service.IProductComboService;
-import cn.bosenkeji.vo.ProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -81,11 +84,16 @@ public class ProductComboController {
 
     @ApiOperation(value ="获添加品套餐信息api接口",httpMethod = "POST",nickname = "addProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
+    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
+        this.iProductComboService.checkExistByName(productCombo.getName())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(ProductComboEnum.NAME));
         productCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         productCombo.setStatus(1);
-        return this.iProductComboService.add(productCombo);
+        return new Result(this.iProductComboService.add(productCombo)
+                .filter((value)->value==1)
+                .orElseThrow(()->new AddException(ProductComboEnum.NAME)));
 
     }
 
