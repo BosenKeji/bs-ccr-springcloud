@@ -61,9 +61,10 @@ public class CoinPairCoinController {
     }
 
     @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin")
-    @DeleteMapping("/{id}")
-    public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
-        return this.coinPairCoinService.delete(id);
+    @DeleteMapping("/")
+    public Optional<Integer> delete(@RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId,
+                                    @RequestParam("coinPairId") @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinPairId){
+        return this.coinPairCoinService.delete(coinId, coinPairId);
     }
 
     @ApiOperation(value = "发现服务")

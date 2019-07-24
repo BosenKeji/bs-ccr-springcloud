@@ -45,9 +45,9 @@ public class TradePlatformApiController {
     }
 
     @ApiOperation(value = "获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
-    @GetMapping("/{id}")
-    public TradePlatformApi get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台API id", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformApiService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
+    @GetMapping("/{tradePlatformId}")
+    public TradePlatformApi get(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
+        return this.tradePlatformApiService.get(tradePlatformId).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
     }
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")

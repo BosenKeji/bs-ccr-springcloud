@@ -24,9 +24,9 @@ public class ConsumerTradePlatformApiController {
     ITradePlatformApiClientService iTradePlatformApiClientService;
 
     @ApiOperation(value = "获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
-    @GetMapping("/{id}")
-    public TradePlatformApi getOneTradePlatformApi(@PathVariable("id") @ApiParam(value = "交易平台API id", required = true, type = "integer",example = "1") int id){
-        return this.iTradePlatformApiClientService.getOneTradePlatformApi(id);
+    @GetMapping("/{tradePlatformId}")
+    public TradePlatformApi getOneTradePlatformApi(@PathVariable("tradePlatformId") @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
+        return this.iTradePlatformApiClientService.getOneTradePlatformApi(tradePlatformId);
     }
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")

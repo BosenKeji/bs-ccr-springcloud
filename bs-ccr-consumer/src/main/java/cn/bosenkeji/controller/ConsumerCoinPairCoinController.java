@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Api(tags = "CoinPairCoin 货币对货币相关接口", value = "提供货币对货币相关接口的 Rest API")
 public class ConsumerCoinPairCoinController {
 
-    @Autowired
+    @Resource
     ICoinPairCoinClientService iCoinPairCoinClientService;
 
     @ApiOperation(value = "获取货币对货币列表接口",httpMethod = "GET",nickname = "getCoinPairCoinListWithPage")
@@ -28,7 +29,7 @@ public class ConsumerCoinPairCoinController {
     public CoinPairCoin getCoinPairCoin(@PathVariable("id") @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id) {
         return iCoinPairCoinClientService.getCoinPairCoin(id);
     }
-    @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")
+    @ApiOperation(value = "获取单个货币对货币接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")
     @GetMapping("/")
     public PageInfo listCoinPairCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                      @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
@@ -48,9 +49,10 @@ public class ConsumerCoinPairCoinController {
         return iCoinPairCoinClientService.updateCoinPairCoin(coinPairCoin);
     }
 
-    @ApiOperation(value = "更新货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin")
-    @DeleteMapping("/{id}")
-    public Optional<Integer> deleteCoinPairCoin(@PathVariable @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
-        return iCoinPairCoinClientService.deleteCoinPairCoin(id);
+    @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin")
+    @DeleteMapping("/")
+    public Optional<Integer> deleteCoinPairCoin(@RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId,
+                                                @RequestParam("coinPairId") @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinPairId){
+        return iCoinPairCoinClientService.deleteCoinPairCoin(coinId, coinPairId);
     }
 }

@@ -23,4 +23,6 @@ public interface TradePlatformApiMapper {
     int updateByPrimaryKey(TradePlatformApi record);
 
     List<TradePlatformApi> findAll();
+
+    TradePlatformApi selectByTradePlatformId(int tradePlatformId);
 }

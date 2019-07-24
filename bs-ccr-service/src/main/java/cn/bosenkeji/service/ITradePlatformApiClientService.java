@@ -16,8 +16,8 @@ import java.util.Optional;
 @FeignClient(name = "bs-ccr-provider-tradePlatform",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiClientServiceFallbackFactory.class)
 public interface ITradePlatformApiClientService {
 
-    @GetMapping("/trade_platform_apis/{id}")
-    public TradePlatformApi getOneTradePlatformApi(@PathVariable("id") int id);
+    @GetMapping("/trade_platform_apis/{tradePlatformId}")
+    public TradePlatformApi getOneTradePlatformApi(@PathVariable("tradePlatformId") int tradePlatformId);
 
     /**
      *
