@@ -33,6 +33,7 @@
         <module>bs-ccr-security-jwt-client</module>
         <module>bs-ccr-provider-transaction</module>
         <module>bs-ccr-validator</module>
+        <module>bs-ccr-redis</module>
 
     </modules>
 
