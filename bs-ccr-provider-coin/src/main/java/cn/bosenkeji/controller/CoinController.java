@@ -4,6 +4,7 @@ import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -51,10 +52,17 @@ public class CoinController {
 
     @ApiOperation(value = "添加单个货币接口", httpMethod = "POST",nickname = "addCoin")
     @RequestMapping(value="/", method = RequestMethod.POST)
-    public Integer add(@RequestBody @Valid @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+
+        this.coinService.checkExistByName(coin.getName())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(CoinEnum.NAME));
+
         coin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinService.add(coin).orElseThrow(()->new AddException(CoinEnum.NAME)) ;
+        return new Result<>(this.coinService.add(coin)
+                .filter((value)->value >= 1)
+                .orElseThrow(()->new AddException(CoinEnum.NAME)));
     }
 
     @ApiOperation(value = "更新单个货币接口", httpMethod = "PUT" ,nickname = "updateCoin")
@@ -69,5 +77,11 @@ public class CoinController {
     public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
         return this.coinService.delete(id) ;
     }
+
+//    @ApiOperation(value = "检测以名称为单位的数据是否存在", httpMethod = "POST",nickname = "checkExistByName")
+//    @RequestMapping(value="/check_exist_by_name", method = RequestMethod.POST)
+//    public int checkExistByName(@RequestBody @ApiParam(value = "币种名称", required = true, type = "String") String name) {
+//        return this.coinService.checkExistByName(name) ;
+//    }
 
 }

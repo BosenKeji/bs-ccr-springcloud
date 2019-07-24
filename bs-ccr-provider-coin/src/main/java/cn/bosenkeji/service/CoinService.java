@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public interface CoinService {
     List<Coin> list();
 
     PageInfo listByPage(int pageNum, int pageSize);
+
+    Optional<Integer> checkExistByName(String name);
 
     Optional<Coin> get(int id);
 

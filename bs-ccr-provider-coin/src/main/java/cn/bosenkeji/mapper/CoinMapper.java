@@ -1,6 +1,7 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.coin.Coin;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface CoinMapper {
 
     Coin selectByPrimaryKey(Integer id);
 
-    Coin selectByField(String field);
+    Integer checkExistByName(String name);
 
     int updateByPrimaryKeySelective(Coin record);
 
