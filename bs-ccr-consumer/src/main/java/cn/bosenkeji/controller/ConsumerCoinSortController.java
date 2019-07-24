@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinSortClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -38,20 +39,20 @@ public class ConsumerCoinSortController {
 
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
-    public Optional<Integer> addCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort) {
+    public Result addCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort) {
 
         return iCoinSortClientService.addCoinSort(coinSort);
     }
 
     @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT",nickname = "updateCoinSort")
     @PutMapping("/")
-    public Optional<Integer> updateCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
+    public Result updateCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" ) CoinSort coinSort){
         return iCoinSortClientService.updateCoinSort(coinSort);
     }
 
     @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE",nickname = "deleteOneCoinSort")
     @DeleteMapping("/{id}")
-    public Optional<Integer> deleteCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
+    public Result deleteCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
         return iCoinSortClientService.deleteCoinSort(id);
     }
 }

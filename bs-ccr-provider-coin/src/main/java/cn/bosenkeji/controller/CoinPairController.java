@@ -1,8 +1,12 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairEnum;
 import cn.bosenkeji.service.CoinPairService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -50,23 +55,35 @@ public class CoinPairController {
 
     @ApiOperation(value = "添加单个货币对接口",httpMethod = "POST",nickname = "addOneCoinPair")
     @PostMapping("/")
-    public Optional<Integer> add(@RequestBody @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+    public Result add(@RequestBody @Valid @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+        this.coinPairService.checkExistByName(coinPair.getName())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(CoinPairEnum.NAME));
+
         coinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinPairService.add(coinPair);
+        return new Result<>(this.coinPairService.add(coinPair)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new AddException(CoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "更新单个货币对接口",httpMethod = "PUT",nickname = "updateOneCoinPair")
     @PutMapping("/")
-    public Optional<Integer> update(@RequestBody  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+    public Result update(@RequestBody @Valid  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
+
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinPairService.update(coinPair);
+        return new Result<>(this.coinPairService.update(coinPair)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new UpdateException(CoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "删除单个货币对接口",httpMethod = "DELETE",nickname = "deleteOneCoinPair")
     @DeleteMapping("/{id}")
-    public Optional<Integer> delete(@PathVariable("id")  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
-        return this.coinPairService.delete(id);
+    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
+
+        return new Result <>(this.coinPairService.delete(id)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new DeleteException(CoinPairEnum.NAME)));
     }
 
     @ApiOperation(value = "发现服务")

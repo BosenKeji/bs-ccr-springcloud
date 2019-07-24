@@ -32,6 +32,12 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
+    public PageInfo listByTradePlatformId(int tradePlatformId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo(this.coinSortMapper.findAllByTradePlatformId(tradePlatformId));
+    }
+
+    @Override
     public Optional<CoinSort> get(int id) {
         return Optional.ofNullable(coinSortMapper.selectByPrimaryKey(id));
     }
@@ -47,7 +53,7 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return  Optional.ofNullable(coinSortMapper.deleteByPrimaryKey(id));
+    public Optional<Integer> delete(int coinId) {
+        return  Optional.ofNullable(coinSortMapper.deleteByPrimaryKey(coinId));
     }
 }

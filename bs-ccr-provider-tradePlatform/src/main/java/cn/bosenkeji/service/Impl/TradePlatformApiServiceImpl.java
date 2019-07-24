@@ -35,7 +35,7 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public Optional<TradePlatformApi> get(int id) {
-        return Optional.ofNullable(tradePlatformApiMapper.selectByPrimaryKey(id));
+        return Optional.ofNullable(tradePlatformApiMapper.selectByTradePlatformId(id));
     }
 
     @Override

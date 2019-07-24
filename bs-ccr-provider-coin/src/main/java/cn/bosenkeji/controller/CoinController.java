@@ -1,7 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinEnum;
 import cn.bosenkeji.service.CoinService;
 import cn.bosenkeji.util.Result;
@@ -67,15 +69,20 @@ public class CoinController {
 
     @ApiOperation(value = "更新单个货币接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @RequestMapping(value="/", method = RequestMethod.PUT)
-    public Optional<Integer> put(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+    public Result put(@RequestBody @Valid @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinService.update(coin) ;
+        return new Result<>(this.coinService.update(coin)
+                .filter((value)->value >= 1)
+                .orElseThrow(()->new UpdateException(CoinEnum.NAME)));
     }
 
     @ApiOperation(value = "删除单个货币接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public Optional<Integer> delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
-        return this.coinService.delete(id) ;
+    public Result delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
+        return new Result<>(this.coinService.delete(id)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new DeleteException(CoinEnum.NAME)));
     }
 
 //    @ApiOperation(value = "检测以名称为单位的数据是否存在", httpMethod = "POST",nickname = "checkExistByName")

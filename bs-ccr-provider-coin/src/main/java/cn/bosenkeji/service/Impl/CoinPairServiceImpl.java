@@ -51,4 +51,9 @@ public class CoinPairServiceImpl implements CoinPairService {
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(coinPairMapper.deleteByPrimaryKey(id));
     }
+
+    @Override
+    public Optional<Integer> checkExistByName(String name) {
+        return Optional.ofNullable(this.coinPairMapper.checkExistByName(name));
+    }
 }

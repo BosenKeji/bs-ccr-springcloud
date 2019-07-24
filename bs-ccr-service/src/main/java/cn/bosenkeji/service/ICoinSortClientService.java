@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinSortClientServiceFallbackFactory;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinSort;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,12 +26,12 @@ public interface ICoinSortClientService {
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_sort/")
-    public Optional<Integer> addCoinSort(@RequestBody CoinSort coinSort) ;
+    public Result addCoinSort(@RequestBody CoinSort coinSort) ;
 
     @PutMapping("/coin_sort/")
-    public Optional<Integer> updateCoinSort(@RequestBody CoinSort coinSort);
+    public Result updateCoinSort(@RequestBody CoinSort coinSort);
 
     @DeleteMapping("/coin_sort/{id}")
-    public Optional<Integer> deleteCoinSort(@PathVariable("id") int id);
+    public Result deleteCoinSort(@PathVariable("id") int id);
 
 }

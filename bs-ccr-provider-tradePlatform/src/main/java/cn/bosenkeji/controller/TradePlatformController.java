@@ -1,8 +1,12 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.TradePlatformEnum;
 import cn.bosenkeji.service.TradePlatformService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -54,23 +59,34 @@ public class TradePlatformController {
 
     @ApiOperation(value = "添加交易平台单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatform")
     @PostMapping("/")
-    public Optional<Integer> add(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+        this.tradePlatformService.checkExistByName(tradePlatform.getName())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(TradePlatformEnum.NAME));
+
         tradePlatform.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.tradePlatformService.add(tradePlatform);
+        return new Result<>(this.tradePlatformService.add(tradePlatform)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new AddException(TradePlatformEnum.NAME)));
     }
 
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
     @PutMapping("/")
-    public Optional<Integer> update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.tradePlatformService.update(tradePlatform);
+        return new Result<>(this.tradePlatformService.update(tradePlatform)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new UpdateException(TradePlatformEnum.NAME)));
     }
 
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")
     @DeleteMapping("/{id}")
-    public Optional<Integer> delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformService.delete(id);
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
+        return new Result<>(this.tradePlatformService.delete(id)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new DeleteException(TradePlatformEnum.NAME)));
     }
 
     @ApiOperation(value = "发现服务")
