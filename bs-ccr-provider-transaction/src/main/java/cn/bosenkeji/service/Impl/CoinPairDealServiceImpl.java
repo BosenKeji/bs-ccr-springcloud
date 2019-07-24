@@ -32,52 +32,35 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
 
 
     @Override
-<<<<<<< HEAD
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
-=======
+
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(Integer userId, Integer pageNum, Integer pageSize) {
->>>>>>> origin/dev
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserId(userId);
         List<CoinPairDealOther> voList = new ArrayList<>();
         for (CoinPairDeal c : list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-<<<<<<< HEAD
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoicId(userId,choiceId);
-        List<CoinPairDealVO> voList = new ArrayList<>();
-=======
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndChoiceId(userId,choiceId);
         List<CoinPairDealOther> voList = new ArrayList<>();
->>>>>>> origin/dev
         for (CoinPairDeal c: list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
 
     @Override
-<<<<<<< HEAD
-    public PageInfo<CoinPairDealVO> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
-        List<CoinPairDealVO> voList = new ArrayList<>();
-=======
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(Integer userId, Integer type, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CoinPairDeal> list = coinPairDealMapper.findCoinPairDealByUserIdAndType(userId,type);
         List<CoinPairDealOther> voList = new ArrayList<>();
->>>>>>> origin/dev
         for (CoinPairDeal c: list) {
-            voList.add(convertCoinPairDealVO(c));
+            voList.add(convertCoinPairDealOther(c));
         }
         return new PageInfo<>(voList);
     }
@@ -98,13 +81,8 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-<<<<<<< HEAD
-    public int countCoinPairDeal(Integer userId, Integer choiceId) {
-        return coinPairDealMapper.countCoinPairDeal(userId,choiceId);
-=======
     public Optional<Integer> countCoinPairDeal(Integer userId, Integer choiceId) {
         return Optional.of(coinPairDealMapper.countCoinPairDeal(userId,choiceId));
->>>>>>> origin/dev
     }
 
     @Override
@@ -113,16 +91,11 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
     }
 
     @Override
-<<<<<<< HEAD
-    public boolean deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
-        return checkIntResult(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoicId(userId,choiceId));
-=======
     public Optional<Integer> deleteBatchCoinPairDealByUserIdAndChoiceId(Integer userId, Integer choiceId) {
         return Optional.of(coinPairDealMapper.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
->>>>>>> origin/dev
     }
 
-    private CoinPairDealOther convertCoinPairDealVO(CoinPairDeal coinPairDeal) {
+    private CoinPairDealOther convertCoinPairDealOther(CoinPairDeal coinPairDeal) {
         CoinPairDealOther other = new CoinPairDealOther();
         other.setId(coinPairDeal.getId());
         other.setCoinPartnerChoicId(coinPairDeal.getCoinPartnerChoiceId());
@@ -132,15 +105,4 @@ public class CoinPairDealServiceImpl implements CoinPairDealService {
         return other;
     }
 
-<<<<<<< HEAD
-    private boolean checkIntResult(Integer result) {
-        boolean b = false;
-        if (result > 0) {
-            b = true;
-        }
-        return b;
-    }
 }
-=======
-}
->>>>>>> origin/dev
