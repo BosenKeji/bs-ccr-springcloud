@@ -20,4 +20,6 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<Integer> delete(int id);
 
+    Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
+
 }

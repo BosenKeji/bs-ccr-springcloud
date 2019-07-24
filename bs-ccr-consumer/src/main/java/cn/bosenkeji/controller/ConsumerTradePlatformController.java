@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -38,19 +39,19 @@ public class ConsumerTradePlatformController {
 
     @ApiOperation(value = "添加交易平台单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatform")
     @PostMapping("/")
-    public Optional<Integer> addOneTradePlatform(@RequestBody @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Result addOneTradePlatform(@RequestBody @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
         return this.iTradePlatformClientService.addOneTradePlatform(tradePlatform);
     }
 
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
     @PutMapping("/")
-    public Optional<Integer> updateTradePlatform(@RequestBody @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
+    public Result updateTradePlatform(@RequestBody @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
         return this.iTradePlatformClientService.updateTradePlatform(tradePlatform);
     }
 
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")
     @DeleteMapping("/{id}")
-    public Optional<Integer> deleteOneTradePlatform(@PathVariable("id") @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
+    public Result deleteOneTradePlatform(@PathVariable("id") @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
         return this.iTradePlatformClientService.deleteOneTradePlatform(id);
     }
 }

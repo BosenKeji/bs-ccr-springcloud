@@ -19,6 +19,10 @@
     id, coin_partner_choice_id, stop_profit_type, stop_profit_money, stop_profit_trace_trigger_rate,
     stop_profit_trace_drop_rate, stop_profit_fixed_rate, `status`, created_at, updated_at
   </sql>
+  <select id="checkByCoinPartnerChoiceId" resultType="integer">
+    SELECT EXISTS(SELECT 1 FROM coin_pair_choice_attribute_custom WHERE coin_partner_choice_id = #{coinPartnerChoiceId}  LIMIT 1)
+  </select>
+
   <select id="selectByCoinPartnerChoiceId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

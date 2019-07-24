@@ -28,4 +28,6 @@ public interface TradePlatformService {
     Optional<Integer> update(TradePlatform tradePlatform);
 
     Optional<Integer> delete(int id);
+
+    Optional<Integer> checkExistByName(String name);
 }

@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ICoinPairChoiceAttributeClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
 
 import io.swagger.annotations.Api;
@@ -33,10 +34,10 @@ public class ConsumerCoinPairChoiceAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
-    public Optional<Integer> addOneCoinPairChoiceAttribute(@ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") HttpServletRequest request,
-                                                           @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
-                                                           @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
-                                                           @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
+    public Result addOneCoinPairChoiceAttribute(@ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") HttpServletRequest request,
+                                                @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
+                                                @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
+                                                @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
         //获取自选币id字符串数组
         String [] coinPairChoiceIdStr=request.getParameterValues("oinPartnerChoiceId");
         int[] coinPairChoiceIds=new int[coinPairChoiceIdStr.length];
@@ -50,14 +51,14 @@ public class ConsumerCoinPairChoiceAttributeController {
 
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoiceAttribute")
     @PutMapping("/")
-    public Optional<Integer> updateCoinPairChoiceAttribute(@RequestBody @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
+    public Result updateCoinPairChoiceAttribute(@RequestBody @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
        return this.iCoinPairChoiceAttributeClientService.updateCoinPairChoiceAttribute(coinPairChoiceAttribute);
     }
 
 
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
-    public Optional<Integer> deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId(@PathVariable("coinPartnerChoiceId") @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
+    public Result deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId(@PathVariable("coinPartnerChoiceId") @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
         return this.iCoinPairChoiceAttributeClientService.deleteOneCoinPairChoiceAttribute(coinPartnerChoiceId);
     }
 }

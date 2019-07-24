@@ -36,6 +36,11 @@
     <!--@mbg.generated-->
     id, `name`, logo, `status`, created_at, updated_at
   </sql>
+  <select id="checkExistByName" resultType="java.lang.Integer">
+
+    SELECT EXISTS(SELECT 1 FROM trade_platform WHERE `name` = #{name} LIMIT 1)
+
+  </select>
 
   <select id="findAll" resultMap="BaseResultMap">
     select

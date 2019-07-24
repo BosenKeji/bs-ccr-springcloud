@@ -20,6 +20,13 @@
     <include refid="Base_Column_List" />
     from coin_pair
   </select>
+
+  <select id="checkExistByName" resultType="java.lang.Integer">
+
+    SELECT EXISTS(SELECT 1 FROM coin WHERE `name` = #{name} LIMIT 1)
+
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 

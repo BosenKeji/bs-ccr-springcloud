@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.Optional;
  * @Author CAJR
  * @create 2019/7/17 11:48
  */
-public interface CoinPairChoicService {
+public interface CoinPairChoiceService {
     List<CoinPairChoice> list();
 
     PageInfo listByPage(int pageNum,int pageSize);
@@ -22,4 +23,6 @@ public interface CoinPairChoicService {
     Optional<Integer> update(CoinPairChoice coinPairChoice);
 
     Optional<Integer> delete(int id);
+
+    Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
 }
