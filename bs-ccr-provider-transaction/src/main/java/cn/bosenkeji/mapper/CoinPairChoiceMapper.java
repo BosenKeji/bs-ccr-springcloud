@@ -22,5 +22,7 @@ public interface CoinPairChoiceMapper {
 
     int updateByPrimaryKey(CoinPairChoice record);
 
+    Integer checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
+
     List<CoinPairChoice> findAll();
 }

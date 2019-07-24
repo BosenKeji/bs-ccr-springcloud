@@ -24,4 +24,6 @@ public interface TradePlatformMapper {
 
     List<TradePlatform> findAll();
 
+    Integer checkExistByName(String name);
+
 }

@@ -4,16 +4,16 @@ import cn.bosenkeji.enums.IProviderEnum;
 
 /**
  * @Author CAJR
- * @create 2019/7/17 16:43
+ * @create 2019/7/18 11:01
  */
-public enum CoinPairChoicEnum implements IProviderEnum {
-    NAME(10000, "自选货币");
+public enum CoinPairChoiceAttributeEnum implements IProviderEnum {
+    NAME(10000, "该自选货币属性");
 
     private Integer code;
 
     private String message;
 
-    CoinPairChoicEnum(Integer code, String message) {
+    CoinPairChoiceAttributeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -25,6 +25,5 @@ public enum CoinPairChoicEnum implements IProviderEnum {
 
     @Override
     public String getMessage() {
-        return message;
-    }
+        return message;}
 }

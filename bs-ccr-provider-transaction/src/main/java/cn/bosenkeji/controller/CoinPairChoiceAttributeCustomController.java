@@ -1,8 +1,12 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.enums.CoinPairChoicAttributeCustomEnum;
+import cn.bosenkeji.exception.UpdateException;
+import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeCustomEnum;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -36,42 +41,56 @@ public class CoinPairChoiceAttributeCustomController {
     @ApiOperation(value = "获取交易参数接口",httpMethod = "GET" ,nickname = "getOneCoinPairChoiceAttributeCustomByCoinPairChoiceID")
     @GetMapping("/{coinPairChoiceId}")
     public CoinPairChoiceAttributeCustom getByCoinPairChoiceID(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
-        return this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId).orElseThrow(()->new NotFoundException(CoinPairChoicAttributeCustomEnum.NAME));
+        return this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId).orElseThrow(()->new NotFoundException(CoinPairChoiceAttributeCustomEnum.NAME));
     }
 
     @ApiOperation(value = "设置交易参数接口",httpMethod = "POST",nickname = "settingParameters")
     @PostMapping("/")
-    public Optional<Integer> settingParameters(@RequestBody @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Result settingParameters(@RequestBody @Valid @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+
+        this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId())
+                .filter((value)->value==0).orElseThrow(()->new AddException(CoinPairChoiceAttributeCustomEnum.NAME));
+
         coinPairChoiceAttributeCustom.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom);
+        return new Result<>(this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new AddException(CoinPairChoiceAttributeCustomEnum.NAME)));
     }
 
     @ApiOperation(value = "更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
-    public Optional<Integer> update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+    public Result update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
         int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
 
         if (stopProfitType == 1){
             coinPairChoiceAttributeCustom.setStopProfitFixedRate(0.00);
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            return this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom);
+            return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
+                    .filter((value)->value>=1)
+                    .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
         }
         else if (stopProfitType == 2){
             coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
             coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            return this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom);
+            return  new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
+                    .filter((value)->value>=1)
+                    .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
         }
 
         coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom);
+        return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
     }
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
-    public Optional<Integer> delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){
-        return this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId);
+    public Result delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){
+        return new Result<>(this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId)
+                .filter((value)->value>=1)
+                .orElseThrow(()->new DeleteException(CoinPairChoiceAttributeCustomEnum.NAME)));
     }
 
 

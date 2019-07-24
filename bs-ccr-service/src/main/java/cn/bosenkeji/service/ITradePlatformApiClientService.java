@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiClientServiceFallbackFactory;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import cn.bosenkeji.vo.User;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -26,11 +27,11 @@ public interface ITradePlatformApiClientService {
      * @return boolean
      */
     @PostMapping("/trade_platform_apis/")
-    public Optional<Integer> addOneTradePlatformApi(@RequestParam("userId") int user, @RequestBody TradePlatformApi tradePlatformApi);
+    public Result addOneTradePlatformApi(@RequestParam("userId") int user, @RequestBody TradePlatformApi tradePlatformApi);
 
     @PutMapping("/trade_platform_apis/")
-    public Optional<Integer> updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
+    public Result updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
 
     @DeleteMapping("/trade_platform_apis/{tradePlatformId}")
-    public Optional<Integer> deleteOneTradePlatform(@PathVariable("tradePlatformId") int tradePlatformId);
+    public Result deleteOneTradePlatform(@PathVariable("tradePlatformId") int tradePlatformId);
 }

@@ -22,4 +22,6 @@ public interface CoinPairService {
     Optional<Integer> update(CoinPair coinPair);
 
     Optional<Integer> delete(int id);
+
+    Optional<Integer> checkExistByName(String name);
 }

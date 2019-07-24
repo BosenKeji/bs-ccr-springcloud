@@ -52,4 +52,9 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(tradePlatformMapper.deleteByPrimaryKey(id));
     }
+
+    @Override
+    public Optional<Integer> checkExistByName(String name) {
+        return Optional.ofNullable(this.tradePlatformMapper.checkExistByName(name));
+    }
 }

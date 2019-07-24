@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICoinPairChoiceAttributeClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -24,19 +25,20 @@ public class ICoinPairChoiceAttributeClientServiceFallbackFactory implements Fal
             }
 
             @Override
-            public Optional<Integer> addOneCoinPairChoiceAttribute(int[] coinPairChoiceIds, int lever, int money, int isCustom) {
-                return Optional.of(0);
+            public Result addOneCoinPairChoiceAttribute(int[] coinPairChoiceIds, int lever, int money, int isCustom) {
+                return new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> updateCoinPairChoiceAttribute(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-                return Optional.of(0);
+            public Result updateCoinPairChoiceAttribute(CoinPairChoiceAttribute coinPairChoiceAttribute) {
+                return new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> deleteOneCoinPairChoiceAttribute(int coinPartnerChoiceId) {
-                return Optional.of(0);
+            public Result deleteOneCoinPairChoiceAttribute(int coinPartnerChoiceId) {
+                return new Result("0","fail");
             }
+
 
         };
     }

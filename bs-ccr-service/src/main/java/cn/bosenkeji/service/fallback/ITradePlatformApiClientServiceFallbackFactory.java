@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformApiClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApi;
 import cn.bosenkeji.vo.User;
 import feign.hystrix.FallbackFactory;
@@ -25,19 +26,21 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public Optional<Integer> addOneTradePlatformApi(int userId,TradePlatformApi tradePlatformApi) {
-                return Optional.of(0);
+            public Result addOneTradePlatformApi(int user, TradePlatformApi tradePlatformApi) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> updateTradePlatform(TradePlatformApi tradePlatformApi) {
-                return Optional.of(0);
+            public Result updateTradePlatform(TradePlatformApi tradePlatformApi) {
+                return  new Result("0","fail");
             }
 
             @Override
-            public Optional<Integer> deleteOneTradePlatform(int tradePlatformId) {
-                return Optional.of(0);
+            public Result deleteOneTradePlatform(int tradePlatformId) {
+                return  new Result("0","fail");
             }
+
+
         };
     }
 }

@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairCoinClientServiceFallbackFactory;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,11 +26,11 @@ public interface ICoinPairCoinClientService {
                                      @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_pair_coin/")
-    public Optional<Integer> addCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin) ;
+    public Result addCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin) ;
 
     @PutMapping("/coin_pair_coin/")
-    public Optional<Integer> updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
+    public Result updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
 
     @DeleteMapping("/coin_pair_coin/}")
-    public Optional<Integer> deleteCoinPairCoin(@RequestParam("coinId") int coinId,@RequestParam("coinPairId") int coinPairId);
+    public Result deleteCoinPairCoin(@RequestParam("coinId") int coinId,@RequestParam("coinPairId") int coinPairId);
 }
