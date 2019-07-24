@@ -20,26 +20,31 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Override
     public CoinPairChoiceAttribute getByCoinPartnerChoiceId(int coinPartnerChoiceId) {
-        return coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
+        return this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
     }
 
     @Override
     public Optional<CoinPairChoiceAttribute> get(int id) {
-        return Optional.ofNullable(coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id));
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id));
     }
 
     @Override
     public Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return Optional.ofNullable(coinPairChoiceAttributeMapper.updateByCoinPartnerChoiceIdSelective(coinPairChoiceAttribute));
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.updateByCoinPartnerChoiceIdSelective(coinPairChoiceAttribute));
     }
 
     @Override
     public Optional<Integer> add(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return Optional.ofNullable(coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute));
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute));
     }
 
     @Override
     public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(coinPairChoiceAttributeMapper.deleteByPrimaryKey(id));
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.checkByCoinPartnerChoiceId(coinPartnerChoiceId));
     }
 }

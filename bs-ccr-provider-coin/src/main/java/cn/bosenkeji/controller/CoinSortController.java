@@ -44,8 +44,8 @@ public class CoinSortController {
     }
 
     @ApiOperation(value = "根据交易平台获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
-    @GetMapping("/")
-    public PageInfo listCoinSortByTradePlatformId(@RequestParam( value="tradePlatformId") int tradePlatformId,
+    @GetMapping("/{tradePlatformId}")
+    public PageInfo listCoinSortByTradePlatformId(@PathVariable( value="tradePlatformId") int tradePlatformId,
             @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinSortService.listByTradePlatformId(tradePlatformId, pageNum, pageSizeCommon);
