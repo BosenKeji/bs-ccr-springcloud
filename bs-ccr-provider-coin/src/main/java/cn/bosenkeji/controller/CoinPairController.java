@@ -70,9 +70,6 @@ public class CoinPairController {
     @ApiOperation(value = "更新单个货币对接口",httpMethod = "PUT",nickname = "updateOneCoinPair")
     @PutMapping("/")
     public Result update(@RequestBody @Valid  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
-        this.coinPairService.checkExistByName(coinPair.getName())
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(CoinPairEnum.NAME));
 
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinPairService.update(coinPair)

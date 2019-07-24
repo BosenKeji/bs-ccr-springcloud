@@ -70,11 +70,6 @@ public class CoinController {
     @ApiOperation(value = "更新单个货币接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @RequestMapping(value="/", method = RequestMethod.PUT)
     public Result put(@RequestBody @Valid @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
-        this.coinService.checkExistByName(coin.getName())
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException((CoinEnum.NAME)));
-
-
 
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinService.update(coin)
