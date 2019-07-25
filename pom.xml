@@ -178,6 +178,16 @@
                 <artifactId>bs-ccr-validator</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-redis</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-combo</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

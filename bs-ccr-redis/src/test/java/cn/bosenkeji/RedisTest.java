@@ -1,5 +1,8 @@
 package cn.bosenkeji;
 
+import cn.bosenkeji.controller.RedisUtilsController;
+import cn.bosenkeji.util.JsonUtils;
+import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private RedisUtilsController redisUtil;
+
 
 
     @Test
@@ -28,6 +34,19 @@ public class RedisTest {
         String str = (String) redisTemplate.opsForValue().get("test:a");
         System.err.println("str = " + str);
 
+    }
+
+
+    @Test
+    public void testRedisGet() {
+        Product product=JsonUtils.jsonToPojo(redisUtil.get("product2"),Product.class);
+        System.out.println(product);
+    }
+
+    @Test
+    public void testExpire() {
+        Long time = redisTemplate.getExpire("product2");
+        System.err.println("time = " + time);
     }
 
 

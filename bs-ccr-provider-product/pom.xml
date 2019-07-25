@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bs-ccr-provider-product</artifactId>
-
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -57,16 +57,7 @@
         </dependency>
 
 
-        <!--redis-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
 
         <!-- 模块依赖 -->
         <dependency>
@@ -84,6 +75,10 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-redis</artifactId>
         </dependency>
 
 

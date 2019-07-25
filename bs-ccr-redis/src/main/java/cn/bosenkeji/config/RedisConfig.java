@@ -1,15 +1,16 @@
 package cn.bosenkeji.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import org.springframework.beans.factory.annotation.Value;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -32,11 +33,24 @@ import java.time.Duration;
 @Component
 @Configuration
 @ConfigurationProperties("spring.cache.redis")
+@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
     private Duration timeToLive = Duration.ZERO;
 
     public void setTimeToLive(Duration timeToLive) {
         this.timeToLive = timeToLive;
+    }
+
+    @Autowired
+    private Environment env;
+
+    @Bean
+    public JedisConnectionFactory redisConnectionFactory() {
+        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
+        redisConnectionFactory.setHostName(env.getProperty("redis.hostname"));
+        redisConnectionFactory.setPort(Integer.parseInt(env.getProperty("redis.port")));
+        redisConnectionFactory.setPassword(env.getProperty("redis.password"));
+        return redisConnectionFactory;
     }
 
     @Bean
@@ -86,7 +100,5 @@ public class RedisConfig extends CachingConfigurerSupport {
         template.afterPropertiesSet();
         return template;
     }
-
-
 
 }
