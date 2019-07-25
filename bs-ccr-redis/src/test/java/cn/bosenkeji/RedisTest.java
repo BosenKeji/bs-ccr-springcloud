@@ -1,7 +1,6 @@
 package cn.bosenkeji;
 
-import cn.bosenkeji.controller.RedisUtilsController;
-import cn.bosenkeji.util.JsonUtils;
+
 import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +22,6 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    private RedisUtilsController redisUtil;
 
 
 
@@ -37,11 +34,6 @@ public class RedisTest {
     }
 
 
-    @Test
-    public void testRedisGet() {
-        Product product=JsonUtils.jsonToPojo(redisUtil.get("product2"),Product.class);
-        System.out.println(product);
-    }
 
     @Test
     public void testExpire() {

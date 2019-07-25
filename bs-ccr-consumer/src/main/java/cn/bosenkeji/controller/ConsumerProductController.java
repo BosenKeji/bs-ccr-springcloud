@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/product")
-@Api(tags = "Prodcut 产品相关接口",value = "提供产品相关的 Rest API")
+@Api(tags = "Product 产品相关接口",value = "提供产品相关的 Rest API")
 public class ConsumerProductController {
 
     @Resource

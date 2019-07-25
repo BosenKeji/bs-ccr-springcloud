@@ -41,17 +41,17 @@ public class RedisConfig extends CachingConfigurerSupport {
         this.timeToLive = timeToLive;
     }
 
-    @Autowired
-    private Environment env;
+    /*@Autowired
+    private Environment env;*/
 
-    @Bean
+    /*@Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
         redisConnectionFactory.setHostName(env.getProperty("redis.hostname"));
         redisConnectionFactory.setPort(Integer.parseInt(env.getProperty("redis.port")));
         redisConnectionFactory.setPassword(env.getProperty("redis.password"));
         return redisConnectionFactory;
-    }
+    }*/
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {

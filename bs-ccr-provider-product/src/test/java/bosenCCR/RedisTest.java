@@ -1,8 +1,6 @@
 package bosenCCR;
 
 import cn.bosenkeji.ProviderProductApplication;
-import cn.bosenkeji.controller.RedisUtilsController;
-import cn.bosenkeji.util.JsonUtils;
 import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +22,6 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    private RedisUtilsController redisUtil;
-
 
 
     @Test
@@ -40,21 +35,21 @@ public class RedisTest {
     @Test
     public void testProduct() {
         Product product=new Product();
-        product.setId(10);
-        product.setName("productName");
-        product.setVersionName("versionName");
-        redisTemplate.opsForValue().set("prodcuteg:"+product.getId(),product);
-        String str = String.valueOf(redisTemplate.opsForValue().get("prodcuteg:"+product.getId()));
+        product.setId(11);
+        product.setName("productName10");
+        product.setVersionName("versionName10");
+        redisTemplate.opsForValue().set("productcombo:"+product.getId(),product);
+        String str = String.valueOf(redisTemplate.opsForValue().get("productcombo:"+product.getId()));
         System.err.println("str = " + str);
 
     }
 
-
+/*
     @Test
     public void testRedisGet() {
         Product product=JsonUtils.jsonToPojo(redisUtil.get("product2"),Product.class);
         System.out.println(product);
-    }
+    }*/
 
     @Test
     public void testExpire() {
