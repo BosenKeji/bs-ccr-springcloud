@@ -1,6 +1,6 @@
 package bosenCCR;
 
-import cn.bosenkeji.ProviderProductApplication;
+import cn.bosenkeji.ProductApp;
 import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @create 2019-07-15 18:07
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProviderProductApplication.class)
+@SpringBootTest(classes = ProductApp.class)
 public class RedisTest {
 
     @Autowired

@@ -10,10 +10,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-public class ProviderProductApplication {
+public class ProductApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProviderProductApplication.class, args);
+        SpringApplication.run(ProductApp.class, args);
     }
 
 }

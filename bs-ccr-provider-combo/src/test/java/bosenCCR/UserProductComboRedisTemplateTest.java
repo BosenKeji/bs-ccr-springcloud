@@ -1,7 +1,6 @@
 package bosenCCR;
 
-import cn.bosenkeji.ComboApplication;
-import cn.bosenkeji.mapper.UserProductComboMapper;
+import cn.bosenkeji.ComboApp;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author xivin
@@ -19,7 +17,7 @@ import java.util.List;
  * @create 2019-07-16 19:32
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ComboApplication.class)
+@SpringBootTest(classes = ComboApp.class)
 public class UserProductComboRedisTemplateTest {
 
     @Resource

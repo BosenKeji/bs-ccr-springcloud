@@ -1,6 +1,6 @@
 package bosenCCR;
 
-import cn.bosenkeji.ComboApplication;
+import cn.bosenkeji.ComboApp;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @create 2019-07-15 18:07
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ComboApplication.class)
+@SpringBootTest(classes = ComboApp.class)
 public class RedisTest {
 
     @Autowired
