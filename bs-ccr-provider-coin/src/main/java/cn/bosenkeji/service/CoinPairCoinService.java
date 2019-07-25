@@ -22,4 +22,6 @@ public interface CoinPairCoinService {
     Optional<Integer> update(CoinPairCoin coinPairCoin);
 
     Optional<Integer> delete(int coinId,int coinPairId);
+
+    Optional<Integer> checkByCoinIdAndCoinPairId(int coinId,int coinPairId);
 }

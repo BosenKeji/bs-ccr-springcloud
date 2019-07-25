@@ -24,6 +24,8 @@ public interface TradePlatformMapper {
 
     List<TradePlatform> findAll();
 
+    List<TradePlatform> findAllByUserId(int userId);
+
     Integer checkExistByName(String name);
 
 }

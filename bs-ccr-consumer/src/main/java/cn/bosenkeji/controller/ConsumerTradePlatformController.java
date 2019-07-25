@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/22 11:24
  */
 @RestController
-@RequestMapping("/consumer/trade_platform")
+@RequestMapping("/trade_platform")
 @Api(tags = "tradePlatform 交易平台接口",value = "提供交易平台相关功能 Rest接口")
 public class ConsumerTradePlatformController {
 
@@ -29,6 +29,14 @@ public class ConsumerTradePlatformController {
     public PageInfo getListTradePlatformWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.iTradePlatformClientService.listTradePlatformWithPage(pageNum, pageSizeCommon);
+    }
+
+    @ApiOperation(value = "根据userID获取交易平台分页信息",httpMethod = "GET",nickname = "getListTradePlatformWithPage")
+    @GetMapping("/all_tradePlatform/{userId}")
+    public PageInfo getListTradePlatformWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                                 @PathVariable("userId") @ApiParam(value = "用户ID", required = true, type = "integer",example = "1") int userId){
+        return this.iTradePlatformClientService.listTradePlatformWithPageByUserId(pageNum, pageSizeCommon,userId);
     }
 
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET" ,nickname = "getOneTradePlatform")

@@ -16,7 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 //@RibbonClient(name = "BS-CCR-PROVIDER-COIN", configuration = RibbonConfig.class)
 @EnableFeignClients("cn.bosenkeji.service")
-//@EnableSwagger2
 public class ConsumerApp {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApp.class, args);

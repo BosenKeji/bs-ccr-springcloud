@@ -21,7 +21,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
     public ICoinPairChoiceClientService create(Throwable throwable) {
         return new ICoinPairChoiceClientService() {
             @Override
-            public PageInfo getListCoinPairChoiceWithPage(int pageNum, int pageSizeCommon) {
+            public PageInfo getListCoinPairChoiceWithPage(int pageNum, int pageSizeCommon,int userId,int coinId) {
                 List<CoinPairChoice> coinPairChoices = new ArrayList<>();
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 coinPairChoice.setId(0);

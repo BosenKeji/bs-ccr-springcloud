@@ -44,10 +44,19 @@ public class TradePlatformController {
 
     @ApiOperation(value = "获取交易平台分页信息",httpMethod = "GET",nickname = "getListTradePlatformWithPage")
     @GetMapping("/")
-    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+    public PageInfo listAll(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
 
         return this.tradePlatformService.listByPage(pageNum,pageSizeCommon);
+    }
+
+    @ApiOperation(value = "根据userID获取交易平台分页信息",httpMethod = "GET",nickname = "getListTradePlatformWithPage")
+    @GetMapping("/all_tradePlatform/{userId}")
+    public PageInfo listAllByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                            @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                    @PathVariable("userId") @ApiParam(value = "用户ID", required = true, type = "integer",example = "1") int userId){
+
+        return this.tradePlatformService.listByPageAndUserId(pageNum,pageSizeCommon,userId);
     }
 
 
@@ -84,6 +93,7 @@ public class TradePlatformController {
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
+
         return new Result<>(this.tradePlatformService.delete(id)
                 .filter((value)->value>=1)
                 .orElseThrow(()->new DeleteException(TradePlatformEnum.NAME)));

@@ -18,19 +18,12 @@ import java.util.Optional;
 @FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinPairCoinClientServiceFallbackFactory.class)
 public interface ICoinPairCoinClientService {
 
-    @GetMapping("/coin_pair_coin/{id}")
-    public CoinPairCoin getCoinPairCoin(@PathVariable("id") int id);
-
-    @GetMapping("/coin_pair_coin/")
-    public PageInfo listCoinPairCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                                     @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
-
     @PostMapping("/coin_pair_coin/")
     public Result addCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin) ;
 
     @PutMapping("/coin_pair_coin/")
     public Result updateCoinPairCoin(@RequestBody CoinPairCoin coinPairCoin);
 
-    @DeleteMapping("/coin_pair_coin/}")
+    @DeleteMapping("/coin_pair_coin/")
     public Result deleteCoinPairCoin(@RequestParam("coinId") int coinId,@RequestParam("coinPairId") int coinPairId);
 }

@@ -85,10 +85,5 @@ public class CoinController {
                 .orElseThrow(()->new DeleteException(CoinEnum.NAME)));
     }
 
-//    @ApiOperation(value = "检测以名称为单位的数据是否存在", httpMethod = "POST",nickname = "checkExistByName")
-//    @RequestMapping(value="/check_exist_by_name", method = RequestMethod.POST)
-//    public int checkExistByName(@RequestBody @ApiParam(value = "币种名称", required = true, type = "String") String name) {
-//        return this.coinService.checkExistByName(name) ;
-//    }
 
 }

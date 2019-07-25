@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/22 17:02
  */
 @RestController
-@RequestMapping("/consumer/coin_pair_choice")
+@RequestMapping("/coin_pair_choice")
 @Api(tags = "CoinPairChoice 自选货币接口",value = "自选货币相关功能 Rest接口")
 public class ConsumerCoinPairChoiceController {
     @Resource
@@ -26,8 +26,10 @@ public class ConsumerCoinPairChoiceController {
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoiceWithPage")
     @GetMapping("/")
     public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
-        return this.iCoinPairChoiceClientService.getListCoinPairChoiceWithPage(pageNum, pageSizeCommon);
+                                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                                 @RequestParam("userId") @ApiParam(value = "用户ID", required = true, type = "integer",example = "1") int userId,
+                                                 @RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
+        return this.iCoinPairChoiceClientService.getListCoinPairChoiceWithPage(pageNum, pageSizeCommon,userId,coinId);
     }
 
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")

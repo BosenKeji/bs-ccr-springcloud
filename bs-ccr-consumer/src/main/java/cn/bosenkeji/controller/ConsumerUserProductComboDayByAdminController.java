@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  * @create 2019-07-18 20:33 待开发中……
  */
 @RestController
-@RequestMapping("/consumer/user_product_combo_day_by_admin")
+@RequestMapping("/user_product_combo_day_by_admin")
 @Api(tags="UserProductComboDayByAdmin 用户时长操作api接口",value = "用户套餐时长操作相关 rest API")
 public class ConsumerUserProductComboDayByAdminController {
 

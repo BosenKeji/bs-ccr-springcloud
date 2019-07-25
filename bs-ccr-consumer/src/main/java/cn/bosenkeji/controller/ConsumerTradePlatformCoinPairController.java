@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/22 11:26
  */
 @RestController
-@RequestMapping("/consumer/trade_platform_coin_pair")
+@RequestMapping("/trade_platform_coin_pair")
 @Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
 public class ConsumerTradePlatformCoinPairController {
     @Resource

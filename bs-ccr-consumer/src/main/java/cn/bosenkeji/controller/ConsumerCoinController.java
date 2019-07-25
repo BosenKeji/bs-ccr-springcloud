@@ -20,42 +20,42 @@ import java.util.Optional;
  * @Versio V1.0
  **/
 @RestController
-@RequestMapping("/consumer/coin")
+@RequestMapping("/coin")
 @Api(tags = "Coin 货币相关接口", value = "提供货币相关接口的 Rest API")
 public class ConsumerCoinController {
     @Resource
     private ICoinClientService iCoinClientService;
 
-    @ApiOperation(value = "获取货币列表接口", httpMethod = "GET", nickname = "getCoinListWithPage")
+    @ApiOperation(value = "获取单个货币信息接口", httpMethod = "GET", nickname = "getCoinListWithPage")
     @GetMapping("/{id}")
-    public Coin getCoin(@PathVariable("id")  @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
-        return iCoinClientService.getCoin(id);
+    public Coin get(@PathVariable("id")  @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
+        return iCoinClientService.get(id);
     }
 
-    @ApiOperation(value = "获取单个货币信息接口", httpMethod = "GET",nickname = "getOneCoin")
+    @ApiOperation(value = "获取货币列表接口", httpMethod = "GET",nickname = "getOneCoin")
     @GetMapping("/")
-    public PageInfo listCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                              @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
-        return iCoinClientService.listCoin(pageNum, pageSizeCommon);
+        return iCoinClientService.list(pageNum, pageSizeCommon);
     }
 
     @ApiOperation(value = "添加单个货币信息接口", httpMethod = "POST",nickname = "addCoin")
     @PostMapping("/")
-    public Result addCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
+    public Result add(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
 
-        return iCoinClientService.addCoin(coin);
+        return iCoinClientService.add(coin);
     }
 
     @ApiOperation(value = "更新单个货币信息接口", httpMethod = "PUT" ,nickname = "updateCoin")
     @PutMapping("/")
-    public Result updateCoin(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin){
-        return iCoinClientService.updateCoin(coin);
+    public Result update(@RequestBody @ApiParam(value = "币种实体", required = true, type = "string") Coin coin){
+        return iCoinClientService.update(coin);
     }
 
     @ApiOperation(value = "删除单个货币信息接口", httpMethod = "DELETE",nickname = "deleteOneCoin")
     @DeleteMapping("/{id}")
-    public Result deleteCoin(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id){
-        return iCoinClientService.deleteCoin(id);
+    public Result delete(@PathVariable("id") @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id){
+        return iCoinClientService.delete(id);
     }
 
 }

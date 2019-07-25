@@ -21,18 +21,18 @@ import java.util.Optional;
 public interface ICoinClientService {
 
     @GetMapping("/coin/{id}")
-    public Coin getCoin(@PathVariable("id")int id);
+    public Coin get(@PathVariable("id")int id);
 
     @GetMapping("/coin/")
-    public PageInfo listCoin(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                              @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin/")
-    public Result addCoin(@RequestBody Coin coin) ;
+    public Result add(@RequestBody Coin coin) ;
 
     @PutMapping("/coin/")
-    public Result updateCoin(@RequestBody Coin coin);
+    public Result update(@RequestBody Coin coin);
 
     @DeleteMapping("/coin/{id}")
-    public Result deleteCoin(@PathVariable("id") int id );
+    public Result delete(@PathVariable("id") int id );
 }

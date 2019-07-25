@@ -23,14 +23,14 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
 
     @Override
-    public List<CoinPairChoice> list() {
-        return coinPairChoiceMapper.findAll();
+    public List<CoinPairChoice> list(int userId,int coinId) {
+        return coinPairChoiceMapper.findAll( userId, coinId);
     }
 
     @Override
-    public PageInfo listByPage(int pageNum, int pageSize) {
+    public PageInfo listByPage(int pageNum, int pageSize,int userId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(list());
+        return new PageInfo(list( userId, coinId));
     }
 
     @Override

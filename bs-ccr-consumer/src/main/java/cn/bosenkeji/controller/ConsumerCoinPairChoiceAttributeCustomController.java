@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping("/consumer/coin_pair_choice_attribute_custom")
+@RequestMapping("/coin_pair_choice_attribute_custom")
 @Api(tags = "CoinPairChoiceAttributeCustom 自选货币自定义属性接口",value = "自选货币自定义属性相关的REST接口")
 public class ConsumerCoinPairChoiceAttributeCustomController {
 

@@ -17,9 +17,18 @@ import java.util.Optional;
 @FeignClient(name = "bs-ccr-provider-transaction" ,configuration = FeignClientConfig.class,fallbackFactory = ICoinPairChoiceClientServiceFallbackFactory.class)
 public interface ICoinPairChoiceClientService {
 
+    /**
+     * @param pageNum
+     * @param pageSizeCommon
+     * @param userId
+     * @param coinId
+     * @return
+     */
     @GetMapping("/coin_pair_choice/")
     public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon);
+                                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                                  @RequestParam("userId") int userId,
+                                                  @RequestParam("coinId") int coinId);
 
     @GetMapping("/coin_pair_choice/{id}")
     public CoinPairChoice getOneCoinPairChoice(@PathVariable("id") int id);

@@ -24,14 +24,14 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
     public ICoinClientService create(Throwable throwable) {
         return new ICoinClientService() {
             @Override
-            public Coin getCoin(int id) {
+            public Coin get(int id) {
                 Coin coin = new Coin();
                 coin.setName("hystrixName");
                 return coin;
             }
 
             @Override
-            public PageInfo listCoin(int pageNum, int pageSizeCommon) {
+            public PageInfo list(int pageNum, int pageSizeCommon) {
                 Coin coin = new Coin();
                 coin.setName("hystrixName");
                 List<Coin> listCoin = new ArrayList<Coin>();
@@ -40,17 +40,17 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
             }
 
             @Override
-            public Result addCoin(Coin coin) {
+            public Result add(Coin coin) {
                 return new Result("0","fail");
             }
 
             @Override
-            public Result updateCoin(Coin coin) {
+            public Result update(Coin coin) {
                 return new Result("0","fail");
             }
 
             @Override
-            public Result deleteCoin(int id) {
+            public Result delete(int id) {
                 return new Result("0","fail");
             }
 
