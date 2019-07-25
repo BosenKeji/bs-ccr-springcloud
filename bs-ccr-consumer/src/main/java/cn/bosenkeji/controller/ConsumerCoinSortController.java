@@ -27,7 +27,7 @@ public class ConsumerCoinSortController {
 
     @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getOneCoinSort")
     @GetMapping("/{tradePlatformId}")
-    public PageInfo listProduct(@PathVariable( value="tradePlatformId") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+    public PageInfo listProduct(@PathVariable( value="tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
                                 @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
         return iCoinSortClientService.listCoinSortByTradePlatformId(tradePlatformId,pageNum, pageSizeCommon);

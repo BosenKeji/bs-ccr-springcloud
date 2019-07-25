@@ -37,7 +37,7 @@ public class CoinSortController {
     DiscoveryClient discoveryClient;
 
 
-    @ApiOperation(value = "根据交易平台获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
+    @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
     @GetMapping("/{tradePlatformId}")
     public PageInfo listCoinSortByTradePlatformId(@PathVariable( value="tradePlatformId") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int tradePlatformId,
                                                   @RequestParam( value="pageNum",defaultValue="1") int pageNum,

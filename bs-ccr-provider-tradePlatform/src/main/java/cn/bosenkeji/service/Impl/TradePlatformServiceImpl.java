@@ -34,6 +34,12 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     }
 
     @Override
+    public PageInfo listByPageAndUserId(int pageNum, int pageSize, int userId) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo(this.tradePlatformMapper.findAllByUserId(userId));
+    }
+
+    @Override
     public Optional<TradePlatform> get(int id) {
         return Optional.ofNullable(tradePlatformMapper.selectByPrimaryKey(id));
     }
