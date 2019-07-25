@@ -1,9 +1,11 @@
 package cn.bosenkeji.vo.transaction;
 
+import cn.bosenkeji.vo.coin.CoinPair;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -29,7 +31,9 @@ public class CoinPairChoice {
 
     private Date updatedAt;
 
-    /*非数据库字段*/
+    /**非数据库字段*/
+    private CoinPair coinPair;
+
     private CoinPairChoiceAttribute coinPairChoiceAttribute;
 
     private CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom;
@@ -104,5 +108,13 @@ public class CoinPairChoice {
 
     public void setCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         this.coinPairChoiceAttributeCustom = coinPairChoiceAttributeCustom;
+    }
+
+    public CoinPair getCoinPair() {
+        return coinPair;
+    }
+
+    public void setCoinPair(CoinPair coinPair) {
+        this.coinPair = coinPair;
     }
 }

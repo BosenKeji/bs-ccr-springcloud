@@ -25,4 +25,6 @@ public interface CoinPairCoinMapper {
     int updateByPrimaryKey(CoinPairCoin record);
 
     List<CoinPairCoin> findAll();
+
+    Integer checkByCoinIdAndCoinPairId(int coinId,int coinPairId);
 }

@@ -34,6 +34,7 @@
         <module>bs-ccr-provider-transaction</module>
         <module>bs-ccr-validator</module>
         <module>bs-ccr-redis</module>
+        <module>bs-ccr-message-rocketMQ</module>
 
     </modules>
 
@@ -112,6 +113,11 @@
                 <artifactId>lombok</artifactId>
                 <version>1.18.8</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>2.0.3</version>
             </dependency>
 
             <!-- 包冲突解决 -->

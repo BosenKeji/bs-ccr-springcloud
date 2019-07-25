@@ -18,11 +18,9 @@ import java.util.Optional;
 @FeignClient( name = "bs-ccr-provider-coin",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
 public interface ICoinSortClientService {
 
-    @GetMapping("/coin_sort/{id}")
-    public CoinSort getCoinSort(@PathVariable("id") int id);
-
-    @GetMapping("/coin_sort/")
-    public PageInfo listCoinSort(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+    @GetMapping("/coin_sort/{tradePlatformId}")
+    public PageInfo listCoinSortByTradePlatformId(@PathVariable("tradePlatformId") int tradePlatformId,
+                                 @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_sort/")
@@ -31,7 +29,8 @@ public interface ICoinSortClientService {
     @PutMapping("/coin_sort/")
     public Result updateCoinSort(@RequestBody CoinSort coinSort);
 
-    @DeleteMapping("/coin_sort/{id}")
-    public Result deleteCoinSort(@PathVariable("id") int id);
+    @DeleteMapping("/coin_sort/")
+    public Result deleteCoinSort(@RequestParam("tradePlatformId") int tradePlatformId,
+                                 @RequestParam("coinId") int coinId);
 
 }

@@ -52,5 +52,10 @@ public class CoinPairCoinServiceImpl implements CoinPairCoinService {
         return Optional.ofNullable(coinPairCoinMapper.deleteByCoinIdAndCoinPairId(coinId, coinPairId));
     }
 
+    @Override
+    public Optional<Integer> checkByCoinIdAndCoinPairId(int coinId, int coinPairId) {
+        return Optional.ofNullable(this.coinPairCoinMapper.checkByCoinIdAndCoinPairId(coinId, coinPairId));
+    }
+
 
 }

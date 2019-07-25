@@ -53,6 +53,9 @@ public class CoinPairCoinController {
     @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST",nickname = "addOneCoinPairCoin")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
+        this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinPairCoin.getCoinId(),coinPairCoin.getCoinPairId())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(CoinPairCoinEnum.NAME));
 
         coinPairCoin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

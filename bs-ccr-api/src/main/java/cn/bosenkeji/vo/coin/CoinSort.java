@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -33,6 +34,11 @@ public class CoinSort implements Serializable {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
+
+    /**
+     * 非数据库字段
+     */
+    private Coin coin;
 
     public int getId() {
         return id;
@@ -96,6 +102,14 @@ public class CoinSort implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Coin getCoin() {
+        return coin;
+    }
+
+    public void setCoin(Coin coin) {
+        this.coin = coin;
     }
 
     @Override

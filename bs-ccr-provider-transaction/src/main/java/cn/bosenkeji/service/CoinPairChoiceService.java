@@ -12,9 +12,9 @@ import java.util.Optional;
  * @create 2019/7/17 11:48
  */
 public interface CoinPairChoiceService {
-    List<CoinPairChoice> list();
+    List<CoinPairChoice> list(int userId,int coinId);
 
-    PageInfo listByPage(int pageNum,int pageSize);
+    PageInfo listByPage(int pageNum,int pageSize,int userId,int coinId);
 
     Optional<CoinPairChoice> get(int id);
 

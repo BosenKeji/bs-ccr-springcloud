@@ -33,6 +33,12 @@
       <result column="cpcaccreatedat" property="createdAt"/>
       <result column="cpcacupdatedat" property="updatedAt"/>
     </association>
+
+    <association property="coinPair" javaType="cn.bosenkeji.vo.coin.CoinPair">
+      <id column="cpId" property="id"/>
+      <result column="cpName" property="name"/>
+    </association>
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -41,7 +47,7 @@
   <select id="checkExistByCoinPartnerIdAndUserId" resultType="integer">
     select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and user_id=#{param2}  LIMIT 1)
   </select>
-  <select id="findAll" resultMap="BaseResultMap">
+  <select id="findAll" parameterType="integer" resultMap="BaseResultMap">
     select
     cpc.id,
     cpc.coin_partner_id,
@@ -67,9 +73,14 @@
     cpcac.stop_profit_fixed_rate,
     cpcac.status 'cpcacstatus',
     cpcac.created_at 'cpcaccreatedat',
-    cpcac.updated_at 'cpcacupdatedat'
+    cpcac.updated_at 'cpcacupdatedat',
+    cp.id 'cpId',
+    cp.name 'cpName'
     from coin_pair_choice cpc left join coin_pair_choice_attribute cpca on cpc.id = cpca.coin_partner_choice_id
     left join coin_pair_choice_attribute_custom  cpcac on cpc.id = cpcac.coin_partner_choice_id
+    left join   coin_pair_coin cpcoin ON cpc.coin_partner_id=cpcoin.coin_pair_id
+    LEFT JOIN coin_pair cp ON cpcoin.coin_pair_id=cp.id
+    WHERE cpc.user_id=#{param1}  AND cpcoin.coin_id=#{param2}
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->

@@ -24,17 +24,13 @@ public class ConsumerCoinSortController {
     @Autowired
     ICoinSortClientService iCoinSortClientService;
 
-    @ApiOperation(value = "获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByPage")
-    @GetMapping("/{id}")
-    public CoinSort getCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id) {
-        return iCoinSortClientService.getCoinSort(id);
-    }
 
-    @ApiOperation(value = "获取单个货币排序接口",httpMethod = "GET",nickname = "getOneCoinSort")
-    @GetMapping("/")
-    public PageInfo listProduct(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+    @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getOneCoinSort")
+    @GetMapping("/{tradePlatformId}")
+    public PageInfo listProduct(@PathVariable( value="tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+                                @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) {
-        return iCoinSortClientService.listCoinSort(pageNum, pageSizeCommon);
+        return iCoinSortClientService.listCoinSortByTradePlatformId(tradePlatformId,pageNum, pageSizeCommon);
     }
 
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
@@ -51,8 +47,9 @@ public class ConsumerCoinSortController {
     }
 
     @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE",nickname = "deleteOneCoinSort")
-    @DeleteMapping("/{id}")
-    public Result deleteCoinSort(@PathVariable("id") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int id){
-        return iCoinSortClientService.deleteCoinSort(id);
+    @DeleteMapping("/")
+    public Result deleteCoinSort(@RequestParam("tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+                                 @RequestParam("coinId") @ApiParam(value = "货币id", required = true, type = "integer" ,example = "1") int coinId){
+        return iCoinSortClientService.deleteCoinSort(tradePlatformId, coinId);
     }
 }

@@ -34,12 +34,12 @@ public class ConsumerCoinPairChoiceAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
-    public Result addOneCoinPairChoiceAttribute(@ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") HttpServletRequest request,
+    public Result addOneCoinPairChoiceAttribute(@ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'coinPartnerChoiceId'", required = true, type = "string") HttpServletRequest request,
                                                 @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                                                 @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                                                 @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
         //获取自选币id字符串数组
-        String [] coinPairChoiceIdStr=request.getParameterValues("oinPartnerChoiceId");
+        String [] coinPairChoiceIdStr=request.getParameterValues("coinPartnerChoiceId");
         int[] coinPairChoiceIds=new int[coinPairChoiceIdStr.length];
         for (int i=0;i<coinPairChoiceIdStr.length;i++){
             coinPairChoiceIds[i]=Integer.parseInt(coinPairChoiceIdStr[i]);
