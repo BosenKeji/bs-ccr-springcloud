@@ -12,6 +12,8 @@ import java.util.List;
 public interface CoinSortMapper {
     int deleteByPrimaryKey(Integer id);
 
+    Integer deleteByTradePlatformIdAndCoinId(int tradePlatformId,int coinId);
+
     int insert(CoinSort record);
 
     int insertSelective(CoinSort record);
@@ -25,4 +27,6 @@ public interface CoinSortMapper {
     List<CoinSort> findAll();
 
     List<CoinSort> findAllByTradePlatformId(int tradePlatformId);
+
+    Integer checkByTradePlatformIdAndCoinId(int tradePlatformId,int coinId);
 }

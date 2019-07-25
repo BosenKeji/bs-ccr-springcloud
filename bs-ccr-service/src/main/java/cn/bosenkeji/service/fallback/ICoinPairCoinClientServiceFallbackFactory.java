@@ -21,32 +21,18 @@ public class ICoinPairCoinClientServiceFallbackFactory implements FallbackFactor
     public ICoinPairCoinClientService create(Throwable throwable) {
         return new ICoinPairCoinClientService() {
             @Override
-            public CoinPairCoin getCoinPairCoin(int id) {
-                CoinPairCoin coinPairCoin=new CoinPairCoin();
-                return coinPairCoin;
-            }
-
-            @Override
-            public PageInfo listCoinPairCoin(int pageNum,int pageSize) {
-                CoinPairCoin coinPairCoin=new CoinPairCoin();
-                List<CoinPairCoin> coinPairCoins=new ArrayList<>();
-                coinPairCoins.add(coinPairCoin);
-                return new PageInfo(coinPairCoins);
-            }
-
-            @Override
             public Result addCoinPairCoin(CoinPairCoin coinPairCoin) {
-                return  new Result("0","fail");
+                return  new Result(0,"fail");
             }
 
             @Override
             public Result updateCoinPairCoin(CoinPairCoin coinPairCoin) {
-                return  new Result("0","fail");
+                return  new Result(0,"fail");
             }
 
             @Override
             public Result deleteCoinPairCoin(int coinId, int coinPairId) {
-                return  new Result("0","fail");
+                return  new Result(0,"fail");
             }
 
 

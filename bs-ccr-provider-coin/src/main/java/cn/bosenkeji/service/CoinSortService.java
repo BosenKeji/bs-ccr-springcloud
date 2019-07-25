@@ -12,17 +12,14 @@ import java.util.Optional;
  */
 
 public interface CoinSortService {
-    List<CoinSort> list();
-
-    PageInfo listByPage(int pageNum, int pageSize);
 
     PageInfo listByTradePlatformId(int tradePlatformId,int pageNum, int pageSize);
-
-    Optional<CoinSort> get(int id);
 
     Optional<Integer> add(CoinSort coinSort);
 
     Optional<Integer> update(CoinSort coinSort);
 
-    Optional<Integer> delete(int coinId);
+    Optional<Integer> delete(int tradePlatform,int coinId);
+
+    Optional<Integer> checkByTradePlatformIdAndCoinId(int tradePlatformId,int coinId);
 }

@@ -3,6 +3,7 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.ICoinSortClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinSort;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -20,36 +21,31 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
     @Override
     public ICoinSortClientService create(Throwable throwable) {
         return new ICoinSortClientService() {
-            @Override
-            public CoinSort getCoinSort(int id) {
-                CoinSort coinSort=new CoinSort();
-                return coinSort;
-            }
 
             @Override
-            public PageInfo listCoinSort(int pageNum,int pageSize) {
+            public PageInfo listCoinSortByTradePlatformId(int tradePlatformId, int pageNum, int pageSizeCommon) {
+                PageHelper.startPage(pageNum,pageSizeCommon);
+                List<CoinSort> coinSorts=new ArrayList<>();
                 CoinSort coinSort=new CoinSort();
-                List<CoinSort> coinSorts = new ArrayList<>();
+                coinSort.setId(0);
                 coinSorts.add(coinSort);
                 return new PageInfo(coinSorts);
             }
 
             @Override
             public Result addCoinSort(CoinSort coinSort) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinSort(CoinSort coinSort) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
-            public Result deleteCoinSort(int id) {
-                return  new Result("0","fail");
+            public Result deleteCoinSort(int tradePlatformId, int coinId) {
+                return new Result<>(0,"hystrix fail");
             }
-
-
         };
     }
 }

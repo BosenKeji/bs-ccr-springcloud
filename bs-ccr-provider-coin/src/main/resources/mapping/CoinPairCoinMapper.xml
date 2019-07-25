@@ -14,6 +14,10 @@
     <!--@mbg.generated-->
     id, coin_pair_id, coin_id, `status`, created_at, updated_at
   </sql>
+  <select id="checkByCoinIdAndCoinPairId" parameterType="int">
+    select exists (select 1 from coin_pair_coin where coin_pair_coin.coin_id=#{param1} and coin_pair_coin.coin_pair_id=#{param2} limit 1)
+  </select>
+
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
