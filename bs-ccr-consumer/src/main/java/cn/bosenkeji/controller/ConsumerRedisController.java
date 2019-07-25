@@ -19,18 +19,13 @@ public class ConsumerRedisController {
     @Resource
     private IRedisClientService iRedisClientService;
 
-    @PostMapping("/get")
+    @GetMapping("/get")
     public Object get(@RequestParam("key") String key) {
         return this.iRedisClientService.get(key);
     }
 
     @PostMapping("/set")
-    public Object set(@RequestParam("key") String key,@RequestParam("value") String value) {
-        return this.iRedisClientService.set(key, value);
-    }
-
-    @PostMapping("/setWithTime")
-    public Object setWithTime(@RequestParam("key") String key,@RequestParam("value") String value,@RequestParam("time") long time) {
+    public Object set(@RequestParam("key") String key,@RequestParam("value") String value,@RequestParam("time") long time) {
         return this.iRedisClientService.setWithTime(key, value, time);
     }
 }
