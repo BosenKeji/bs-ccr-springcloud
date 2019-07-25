@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/11 15:47
  */
 @RestController
-@RequestMapping("/consumer/coin_sort")
+@RequestMapping("/coin_sort")
 @Api(tags = "CoinSort 货币排序接口" ,value = "提供货币排序的 Rest API")
 public class ConsumerCoinSortController {
 

@@ -18,7 +18,7 @@ import javax.validation.constraints.Min;
  * @create 2019-07-18 18:08
  */
 @RestController
-@RequestMapping("/consumer/product_combo")
+@RequestMapping("/product_combo")
 @Api(tags = "ProductCombo产品套餐api接口",value = "提供产品套餐相关 Rest API")
 public class ConsumerProductComboController {
 

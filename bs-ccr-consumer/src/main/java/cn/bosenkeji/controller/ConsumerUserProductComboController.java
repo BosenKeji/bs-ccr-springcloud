@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @create 2019-07-18 19:47
  */
 @RestController
-@RequestMapping("/consumer/user_product_combo")
+@RequestMapping("/user_product_combo")
 @Api(tags = "UserProductCombo 用户套餐api接口",value = "提供用户套餐相关的 rest API")
 public class ConsumerUserProductComboController {
 

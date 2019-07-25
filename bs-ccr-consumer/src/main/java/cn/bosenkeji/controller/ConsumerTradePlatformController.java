@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/22 11:24
  */
 @RestController
-@RequestMapping("/consumer/trade_platform")
+@RequestMapping("/trade_platform")
 @Api(tags = "tradePlatform 交易平台接口",value = "提供交易平台相关功能 Rest接口")
 public class ConsumerTradePlatformController {
 

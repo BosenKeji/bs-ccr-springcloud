@@ -17,7 +17,7 @@ import java.util.Optional;
  * @create 2019/7/11 15:43
  */
 @RestController
-@RequestMapping("/consumer/coin_pair")
+@RequestMapping("/coin_pair")
 @Api(tags = "CoinPair 货币对相关接口", value = "提供货币对相关接口的 Rest API")
 public class ConsumerCoinPairController {
 
