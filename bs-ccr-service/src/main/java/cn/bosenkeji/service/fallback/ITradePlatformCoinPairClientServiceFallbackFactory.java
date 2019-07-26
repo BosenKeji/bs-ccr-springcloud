@@ -2,14 +2,13 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Author CAJR

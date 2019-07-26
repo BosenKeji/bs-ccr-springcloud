@@ -1,6 +1,6 @@
-package cn.bosenkeji;
+package bosenCCR;
 
-
+import cn.bosenkeji.ProductApp;
 import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +16,11 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @create 2019-07-15 18:07
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RedisApp.class)
+@SpringBootTest(classes = ProductApp.class)
 public class RedisTest {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
 
 
 
@@ -33,7 +32,24 @@ public class RedisTest {
 
     }
 
+    @Test
+    public void testProduct() {
+        Product product=new Product();
+        product.setId(13);
+        product.setName("productName10");
+        product.setVersionName("versionName10");
+        redisTemplate.opsForValue().set("productcombo:"+product.getId(),product);
+        String str = String.valueOf(redisTemplate.opsForValue().get("productcombo:"+product.getId()));
+        System.err.println("str = " + str);
 
+    }
+
+/*
+    @Test
+    public void testRedisGet() {
+        Product product=JsonUtils.jsonToPojo(redisUtil.get("product2"),Product.class);
+        System.out.println(product);
+    }*/
 
     @Test
     public void testExpire() {

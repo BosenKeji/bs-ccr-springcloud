@@ -33,7 +33,7 @@ public class ProductServiceImpl implements IProductService {
     public Optional<Integer> add(Product product) {
 
         return Optional.ofNullable(productMapper.insert(product));
-       // return flag==1?true:false;
+        // return flag==1?true:false;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Optional<Integer> update(Product product) {
-         return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
+        return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
     }
 
     @Override

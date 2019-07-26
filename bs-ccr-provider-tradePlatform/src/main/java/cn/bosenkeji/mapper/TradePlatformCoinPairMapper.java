@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair;
 
 import java.util.List;
 
