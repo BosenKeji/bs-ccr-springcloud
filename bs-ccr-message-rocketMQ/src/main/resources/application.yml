@@ -1,0 +1,28 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: bs-ccr-message-rocketMQ
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    stream:
+      rocketmq:
+        binder:
+          name-server: 127.0.0.1:9876
+      bindings:
+        output1: {destination: ccr-topic-1, content-type: application/json}
+        output2: {destination: ccr-topic-2, content-type: application/json}
+
+        input1: {destination: ccr-topic-1, content-type: application/json, group: ccr-group}
+        input2: {destination: ccr-topic-2, content-type: application/json, group: ccr-group-1}
+logging:
+  level:
+    com:
+      alibaba:
+        cloud:
+          stream:
+            binder:
+              rocketmq: DEBUG
