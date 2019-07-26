@@ -2,7 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformMapper;
 import cn.bosenkeji.service.TradePlatformService;
-import cn.bosenkeji.vo.tradeplateform.TradePlatform;
+import cn.bosenkeji.vo.tradplateform.TradePlatform;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;

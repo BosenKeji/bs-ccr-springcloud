@@ -20,9 +20,12 @@ import javax.annotation.Resource;
 @FeignClient(name = "bs-ccr-redis",configuration = FeignClientConfig.class,fallbackFactory = IRedisClientServiceFallbackFactory.class)
 public interface IRedisClientService {
 
-   @GetMapping("/redis/get/")
-    Object get(@RequestParam("key") String key);
+   @PostMapping("/redis/get/")
+    String get(@RequestParam("key") String key);
 
    @PostMapping("/redis/set/")
-    boolean set(@RequestParam("key") String key,@RequestParam("value") String value,@RequestParam("time") long time);
+    Result set(@RequestParam("key") String key,@RequestParam("value") String value);
+
+   @PostMapping("/redis/setWithTime/")
+    Result setWithTime(@RequestParam("key") String key,@RequestParam("value") String value,@RequestParam("time") long time);
 }

@@ -1,5 +1,7 @@
 package cn.bosenkeji;
 
+
+import cn.bosenkeji.vo.product.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,21 @@ public class RedisTest {
 
 
 
+
     @Test
     public void testPackage() {
         redisTemplate.opsForValue().set("test:a","测试");
         String str = (String) redisTemplate.opsForValue().get("test:a");
         System.err.println("str = " + str);
 
+    }
+
+
+
+    @Test
+    public void testExpire() {
+        Long time = redisTemplate.getExpire("product2");
+        System.err.println("time = " + time);
     }
 
 

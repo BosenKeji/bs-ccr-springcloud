@@ -35,6 +35,7 @@
         <module>bs-ccr-validator</module>
         <module>bs-ccr-redis</module>
         <module>bs-ccr-message-rocketMQ</module>
+        <module>bs-ccr-deal</module>
 
     </modules>
 
@@ -114,10 +115,11 @@
                 <version>1.18.8</version>
                 <scope>provided</scope>
             </dependency>
+
             <dependency>
-                <groupId>org.apache.rocketmq</groupId>
-                <artifactId>rocketmq-spring-boot-starter</artifactId>
-                <version>2.0.3</version>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+                <version>0.1.2.RELEASE</version>
             </dependency>
 
             <!-- 包冲突解决 -->
@@ -182,6 +184,16 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-validator</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-redis</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-combo</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>

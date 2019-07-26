@@ -81,6 +81,9 @@ public class UserProductComboController {
         return this.iUserProductComboService.selectUserProductComboByUserTel(pageNum,pageSize,userTel);
     }
 
+    //获取单个用户套餐交易平台api接口
+
+
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口",httpMethod = "GET")
     @RequestMapping(value="/discover")
     @ApiIgnore

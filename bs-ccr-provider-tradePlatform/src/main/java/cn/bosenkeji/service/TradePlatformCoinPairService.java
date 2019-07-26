@@ -1,6 +1,6 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

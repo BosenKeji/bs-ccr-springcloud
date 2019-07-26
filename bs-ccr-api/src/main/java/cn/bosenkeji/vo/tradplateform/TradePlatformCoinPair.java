@@ -1,4 +1,4 @@
-package cn.bosenkeji.vo.tradeplateform;
+package cn.bosenkeji.vo.tradplateform;
 
 import io.swagger.annotations.ApiModelProperty;
 

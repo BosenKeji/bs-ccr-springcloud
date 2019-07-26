@@ -1,6 +1,6 @@
 package bosenCCR;
 
-import cn.bosenkeji.ComboApplication;
+import cn.bosenkeji.ComboApp;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.util.List;
  * @create 2019-07-17 19:10
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ComboApplication.class)
+@SpringBootTest(classes = ComboApp.class)
 public class UserProductComboDayByAdminTest {
 
     @Autowired
