@@ -2,7 +2,6 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

@@ -1,6 +1,7 @@
 package cn.bosenkeji.vo.tradeplateform;
 
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.tradplateform.TradePlatformApi;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
