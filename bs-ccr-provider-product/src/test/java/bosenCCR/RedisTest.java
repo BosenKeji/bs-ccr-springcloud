@@ -35,7 +35,7 @@ public class RedisTest {
     @Test
     public void testProduct() {
         Product product=new Product();
-        product.setId(11);
+        product.setId(13);
         product.setName("productName10");
         product.setVersionName("versionName10");
         redisTemplate.opsForValue().set("productcombo:"+product.getId(),product);
