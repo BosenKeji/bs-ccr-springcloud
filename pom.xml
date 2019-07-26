@@ -35,6 +35,7 @@
         <module>bs-ccr-validator</module>
         <module>bs-ccr-redis</module>
         <module>bs-ccr-message-rocketMQ</module>
+        <module>bs-ccr-deal</module>
 
     </modules>
 
