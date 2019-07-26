@@ -2,6 +2,7 @@ package cn.bosenkeji.vo.tradeplateform;
 
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -16,14 +17,18 @@ public class TradePlatformApiBindProductCombo implements Serializable {
 
     private int userProductComboId;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     //一对一关系
+    @ApiModelProperty(hidden = true)
     private TradePlatformApi tradePlatformApi;
 
     //一对一关系
+    @ApiModelProperty(hidden = true)
     private UserProductCombo userProductCombo;
 
     public TradePlatformApiBindProductCombo() {

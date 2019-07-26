@@ -23,19 +23,22 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
-    public Object getListByUserId(@PathVariable("id") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+    public Object getListByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
-        return iTradePlatformApiBindProductComboClientService.getTradePlatformApiBindProductCombo(userId);
+       return iTradePlatformApiBindProductComboClientService.getListByUserId(userId);
+
+
     }
 
-    @PostMapping("/list_by_user_id")
+    @PostMapping("/")
     @ApiOperation(value = "添加 交易平台api绑定用户套餐 api接口"
             ,httpMethod = "POST",nickname = "addTradePlatformApiBindProductComboList")
     public Object add(@RequestBody @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
-        return iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
+      return iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
+
     }
 }

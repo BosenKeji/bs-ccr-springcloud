@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @Version V1.0
  * @create 2019-07-18 11:29
  */
-@FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiBindProductComboClientService.class)
+@FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProductComboClientServiceFallbackFactory.class)
 public interface IUserProductComboClientService {
 
 

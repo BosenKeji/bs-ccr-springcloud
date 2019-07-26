@@ -36,7 +36,7 @@ public class TradePlatformApiBindProductComboController {
         return tradePlatformApiBindProductComboService.findByUserId(userId);
     }
 
-    @PostMapping("/list_by_user_id")
+    @PostMapping("/")
     @ApiOperation(value = "添加 交易平台api绑定用户套餐 api接口"
             ,httpMethod = "POST",nickname = "addTradePlatformApiBindProductComboList")
     public Optional<Integer> add(@RequestBody  TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
