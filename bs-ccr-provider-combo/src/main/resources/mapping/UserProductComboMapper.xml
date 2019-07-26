@@ -56,11 +56,25 @@
   <sql id="Base_Column_List">
     id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <sql id="User_Product_Combo_List">
+    u.id uid,u.tel,
+    upc.id,upc.status,upc.created_at,upc.updated_at,upc.order_number,upc.remark,upc.status,
+    pc.id pcid,pc.product_id,pc.name pcname,pc.time pctime,pc.price pcprice,
+    pc.remark pcremark,pc.status pcstatus,pc.created_at pccreated_at,pc.updated_at pcupdated_at,
+    p.id pid,p.name pname,p.version_name pversion_name,p.logo plogo,
+    p.remark premark,p.status pstatus,p.created_at pcreated_at,p.updated_at pupdated_at,
+    u.id uid,u.username uusername,u.tel utel,u.status ustatus,u.created_at ucreated_at,u.updated_at uupdated_at
+    from `user` u LEFT JOIN user_product_combo upc
+    on u.id=upc.user_id
+    LEFT JOIN product_combo pc
+    on upc.product_combo_id=pc.id
+    LEFT JOIN product p
+    on pc.product_id=p.id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ProductComboResultMap">
     select 
-    <include refid="Base_Column_List" />
-    from user_product_combo
-    where id = #{id,jdbcType=INTEGER}
+    <include refid="User_Product_Combo_List" />
+    where upc.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo
@@ -212,4 +226,6 @@
     p.id=#{param1}
     and user_id=#{param2}
   </select>
+
+
 </mapper>

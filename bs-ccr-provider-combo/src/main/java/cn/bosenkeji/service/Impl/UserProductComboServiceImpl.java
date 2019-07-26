@@ -64,10 +64,25 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return new PageInfo<UserProductCombo>(userProductComboMapper.findAll());
     }
 
+    //多表查询
     @Override
     public Optional<UserProductCombo> get(int id) {
 
-        try {
+        //数据库联表查询用户套餐信息
+        UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
+
+        //根据id获取用户套餐的有效时长
+        final long time = userProductComboRedisTemplate.getExpire(id);
+        if(time>0) {
+            userProductCombo.setRemainTime((int)time);
+        }else {
+            userProductCombo.setRemainTime(0);
+        }
+
+        return Optional.ofNullable(userProductCombo);
+
+        //以下单表查询，目前用处不大
+        /*try {
 
             //从缓存中读取
             UserProductCombo userProductCombo = userProductComboRedisTemplate.get(id);
@@ -83,7 +98,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             e.printStackTrace();
             return Optional.ofNullable(userProductComboMapper.selectByPrimaryKey(id));
             //return null;
-        }
+        }*/
 
     }
 
