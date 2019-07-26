@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.TradePlatformCoinPairMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
@@ -35,14 +35,14 @@
     delete from trade_platform_coin_pair
     where trade_platform_id = #{param1,jdbcType=INTEGER}  and coin_pair_id =#{param2,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform_coin_pair (trade_platform_id, coin_pair_id, `status`, 
       created_at, updated_at)
     values (#{tradePlatformId,jdbcType=INTEGER}, #{coinPairId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform_coin_pair
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -68,7 +68,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair">
     <!--@mbg.generated-->
     update trade_platform_coin_pair
     <set>
@@ -90,7 +90,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatformCoinPair">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair">
     <!--@mbg.generated-->
     update trade_platform_coin_pair
     set trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},

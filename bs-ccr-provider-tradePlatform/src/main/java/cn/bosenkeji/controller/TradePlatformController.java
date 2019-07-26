@@ -7,7 +7,7 @@ import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.TradePlatformEnum;
 import cn.bosenkeji.service.TradePlatformService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradeplateform.TradePlatform;
+import cn.bosenkeji.vo.tradplateform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +23,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * @Author CAJR

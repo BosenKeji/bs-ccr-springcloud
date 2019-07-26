@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.TradePlatformMapper">
-  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradeplateform.TradePlatform">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradplateform.TradePlatform">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -9,7 +9,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <association javaType="cn.bosenkeji.vo.tradeplateform.TradePlatformApi" property="tradePlatformApi">
+    <association javaType="cn.bosenkeji.vo.tradplateform.TradePlatformApi" property="tradePlatformApi">
       <id property="id" column="tpaId"/>
       <result column="tid" property="tradePlatformId"/>
       <result column="user_id" property="userId"/>
@@ -113,14 +113,14 @@
     delete from trade_platform
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatform" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatform" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform (`name`, logo, `status`, 
       created_at, updated_at)
     values (#{name,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatform" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatform" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -154,7 +154,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatform">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatform">
     <!--@mbg.generated-->
     update trade_platform
     <set>
@@ -176,7 +176,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.tradeplateform.TradePlatform">
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.tradplateform.TradePlatform">
     <!--@mbg.generated-->
     update trade_platform
     set `name` = #{name,jdbcType=VARCHAR},
