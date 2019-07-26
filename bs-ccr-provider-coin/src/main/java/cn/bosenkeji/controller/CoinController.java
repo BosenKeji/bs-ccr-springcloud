@@ -10,6 +10,7 @@ import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.Coin;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

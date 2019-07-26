@@ -10,16 +10,3 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root
-    password: 123zxc
-
-logging:
-  level:
-    cn.bosenkeji.mapper: debug
-
-pageSize:
-  common: 10
