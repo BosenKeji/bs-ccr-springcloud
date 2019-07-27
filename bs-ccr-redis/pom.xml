@@ -14,12 +14,6 @@
     <name>bs-ccr-redis</name>
 
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -43,14 +37,6 @@
             <artifactId>jedis</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,14 +44,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-api</artifactId>
-        </dependency>
+
 
     </dependencies>
 
