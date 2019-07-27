@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -36,7 +38,7 @@ public class TradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserIdWithPage")
     public PageInfo getListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                    @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+                                    @RequestParam("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         return tradePlatformApiBindProductComboService.findByUserIdWithPage(userId,pageNum,pageSize);
     }
@@ -44,7 +46,7 @@ public class TradePlatformApiBindProductComboController {
     @PostMapping("/")
     @ApiOperation(value = "添加 交易平台api绑定用户套餐 api接口"
             ,httpMethod = "POST",nickname = "addTradePlatformApiBindProductComboList")
-    public Result add(@RequestBody  @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+    public Result add(@RequestBody @NotNull @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
         //判断该交易平台api是否未用户未绑定的
         /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
@@ -72,7 +74,7 @@ public class TradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getNoBindTradePlatformApiListByUserIdWithPage")
     public PageInfo getNoBindTradePlatformApiListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                    @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+                                    @RequestParam("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         return tradePlatformApiBindProductComboService.findNoBindTradePlatformApiListByUserId(userId,pageNum,pageSize);
     }
@@ -82,7 +84,7 @@ public class TradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getNoBindUserProductComboListByUserIdWithPage")
     public PageInfo getNoBindUserProductComboListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                    @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+                                    @RequestParam("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         return tradePlatformApiBindProductComboService.findNoBindUserProductComboListByUserId(userId,pageNum,pageSize);
     }
