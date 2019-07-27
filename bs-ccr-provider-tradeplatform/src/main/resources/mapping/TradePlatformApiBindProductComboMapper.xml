@@ -2,15 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper">
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
-    <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <association property="tradePlatformApi" fetchType="lazy" column="trade_platform_api_id"
+    <id column="pab_id" jdbcType="INTEGER" property="id" />
+    <result column="pab_user_id" jdbcType="INTEGER" property="userId" />
+    <result column="pab_trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
+    <result column="pab_user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+    <result column="pab_created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="pab_updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <!--<association property="tradePlatformApi" fetchType="lazy" column="trade_platform_api_id"
                  javaType="cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo"
-                 select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />
+                 select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />-->
+    <association javaType="cn.bosenkeji.vo.tradplateform.TradePlatformApi" property="tradePlatformApi">
+      <id column="pa_id" property="id"/>
+      <result column="pa_tradePlatformId" property="tradePlatformId"/>
+      <result column="pa_user_id" property="userId"/>
+      <result column="pa_nickname" property="nickname"/>
+      <result column="pa_access_key" property="accessKey"/>
+      <result column="pa_secret_key" property="secretKey"/>
+      <result column="pa_sign" property="sign"/>
+      <result column="pa_status" property="status"/>
+      <result column="pa_createAt" property="createdAt"/>
+      <result column="pa_updateAt" property="updatedAt"/>
+      <association property="tradePlatform" javaType="cn.bosenkeji.vo.tradplateform.TradePlatform">
+        <id column="p_id" property="id" />
+        <result column="p_name" property="name" />
+        <result column="p_logo" property="logo" />
+        <result column="p_status" property="status" />
+        <result column="p_created_at" property="createdAt" />
+        <result column="p_updated_at" property="updatedAt" />
+      </association>
+    </association>
 
   </resultMap>
   <sql id="Base_Column_List">
