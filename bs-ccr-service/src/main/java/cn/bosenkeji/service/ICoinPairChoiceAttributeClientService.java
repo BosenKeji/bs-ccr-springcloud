@@ -20,7 +20,8 @@ public interface ICoinPairChoiceAttributeClientService {
     public CoinPairChoiceAttribute getCoinPairChoiceAttributeByCoinPartnerChoiceID(@PathVariable("coinPartnerChoiceId") int coinPartnerChoiceId);
 
     @PostMapping("/coin_pair_choice_attribute/")
-    public Result addOneCoinPairChoiceAttribute(@RequestParam(value = "coinPairChoiceIds[]")int[] coinPairChoiceIds,
+    public Result addOneCoinPairChoiceAttribute(@RequestParam(value = "coinPairChoiceIdStr") String coinPairChoiceIdStr,
+                                                @RequestParam("strategyId") int strategyId,
                                                 @RequestParam("lever")  int lever,
                                                 @RequestParam("money") int money ,
                                                 @RequestParam("isCustom")  int isCustom);

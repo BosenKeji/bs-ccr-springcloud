@@ -7,7 +7,7 @@ import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.TradePlatformApiEnum;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradplateform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -3,7 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradplateform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
