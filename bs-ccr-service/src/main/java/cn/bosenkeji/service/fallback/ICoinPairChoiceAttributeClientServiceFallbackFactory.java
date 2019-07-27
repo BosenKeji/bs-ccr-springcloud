@@ -25,7 +25,7 @@ public class ICoinPairChoiceAttributeClientServiceFallbackFactory implements Fal
             }
 
             @Override
-            public Result addOneCoinPairChoiceAttribute(String coinPairChoiceIds, int lever, int money, int isCustom) {
+            public Result addOneCoinPairChoiceAttribute(String coinPairChoiceIds, int strategyId,int lever, int money, int isCustom) {
                 return new Result("0","fail");
             }
 

@@ -46,7 +46,8 @@ public class CoinPairChoiceAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
-    public Result add(@RequestParam(value = "coinPairChoiceIds") @ApiParam(value = "多选框获取多个自选币的id 字符串 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") String coinPairChoiceIdStr,
+    public Result add(@RequestParam(value = "coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串 ", required = true, type = "string") String coinPairChoiceIdStr,
+                      @RequestParam("strategyId") @ApiParam(value = "策略id'", required = true, type = "integer" ,example = "1") int strategyId,
                       @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                       @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
@@ -70,6 +71,7 @@ public class CoinPairChoiceAttributeController {
             /* 数据库已存在的就直接更新其预算和更新时间*/
             if (coinPairChoiceAttribute != null){
                 coinPairChoiceAttribute.setExpectMoney(expectMoney);
+                coinPairChoiceAttribute.setStrategyId(strategyId);
                 coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
                 coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
                         .filter((value)->value>=1)
@@ -77,6 +79,7 @@ public class CoinPairChoiceAttributeController {
             }else {
                 CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
                 coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
+                coinPairChoiceAttribute1.setStrategyId(strategyId);
                 coinPairChoiceAttribute1.setIsCustom(isCustom);
                 coinPairChoiceAttribute1.setExpectMoney(expectMoney);
                 coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
