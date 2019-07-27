@@ -10,11 +10,49 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bs-ccr-deal</artifactId>
+    <version>1.0.0</version>
 
     <dependencies>
+
+        <!--Springboot Test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!--模块依赖-->
+        <!--rocketMQ-->
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-message-rocketMQ</artifactId>
+        </dependency>
+
+        <!--redis-->
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
         </dependency>
     </dependencies>
 

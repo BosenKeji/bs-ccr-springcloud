@@ -1,7 +1,9 @@
+server:
+  port: 8099
 
 spring:
   application:
-    name: bs-ccr-message-rocketMQ
+    name: bs-ccr-deal
   cloud:
     stream:
       rocketmq:
@@ -15,12 +17,22 @@ spring:
 
         input1: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-1, content-type: application/json, group: MQ_INST_1021863952199128_BbG2xpyM%GID-ccr-1}
         input2: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-2, content-type: application/json, group: MQ_INST_1021863952199128_BbG2xpyM%GID-ccr-2}
-
-logging:
-  level:
-    com:
-      alibaba:
-        cloud:
-          stream:
-            binder:
-              rocketmq: DEBUG
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  cache:
+    type: redis
+    redis:
+      time-to-live: 200000ms
+      cache-null-values: false
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: # 可以被压缩的类型
+        - text/xml
+        - application/xml
+        - application/json
+      min-request-size: 2048 # 超过2048的字节进行压缩

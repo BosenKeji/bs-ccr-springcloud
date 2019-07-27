@@ -3,10 +3,10 @@ server:
 spring:
   application:
     name: bs-ccr-redis
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
   cache:
     type: redis
     redis:
