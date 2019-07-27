@@ -24,7 +24,9 @@ public interface IUserProductComboDayByAdminClientService {
     Result add(@RequestBody UserProductComboDay userProductComboDay, @RequestParam("adminId") int adminId);
 
     @GetMapping("/user_product_combo_day_by_admin/list_by_user_product_combo_id")
-    List listByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId);
+    PageInfo listByUserProductComboId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                      @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                                      @RequestParam("userProductComboId") int userProductComboId);
 
     @GetMapping("/user_product_combo_day_by_admin/")
     PageInfo list(@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize);

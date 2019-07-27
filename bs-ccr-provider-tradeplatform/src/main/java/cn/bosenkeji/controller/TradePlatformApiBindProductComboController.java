@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,10 +30,12 @@ public class TradePlatformApiBindProductComboController {
 
     @GetMapping("/list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
-            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
-    public List getListByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserIdWithPage")
+    public PageInfo getListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                    @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
-        return tradePlatformApiBindProductComboService.findByUserId(userId);
+        return tradePlatformApiBindProductComboService.findByUserIdWithPage(pageNum,pageSize,userId);
     }
 
     @PostMapping("/")

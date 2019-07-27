@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Optional;
  */
 public interface TradePlatformApiBindProductComboService {
 
-    List<TradePlatformApiBindProductCombo> findByUserId(int userId);
+    PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId,int pageNum,int pageSize);
 
     Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
 

@@ -4,6 +4,8 @@ import cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,20 +30,25 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     private IUserProductComboClientService iUserProductComboClientService;
 
     @Override
-    public List<TradePlatformApiBindProductCombo> findByUserId(int userId) {
+    public PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId, int pageNum, int pageSize) {
         //查询用户下的
         List<TradePlatformApiBindProductCombo> list = tradePlatformApiBindProductComboMapper.findByUserId(userId);
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboPageInfo = new PageInfo<>(list);
+        List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboPageInfo.getList();
 
         //分别查询对应的用户套餐——调用用户套餐的服务
-        for (TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo : list) {
+        for (TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo : pageList) {
             tradePlatformApiBindProductCombo.setUserProductCombo(iUserProductComboClientService
                     .getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId()));
         }
-        return list;
+        return tradePlatformApiBindProductComboPageInfo;
     }
 
     @Override
     public Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
         return Optional.ofNullable(tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo));
     }
+
+
 }

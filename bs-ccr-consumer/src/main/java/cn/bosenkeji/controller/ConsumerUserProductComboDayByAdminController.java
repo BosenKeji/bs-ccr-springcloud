@@ -42,9 +42,10 @@ public class ConsumerUserProductComboDayByAdminController {
     @ApiOperation(value="通过用户套餐id查询时长操作列表api接口 多表联合查询",httpMethod = "GET",
             nickname = "getUserProductComboDayByAdminListByUserProductComboId")
     @GetMapping("/list_by_user_product_combo_id")
-    public Object listByUserProductComboId(@RequestParam("userProductComboId")
-                                               @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId) {
-        return this.iUserProductComboDayByAdminClientService.listByUserProductComboId(userProductComboId);
+    public Object listByUserProductComboId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                           @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+            @RequestParam("userProductComboId") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId) {
+        return this.iUserProductComboDayByAdminClientService.listByUserProductComboId(pageNum,pageSize,userProductComboId);
     }
 
     @ApiOperation(value="通过用户电话查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserTelWithPage")

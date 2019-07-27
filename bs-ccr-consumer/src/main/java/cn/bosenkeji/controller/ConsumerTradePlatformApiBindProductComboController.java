@@ -26,9 +26,11 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @GetMapping("/list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
-    public Object getListByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+    public Object getListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                  @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+                                  @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
-       return iTradePlatformApiBindProductComboClientService.getListByUserId(userId);
+       return iTradePlatformApiBindProductComboClientService.getListByUserId(userId,pageNum,pageSize);
 
 
     }
