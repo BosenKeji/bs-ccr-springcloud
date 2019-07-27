@@ -2,7 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradplateform.TradePlatformCoinPair;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

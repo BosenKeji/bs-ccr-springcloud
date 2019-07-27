@@ -29,11 +29,11 @@ public class IUserProductComboDayByAdminClientServiceFallbackFactory implements 
             }
 
             @Override
-            public List listByUserProductComboId(int userProductComboId) {
+            public PageInfo listByUserProductComboId(int pageNum,int pageSize,int userProductComboId) {
                 List list=new ArrayList();
                 UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
                 list.add(userProductComboDayByAdmin);
-                return list;
+                return new PageInfo(list);
             }
 
             @Override

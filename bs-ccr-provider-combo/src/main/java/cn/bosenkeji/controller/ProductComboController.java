@@ -5,6 +5,7 @@ import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.ProductComboEnum;
+import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
@@ -39,7 +40,16 @@ public class ProductComboController {
     private IProductComboService iProductComboService;
 
     @Resource
+    private IProductClientService iProductClientService;
+
+    @Resource
     private DiscoveryClient discoveryClient;
+
+    @GetMapping("/get_product_list")
+    public PageInfo getProductList(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                   @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
+        return this.iProductClientService.listProduct(pageNum,pageSize);
+    }
 
     @ApiOperation(value ="获取产品套餐列表api",notes = "获取产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListWithPage")
     @RequestMapping(value = "/",method = RequestMethod.GET)

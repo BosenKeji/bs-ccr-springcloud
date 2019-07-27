@@ -35,6 +35,13 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
                 list.add(userProductCombo);
                 return new PageInfo<>(list);
             }
+
+            @Override
+            public UserProductCombo getUserProductCombo(int id) {
+                UserProductCombo userProductCombo=new UserProductCombo();
+                userProductCombo.setRemark("hystrixName");
+                return userProductCombo;
+            }
         };
     }
 }

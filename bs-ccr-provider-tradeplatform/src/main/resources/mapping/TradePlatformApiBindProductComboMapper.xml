@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper">
+  <resultMap id="ComboResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    <id column="pab_id" jdbcType="INTEGER" property="id" />
+    <result column="pab_user_id" jdbcType="INTEGER" property="userId" />
+    <result column="pab_trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
+    <result column="pab_user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+    <result column="pab_created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="pab_updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <!--<association property="tradePlatformApi" fetchType="lazy" column="trade_platform_api_id"
+                 javaType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo"
+                 select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />-->
+    <association javaType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" property="tradePlatformApi">
+      <id column="pa_id" property="id"/>
+      <result column="pa_trade_platform_id" property="tradePlatformId"/>
+      <result column="pa_user_id" property="userId"/>
+      <result column="pa_nickname" property="nickname"/>
+      <result column="pa_access_key" property="accessKey"/>
+      <result column="pa_secret_key" property="secretKey"/>
+      <result column="pa_sign" property="sign"/>
+      <result column="pa_status" property="status"/>
+      <result column="pa_created_at" property="createdAt"/>
+      <result column="pa_updated_at" property="updatedAt"/>
+      <association property="tradePlatform" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform">
+        <id column="p_id" property="id" />
+        <result column="p_name" property="name" />
+        <result column="p_logo" property="logo" />
+        <result column="p_status" property="status" />
+        <result column="p_created_at" property="createdAt" />
+        <result column="p_updated_at" property="updatedAt" />
+      </association>
+    </association>
+
+  </resultMap>
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
+    <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+  </resultMap>
+
+  <resultMap id="ApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApi">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="access_key" jdbcType="VARCHAR" property="accessKey" />
+    <result column="secret_key" jdbcType="VARCHAR" property="secretKey" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, trade_platform_api_id, user_product_combo_id, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade_platform_api_bind_product_combo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trade_platform_api_bind_product_combo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into trade_platform_api_bind_product_combo (user_id, trade_platform_api_id, user_product_combo_id, 
+      created_at, updated_at)
+    values (#{userId,jdbcType=INTEGER}, #{tradePlatformApiId,jdbcType=INTEGER}, #{userProductComboId,jdbcType=INTEGER}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into trade_platform_api_bind_product_combo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="tradePlatformApiId != null">
+        trade_platform_api_id,
+      </if>
+      <if test="userProductComboId != null">
+        user_product_combo_id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tradePlatformApiId != null">
+        #{tradePlatformApiId,jdbcType=INTEGER},
+      </if>
+      <if test="userProductComboId != null">
+        #{userProductComboId,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    update trade_platform_api_bind_product_combo
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tradePlatformApiId != null">
+        trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER},
+      </if>
+      <if test="userProductComboId != null">
+        user_product_combo_id = #{userProductComboId,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+    update trade_platform_api_bind_product_combo
+    set user_id = #{userId,jdbcType=INTEGER},
+      trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER},
+      user_product_combo_id = #{userProductComboId,jdbcType=INTEGER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByUserId" parameterType="java.lang.Integer" resultMap="ComboResultMap">
+    select
+    pab.id pab_id, pab.user_id pab_user_id, pab.trade_platform_api_id pab_trade_platform_api_id,
+    pab.user_product_combo_id pab_user_product_combo_id,
+    pab.created_at pab_created_at,pab.updated_at pab_updated_at,
+
+    pa.id pa_id,pa.user_id pa_user_id,pa.trade_platform_id pa_trade_platform_id,pa.sign pa_sign,pa.access_key pa_access_key,
+    pa.secret_key pa_secret_key,pa.nickname pa_nickname,pa.`status` `pa_status`,
+    pa.created_at pa_created_at,pa.updated_at pa_updated_at,
+
+    p.id p_id,p.`name` `p_name`,p.logo p_logo,p.`status` `p_status`,p.created_at p_created_at,p.updated_at p_updated_at
+
+    from trade_platform_api_bind_product_combo pab
+    LEFT JOIN trade_platform_api pa
+    on pab.trade_platform_api_id=pa.id
+    LEFT JOIN trade_platform p
+    on pa.trade_platform_id=p.id
+
+    where pab.user_id=#{userId}
+  </select>
+
+  <!--通过用户ID 查询没有绑定的品台api-->
+  <select id="findNotInBindAndInApiListByUserId" parameterType="java.lang.Integer" resultMap="ApiResultMap">
+    select
+    id, user_id, trade_platform_id, sign, access_key, secret_key, nickname, `status`,
+    created_at, updated_at
+    from trade_platform_api pa
+    WHERE
+    pa.user_id=#{userId}
+    and
+    (SELECT count(0)
+    from trade_platform_api_bind_product_combo pab
+    where pab.trade_platform_api_id=pa.id and user_id=#{userId} )=0
+  </select>
+
+  <!--查询没有绑定的用户套餐ID-->
+  <select id="findNotInBindAndInComboIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT id
+    FROM
+    user_product_combo upc
+    where
+    upc.user_id=#{userId}
+    and
+    (select count(0)
+    from trade_platform_api_bind_product_combo pab
+     where pab.user_product_combo_id=upc.id
+      and pab.user_id=#{userId})=0
+  </select>
+
+</mapper>

@@ -87,4 +87,10 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserTel(userTel));
     }
+
+    @Override
+    public PageInfo<UserProductComboDayByAdmin> getByUserProductComboIdWithPage(int userProductComboId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(getByUserProductComboId(userProductComboId));
+    }
 }
