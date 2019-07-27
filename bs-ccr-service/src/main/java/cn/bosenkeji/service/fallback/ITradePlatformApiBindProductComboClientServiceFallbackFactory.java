@@ -1,7 +1,8 @@
 package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,18 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             }
 
             @Override
-            public Optional<Integer> addTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
-                return Optional.empty();
+            public Result addTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+                return new Result("0","hystrix");
+            }
+
+            @Override
+            public PageInfo getNoBindTradePlatformApiListByUserId(int pageNum, int pageSize, int userId) {
+                return new PageInfo();
+            }
+
+            @Override
+            public PageInfo getNoBindUserProductComboListByUserId(int pageNum, int pageSize, int userId) {
+                return new PageInfo();
             }
         };
     }

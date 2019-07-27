@@ -1,6 +1,8 @@
 package cn.bosenkeji.service;
 
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -17,5 +19,19 @@ public interface TradePlatformApiBindProductComboService {
     PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId,int pageNum,int pageSize);
 
     Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+
+    PageInfo<TradePlatformApi> findNoBindTradePlatformApiListByUserId(int userId,int pageNum,int pageSize);
+
+    /**
+     *
+     * @param userId 用户id
+     * @param pageNum 分页
+     * @param pageSize 分页
+     * @return
+     */
+    PageInfo<UserProductCombo> findNoBindUserProductComboListByUserId(int userId,int pageNum,int pageSize);
+
+    Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId,int tradePlatformApiId);
+    Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId,int userProductComboId);
 
 }

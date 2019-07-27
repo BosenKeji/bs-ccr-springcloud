@@ -1,7 +1,8 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,9 +31,29 @@ public class ConsumerTradePlatformApiBindProductComboController {
                                   @RequestParam(value="pageSize",defaultValue="10") int pageSize,
                                   @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
-       return iTradePlatformApiBindProductComboClientService.getListByUserId(userId,pageNum,pageSize);
+       return iTradePlatformApiBindProductComboClientService.getListByUserId(pageNum,pageSize,userId);
 
 
+    }
+
+    @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")
+    @ApiOperation(value = "根据用户ID 获取用户未绑定的交易平台api列表 api接口"
+            ,httpMethod = "GET",nickname = "getNoBindTradePlatformApiListByUserIdWithPage")
+    public Object getNoBindTradePlatformApiListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+
+        return iTradePlatformApiBindProductComboClientService.getNoBindTradePlatformApiListByUserId(pageNum,pageSize,userId);
+    }
+
+    @GetMapping("/get_no_bind_user_product_combo_list_by_user_id")
+    @ApiOperation(value = "根据用户ID 获取用户未绑定的用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getNoBindUserProductComboListByUserIdWithPage")
+    public Object getNoBindUserProductComboListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+
+        return iTradePlatformApiBindProductComboClientService.getNoBindUserProductComboListByUserId(pageNum,pageSize,userId);
     }
 
     @PostMapping("/")
