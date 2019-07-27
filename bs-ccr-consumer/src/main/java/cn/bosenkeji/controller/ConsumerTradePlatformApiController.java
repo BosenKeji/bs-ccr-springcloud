@@ -2,7 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradplateform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

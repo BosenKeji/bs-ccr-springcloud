@@ -2,7 +2,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.tradplateform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
