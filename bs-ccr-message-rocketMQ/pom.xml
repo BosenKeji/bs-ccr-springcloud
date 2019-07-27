@@ -27,20 +27,13 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
+
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.8.0.Final</version>
         </dependency>
 
-        <!-- 模块依赖 -->
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-swagger</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

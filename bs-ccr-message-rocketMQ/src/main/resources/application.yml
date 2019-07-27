@@ -11,13 +11,15 @@ spring:
     stream:
       rocketmq:
         binder:
-          name-server: 127.0.0.1:9876
+          name-server: MQ_INST_1730843269458617_BbFagWnw.mq-internet-access.mq-internet.aliyuncs.com:80
+          access-key: LTAIrpUjXEW4piYX
+          secret-key: zIt4x1FDzv9qhmGb8IUvciUVSn1LQg
       bindings:
-        output1: {destination: ccr-topic-1, content-type: application/json}
-        output2: {destination: ccr-topic-2, content-type: application/json}
+        output1: {destination: MQ_INST_1730843269458617_BbFagWnw%ccr-topic-1, content-type: application/json}
+        output2: {destination: MQ_INST_1730843269458617_BbFagWnw%ccr-topic-2, content-type: application/json}
 
-        input1: {destination: ccr-topic-1, content-type: application/json, group: ccr-group}
-        input2: {destination: ccr-topic-2, content-type: application/json, group: ccr-group-1}
+        input1: {destination: MQ_INST_1730843269458617_BbFagWnw%ccr-topic-1, content-type: application/json, group: MQ_INST_1730843269458617_BbFagWnw%GID_ccr_group_1}
+        input2: {destination: MQ_INST_1730843269458617_BbFagWnw%ccr-topic-2, content-type: application/json, group: MQ_INST_1730843269458617_BbFagWnw%GID_ccr_group_2}
 logging:
   level:
     com:
