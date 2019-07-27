@@ -46,40 +46,40 @@ public class CoinPairChoiceAttributeController {
 
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
-    public Result add(@RequestParam(value = "coinPairChoiceIds[]") @ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") int[] coinPairChoiceIds,
+    public Result add(@RequestParam(value = "coinPairChoiceIds") @ApiParam(value = "多选框获取多个自选币的id 数组 多选框命名应为:'oinPartnerChoiceId'", required = true, type = "string") String coinPairChoiceIds,
                       @RequestParam("lever") @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                       @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
 
-        if (coinPairChoiceIds.length == 0){
-            return new Result<>(0,"fail");
-        }
-
-        int expectMoney=(money*lever)/coinPairChoiceIds.length;
-
-        for (int i=0;i<coinPairChoiceIds.length;i++){
-            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceIds[i]);
-
-            /* 数据库已存在的就直接更新其预算和更新时间*/
-            if (coinPairChoiceAttribute != null){
-                coinPairChoiceAttribute.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
-                        .filter((value)->value>=1)
-                        .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeEnum.NAME));
-            }else {
-                CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
-                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
-                coinPairChoiceAttribute1.setIsCustom(isCustom);
-                coinPairChoiceAttribute1.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
-                coinPairChoiceAttributeService.add(coinPairChoiceAttribute1)
-                        .filter((value)->value>=1)
-                        .orElseThrow(()->new AddException(CoinPairChoiceAttributeEnum.NAME));
-            }
-        }
+//        if (coinPairChoiceIds.length == 0){
+//            return new Result<>(0,"fail");
+//        }
+//
+//        int expectMoney=(money*lever)/coinPairChoiceIds.length;
+//
+//        for (int i=0;i<coinPairChoiceIds.length;i++){
+//            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceIds[i]);
+//
+//            /* 数据库已存在的就直接更新其预算和更新时间*/
+//            if (coinPairChoiceAttribute != null){
+//                coinPairChoiceAttribute.setExpectMoney(expectMoney);
+//                coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+//                coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
+//                        .filter((value)->value>=1)
+//                        .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeEnum.NAME));
+//            }else {
+//                CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
+//                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
+//                coinPairChoiceAttribute1.setIsCustom(isCustom);
+//                coinPairChoiceAttribute1.setExpectMoney(expectMoney);
+//                coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+//                coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+//
+//                coinPairChoiceAttributeService.add(coinPairChoiceAttribute1)
+//                        .filter((value)->value>=1)
+//                        .orElseThrow(()->new AddException(CoinPairChoiceAttributeEnum.NAME));
+//            }
+//        }
 
         return new Result<>(1,"success");
 
