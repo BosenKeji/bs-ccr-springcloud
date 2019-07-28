@@ -1,17 +1,21 @@
 package cn.bosenkeji.handler;
 
+import cn.bosenkeji.messaging.MySink;
 import cn.bosenkeji.messaging.MySource;
-
-import cn.bosenkeji.service.IStrategyService;
-import cn.bosenkeji.vo.strategy.Strategy;
-import com.github.pagehelper.PageInfo;
+import cn.bosenkeji.service.ICoinPairChoiceClientService;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -21,16 +25,132 @@ public class DealHandler {
     private MySource source;
 
     @Autowired
+    private MySink sink;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private IStrategyService strategyService;
+    private ICoinPairChoiceClientService coinPairChoiceClientService;
 
 
-    @RequestMapping("/strategy")
-    public PageInfo testConsumer() {
-        PageInfo<Strategy> strategyPageInfo = strategyService.listByPage(1, 10);
-        return strategyPageInfo;
+    @StreamListener("input1")
+    private void consumerMessage(String msg) {
+        //将json字符串转换为json对象
+        JSONObject jsonObject = JSON.parseObject(msg);
+
+        //获取实时价格
+        Double price = Double.valueOf(jsonObject.get("price").toString());
+
+        //获取深度
+        Map<Integer,Double> deep = (Map<Integer, Double>) jsonObject.get("deep");
+
+        //获取货币对的值
+        String symbol = jsonObject.get("symbol").toString();
+
+        //TODO 获取 自选货币对信息 暂时不通 @hjh 2019.7.28
+        List<CoinPairChoiceJoinCoinPair> coinPairChoiceList = new ArrayList();
+
+        //过滤暂停和停止、不是该货币对的信息
+        List<CoinPairChoiceJoinCoinPair> filterList = coinPairChoiceList.stream()
+                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPairName())))
+                .collect(Collectors.toList());
+
+        //遍历自选货币对 执行判断逻辑
+        filterList.stream().forEach((e)->{
+            //TODO 通过userId获取平台对应的key 暂时不通 @hjh 2019.7.28
+            int userId = e.getUserId();
+            String accessKey = "";
+            String secretKey = "";
+
+            //获取该用户redis中的数据
+            String redisKey = accessKey+"_"+secretKey+"_"+symbol;
+            Object result = redisTemplate.opsForValue().get(redisKey);
+            JSONObject resultJOSNObject = JSON.parseObject(result.toString());
+
+            //计算实时收益比   判断买卖
+            //持仓费用
+            Double positionCost = Double.valueOf(resultJOSNObject.get("position_cost").toString());
+            //持仓数量
+            Double positionNum = Double.valueOf(resultJOSNObject.get("position_num").toString());
+            //实时收益比
+            Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
+
+            if (realTimeEarningRatio > 1) {
+                //判断是否卖
+                /*
+                    获取判断买的参数
+                    double positionPrice, 上面的positionCost
+                    int stopProfitType,
+                    double stopProfitPrice,
+                    double stopProfitRatio, 和止盈触发比一致
+                    double realTimeEarningRatio, 上面
+                    double triggerRatio, 和上面的stopProfitRatio
+                    double callBackRatio
+                 */
+                int stopProfitType = Integer.valueOf(resultJOSNObject.get("is_use_follow_target_profit").toString());
+                double stopProfitPrice = Double.valueOf(resultJOSNObject.get("target_profit_price").toString());
+                double stopProfitRatio = Double.valueOf(resultJOSNObject.get("turn_down_ratio").toString());
+                double callBackRatio = Double.valueOf(resultJOSNObject.get("emit_ratio").toString());
+                boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio, realTimeEarningRatio, stopProfitRatio, callBackRatio);
+
+                if (isSell) {
+                    //mq发送卖的消息
+                }
+
+            } else {
+                //判断是否买
+                /*
+                    获取判断买的参数
+                    double realTimePrice, 上面的price
+                    int orderNumber,
+                    int maxOrderNumber,
+                    double averagePosition,
+                    double buildPositionInterval,
+                    double averagePrice
+                 */
+                int orderNumber = Integer.valueOf(resultJOSNObject.get("finished_order").toString());
+                int maxOrderNumber = Integer.valueOf(resultJOSNObject.get("max_trade_order").toString());
+                double averagePosition = positionCost/positionNum;
+                double buildPositionInterval = Double.valueOf(resultJOSNObject.get("store_split").toString());
+                //获取交易量，计算拟买入均价
+                double buyVolume = Double.valueOf(JSON.parseObject(resultJOSNObject.get("buy_volume").toString()).get(orderNumber).toString());
+                double averagePrice = countAveragePrice(deep,buyVolume);
+                boolean isBuy = isBuy(price, orderNumber, maxOrderNumber, averagePosition, buildPositionInterval, averagePrice);
+                if (isBuy) {
+                    //mq发送买的消息
+                }
+            }
+        });
+
+
+
+
+    }
+
+
+    public static void main(String[] args) {
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("aaa");
+        strings.add("bbb");
+        strings.add("ccc");
+
+        String s = "aaa";
+
+        strings.stream().filter((e) -> e.equals(s))
+                .forEach(System.out::println);
+
+
+    }
+
+
+
+    @GetMapping("/test")
+    public void test(){
+        JSONObject asdf = JSON.parseObject(redisTemplate.opsForValue().get("asdf").toString());
+        Object map = asdf.get("buy_volume");
+        System.out.println(map);
+
     }
 
 
@@ -122,7 +242,7 @@ public class DealHandler {
     }
 
     /**
-     *  确定买的逻辑
+     *  确定卖的逻辑
      * @param positionPrice 持仓费用
      * @param stopProfitType 止盈方式
      * @param stopProfitPrice 止盈金额

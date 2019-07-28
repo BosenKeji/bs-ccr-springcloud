@@ -40,6 +40,16 @@
     </association>
 
   </resultMap>
+
+    <resultMap id="Coin_Pair_Choice_Join_Coin_Pair" type="cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="is_start" jdbcType="TINYINT" property="isStart" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="coin_partner_id" jdbcType="INTEGER" property="coinPartnerId" />
+        <result column="coin_pair_name" jdbcType="VARCHAR" property="coinPairName" />
+    </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at
@@ -114,6 +124,14 @@
     left join coin_pair_choice_attribute_custom  cpcac on cpc.id = cpcac.coin_partner_choice_id
     where cpc.id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="listCoinPairChoice" resultMap="Coin_Pair_Choice_Join_Coin_Pair">
+    select id,user_id,is_start,status,coin_partner_id,coin_pair_name
+    from coin_pair_choice cpc
+    join coin_pair cp
+    on cpc.coin_partner_id = cp.id
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice
