@@ -11,18 +11,7 @@
 
     <artifactId>bs-ccr-provider-coin</artifactId>
     <version>1.0.0</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
 
     <dependencies>
         <dependency>
@@ -93,5 +82,32 @@
 <!--            <artifactId>bs-ccr-security-client</artifactId>-->
 <!--        </dependency>-->
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.6.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>toolkit-maven-plugin</artifactId>
+                <version>1.0.3</version>
+                <configuration>
+                    <accessKeyFile>.aliyun_access_file.yaml</accessKeyFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
