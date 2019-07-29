@@ -23,4 +23,8 @@ public interface TradePlatformApiBindProductComboMapper {
     List<TradePlatformApiMapper> findNotInBindAndInApiListByUserId(Integer userId);
 
     List<Integer> findNotInBindAndInComboIdsByUserId(Integer userId);
+
+    int checkExistNotBindApiByUserIdAndTradePlatformApiId(Integer userId,Integer tradePlatformApiId);
+    int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
+    int checkExistByUserIdAndId(Integer userId,Integer id);
 }

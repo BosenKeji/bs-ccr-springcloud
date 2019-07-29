@@ -107,12 +107,12 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Override
     public Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId, int tradePlatformApiId) {
-        return Optional.empty();
+        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindApiByUserIdAndTradePlatformApiId(userId,tradePlatformApiId));
     }
 
     @Override
     public Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
-        return Optional.empty();
+        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindComboByUserIdAndUserProductComboId(userId,userProductComboId));
     }
 
     @Override
@@ -123,5 +123,10 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Override
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Optional<Integer> checkExistByUserIdAndId(int userId, int id) {
+        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id));
     }
 }
