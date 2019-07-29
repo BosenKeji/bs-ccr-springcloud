@@ -34,11 +34,19 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("别名")
     private String nickname;
 
+
     private int status;
 
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
+
+    /**
+     * @author xivinChen
+     * 一对一属性
+     */
+    @ApiModelProperty(hidden = true)
+    private TradePlatform tradePlatform;
 
     public int getId() {
         return id;
@@ -120,6 +128,18 @@ public class TradePlatformApi implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public TradePlatform getTradePlatform() {
+        return tradePlatform;
+    }
+
+    public void setTradePlatform(TradePlatform tradePlatform) {
+        this.tradePlatform = tradePlatform;
+    }
+
     @Override
     public String toString() {
         return "TradePlatformApi{" +
@@ -133,6 +153,7 @@ public class TradePlatformApi implements Serializable {
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", tradePlatform=" + tradePlatform +
                 '}';
     }
 }

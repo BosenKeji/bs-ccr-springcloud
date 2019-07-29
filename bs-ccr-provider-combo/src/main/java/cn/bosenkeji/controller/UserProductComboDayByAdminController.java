@@ -70,11 +70,12 @@ public class UserProductComboDayByAdminController {
     }
 
 
-    @ApiOperation(value="通过用户套餐id查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserProductComboId")
+    @ApiOperation(value="通过用户套餐id查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserProductComboIdWithPage")
     @RequestMapping(value = "/list_by_user_product_combo_id",method = RequestMethod.GET)
-    public List getByUserProductComboId(@RequestParam("userProductComboId")
-                                            @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId) {
-        return this.iUserProductComboDayByAdminService.getByUserProductComboId(userProductComboId);
+    public PageInfo getByUserProductComboId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                        @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                                        @RequestParam("userProductComboId") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId) {
+        return this.iUserProductComboDayByAdminService.getByUserProductComboIdWithPage(userProductComboId,pageNum,pageSize);
     }
 
     @ApiOperation(value="通过用户电话查询时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListByUserTelWithPage")

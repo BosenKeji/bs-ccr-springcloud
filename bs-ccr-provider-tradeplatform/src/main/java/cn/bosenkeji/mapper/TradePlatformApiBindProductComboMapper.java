@@ -1,6 +1,6 @@
 package cn.bosenkeji.mapper;
 
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 
 import java.util.List;
 
@@ -14,8 +14,17 @@ public interface TradePlatformApiBindProductComboMapper {
     TradePlatformApiBindProductCombo selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(TradePlatformApiBindProductCombo record);
+    int updateApiByPrimaryKey(TradePlatformApiBindProductCombo record);
 
     int updateByPrimaryKey(TradePlatformApiBindProductCombo record);
 
     List<TradePlatformApiBindProductCombo> findByUserId(Integer userId);
+
+    List<TradePlatformApiMapper> findNotInBindAndInApiListByUserId(Integer userId);
+
+    List<Integer> findNotInBindAndInComboIdsByUserId(Integer userId);
+
+    int checkExistNotBindApiByUserIdAndTradePlatformApiId(Integer userId,Integer tradePlatformApiId);
+    int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
+    int checkExistByUserIdAndId(Integer userId,Integer id);
 }

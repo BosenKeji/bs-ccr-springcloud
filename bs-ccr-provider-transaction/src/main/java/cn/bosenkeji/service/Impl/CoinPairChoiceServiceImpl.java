@@ -3,6 +3,7 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Override
     public Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPartnerId, int userId) {
         return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPartnerId, userId));
+    }
+
+    @Override
+    public List<CoinPairChoiceJoinCoinPair> listCoinPairChoice() {
+        return coinPairChoiceMapper.listCoinPairChoice();
     }
 }

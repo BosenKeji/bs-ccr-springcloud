@@ -164,6 +164,31 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return new PageInfo<>(userProductCombos);
     }
 
+    /**
+     * 联合查询用户套餐时长列表
+     * @param pageNum
+     * @param pageSize
+     * @param userId 用户ID
+     * @return
+     */
+    @Override
+    public PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId) {
+
+        //从数据库查询
+        PageHelper.startPage(pageNum,pageSize);
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
+
+        for (UserProductCombo userProductCombo : userProductCombos) {
+
+            //从缓存拿去剩余时间
+            int id = userProductCombo.getId();
+            long time=userProductComboRedisTemplate.getExpire(id);
+
+            userProductCombo.setRemainTime((int)time);
+        }
+        return new PageInfo<>(userProductCombos);
+    }
+
     @Override
     public Optional<Integer> checkExistByProductIdAndUserId(int productComboId,int userId) {
         int productId=productComboMapper.selectProductIdByPrimaryKey(productComboId);

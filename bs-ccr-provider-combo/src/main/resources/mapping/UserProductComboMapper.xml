@@ -57,6 +57,7 @@
     id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at
   </sql>
   <sql id="User_Product_Combo_List">
+    select
     u.id uid,u.tel,
     upc.id,upc.status,upc.created_at,upc.updated_at,upc.order_number,upc.remark,upc.status,
     pc.id pcid,pc.product_id,pc.name pcname,pc.time pctime,pc.price pcprice,
@@ -72,7 +73,7 @@
     on pc.product_id=p.id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ProductComboResultMap">
-    select 
+
     <include refid="User_Product_Combo_List" />
     where upc.id = #{id,jdbcType=INTEGER}
   </select>
@@ -225,6 +226,11 @@
     WHERE
     p.id=#{param1}
     and user_id=#{param2}
+  </select>
+
+  <select id="selectUserProductComboByUserId" parameterType="java.lang.Integer" resultMap="ProductComboResultMap">
+    <include refid="User_Product_Combo_List" />
+    where user_id=#{userId}
   </select>
 
 

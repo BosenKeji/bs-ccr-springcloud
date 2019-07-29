@@ -2,15 +2,11 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiBindProductComboClientServiceFallbackFactory;
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author xivin
@@ -22,8 +18,28 @@ import java.util.Optional;
 public interface ITradePlatformApiBindProductComboClientService {
 
     @GetMapping("/trade_platform_api_bind_product_combo/list_by_user_id/")
-    public List getListByUserId(@RequestParam("userId") int userId);
+    public PageInfo getListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+                                    @RequestParam("userId") int userId);
+    @GetMapping("/trade_platform_api_bind_product_combo/get_no_bind_trade_platform_api_list_by_user_id/")
+    public PageInfo getNoBindTradePlatformApiListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+                                    @RequestParam("userId") int userId);
+    @GetMapping("/trade_platform_api_bind_product_combo/get_no_bind_user_product_combo_list_by_user_id/")
+    public PageInfo getNoBindUserProductComboListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+                                    @RequestParam("userId") int userId);
 
     @PostMapping("/trade_platform_api_bind_product_combo/")
-    public Optional<Integer> addTradePlatformApiBindProductCombo(@RequestBody TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+    Result addTradePlatformApiBindProductCombo(@RequestBody TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+
+    @PutMapping("/trade_platform_api_bind_product_combo/{id}")
+    Result updateTradePlatformApiBindProductCombo(@PathVariable("id") int id
+            ,@RequestParam("tradePlatformApiId") int tradePlatformApiId
+            ,@RequestParam("userId") int userId);
+
+    @DeleteMapping("/trade_platform_api_bind_product_combo/{id}")
+    Result deleteTradePlatformApiBindProductCombo(@PathVariable("id") int id
+            ,@RequestParam("userId") int userId);
+
 }

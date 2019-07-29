@@ -1,6 +1,8 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +27,6 @@ public interface CoinPairChoiceMapper {
     Integer checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
 
     List<CoinPairChoice> findAll(int userId,int coinId);
+
+    List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
 }

@@ -25,4 +25,6 @@ public interface TradePlatformApiMapper {
     List<TradePlatformApi> findAll();
 
     TradePlatformApi selectByTradePlatformId(int tradePlatformId);
+
+    TradePlatformApi selectByUserId(int userId);
 }

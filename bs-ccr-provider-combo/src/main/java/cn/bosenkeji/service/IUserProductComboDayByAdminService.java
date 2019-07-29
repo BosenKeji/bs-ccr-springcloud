@@ -20,6 +20,7 @@ public interface IUserProductComboDayByAdminService {
     PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize);
     Optional<UserProductComboDayByAdmin> get(int id);
     List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId);
+    PageInfo<UserProductComboDayByAdmin> getByUserProductComboIdWithPage(int userProductComboId,int pageNum,int pageSize);
     PageInfo<UserProductComboDayByAdmin> getByUserTel(String userProductComboId,int pageNum,int pageSize);
 
 }

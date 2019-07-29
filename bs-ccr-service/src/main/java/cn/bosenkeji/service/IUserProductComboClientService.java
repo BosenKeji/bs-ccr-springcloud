@@ -25,6 +25,9 @@ public interface IUserProductComboClientService {
     @GetMapping("/user_product_combo/list_by_user_tel/")
     PageInfo listByUserTel(@RequestParam("userTel") String userTel,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
 
+    @GetMapping("/user_product_combo/list_by_user_id/")
+    PageInfo listByUserId(@RequestParam("userId") int userId,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
+
     @GetMapping("/user_product_combo/{id}")
     UserProductCombo getUserProductCombo(@PathVariable("id") int id);
 

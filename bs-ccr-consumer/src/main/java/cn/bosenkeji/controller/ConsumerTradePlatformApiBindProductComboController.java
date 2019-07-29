@@ -1,7 +1,9 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.vo.tradeplateform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -26,11 +28,33 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @GetMapping("/list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
-    public Object getListByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+    public Object getListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                  @RequestParam(value="pageSize",defaultValue="10") int pageSize,
+                                  @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
-       return iTradePlatformApiBindProductComboClientService.getListByUserId(userId);
+       return iTradePlatformApiBindProductComboClientService.getListByUserId(pageNum,pageSize,userId);
 
 
+    }
+
+    @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")
+    @ApiOperation(value = "根据用户ID 获取用户未绑定的交易平台api列表 api接口"
+            ,httpMethod = "GET",nickname = "getNoBindTradePlatformApiListByUserIdWithPage")
+    public Object getNoBindTradePlatformApiListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+
+        return iTradePlatformApiBindProductComboClientService.getNoBindTradePlatformApiListByUserId(pageNum,pageSize,userId);
+    }
+
+    @GetMapping("/get_no_bind_user_product_combo_list_by_user_id")
+    @ApiOperation(value = "根据用户ID 获取用户未绑定的用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getNoBindUserProductComboListByUserIdWithPage")
+    public Object getNoBindUserProductComboListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+
+        return iTradePlatformApiBindProductComboClientService.getNoBindUserProductComboListByUserId(pageNum,pageSize,userId);
     }
 
     @PostMapping("/")
@@ -40,5 +64,20 @@ public class ConsumerTradePlatformApiBindProductComboController {
 
       return iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
 
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "更新 交易平添api绑定用户套餐 api接口",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
+    public Object updateTradePlatformApiBindProductCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                                                         @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api ID",required = true,type = "integer",example = "1") int tradePlatformApiId,
+                                                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        return iTradePlatformApiBindProductComboClientService.updateTradePlatformApiBindProductCombo(id,tradePlatformApiId,userId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value="解除 交易品台绑定用户套餐",httpMethod = "DELETE",nickname = "deleteTradePlatformApiBindProductCombo")
+    public Object deleteOneApiBindCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        return iTradePlatformApiBindProductComboClientService.deleteTradePlatformApiBindProductCombo(id,userId);
     }
 }

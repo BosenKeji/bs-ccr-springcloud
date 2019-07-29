@@ -3,6 +3,7 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -51,7 +52,12 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
                 return  new Result("0","fail");
             }
 
-
+            @Override
+            public List<CoinPairChoiceJoinCoinPair> listCoinPairChoice() {
+                List list = new ArrayList();
+                list.add(new CoinPairChoice());
+                return list;
+            }
         };
     }
 }

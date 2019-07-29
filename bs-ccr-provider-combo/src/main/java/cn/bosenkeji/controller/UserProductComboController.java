@@ -81,6 +81,14 @@ public class UserProductComboController {
         return this.iUserProductComboService.selectUserProductComboByUserTel(pageNum,pageSize,userTel);
     }
 
+    @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")
+    @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
+    public PageInfo listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+                                  @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+        //return this.iUserProductComboService.getByUserId(userId);
+        return this.iUserProductComboService.selectUserProductComboByUserId(pageNum,pageSize,userId);
+    }
+
     //获取单个用户套餐交易平台api接口
 
 

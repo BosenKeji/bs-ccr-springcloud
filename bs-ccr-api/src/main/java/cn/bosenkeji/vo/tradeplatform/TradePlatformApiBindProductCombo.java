@@ -1,4 +1,4 @@
-package cn.bosenkeji.vo.tradeplateform;
+package cn.bosenkeji.vo.tradeplatform;
 
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;

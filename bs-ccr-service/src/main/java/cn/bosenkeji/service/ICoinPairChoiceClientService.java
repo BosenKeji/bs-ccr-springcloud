@@ -4,17 +4,21 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairChoiceClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * @Author CAJR
  * @create 2019/7/22 14:50
  */
-@FeignClient(name = "bs-ccr-provider-transaction" ,configuration = FeignClientConfig.class,fallbackFactory = ICoinPairChoiceClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-transaction" ,configuration = FeignClientConfig.class
+        ,fallbackFactory = ICoinPairChoiceClientServiceFallbackFactory.class
+        )
 public interface ICoinPairChoiceClientService {
 
     /**
@@ -41,4 +45,7 @@ public interface ICoinPairChoiceClientService {
 
     @DeleteMapping("/coin_pair_choice/{id}")
     public Result deleteOneCoinPairChoice(@PathVariable("id") int id);
+
+    @GetMapping("/coin_pair_choice/all")
+    List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
 }
