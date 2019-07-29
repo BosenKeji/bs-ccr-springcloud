@@ -21,6 +21,7 @@ public interface IUserProductComboService {
 
     List<UserProductCombo> getByUserId(int userId);
     PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel);
+    PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId);
     Optional<Integer> checkExistByProductIdAndUserId(int productId,int userId);
 
 }

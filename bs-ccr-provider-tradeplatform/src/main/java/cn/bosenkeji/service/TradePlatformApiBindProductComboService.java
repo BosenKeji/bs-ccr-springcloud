@@ -33,5 +33,7 @@ public interface TradePlatformApiBindProductComboService {
 
     Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId,int tradePlatformApiId);
     Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId,int userProductComboId);
+    Optional<Integer> updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+    Optional<Integer> delete(int id);
 
 }

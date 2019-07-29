@@ -9,7 +9,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.bouncycastle.util.Times;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +69,25 @@ public class TradePlatformApiBindProductComboController {
         return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo)
                 .filter((value)->value>=1)
                 .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME)));
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value="更新 交易品台绑定用户套餐",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
+    public Result update(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                         @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api ID",required = true,type = "integer",example = "1") int tradePlatformApiId,
+                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
+        tradePlatformApiBindProductCombo.setId(id);
+        tradePlatformApiBindProductCombo.setTradePlatformApiId(tradePlatformApiId);
+        tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        return new Result<>(this.tradePlatformApiBindProductComboService.updateBindApi(tradePlatformApiBindProductCombo));
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value="解除 交易品台绑定用户套餐",httpMethod = "DELETE",nickname = "deleteTradePlatformApiBindProductCombo")
+    public Result delete(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        return new Result<>(this.tradePlatformApiBindProductComboService.delete(id));
     }
 
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")

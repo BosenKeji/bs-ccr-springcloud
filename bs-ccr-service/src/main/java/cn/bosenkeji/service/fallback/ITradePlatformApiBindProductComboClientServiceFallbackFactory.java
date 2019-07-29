@@ -45,6 +45,16 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             public PageInfo getNoBindUserProductComboListByUserId(int pageNum, int pageSize, int userId) {
                 return new PageInfo();
             }
+
+            @Override
+            public Result updateTradePlatformApiBindProductCombo(int id, int tradePlatformApiId, int userId) {
+                return new Result("0","fail");
+            }
+
+            @Override
+            public Result deleteTradePlatformApiBindProductCombo(int id, int userId) {
+                return new Result("0","fail");
+            }
         };
     }
 }

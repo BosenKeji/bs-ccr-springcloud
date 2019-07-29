@@ -149,6 +149,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="updateApiByPrimaryKey" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo" >
+    update trade_platform_api_bind_product_combo
+    set trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <select id="findByUserId" parameterType="java.lang.Integer" resultMap="ComboResultMap">
     select
     pab.id pab_id, pab.user_id pab_user_id, pab.trade_platform_api_id pab_trade_platform_api_id,

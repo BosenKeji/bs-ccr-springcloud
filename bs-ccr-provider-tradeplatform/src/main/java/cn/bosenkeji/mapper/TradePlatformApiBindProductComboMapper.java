@@ -14,6 +14,7 @@ public interface TradePlatformApiBindProductComboMapper {
     TradePlatformApiBindProductCombo selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(TradePlatformApiBindProductCombo record);
+    int updateApiByPrimaryKey(TradePlatformApiBindProductCombo record);
 
     int updateByPrimaryKey(TradePlatformApiBindProductCombo record);
 

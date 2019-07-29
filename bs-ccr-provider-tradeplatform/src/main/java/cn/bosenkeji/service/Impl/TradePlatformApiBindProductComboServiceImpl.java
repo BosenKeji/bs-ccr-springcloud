@@ -34,6 +34,10 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Override
     public PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId, int pageNum, int pageSize) {
+
+        //查询用户下的所有的套餐
+        //PageInfo pageInfo = this.iUserProductComboClientService.listByUserId(userId, pageNum, pageSize);
+
         //查询用户下的
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboPageInfo =
@@ -46,7 +50,6 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
             if(upc_id>0) {
                 UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId());
                 if (userProductCombo != null) {
-
                     tradePlatformApiBindProductCombo.setUserProductCombo(userProductCombo);
                 }
             }
@@ -56,6 +59,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
         return tradePlatformApiBindProductComboPageInfo;
     }
+
 
     @Override
     public Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
@@ -109,5 +113,15 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Override
     public Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Integer> updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.updateApiByPrimaryKey(tradePlatformApiBindProductCombo));
+    }
+
+    @Override
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id));
     }
 }
