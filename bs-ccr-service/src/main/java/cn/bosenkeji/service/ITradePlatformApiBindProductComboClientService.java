@@ -6,10 +6,7 @@ import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author xivin
@@ -35,4 +32,14 @@ public interface ITradePlatformApiBindProductComboClientService {
 
     @PostMapping("/trade_platform_api_bind_product_combo/")
     Result addTradePlatformApiBindProductCombo(@RequestBody TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+
+    @PutMapping("/trade_platform_api_bind_product_combo/{id}")
+    Result updateTradePlatformApiBindProductCombo(@PathVariable("id") int id
+            ,@RequestParam("tradePlatformApiId") int tradePlatformApiId
+            ,@RequestParam("userId") int userId);
+
+    @DeleteMapping("/trade_platform_api_bind_product_combo/{id}")
+    Result deleteTradePlatformApiBindProductCombo(@PathVariable("id") int id
+            ,@RequestParam("userId") int userId);
+
 }

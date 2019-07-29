@@ -1,6 +1,8 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.TradePlatformApiBindProductComboEnum;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.util.Result;
@@ -49,24 +51,59 @@ public class TradePlatformApiBindProductComboController {
     public Result add(@RequestBody @NotNull @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
         //判断该交易平台api是否未用户未绑定的
-        /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
+        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
                 tradePlatformApiBindProductCombo.getUserId()
                 , tradePlatformApiBindProductCombo.getTradePlatformApiId())
-                .filter((value)->value==0)
+                .filter((value)->value==1)
                 .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));
 
         //判断该套餐是否为用户为绑定的
         tradePlatformApiBindProductComboService.checkExistByUserIdAndUserProductComboId(
                 tradePlatformApiBindProductCombo.getUserId()
                 ,tradePlatformApiBindProductCombo.getUserProductComboId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
+                .filter((value)->value==1)
+                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));
 
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo)
                 .filter((value)->value>=1)
                 .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME)));
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value="更新 交易品台绑定用户套餐",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
+    public Result update(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                         @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api ID",required = true,type = "integer",example = "1") int tradePlatformApiId,
+                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        //判断该 api绑定是否为 该用户下的 否则不能操作
+        tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
+                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
+
+        //判断该交易平台api是否未用户未绑定的
+        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
+                userId
+                , tradePlatformApiId)
+                .filter((value)->value==1)
+                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
+
+        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
+        tradePlatformApiBindProductCombo.setId(id);
+        tradePlatformApiBindProductCombo.setTradePlatformApiId(tradePlatformApiId);
+        tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        return new Result<>(this.tradePlatformApiBindProductComboService.updateBindApi(tradePlatformApiBindProductCombo));
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value="解除 交易品台绑定用户套餐",httpMethod = "DELETE",nickname = "deleteTradePlatformApiBindProductCombo")
+    public Result delete(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
+                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+
+        //判断该 api绑定是否为 该用户下的 否则不能操作
+        tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
+                .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));
+
+        return new Result<>(this.tradePlatformApiBindProductComboService.delete(id));
     }
 
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")

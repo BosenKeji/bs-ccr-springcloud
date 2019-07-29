@@ -6,7 +6,7 @@ package cn.bosenkeji.result.mock;
  */
 public class TradePlatformApiBindProductComboControllerResultMock {
 
-    public String list_by_user_id(){
+    public String getListByUserId(){
         return "{\n" +
                 "  \"total\": 1,\n" +
                 "  \"list\": [\n" +
@@ -104,7 +104,7 @@ public class TradePlatformApiBindProductComboControllerResultMock {
     }
 
 
-    public String get_no_bind_trade_platform_api_list_by_user_id() {
+    public String getNoBindTradePlatformApiListByUserId() {
         return "{\n" +
                 "  \"total\": 1,\n" +
                 "  \"list\": [\n" +
@@ -143,7 +143,7 @@ public class TradePlatformApiBindProductComboControllerResultMock {
                 "}";
     }
 
-    public String get_no_bind_user_product_combo_list_by_user_id() {
+    public String getNoBindUserProductComboListByUserId() {
         return "{\n" +
                 "  \"total\": 9,\n" +
                 "  \"list\": [\n" +

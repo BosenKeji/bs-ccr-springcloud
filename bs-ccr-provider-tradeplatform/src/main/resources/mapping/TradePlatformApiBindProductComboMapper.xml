@@ -149,6 +149,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="updateApiByPrimaryKey" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo" >
+    update trade_platform_api_bind_product_combo
+    set trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
   <select id="findByUserId" parameterType="java.lang.Integer" resultMap="ComboResultMap">
     select
     pab.id pab_id, pab.user_id pab_user_id, pab.trade_platform_api_id pab_trade_platform_api_id,
@@ -196,6 +202,46 @@
     from trade_platform_api_bind_product_combo pab
      where pab.user_product_combo_id=upc.id
       and pab.user_id=#{userId})=0
+  </select>
+
+  <!--此处查询的是 是否存在用户下没有绑定的 用户套餐 ，当存在没绑定的 用户套餐时 才可以执行绑定的添加或者更新操作 -->
+  <select id="checkExistNotBindComboByUserIdAndUserProductComboId" resultType="java.lang.Integer">
+    SELECT EXISTS
+    (select 1 from user_product_combo upc
+     where
+    upc.user_id=#{param1}
+	and upc.id = #{param2}
+    and
+    (select count(0)
+    from trade_platform_api_bind_product_combo pab
+     where pab.user_product_combo_id=upc.id
+      and pab.user_id=#{param1})=0 limit 1 )
+  </select>
+
+  <!-- 同理 此处查询是否存在没有绑定的api  ，当存在 api还没绑定时才能执行 绑定的添加或更新操作  -->
+  <select id="checkExistNotBindApiByUserIdAndTradePlatformApiId" resultType="java.lang.Integer">
+    select EXISTS (
+    select
+    1
+    from trade_platform_api pa
+    WHERE
+    pa.user_id=#{param1}
+    and pa.id=#{param2}
+    and
+    (SELECT count(0)
+    from trade_platform_api_bind_product_combo pab
+    where pab.trade_platform_api_id=pa.id and user_id=#{param1} )=0
+    );
+  </select>
+
+  <select id="checkExistByUserIdAndId" resultType="java.lang.Integer" >
+    select exists
+    (
+    select 1
+    from trade_platform_api_bind_product_combo
+    where id=#{param2}
+    and user_id=#{param1}
+    );
   </select>
 
 </mapper>

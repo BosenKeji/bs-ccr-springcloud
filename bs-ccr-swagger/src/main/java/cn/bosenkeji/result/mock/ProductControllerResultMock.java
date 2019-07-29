@@ -10,34 +10,44 @@ public class ProductControllerResultMock {
     public String list(){
         //此处应写成实体类相关的数据
         return "{\n" +
-                "  \"total\": 2,\n" +
+                "  \"total\": 3,\n" +
                 "  \"list\": [\n" +
                 "    {\n" +
                 "      \"id\": 1,\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"versionName\": \"string\",\n" +
-                "      \"logo\": \"string\",\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 2,\n" +
-                "      \"createdAt\": \"2019-07-16T18:07:02.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-16T17:48:45.000+0000\"\n" +
+                "      \"name\": \"CCR智能交易机器人\",\n" +
+                "      \"versionName\": \"CCR智能交易机器人\",\n" +
+                "      \"logo\": \"sgeoinlogh\",\n" +
+                "      \"remark\": \"仅支持AVA和DAVA交易平台\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-28T18:53:49.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-26T12:47:58.000+0000\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 2,\n" +
-                "      \"name\": \"name2\",\n" +
-                "      \"versionName\": \"banbenming\",\n" +
-                "      \"logo\": \"logo2\",\n" +
-                "      \"remark\": \"beizhu\",\n" +
+                "      \"name\": \"FA（共享版）\",\n" +
+                "      \"versionName\": \"FA（共享版）\",\n" +
+                "      \"logo\": \"/img/fagognxianglol.img\",\n" +
+                "      \"remark\": \"不限交易平台\",\n" +
                 "      \"status\": 1,\n" +
-                "      \"createdAt\": \"2019-07-19T08:48:18.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-19T08:48:18.000+0000\"\n" +
+                "      \"createdAt\": \"2019-07-28T18:53:59.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-25T01:42:03.000+0000\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 3,\n" +
+                "      \"name\": \"FA（独立版）\",\n" +
+                "      \"versionName\": \"FA（独立版）\",\n" +
+                "      \"logo\": \"/img/fadulilogo.img\",\n" +
+                "      \"remark\": \"适用于数字货币交易\",\n" +
+                "      \"status\": 2,\n" +
+                "      \"createdAt\": \"2019-07-28T18:54:33.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-23T02:32:35.000+0000\"\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"pageNum\": 1,\n" +
                 "  \"pageSize\": 15,\n" +
-                "  \"size\": 2,\n" +
+                "  \"size\": 3,\n" +
                 "  \"startRow\": 1,\n" +
-                "  \"endRow\": 2,\n" +
+                "  \"endRow\": 3,\n" +
                 "  \"pages\": 1,\n" +
                 "  \"prePage\": 0,\n" +
                 "  \"nextPage\": 0,\n" +
@@ -57,14 +67,14 @@ public class ProductControllerResultMock {
     public String get(){
         //此处应写成实体类相关的数据
         return "{\n" +
-                "  \"id\": 2,\n" +
-                "  \"name\": \"name2\",\n" +
-                "  \"versionName\": \"banbenming\",\n" +
-                "  \"logo\": \"logo2\",\n" +
-                "  \"remark\": \"beizhu\",\n" +
+                "  \"id\": 1,\n" +
+                "  \"name\": \"CCR智能交易机器人\",\n" +
+                "  \"versionName\": \"CCR智能交易机器人\",\n" +
+                "  \"logo\": \"sgeoinlogh\",\n" +
+                "  \"remark\": \"仅支持AVA和DAVA交易平台\",\n" +
                 "  \"status\": 1,\n" +
-                "  \"createdAt\": \"2019-07-19T08:48:18.000+0000\",\n" +
-                "  \"updatedAt\": \"2019-07-19T08:48:18.000+0000\"\n" +
+                "  \"createdAt\": \"2019-07-28T18:53:49.000+0000\",\n" +
+                "  \"updatedAt\": \"2019-07-26T12:47:58.000+0000\"\n" +
                 "}";
     }
 }

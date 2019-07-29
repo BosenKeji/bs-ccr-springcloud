@@ -42,6 +42,11 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
                 userProductCombo.setRemark("hystrixName");
                 return userProductCombo;
             }
+
+            @Override
+            public PageInfo listByUserId(int userId, int pageNum, int pageSize) {
+                return null;
+            }
         };
     }
 }

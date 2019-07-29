@@ -23,6 +23,8 @@ public interface UserProductComboMapper {
 
     List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
 
+    List<UserProductCombo> selectUserProductComboByUserId(Integer userId);
+
     Integer checkExistByProductIdAndUserId(Integer productId,Integer userId);
 
 }
