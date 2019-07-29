@@ -81,6 +81,11 @@ public class TradePlatformApiController {
                 .orElseThrow(()->new DeleteException(TradePlatformApiEnum.NAME)));
     }
 
+    @GetMapping("/user/{userId}")
+    public TradePlatformApi selectByUserId(@PathVariable("userId") int userId) {
+        return tradePlatformApiService.getByUserId(userId);
+    }
+
     @RequestMapping("/discover")
     @ApiIgnore
     public Object discover() { // 直接返回发现服务信息

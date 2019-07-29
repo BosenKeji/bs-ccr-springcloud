@@ -47,7 +47,7 @@
         <result column="is_start" jdbcType="TINYINT" property="isStart" />
         <result column="status" jdbcType="TINYINT" property="status" />
         <result column="coin_partner_id" jdbcType="INTEGER" property="coinPartnerId" />
-        <result column="coin_pair_name" jdbcType="VARCHAR" property="coinPairName" />
+        <result column="name" jdbcType="VARCHAR" property="coinPairName" />
     </resultMap>
 
   <sql id="Base_Column_List">
@@ -126,7 +126,7 @@
   </select>
 
   <select id="listCoinPairChoice" resultMap="Coin_Pair_Choice_Join_Coin_Pair">
-    select id,user_id,is_start,status,coin_partner_id,coin_pair_name
+    select cpc.id,user_id,is_start,cpc.status,coin_partner_id,name
     from coin_pair_choice cpc
     join coin_pair cp
     on cpc.coin_partner_id = cp.id

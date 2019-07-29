@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @FeignClient(name = "bs-ccr-provider-strategy",configuration = FeignClientConfig.class
-        //, fallbackFactory = IStrategyServiceFallbackFactory.class
+        , fallbackFactory = IStrategyServiceFallbackFactory.class
         )
 public interface IStrategyService {
 

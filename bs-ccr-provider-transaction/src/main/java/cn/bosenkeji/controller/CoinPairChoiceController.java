@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -98,6 +99,20 @@ public class CoinPairChoiceController {
         return new Result<>(this.coinPairChoiceService.delete(id)
                 .filter((value)->value>=1)
                 .orElseThrow(()->new DeleteException(CoinPairChoiceEnum.NAME)));
+    }
+
+    
+    
+    /**
+     * @Author hjh
+     * @Description 获取所有用户自选货币对交易信息
+     * @Date 2019-07-29
+     * @return list
+     **/
+    @GetMapping("/all")
+    @ApiIgnore
+    public List listCoinPairChoice() {
+        return coinPairChoiceService.listCoinPairChoice();
     }
 
 

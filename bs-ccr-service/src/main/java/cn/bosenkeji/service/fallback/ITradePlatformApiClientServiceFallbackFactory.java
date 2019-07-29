@@ -37,7 +37,10 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
                 return  new Result("0","fail");
             }
 
-
+            @Override
+            public TradePlatformApi selectByUserId(Integer userId) {
+                return new TradePlatformApi();
+            }
         };
     }
 }

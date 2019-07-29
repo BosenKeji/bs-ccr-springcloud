@@ -52,4 +52,9 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     public Optional<Integer> delete(int id) {
         return Optional.ofNullable(tradePlatformApiMapper.deleteByTradePlatformKey(id)) ;
     }
+
+    @Override
+    public TradePlatformApi getByUserId(int userId) {
+        return tradePlatformApiMapper.selectByUserId(userId);
+    }
 }

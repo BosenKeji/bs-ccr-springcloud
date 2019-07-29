@@ -37,6 +37,13 @@
    from trade_platform_api
    where trade_platform_id = #{tradePlatformId,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from trade_platform_api
+    where user_id = #{userId}
+  </select>
+
   <delete id="deleteByTradePlatformKey" parameterType="int">
     <!--@mbg.generated-->
     delete from trade_platform_api
