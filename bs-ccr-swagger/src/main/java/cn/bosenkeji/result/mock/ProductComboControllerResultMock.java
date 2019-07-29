@@ -20,73 +20,73 @@ public class ProductComboControllerResultMock {
                 "    {\n" +
                 "      \"id\": 1,\n" +
                 "      \"productId\": 1,\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"time\": 30,\n" +
-                "      \"price\": 10,\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 0,\n" +
-                "      \"createdAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
+                "      \"name\": \"体验\",\n" +
+                "      \"time\": 14,\n" +
+                "      \"price\": 0,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-28T18:57:05.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-25T12:02:59.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 2,\n" +
-                "      \"productId\": 0,\n" +
-                "      \"name\": \"string2\",\n" +
-                "      \"time\": 10,\n" +
-                "      \"price\": 0,\n" +
-                "      \"remark\": \"string2\",\n" +
-                "      \"status\": 5,\n" +
-                "      \"createdAt\": \"2019-07-17T23:17:49.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-18T07:12:16.000+0000\",\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"半年\",\n" +
+                "      \"time\": 180,\n" +
+                "      \"price\": 540,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-27T03:41:38.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-23T06:33:51.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 3,\n" +
                 "      \"productId\": 2,\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"time\": 30,\n" +
-                "      \"price\": 10,\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 0,\n" +
-                "      \"createdAt\": \"2019-07-16T22:26:57.000+0000\",\n" +
+                "      \"name\": \"一年\",\n" +
+                "      \"time\": 360,\n" +
+                "      \"price\": 888,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-27T03:42:12.000+0000\",\n" +
                 "      \"updatedAt\": \"2019-07-16T18:30:41.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 4,\n" +
                 "      \"productId\": 1,\n" +
-                "      \"name\": \"1\",\n" +
-                "      \"time\": 0,\n" +
+                "      \"name\": \"一年\",\n" +
+                "      \"time\": 360,\n" +
+                "      \"price\": 850,\n" +
+                "      \"remark\": \"\",\n" +
+                "      \"status\": 2,\n" +
+                "      \"createdAt\": \"2019-07-27T03:42:41.000+0000\",\n" +
+                "      \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
+                "      \"product\": null\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 5,\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"试用\",\n" +
+                "      \"time\": 7,\n" +
                 "      \"price\": 0,\n" +
                 "      \"remark\": \"\",\n" +
                 "      \"status\": 1,\n" +
-                "      \"createdAt\": \"2019-07-17T18:58:26.000+0000\",\n" +
+                "      \"createdAt\": \"2019-07-28T18:56:40.000+0000\",\n" +
                 "      \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 6,\n" +
-                "      \"productId\": 0,\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"time\": 0,\n" +
-                "      \"price\": 0,\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 0,\n" +
-                "      \"createdAt\": \"2019-07-18T09:16:25.000+0000\",\n" +
+                "      \"productId\": 3,\n" +
+                "      \"name\": \"半年\",\n" +
+                "      \"time\": 180,\n" +
+                "      \"price\": 480,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-28T18:56:06.000+0000\",\n" +
                 "      \"updatedAt\": \"2019-07-18T09:16:25.000+0000\",\n" +
-                "      \"product\": null\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 7,\n" +
-                "      \"productId\": 2,\n" +
-                "      \"name\": \"更新\",\n" +
-                "      \"time\": 10,\n" +
-                "      \"price\": 0,\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 2,\n" +
-                "      \"createdAt\": \"2019-07-18T02:51:41.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-18T10:46:08.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    }\n" +
                 "  ],\n" +
@@ -116,13 +116,13 @@ public class ProductComboControllerResultMock {
         return "{\n" +
                 "  \"id\": 1,\n" +
                 "  \"productId\": 1,\n" +
-                "  \"name\": \"string\",\n" +
-                "  \"time\": 30,\n" +
-                "  \"price\": 10,\n" +
-                "  \"remark\": \"string\",\n" +
-                "  \"status\": 0,\n" +
-                "  \"createdAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
-                "  \"updatedAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
+                "  \"name\": \"体验\",\n" +
+                "  \"time\": 14,\n" +
+                "  \"price\": 0,\n" +
+                "  \"remark\": \"注意已有产品时不能部署\",\n" +
+                "  \"status\": 1,\n" +
+                "  \"createdAt\": \"2019-07-28T18:57:05.000+0000\",\n" +
+                "  \"updatedAt\": \"2019-07-25T12:02:59.000+0000\",\n" +
                 "  \"product\": null\n" +
                 "}";
     }
@@ -130,38 +130,62 @@ public class ProductComboControllerResultMock {
     //根据产品id查询套餐列表
     public String listByProductId() {
         return "{\n" +
-                "  \"total\": 2,\n" +
+                "  \"total\": 4,\n" +
                 "  \"list\": [\n" +
                 "    {\n" +
                 "      \"id\": 1,\n" +
                 "      \"productId\": 1,\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"time\": 30,\n" +
-                "      \"price\": 10,\n" +
-                "      \"remark\": \"string\",\n" +
-                "      \"status\": 0,\n" +
-                "      \"createdAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
-                "      \"updatedAt\": \"2019-07-16T18:26:37.000+0000\",\n" +
+                "      \"name\": \"体验\",\n" +
+                "      \"time\": 14,\n" +
+                "      \"price\": 0,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-28T18:57:05.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-25T12:02:59.000+0000\",\n" +
+                "      \"product\": null\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 2,\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"半年\",\n" +
+                "      \"time\": 180,\n" +
+                "      \"price\": 540,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-27T03:41:38.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-23T06:33:51.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"id\": 4,\n" +
                 "      \"productId\": 1,\n" +
-                "      \"name\": \"1\",\n" +
-                "      \"time\": 0,\n" +
+                "      \"name\": \"一年\",\n" +
+                "      \"time\": 360,\n" +
+                "      \"price\": 850,\n" +
+                "      \"remark\": \"\",\n" +
+                "      \"status\": 2,\n" +
+                "      \"createdAt\": \"2019-07-27T03:42:41.000+0000\",\n" +
+                "      \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
+                "      \"product\": null\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 5,\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"试用\",\n" +
+                "      \"time\": 7,\n" +
                 "      \"price\": 0,\n" +
                 "      \"remark\": \"\",\n" +
                 "      \"status\": 1,\n" +
-                "      \"createdAt\": \"2019-07-17T18:58:26.000+0000\",\n" +
+                "      \"createdAt\": \"2019-07-28T18:56:40.000+0000\",\n" +
                 "      \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"pageNum\": 1,\n" +
                 "  \"pageSize\": 15,\n" +
-                "  \"size\": 2,\n" +
+                "  \"size\": 4,\n" +
                 "  \"startRow\": 1,\n" +
-                "  \"endRow\": 2,\n" +
+                "  \"endRow\": 4,\n" +
                 "  \"pages\": 1,\n" +
                 "  \"prePage\": 0,\n" +
                 "  \"nextPage\": 0,\n" +
@@ -181,26 +205,50 @@ public class ProductComboControllerResultMock {
     //根据产品id和套餐转态status获取产品套餐列表
     public String listByProductIdAndStatus() {
         return "{\n" +
-                "  \"total\": 1,\n" +
+                "  \"total\": 3,\n" +
                 "  \"list\": [\n" +
                 "    {\n" +
-                "      \"id\": 4,\n" +
+                "      \"id\": 1,\n" +
                 "      \"productId\": 1,\n" +
-                "      \"name\": \"1\",\n" +
-                "      \"time\": 0,\n" +
+                "      \"name\": \"体验\",\n" +
+                "      \"time\": 14,\n" +
+                "      \"price\": 0,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-28T18:57:05.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-25T12:02:59.000+0000\",\n" +
+                "      \"product\": null\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 2,\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"半年\",\n" +
+                "      \"time\": 180,\n" +
+                "      \"price\": 540,\n" +
+                "      \"remark\": \"注意已有产品时不能部署\",\n" +
+                "      \"status\": 1,\n" +
+                "      \"createdAt\": \"2019-07-27T03:41:38.000+0000\",\n" +
+                "      \"updatedAt\": \"2019-07-23T06:33:51.000+0000\",\n" +
+                "      \"product\": null\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 5,\n" +
+                "      \"productId\": 1,\n" +
+                "      \"name\": \"试用\",\n" +
+                "      \"time\": 7,\n" +
                 "      \"price\": 0,\n" +
                 "      \"remark\": \"\",\n" +
                 "      \"status\": 1,\n" +
-                "      \"createdAt\": \"2019-07-17T18:58:26.000+0000\",\n" +
+                "      \"createdAt\": \"2019-07-28T18:56:40.000+0000\",\n" +
                 "      \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
                 "      \"product\": null\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"pageNum\": 1,\n" +
                 "  \"pageSize\": 15,\n" +
-                "  \"size\": 1,\n" +
+                "  \"size\": 3,\n" +
                 "  \"startRow\": 1,\n" +
-                "  \"endRow\": 1,\n" +
+                "  \"endRow\": 3,\n" +
                 "  \"pages\": 1,\n" +
                 "  \"prePage\": 0,\n" +
                 "  \"nextPage\": 0,\n" +

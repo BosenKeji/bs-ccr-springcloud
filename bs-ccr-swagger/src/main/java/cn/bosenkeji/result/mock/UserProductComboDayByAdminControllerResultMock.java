@@ -252,11 +252,20 @@ public class UserProductComboDayByAdminControllerResultMock {
     }
 
     public String get() {
-        return "";
+        return "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"adminId\": 1,\n" +
+                "  \"userProductComboDayId\": 1,\n" +
+                "  \"status\": 1,\n" +
+                "  \"createdAt\": \"2019-07-17T03:08:32.000+0000\",\n" +
+                "  \"updatedAt\": \"1979-12-31T16:00:01.000+0000\",\n" +
+                "  \"admin\": null,\n" +
+                "  \"userProductComboDay\": null\n" +
+                "}";
     }
 
     //通过电话号码查询用户时长增补操作列表
-    public String listByUserTel() {
+    public String getByUserTel() {
         return "{\n" +
                 "  \"total\": 4,\n" +
                 "  \"list\": [\n" +
@@ -426,7 +435,7 @@ public class UserProductComboDayByAdminControllerResultMock {
                 "}";
     }
 
-    public String listByUserProductComboId() {
+    public String getByUserProductComboId() {
         return "{\n" +
                 "  \"total\": 3,\n" +
                 "  \"list\": [\n" +
