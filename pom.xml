@@ -83,6 +83,11 @@
                 <version>4.8.5</version>
             </dependency>
             <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>4.4.2</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
                 <version>0.2.2.RELEASE</version>
@@ -124,6 +129,7 @@
                 <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
                 <version>0.1.2.RELEASE</version>
             </dependency>
+
 
             <!-- 包冲突解决 -->
             <dependency>
