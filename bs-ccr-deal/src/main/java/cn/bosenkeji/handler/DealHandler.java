@@ -1,9 +1,9 @@
 package cn.bosenkeji.handler;
 
-import cn.bosenkeji.messaging.MySink;
 import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.service.ITradePlatformApiClientService;
+import cn.bosenkeji.vo.RocketMQResult;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.alibaba.fastjson.JSON;
@@ -29,7 +29,6 @@ public class DealHandler {
 
     @Autowired
     private MySource source;
-
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -79,8 +78,8 @@ public class DealHandler {
             String secretKey = api.getSecretKey();
 
             //获取该用户redis中的数据
-            //String redisKey = accessKey+"_"+secretKey+"_"+symbol;
-            String redisKey = "asdf";
+            String redisKey = accessKey+"_"+secretKey+"_"+symbol;
+            //String redisKey = "asdf";
             Object result = redisTemplate.opsForValue().get(redisKey);
             JSONObject resultJOSNObject = JSON.parseObject(result.toString());
 
@@ -94,7 +93,7 @@ public class DealHandler {
             //持仓数量
             Double positionNum = Double.valueOf(resultJOSNObject.get("position_num").toString());
             //实时收益比
-            Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
+            double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
             if (realTimeEarningRatio >= 1) {
             //if (true) {
@@ -118,7 +117,7 @@ public class DealHandler {
 
                 if (isSell) {
                     //mq发送卖的消息
-
+                    boolean b = sendMessage(accessKey,secretKey,symbol,"sell");
                 }
 
             } else {
@@ -149,11 +148,11 @@ public class DealHandler {
                 double minAveragePrice = Double.valueOf(resultJOSNObject.get("min_averagePrice").toString());
                 double firstOrderPrice = Double.valueOf(resultJOSNObject.get("first_order_price").toString());
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
-                        buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio,minAveragePrice,firstOrderPrice);
-                if (true) {
+                        buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
+                        ,minAveragePrice,firstOrderPrice,redisKey);
+                if (isBuy) {
                     //mq发送买的消息
-                    Message<String> test = MessageBuilder.withPayload("test").build();
-                    source.output2().send(test);
+                    boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
                 }
             }
         });
@@ -161,6 +160,11 @@ public class DealHandler {
 
 
 
+    }
+
+    @StreamListener("input2")
+    private void consumerInput2(String msg) {
+        System.out.println(msg);
     }
 
 
@@ -182,10 +186,18 @@ public class DealHandler {
 
     @GetMapping("/test")
     public void test() {
-        String s = "{\"max_trade_order\":6,\"finished_order\":0,\"trade_times\":197,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"19.70000000\",\"1\":\"39.40000000\",\"2\":\"78.80000000\",\"3\":\"157.60000000\",\"4\":\"315.20000000\",\"5\":\"630.40000000\"},\"first_order_price\":0.0444,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0044053333333333\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"emit_ratio\":0.2,\"turn_down_ratio\":0.1,\"follow_lower_ratio\":0.01,\"follow_callback_ratio\":0.1,\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":50}";
-        JSONObject jsonObject = JSON.parseObject(s);
-        jsonObject.toJSONString();
-        redisTemplate.opsForValue().set("asdf",s);
+//        String s = "{\"max_trade_order\":6,\"finished_order\":0,\"trade_times\":197,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"19.70000000\",\"1\":\"39.40000000\",\"2\":\"78.80000000\",\"3\":\"157.60000000\",\"4\":\"315.20000000\",\"5\":\"630.40000000\"},\"first_order_price\":0.0444,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0044053333333333\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"emit_ratio\":0.2,\"turn_down_ratio\":0.1,\"follow_lower_ratio\":0.01,\"follow_callback_ratio\":0.1,\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":50}";
+//        JSONObject jsonObject = JSON.parseObject(s);
+//        jsonObject.toJSONString();
+//        redisTemplate.opsForValue().set("asdf",s);
+
+        RocketMQResult rocketMQResult = new RocketMQResult();
+        rocketMQResult.setAccessKey("asd");
+        rocketMQResult.setSecretKey("zxc");
+        rocketMQResult.setSymbol("123");
+        rocketMQResult.setType("qwe");
+        Object o = JSONObject.toJSON(rocketMQResult);
+        System.out.println(o);
     }
 
 
@@ -232,13 +244,17 @@ public class DealHandler {
      * @param averagePosition 持仓均价 调用上面的公式
      * @param buildPositionInterval 建仓间隔 redis获取
      * @param averagePrice 拟买入均价 调用上面公式
+     * @param followLowerRatio 追踪下调比
+     * @param followCallbackRatio 追踪回调比
+     * @param firstOrderPrice 开始策略的现价
+     * @param redisKey 获取redis中的值
      * @return 是否买
      */
 
-    public boolean isBuy(int orderNumber, int maxOrderNumber,
+    private boolean isBuy(int orderNumber, int maxOrderNumber,
                          double averagePosition, double buildPositionInterval,double averagePrice,
                          double followLowerRatio,double followCallbackRatio,double minAveragePrice,
-                         double firstOrderPrice
+                         double firstOrderPrice,String redisKey
                          ) {
         //是否需要判断？ 达到最大交易单数？
         if ( orderNumber == maxOrderNumber ) {
@@ -264,16 +280,14 @@ public class DealHandler {
             return false;
         }
 
-        //TODO 记录最小拟买入均价
-
         //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
         double callbackAveragePrice = minAveragePrice + averagePosition*followCallbackRatio;
 
-        //拟买入均价是否大于等于回调均价？ 是则确定买入
-        if ( averagePrice >= callbackAveragePrice ) {
-            return true;
-        }
-        return false;
+        //记录最小拟买入均价
+        updateRedisString(redisKey,"min_averagePrice",averagePrice);
+
+        //拟买入均价是否大于等于回调均价？ 是则确定买入\
+        return (averagePrice >= callbackAveragePrice);
     }
 
     /**
@@ -289,7 +303,7 @@ public class DealHandler {
      * @return 是否卖
      */
 
-    public boolean isSell(double positionPrice, int stopProfitType, double stopProfitPrice
+    private boolean isSell(double positionPrice, int stopProfitType, double stopProfitPrice
             ,double stopProfitRatio ,double realTimeEarningRatio,double triggerRatio, double callBackRatio,String redisKey) {
         //读取止盈金额和止盈比例，两种止盈方式，达到一种即可 参数传入
         //判断是否启用追踪止盈 if-else  1为追踪止盈，2为固定止盈
@@ -321,12 +335,8 @@ public class DealHandler {
 
         }
         //金额止盈
-        if (isStopProfitPrice) {
-            if ( (positionPrice * (realTimeEarningRatio-1)) >= stopProfitPrice ) {
-                return true;
-            }
-        }
-        return false;
+        return (isStopProfitPrice && (positionPrice * (realTimeEarningRatio-1)) >= stopProfitPrice);
+
     }
 
     private void updateRedisString(String redisKey,String valueKey, Double newValue) {
@@ -335,5 +345,16 @@ public class DealHandler {
         redisTemplate.opsForValue().set(redisKey,jsonObject.toJSONString());
     }
 
+
+    private boolean sendMessage(String accessKey,String secretKey,String symbol,String type) {
+        RocketMQResult rocketMQResult = new RocketMQResult();
+        rocketMQResult.setAccessKey(accessKey);
+        rocketMQResult.setSecretKey(secretKey);
+        rocketMQResult.setSymbol(symbol);
+        rocketMQResult.setType(type);
+        JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
+        Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
+        return source.output2().send(jsonMessage);
+    }
 
 }
