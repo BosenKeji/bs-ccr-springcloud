@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -24,7 +23,7 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
         return new IUserProductComboClientService() {
             @Override
             public Result add(UserProductCombo userProductCombo) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override

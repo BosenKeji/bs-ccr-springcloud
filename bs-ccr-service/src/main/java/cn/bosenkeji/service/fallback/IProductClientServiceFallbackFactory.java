@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @ClassName IProductClientServiceFallbackFactory
@@ -42,22 +41,22 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
 
             @Override
             public Result updateProductStatus(int id, int status) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result addProduct(Product product) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result updateProduct(Product product) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result deleteProduct(int id) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
         };
 
