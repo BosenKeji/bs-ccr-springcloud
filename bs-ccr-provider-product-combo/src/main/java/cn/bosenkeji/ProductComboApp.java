@@ -14,10 +14,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @MapperScan("cn.bosenkeji.mapper")
-public class App 
+public class ProductComboApp
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(App.class,args);
+        SpringApplication.run(ProductComboApp.class,args);
     }
 }

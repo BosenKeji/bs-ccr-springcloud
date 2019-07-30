@@ -222,6 +222,11 @@
                 <artifactId>bs-ccr-message-rocketMQ</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-product-combo</artifactId>
+                <version>1.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
