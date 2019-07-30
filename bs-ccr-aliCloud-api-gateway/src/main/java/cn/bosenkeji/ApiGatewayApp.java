@@ -1,8 +1,8 @@
 package cn.bosenkeji;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  * @ClassName AliCloudApp
@@ -11,11 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Email 8586826@qq.com
  * @Versio V1.0
  **/
-@SpringBootApplication
-@MapperScan("cn.bosenkeji.mapper")
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class ApiGatewayApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiGatewayApp.class, args);
+        SpringApplication.run(ApiGatewayApp.class,args);
     }
 }

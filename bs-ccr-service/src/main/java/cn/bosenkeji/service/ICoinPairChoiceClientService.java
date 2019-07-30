@@ -38,7 +38,7 @@ public interface ICoinPairChoiceClientService {
     public CoinPairChoice getOneCoinPairChoice(@PathVariable("id") int id);
 
     @PostMapping("/coin_pair_choice/")
-    public Result addOneCoinPairChoice(@RequestParam("userId")  int userId, @RequestParam("strategyStatus")  int strategyStatus, @RequestParam("coinPairId")   int coinPairId);
+    public Result addOneCoinPairChoice(@RequestParam("userId")  int userId, @RequestParam("isStrategy")  int strategyStatus, @RequestParam("coinPairId")   int coinPairId);
 
     @PutMapping("/coin_pair_choice/")
     public Result updateCoinPairChoice(@RequestBody CoinPairChoice coinPairChoice);

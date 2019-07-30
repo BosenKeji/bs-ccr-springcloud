@@ -31,7 +31,7 @@ public class ConsumerTradePlatformApiController {
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
     public Result addOneTradePlatformApi(@RequestParam("userId") @ApiParam(value = "user ID", required = true, type = "integer",example = "1") int userId,
-                                         @RequestBody @ApiParam(value = "交易平台API实体", required = true)  TradePlatformApi tradePlatformApi){
+                                         @RequestBody @ApiParam(value = "交易平台API实体", required = true, type = "string")  TradePlatformApi tradePlatformApi){
         return this.iTradePlatformApiClientService.addOneTradePlatformApi(userId,tradePlatformApi);
     }
 
