@@ -120,10 +120,23 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!--redis相关 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
                 <version>0.1.2.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>2.0.7.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-cache</artifactId>
+                <version>2.0.7.RELEASE</version>
             </dependency>
 
             <!-- 包冲突解决 -->
