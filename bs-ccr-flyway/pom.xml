@@ -30,10 +30,13 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>5.2.4</version>
                 <configuration>
-                    <url>jdbc:mysql://rm-wz93eqok6i4e3q4niho.mysql.rds.aliyuncs.com:3306/bs-ccr</url>
-                    <user>bosen_follow</user>
-                    <password>AYbosenkj19</password>
+                    <!--<url>jdbc:mysql://rm-wz93eqok6i4e3q4niho.mysql.rds.aliyuncs.com:3306/bs-ccr</url>-->
+                    <!--<user>bosen_follow</user>-->
+                    <!--<password>AYbosenkj19</password>-->
 
+                    <url>jdbc:mysql://127.0.0.1:3306/bs-ccr</url>
+                    <user>root</user>
+                    <password>123zxc</password>
                 </configuration>
             </plugin>
         </plugins>

@@ -90,19 +90,19 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.combo.UserProductComboDay">
     update user_product_combo_day
     <set>
-      <if test="userId != null">
+      <if test="userId != 0">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="userProductComboId != null">
+      <if test="userProductComboId != 0">
         user_product_combo_id = #{userProductComboId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
+      <if test="type != 0">
         type = #{type,jdbcType=TINYINT},
       </if>
-      <if test="number != null">
+      <if test="number != 0">
         number = #{number,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

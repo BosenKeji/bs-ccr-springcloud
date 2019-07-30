@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -42,17 +41,17 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
 
             @Override
             public Result add(ProductCombo productCombo) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result update(ProductCombo productCombo) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result delete(int id) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override
@@ -64,7 +63,7 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
 
             @Override
             public Result updateByStatus(int id, int status) {
-               return new Result("hystrix","hystrix");
+               return new Result("0","hystrix");
             }
         };
     }

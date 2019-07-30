@@ -26,17 +26,23 @@ public class RedisTest {
 
     @Test
     public void testPackage() {
-        redisTemplate.opsForValue().set("test:a","测试");
-        String str = (String) redisTemplate.opsForValue().get("test:a");
+        redisTemplate.opsForValue().set("test_springboot_redis","测试springboot2 集成 redis");
+        String str = (String) redisTemplate.opsForValue().get("test_springboot_redis");
         System.err.println("str = " + str);
 
+    }
+
+    @Test
+    public void testGetValue() {
+        String str = String.valueOf(redisTemplate.opsForValue().get("test_springboot_redis"));
+        System.out.println("str = " + str);
     }
 
 
 
     @Test
     public void testExpire() {
-        Long time = redisTemplate.getExpire("product2");
+        Long time = redisTemplate.getExpire("test_springboot_redis");
         System.err.println("time = " + time);
     }
 

@@ -58,7 +58,7 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
     public Result add(@RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
-                      @RequestParam("strategyStatus")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int strategyStatus,
+                      @RequestParam("isStrategy")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int isStrategy,
                       @RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
         this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId)
                 .filter((value)->value==0)
@@ -71,9 +71,8 @@ public class CoinPairChoiceController {
         coinPairChoice.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-        if (strategyStatus == 1){
-            coinPairChoice.setIsStart(1);
-        }
+        coinPairChoice.setIsStart(isStrategy);
+
 
         return new Result<>(this.coinPairChoiceService.add(coinPairChoice)
                 .filter((value)->value>=1)

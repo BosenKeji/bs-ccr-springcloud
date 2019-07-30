@@ -124,13 +124,13 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.combo.UserProductComboDayByAdmin">
     update user_product_combo_day_by_admin
     <set>
-      <if test="adminId != null">
+      <if test="adminId != 0">
         admin_id = #{adminId,jdbcType=INTEGER},
       </if>
-      <if test="userProductComboDayId != null">
+      <if test="userProductComboDayId != 0">
         user_product_combo_day_id = #{userProductComboDayId,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

@@ -121,13 +121,13 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
     update trade_platform_api_bind_product_combo
     <set>
-      <if test="userId != null">
+      <if test="userId != 0">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="tradePlatformApiId != null">
+      <if test="tradePlatformApiId != 0">
         trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER},
       </if>
-      <if test="userProductComboId != null">
+      <if test="userProductComboId != 0">
         user_product_combo_id = #{userProductComboId,jdbcType=INTEGER},
       </if>
       <if test="createdAt != null">

@@ -27,7 +27,7 @@ spring:
         port: 6379
         password: 123zxc
         timeout: 1000ms
-        jedis:
+        lettuce:
           pool:
             max-idle: 8
             min-idle: 0
