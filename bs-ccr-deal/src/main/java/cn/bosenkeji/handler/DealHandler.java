@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -158,46 +159,6 @@ public class DealHandler {
         });
 
 
-
-
-    }
-
-    @StreamListener("input2")
-    private void consumerInput2(String msg) {
-        System.out.println(msg);
-    }
-
-
-    public static void main(String[] args) {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("aaa");
-        strings.add("bbb");
-        strings.add("ccc");
-
-        String s = "aaa";
-
-        strings.stream().filter((e) -> e.equals(s))
-                .forEach(System.out::println);
-
-
-    }
-
-
-
-    @GetMapping("/test")
-    public void test() {
-//        String s = "{\"max_trade_order\":6,\"finished_order\":0,\"trade_times\":197,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"19.70000000\",\"1\":\"39.40000000\",\"2\":\"78.80000000\",\"3\":\"157.60000000\",\"4\":\"315.20000000\",\"5\":\"630.40000000\"},\"first_order_price\":0.0444,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0044053333333333\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"emit_ratio\":0.2,\"turn_down_ratio\":0.1,\"follow_lower_ratio\":0.01,\"follow_callback_ratio\":0.1,\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":50}";
-//        JSONObject jsonObject = JSON.parseObject(s);
-//        jsonObject.toJSONString();
-//        redisTemplate.opsForValue().set("asdf",s);
-
-        RocketMQResult rocketMQResult = new RocketMQResult();
-        rocketMQResult.setAccessKey("asd");
-        rocketMQResult.setSecretKey("zxc");
-        rocketMQResult.setSymbol("123");
-        rocketMQResult.setType("qwe");
-        Object o = JSONObject.toJSON(rocketMQResult);
-        System.out.println(o);
     }
 
 

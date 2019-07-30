@@ -12,17 +12,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisPassword;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
 
@@ -40,68 +35,9 @@ public class RedisConfig extends CachingConfigurerSupport {
     private Duration timeToLive = Duration.ZERO;
 
 
-
     public void setTimeToLive(Duration timeToLive) {
         this.timeToLive = timeToLive;
     }
-
-    @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(8);
-        poolConfig.setMaxIdle(8);
-        poolConfig.setMaxWaitMillis(-1);
-        poolConfig.setMinIdle(0);
-        poolConfig.setTestOnBorrow(true);
-        poolConfig.setTestOnReturn(false);
-        poolConfig.setTestWhileIdle(true);
-        JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
-                .usePooling().poolConfig(poolConfig).and().readTimeout(Duration.ofMillis(100000)).build();
-        RedisStandaloneConfiguration config=new RedisStandaloneConfiguration();
-        config.setHostName("127.0.0.1");
-        config.setPort(6379);
-        config.setPassword(RedisPassword.of("123zxc"));
-        config.setDatabase(0);
-        JedisConnectionFactory connectionFactory = new JedisConnectionFactory(config,clientConfig);
-
-
-        return connectionFactory;
-    }
-
-
-
-    /*@Configuration
-    public static class JedisConf {
-        @Value("${spring.redis.host:127.0.0.1}")
-        private String host;
-        @Value("${spring.redis.port:6379}")
-        private Integer port;
-        @Value("${spring.redis.password:}")
-        private String password;
-        @Value("${spring.redis.database:0}")
-        private Integer database;
-
-        @Value("${spring.redis.jedis.pool.max-active:8}")
-        private Integer maxActive;
-        @Value("${spring.redis.jedis.pool.max-idle:8}")
-        private Integer maxIdle;
-        @Value("${spring.redis.jedis.pool.max-wait:-1}")
-        private Long maxWait;
-        @Value("${spring.redis.jedis.pool.min-idle:0}")
-        private Integer minIdle;
-
-
-        @Bean
-        public RedisStandaloneConfiguration jedisConfig() {
-            RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-            config.setHostName(host);
-            config.setPort(port);
-            config.setDatabase(database);
-            config.setPassword(RedisPassword.of(password));
-            return config;
-        }
-    }*/
-
 
 
     @Bean
@@ -128,7 +64,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         return cacheManager;
     }
 
-    //redisTemplate配置
+    //RedisTemplate配置
     @Bean
     @SuppressWarnings("all")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
