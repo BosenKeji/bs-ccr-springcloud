@@ -1,14 +1,12 @@
 package cn.bosenkeji.plugin;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ObjectVendorExtension;
-import springfox.documentation.service.ResponseMessage;
-import springfox.documentation.service.StringVendorExtension;
-import springfox.documentation.service.VendorExtension;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.OperationBuilderPlugin;
 import springfox.documentation.spi.service.contexts.OperationContext;
@@ -36,50 +34,31 @@ import static java.lang.Class.forName;
  *          extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE, "200"));
  *
  **/
-//@Component
-//@Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
-public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin {
+@Component
+@Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
+public class AliGatewayBackendOperationExtension implements OperationBuilderPlugin {
     private static final String X_ALIYUN_APIGATEWAY_BACKEND = "x-aliyun-apigateway-backend";
     private static final String X_ALIYUN_APIGATEWAY_BACKEND_TYPE = "type";
-    private static final String X_ALIYUN_APIGATEWAY_BACKEND_MOCK_RESULT = "mockResult";
-    private static final String X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE = "mockStatusCode";
+    private static final String X_ALIYUN_APIGATEWAY_VPC_ACCESS_NAME = "vpcAccessName";
+    private static final String X_ALIYUN_APIGATEWAY_PATH = "path";
+    private static final String X_ALIYUN_APIGATEWAY_METHOD = "method";
+    private static final String X_ALIYUN_APIGATEWAY_TIMEOUT = "timeout";
     private static final String X_ALIYUN_APIGATEWAY_PARAMATER_HANDLING = "x-aliyun-apigateway-paramater-handling";
+    private static final String X_ALIYUN_APIGATEWAY_CONSUMES = "consumes";
 
     @Override
     public void apply(OperationContext context) {
 
-
-        String[] groupNameArray = context.getGroupName().split("-");
-
-        String mock_result;
-        String mock_handler = "";
-        if (groupNameArray.length > 0){
-            for (String name: groupNameArray) {
-                mock_handler += StringUtils.capitalize(name);
-            }
-
-        } else {
-            mock_handler = context.getGroupName();
-        }
-
-        try {
-            Class classType = forName("cn.bosenkeji.result.mock."+mock_handler+"ResultMock");
-            Object obj = classType.newInstance();
-
-            Method method = classType.getDeclaredMethod(context.getName());
-            method.setAccessible(true);
-            mock_result = (String) method.invoke(obj);
-        } catch (Exception e) {
-            mock_result = "OK";
-        }
-
         ObjectVendorExtension extension1 = new ObjectVendorExtension(ensurePrefixed(X_ALIYUN_APIGATEWAY_BACKEND));
-        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_TYPE, "MOCK"));;
-        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_RESULT, mock_result));;
-        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE, "200"));
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_TYPE, "HTTP-VPC"));
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_VPC_ACCESS_NAME, "bs-ccr-test"));
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_TIMEOUT, "10000"));
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_PATH, context.requestMappingPattern()));
+        extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_METHOD, context.httpMethod().name().toLowerCase()));
 
         StringVendorExtension extension2 = new StringVendorExtension(
                 ensurePrefixed(X_ALIYUN_APIGATEWAY_PARAMATER_HANDLING), "MAPPING");
+
 
         
         List<VendorExtension> extensions = new ArrayList<VendorExtension>();
