@@ -38,9 +38,9 @@ public class ProductComboController {
     private IProductComboService iProductComboService;
 
 
-
     @Resource
     private DiscoveryClient discoveryClient;
+
 
 
     @ApiOperation(value ="获取产品套餐列表api",notes = "获取产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListWithPage")

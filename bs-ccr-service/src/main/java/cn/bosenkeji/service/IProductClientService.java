@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * @ClassName IProductClientService
@@ -17,7 +16,7 @@ import java.util.Optional;
  * @Author Xivin
  * @Versio V1.0
  **/
-@FeignClient(name = "bs-ccr-provider-product",configuration = FeignClientConfig.class,fallbackFactory = IProductClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-product-combo",configuration = FeignClientConfig.class,fallbackFactory = IProductClientServiceFallbackFactory.class)
 public interface IProductClientService {
 
     @Resource

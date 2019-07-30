@@ -1,11 +1,11 @@
 server:
-  port: 7060
+  port: 7061
 mybatis:
   mapper-locations:
-    - classpath:mapper/*.xml
+    classpath:mapping/*.xml,classpath:mapper/*.xml
 spring:
   application:
-    name: bs-ccr-provider-product
+    name: bs-ccr-provider-product-combo
   cloud:
     nacos:
       discovery:
@@ -28,7 +28,6 @@ spring:
               min-idle: 0
               max-active: 8
               max-wait: -1ms
-
 
 logging:
   level:

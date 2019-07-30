@@ -34,6 +34,7 @@
         <module>bs-ccr-redis</module>
         <module>bs-ccr-message-rocketMQ</module>
         <module>bs-ccr-deal</module>
+        <module>bs-ccr-provider-product-combo</module>
 
     </modules>
 
