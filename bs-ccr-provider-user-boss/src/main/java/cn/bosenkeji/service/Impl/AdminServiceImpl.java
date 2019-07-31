@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,24 +37,27 @@ public class AdminServiceImpl implements AdminService {
         return new PageInfo(adminMapper.findAll());
     }
 
-
     @Override
     public Optional<Admin> get(int id) {
-        return Optional.empty();
+        return Optional.of(adminMapper.selectByPrimaryKey(id));
     }
 
     @Override
-    public boolean add(Admin admin) {
-        return false;
+    public Optional<Integer> add(Admin admin) {
+        admin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        admin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        return Optional.of(adminMapper.insert(admin));
     }
 
     @Override
-    public boolean update(Admin admin) {
-        return false;
+    public Optional<Integer> update(Admin admin) {
+        admin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        admin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        return Optional.of(adminMapper.updateByPrimaryKeySelective(admin));
     }
 
     @Override
-    public boolean delete(int id) {
-        return false;
+    public Optional<Integer> delete(int id) {
+        return Optional.of(adminMapper.deleteByPrimaryKey(id));
     }
 }

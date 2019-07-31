@@ -20,10 +20,10 @@ public interface AdminService {
 
     Optional<Admin> get(int id);
 
-    boolean add(Admin admin);
+    Optional<Integer> add(Admin admin);
 
-    boolean update(Admin admin);
+    Optional<Integer> update(Admin admin);
 
-    boolean delete(int id);
+    Optional<Integer> delete(int id);
 
 }
