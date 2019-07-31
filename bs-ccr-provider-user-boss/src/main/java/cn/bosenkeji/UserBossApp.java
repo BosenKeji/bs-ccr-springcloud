@@ -3,6 +3,7 @@ package cn.bosenkeji;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
+@EnableCircuitBreaker
 public class UserBossApp {
     public static void main(String[] args) {
         SpringApplication.run(UserBossApp.class, args);

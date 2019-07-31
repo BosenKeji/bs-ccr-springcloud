@@ -22,6 +22,14 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{username,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from user
@@ -93,7 +101,7 @@
       <if test="password != null">
         `password` = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -116,4 +124,9 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkExistByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select EXISTS
+    (select 1 from user where username=#{username} limit 1)
+  </select>
 </mapper>
