@@ -14,11 +14,9 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +38,29 @@ public class DealHandler {
     @Autowired
     private ITradePlatformApiClientService tradePlatformApiClientService;
 
+//    @RequestMapping("/test1/{msg}")
+//    public void testSend1(@PathVariable("msg") String msg) {
+//
+//        Message<String> message = MessageBuilder.withPayload(msg).build();
+//        source.output1().send(message);
+//    }
+//
+//    @RequestMapping("/test2/{msg}")
+//    public void testSend2(@PathVariable("msg") String msg) {
+//
+//        Message<String> message = MessageBuilder.withPayload(msg).build();
+//        source.output2().send(message);
+//    }
+
+    @StreamListener("input2")
+    private void consumerInput2(String msg) {
+        System.out.println("input2"+msg);
+    }
+
+//    @StreamListener("input1")
+//    private void consumerInput1(String msg) {
+//        System.out.println("input1"+msg);
+//    }
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
