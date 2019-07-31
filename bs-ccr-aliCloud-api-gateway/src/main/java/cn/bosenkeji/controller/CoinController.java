@@ -46,7 +46,8 @@ public class CoinController {
 
             Annotation[] annotations = method.getAnnotations();
             for (Annotation annotation: annotations){
-                AnnotationHandler annotationHandler = (new AnnotationProxy()).annotationHandler(annotation.annotationType());
+                AnnotationHandler annotationHandler = (new AnnotationProxy()).
+                        annotationHandler(annotation.annotationType());
                 String[] value = annotationHandler.getValue(method);
                 System.out.println(value[0]);
 
