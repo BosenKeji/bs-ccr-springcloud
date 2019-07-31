@@ -151,10 +151,13 @@ public class AliCloudApiManageUtil {
      * @throws ClientException
      */
     public ImportSwaggerResponse importSwagger(String dataFormat,String data) throws ClientException {
+
+
         ImportSwaggerRequest request = new ImportSwaggerRequest();
         request.setGroupId(groupId);
         request.setDataFormat(dataFormat);
         request.setData(data);
+        request.setbOverwrite(true);
 
         return client.getAcsResponse(request);
     }

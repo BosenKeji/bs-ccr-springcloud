@@ -55,6 +55,273 @@ public class AliCloudApiManageController {
         return this.aliCloudApiManageUtil.deployApi(apiId, stageName, description);
     }
 
+    @ApiOperation(value = "导入Swagger",httpMethod = "GET")
+    @GetMapping("/import_to_swagger")
+    public ImportSwaggerResponse import2Swagger() throws Exception {
+        String json_data = "{\n" +
+                "    \"swagger\": \"2.0\",\n" +
+                "    \"info\": {\n" +
+                "        \"description\": \"博森CCR系统API信息\",\n" +
+                "        \"version\": \"1.0.0\",\n" +
+                "        \"title\": \"博森CCR系统\",\n" +
+                "        \"contact\": {\n" +
+                "            \"name\": \"YuXueWen\",\n" +
+                "            \"url\": \"https://github.com/xiaoemoxiw\",\n" +
+                "            \"email\": \"yuxuewen23@qq.com\"\n" +
+                "        },\n" +
+                "        \"license\": {\n" +
+                "            \"name\": \"Apache 2.0\",\n" +
+                "            \"url\": \"http://www.apache.org/licenses/LICENSE-2.0\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"host\": \"127.0.0.1:7030\",\n" +
+                "    \"basePath\": \"/\",\n" +
+                "    \"tags\": [\n" +
+                "        {\n" +
+                "            \"name\": \"Coin 货币相关接口\",\n" +
+                "            \"description\": \"Coin Controller\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"paths\": {\n" +
+                "        \"/coin/\": {\n" +
+                "            \"put\": {\n" +
+                "                \"x-aliyun-apigateway-api-force-nonce-check\": true,\n" +
+                "                \"tags\": [\n" +
+                "                    \"Coin 货币相关接口\"\n" +
+                "                ],\n" +
+                "                \"summary\": \"添加单个货币接口\",\n" +
+                "                \"operationId\": \"addCoin\",\n" +
+                "                \"consumes\": [\n" +
+                "                    \"application/json;charset=UTF-8\"\n" +
+                "                ],\n" +
+                "                \"produces\": [\n" +
+                "                    \"application/json;charset=UTF-8\"\n" +
+                "                ],\n" +
+                "                \"parameters\": [\n" +
+                "                    {\n" +
+                "                        \"in\": \"body\",\n" +
+                "                        \"name\": \"coin\",\n" +
+                "                        \"description\": \"币种实体\",\n" +
+                "                        \"required\": true,\n" +
+                "                        \"schema\": {\n" +
+                "                            \"$ref\": \"#/definitions/Coin\"\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                ],\n" +
+                "                \"responses\": {\n" +
+                "                    \"200\": {\n" +
+                "                        \"description\": \"OK\",\n" +
+                "                        \"schema\": {\n" +
+                "                            \"$ref\": \"#/definitions/Result\"\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    \"201\": {\n" +
+                "                        \"description\": \"添加或者修改成功\"\n" +
+                "                    },\n" +
+                "                    \"400\": {\n" +
+                "                        \"description\": \"错误请求\"\n" +
+                "                    },\n" +
+                "                    \"401\": {\n" +
+                "                        \"description\": \"未授权\"\n" +
+                "                    },\n" +
+                "                    \"403\": {\n" +
+                "                        \"description\": \"拒绝请求\"\n" +
+                "                    },\n" +
+                "                    \"404\": {\n" +
+                "                        \"description\": \"未找到相关的请求\"\n" +
+                "                    },\n" +
+                "                    \"500\": {\n" +
+                "                        \"description\": \"服务器内部错误\"\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"deprecated\": false,\n" +
+                "                \"x-aliyun-apigateway-backend\": {\n" +
+                "                    \"method\": \"put\",\n" +
+                "                    \"path\": \"/coin/\",\n" +
+                "                    \"timeout\": \"10000\",\n" +
+                "                    \"type\": \"HTTP-VPC\",\n" +
+                "                    \"vpcAccessName\": \"bs-ccr-test\"\n" +
+                "                },\n" +
+                "                \"x-aliyun-apigateway-paramater-handling\": \"MAPPING\"\n" +
+                "            }\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"definitions\": {\n" +
+                "        \"Coin\": {\n" +
+                "            \"type\": \"object\",\n" +
+                "            \"properties\": {\n" +
+                "                \"createdAt\": {\n" +
+                "                    \"description\": \"货币创建时间\",\n" +
+                "                    \"$ref\": \"#/definitions/Timestamp\"\n" +
+                "                },\n" +
+                "                \"id\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\",\n" +
+                "                    \"description\": \"货币 id\"\n" +
+                "                },\n" +
+                "                \"name\": {\n" +
+                "                    \"type\": \"string\",\n" +
+                "                    \"description\": \"货币名\"\n" +
+                "                },\n" +
+                "                \"status\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\",\n" +
+                "                    \"description\": \"货币状态\"\n" +
+                "                },\n" +
+                "                \"updatedAt\": {\n" +
+                "                    \"description\": \"货币更新时间\",\n" +
+                "                    \"$ref\": \"#/definitions/Timestamp\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"title\": \"Coin\"\n" +
+                "        },\n" +
+                "        \"PageInfo\": {\n" +
+                "            \"type\": \"object\",\n" +
+                "            \"properties\": {\n" +
+                "                \"endRow\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"hasNextPage\": {\n" +
+                "                    \"type\": \"boolean\"\n" +
+                "                },\n" +
+                "                \"hasPreviousPage\": {\n" +
+                "                    \"type\": \"boolean\"\n" +
+                "                },\n" +
+                "                \"isFirstPage\": {\n" +
+                "                    \"type\": \"boolean\"\n" +
+                "                },\n" +
+                "                \"isLastPage\": {\n" +
+                "                    \"type\": \"boolean\"\n" +
+                "                },\n" +
+                "                \"list\": {\n" +
+                "                    \"type\": \"array\",\n" +
+                "                    \"items\": {\n" +
+                "                        \"type\": \"object\"\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"navigateFirstPage\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"navigateLastPage\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"navigatePages\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"navigatepageNums\": {\n" +
+                "                    \"type\": \"array\",\n" +
+                "                    \"items\": {\n" +
+                "                        \"type\": \"integer\",\n" +
+                "                        \"format\": \"int32\"\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"nextPage\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"pageNum\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"pageSize\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"pages\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"prePage\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"size\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"startRow\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"total\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int64\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"title\": \"PageInfo\"\n" +
+                "        },\n" +
+                "        \"Result\": {\n" +
+                "            \"type\": \"object\",\n" +
+                "            \"properties\": {\n" +
+                "                \"data\": {\n" +
+                "                    \"type\": \"object\"\n" +
+                "                },\n" +
+                "                \"msg\": {\n" +
+                "                    \"type\": \"string\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"title\": \"Result\"\n" +
+                "        },\n" +
+                "        \"Timestamp\": {\n" +
+                "            \"type\": \"object\",\n" +
+                "            \"properties\": {\n" +
+                "                \"date\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"day\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"hours\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"minutes\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"month\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"nanos\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"seconds\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"time\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int64\"\n" +
+                "                },\n" +
+                "                \"timezoneOffset\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                },\n" +
+                "                \"year\": {\n" +
+                "                    \"type\": \"integer\",\n" +
+                "                    \"format\": \"int32\"\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"title\": \"Timestamp\"\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"schemes\": [\n" +
+                "        \"http\"\n" +
+                "    ]\n" +
+                "}";
+
+
+        return this.aliCloudApiManageUtil.importSwagger("json", json_data);
+    }
+
 
 
 }
