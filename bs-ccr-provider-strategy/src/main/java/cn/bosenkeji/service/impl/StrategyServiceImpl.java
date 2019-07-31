@@ -87,13 +87,26 @@ public class StrategyServiceImpl implements StrategyService{
     }
 
     private StrategyOther convertStrategyOther(Strategy strategy, StrategyAttribute strategyAttribute) {
-        StrategyOther strategyOther = new StrategyOther();
-        strategyOther.setId(strategy.getId());
-        strategyOther.setName(strategy.getName());
-        strategyOther.setLever(strategyAttribute.getLever());
-        strategyOther.setRate(strategyAttribute.getRate());
-        strategyOther.setBuildReference(strategyAttribute.getBuildReference());
-        strategyOther.setStatus(strategy.getStatus());
-        return strategyOther;
+        StrategyOther other = new StrategyOther();
+        other.setId(strategy.getId());
+        other.setName(strategy.getName());
+        other.setStatus(strategy.getStatus());
+
+        other.setIsDefault(strategyAttribute.getIsDefault());
+        other.setIsTip(strategyAttribute.getIsTip());
+        other.setLever(strategyAttribute.getLever());
+
+        other.setStrategySequenceId(strategyAttribute.getStrategySequenceId());
+        other.setRate(strategyAttribute.getRate());
+        other.setStopProfitRatio(strategyAttribute.getStopProfitRatio());
+
+        other.setIsStopProfitTrace(strategyAttribute.getIsStopProfitTrace());
+        other.setStopProfitTraceTriggerRate(strategyAttribute.getStopProfitTraceTriggerRate());
+        other.setStopProfitTraceDropRate(strategyAttribute.getStopProfitTraceDropRate());
+
+        other.setIsStopProfitMoney(strategyAttribute.getIsStopProfitMoney());
+        other.setIsStopProfitGrid(strategyAttribute.getIsStopProfitGrid());
+        other.setBuildReference(strategyAttribute.getBuildReference());
+        return other;
     }
 }
