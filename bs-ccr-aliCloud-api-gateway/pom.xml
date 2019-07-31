@@ -37,7 +37,15 @@
         <!--模块依赖-->
         <dependency>
             <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
         </dependency>
     </dependencies>
 

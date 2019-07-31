@@ -189,6 +189,16 @@
             </dependency>
             <dependency>
                 <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-consumer</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-coin</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-provider-user-boss</artifactId>
                 <version>1.0.0</version>
             </dependency>
