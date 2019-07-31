@@ -81,19 +81,19 @@
     <!--@mbg.generated-->
     insert into coin_sort
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="tradePlatformId != null">
+      <if test="tradePlatformId != 0">
         trade_platform_id,
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         coin_id,
       </if>
       <if test="type != null">
         `type`,
       </if>
-      <if test="sortNum != null">
+      <if test="sortNum != 0">
         sort_num,
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status`,
       </if>
       <if test="createdAt != null">
@@ -104,19 +104,19 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="tradePlatformId != null">
+      <if test="tradePlatformId != 0">
         #{tradePlatformId,jdbcType=INTEGER},
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
+      <if test="type != 0">
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="sortNum != null">
+      <if test="sortNum != 0">
         #{sortNum,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -131,19 +131,19 @@
     <!--@mbg.generated-->
     update coin_sort
     <set>
-      <if test="tradePlatformId != null">
+      <if test="tradePlatformId != 0">
         trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         coin_id = #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
+      <if test="type != 0">
         `type` = #{type,jdbcType=INTEGER},
       </if>
-      <if test="sortNum != null">
+      <if test="sortNum != 0">
         sort_num = #{sortNum,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

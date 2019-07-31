@@ -51,13 +51,13 @@
     <!--@mbg.generated-->
     insert into coin_pair_coin
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="coinPairId != null">
+      <if test="coinPairId != 0">
         coin_pair_id,
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         coin_id,
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status`,
       </if>
       <if test="createdAt != null">
@@ -68,13 +68,13 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="coinPairId != null">
+      <if test="coinPairId != 0">
         #{coinPairId,jdbcType=INTEGER},
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -89,13 +89,13 @@
     <!--@mbg.generated-->
     update coin_pair_coin
     <set>
-      <if test="coinPairId != null">
+      <if test="coinPairId != 0">
         coin_pair_id = #{coinPairId,jdbcType=INTEGER},
       </if>
-      <if test="coinId != null">
+      <if test="coinId != 0">
         coin_id = #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
