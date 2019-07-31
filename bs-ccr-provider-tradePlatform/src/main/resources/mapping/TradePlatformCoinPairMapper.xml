@@ -72,13 +72,13 @@
     <!--@mbg.generated-->
     update trade_platform_coin_pair
     <set>
-      <if test="tradePlatformId != null">
+      <if test="tradePlatformId != 0">
         trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
       </if>
-      <if test="coinPairId != null">
+      <if test="coinPairId != 0">
         coin_pair_id = #{coinPairId,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

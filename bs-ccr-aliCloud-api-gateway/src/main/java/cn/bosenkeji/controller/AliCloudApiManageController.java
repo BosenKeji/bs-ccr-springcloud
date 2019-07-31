@@ -322,6 +322,43 @@ public class AliCloudApiManageController {
         return this.aliCloudApiManageUtil.importSwagger("json", json_data);
     }
 
+    /**
+     * TODO 修改api
+     * @param apiName
+     * @param visibility
+     * @param requestConfig
+     * @param serviceConfig
+     * @param resultType
+     * @param resultSample
+     * @param apiId
+     * @return
+     * @throws ClientException
+     */
+    @ApiOperation(value = "修改api",httpMethod = "GET")
+    @GetMapping("/modify_api")
+    public ModifyApiResponse modifyApi(@RequestParam("apiName") String apiName,@RequestParam("visibility") String visibility, @RequestParam("requestConfig") String requestConfig,
+                                       @RequestParam("serviceConfig") String serviceConfig,@RequestParam("resultType") String resultType,
+                                       @RequestParam("resultSample") String resultSample,@RequestParam("apiId") String apiId) throws ClientException {
+
+        return this.aliCloudApiManageUtil.modifyApi(apiName, visibility, requestConfig, serviceConfig, resultType, resultSample, apiId);
+    }
 
 
+    @ApiOperation(value = "废除api",httpMethod = "GET")
+    @GetMapping("/abolish_api")
+    public AbolishApiResponse abolishApi(@RequestParam("apiId") String apiId, @RequestParam("stageName") String stageName) throws ClientException {
+        return this.aliCloudApiManageUtil.abolishApi(apiId, stageName);
+    }
+
+    @ApiOperation(value = "删除api",httpMethod = "GET")
+    @GetMapping("/delete_api")
+    public DeleteApiResponse deleteApi(String apiId) throws ClientException {
+        return this.aliCloudApiManageUtil.deleteApi(apiId);
+    }
+
+    @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")
+    @GetMapping("/import_swagger")
+    public ImportSwaggerResponse importSwagger(String dataFormat,String data) throws ClientException {
+        return this.importSwagger(dataFormat, data);
+    }
 }
