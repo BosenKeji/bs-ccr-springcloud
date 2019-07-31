@@ -47,6 +47,20 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-consumer</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
 </project>
