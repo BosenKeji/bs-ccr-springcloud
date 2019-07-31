@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -25,7 +24,7 @@ public class IUserProductComboDayByAdminClientServiceFallbackFactory implements 
         return new IUserProductComboDayByAdminClientService() {
             @Override
             public Result add(UserProductComboDay userProductComboDay,int adminId) {
-                return new Result("hystrix","hystrix");
+                return new Result("0","hystrix");
             }
 
             @Override

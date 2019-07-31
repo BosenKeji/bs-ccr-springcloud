@@ -1,0 +1,20 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: bs-ccr-aliCloud-api-gateway
+
+
+api:
+#  地区id
+  regionId: cn-shenzhen
+
+#  api分组id
+  groupId: 447efa99d88d4696ab480fb1fcfa442e
+
+#  阿里云accessKeyId
+  accessKeyId: LTAISwQkitLFbG0t
+
+#  阿里云accessSecret
+  accessSecret: aCeWQl874e6Jvh76GtfhEAeC24hKl0

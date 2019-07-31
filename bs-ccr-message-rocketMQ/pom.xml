@@ -8,9 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <version>1.0.0</version>
 
     <artifactId>bs-ccr-message-rocketMQ</artifactId>
-    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -23,14 +23,6 @@
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
         </dependency>
 
-
-
-
-        <!--<dependency>-->
-            <!--<groupId>com.aliyun.openservices</groupId>-->
-            <!--<artifactId>ons-client</artifactId>-->
-            <!--<version>1.8.0.Final</version>-->
-        <!--</dependency>-->
 
     </dependencies>
 

@@ -41,9 +41,9 @@ public class ConsumerCoinPairChoiceController {
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
     public Result addOneCoinPairChoice(@RequestParam("userId")  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
-                                       @RequestParam("strategyId")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int strategyStatus,
+                                       @RequestParam("isStrategy")  @ApiParam(value = "是否开始策略", required = true, type = "integer",example = "1") int isStrategy,
                                        @RequestParam("coinPairId")  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
-        return this.iCoinPairChoiceClientService.addOneCoinPairChoice(userId, strategyStatus, coinPairId);
+        return this.iCoinPairChoiceClientService.addOneCoinPairChoice(userId, isStrategy, coinPairId);
     }
 
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")

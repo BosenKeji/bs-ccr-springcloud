@@ -66,7 +66,7 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -84,7 +84,7 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

@@ -5,7 +5,6 @@ import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.ProductComboEnum;
-import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
@@ -24,7 +23,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -33,23 +31,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/product_combo")
 @Validated
-@Api(tags = "PrdocutCombo 产品套餐相关接口",value="提供产品套餐相关的 Rest API")
+@Api(tags = "ProductCombo 产品套餐相关接口",value="提供产品套餐相关的 Rest API")
 public class ProductComboController {
 
     @Resource
     private IProductComboService iProductComboService;
 
-    @Resource
-    private IProductClientService iProductClientService;
+
 
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @GetMapping("/get_product_list")
-    public PageInfo getProductList(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                   @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
-        return this.iProductClientService.listProduct(pageNum,pageSize);
-    }
 
     @ApiOperation(value ="获取产品套餐列表api",notes = "获取产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListWithPage")
     @RequestMapping(value = "/",method = RequestMethod.GET)

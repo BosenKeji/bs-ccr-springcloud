@@ -70,7 +70,8 @@ public class CoinPairChoiceAttributeCustomController {
                     .filter((value)->value>=1)
                     .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
         }
-        else if (stopProfitType == 2){
+
+        if (stopProfitType == 2){
             coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
             coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

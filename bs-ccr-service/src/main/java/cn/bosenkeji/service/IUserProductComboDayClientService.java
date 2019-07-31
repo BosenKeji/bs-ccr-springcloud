@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @Version V1.0
  * @create 2019-07-18 11:29
  */
-@FeignClient(name = "bs-ccr-provider-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProductComboDayClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-product-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProductComboDayClientServiceFallbackFactory.class)
 public interface IUserProductComboDayClientService {
 
 

@@ -104,13 +104,13 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute_custom
     <set>
-      <if test="coinPartnerChoicId != null">
+      <if test="coinPartnerChoiceId != 0">
         coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitType != null">
+      <if test="stopProfitType != 0">
         stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
       </if>
-      <if test="stopProfitMoney != null">
+      <if test="stopProfitMoney != 0">
         stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
       </if>
       <if test="stopProfitTraceTriggerRate != null">
@@ -122,7 +122,7 @@
       <if test="stopProfitFixedRate != null">
         stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -157,7 +157,7 @@
       <if test="stopProfitFixedRate != null">
         stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
       </if>
-      <if test="status != null">
+      <if test="status != 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

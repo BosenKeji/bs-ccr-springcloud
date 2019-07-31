@@ -29,9 +29,15 @@ import static java.lang.Class.forName;
  * @Author Yu XueWen
  * @Email 8586826@qq.com
  * @Versio V1.0
+ * @Example
+ *      MOCK CODE:
+ *          extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_TYPE, "MOCK"));;
+ *          extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_RESULT, mock_result));;
+ *          extension1.addProperty(new StringVendorExtension(X_ALIYUN_APIGATEWAY_BACKEND_MOCK_STATUS_CODE, "200"));
+ *
  **/
-@Component
-@Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
+//@Component
+//@Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER)
 public class AliCloudGatewayOperationExtension implements OperationBuilderPlugin {
     private static final String X_ALIYUN_APIGATEWAY_BACKEND = "x-aliyun-apigateway-backend";
     private static final String X_ALIYUN_APIGATEWAY_BACKEND_TYPE = "type";
