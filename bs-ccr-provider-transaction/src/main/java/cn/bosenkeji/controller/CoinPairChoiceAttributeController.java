@@ -4,10 +4,15 @@ import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
+import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeCustomEnum;
 import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeEnum;
+import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.service.CoinPairChoiceAttributeService;
+import cn.bosenkeji.service.IStrategyService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,6 +39,13 @@ public class CoinPairChoiceAttributeController {
 
     @Resource
     CoinPairChoiceAttributeService coinPairChoiceAttributeService;
+
+    @Resource
+    IStrategyService iStrategyService;
+
+    @Resource
+    CoinPairChoiceAttributeCustomService coinPairChoiceAttributeCustomService;
+
     @Resource
     DiscoveryClient client;
 
@@ -48,7 +60,6 @@ public class CoinPairChoiceAttributeController {
     @PostMapping("/")
     public Result add(@RequestParam(value = "coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串 ", required = true, type = "string") String coinPairChoiceIdStr,
                       @RequestParam("strategyId") @Min(1) @ApiParam(value = "策略id'", required = true, type = "integer" ,example = "1") int strategyId,
-                      @RequestParam("lever") @Min(1) @ApiParam(value = "策略倍数'", required = true, type = "integer" ,example = "1") int lever,
                       @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
         //字符串切割
@@ -63,19 +74,47 @@ public class CoinPairChoiceAttributeController {
             return new Result<>(0,"fail");
         }
 
+        /*根据strategyId查询StrategyOther*/
+        StrategyOther strategyOther = this.iStrategyService.getStrategy(strategyId);
+
+        int lever = strategyOther.getLever();
         int expectMoney=(money*lever)/coinPairChoiceIds.length;
+
+
+        CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom = new CoinPairChoiceAttributeCustom();
+        if (strategyOther.getIsStopProfitTrace()!=0){
+            coinPairChoiceAttributeCustom.setStopProfitType(1);
+        }
+        coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(strategyOther.getStopProfitTraceTriggerRate());
+        coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(strategyOther.getStopProfitTraceDropRate());
 
         for (int i=0;i<coinPairChoiceIds.length;i++){
             CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceIds[i]);
+            coinPairChoiceAttributeCustom.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
+            System.out.println(coinPairChoiceAttributeCustom.toString());
 
             /* 数据库已存在的就直接更新其预算和更新时间*/
             if (coinPairChoiceAttribute != null){
                 coinPairChoiceAttribute.setExpectMoney(expectMoney);
                 coinPairChoiceAttribute.setStrategyId(strategyId);
                 coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
+
+                /*更新已有自选币的属性*/
+                this.coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
                         .filter((value)->value>=1)
                         .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeEnum.NAME));
+                /*更新已有自选币的自定义的属性*/
+                if (this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceIds[i]).isPresent()){
+                    this.coinPairChoiceAttributeCustomService.updateByCoinPairChoiceId(coinPairChoiceAttributeCustom)
+                            .filter((value)->value>=1)
+                            .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
+                }else {
+                    this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
+                            .filter((value)->value>=1)
+                            .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
+                }
+
+
             }else {
                 CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
                 coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
@@ -85,9 +124,13 @@ public class CoinPairChoiceAttributeController {
                 coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
                 coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-                coinPairChoiceAttributeService.add(coinPairChoiceAttribute1)
+                this.coinPairChoiceAttributeService.add(coinPairChoiceAttribute1)
                         .filter((value)->value>=1)
                         .orElseThrow(()->new AddException(CoinPairChoiceAttributeEnum.NAME));
+
+                this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
+                        .filter((value)->value>=1)
+                        .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
             }
         }
 

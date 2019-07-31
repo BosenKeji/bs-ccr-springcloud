@@ -358,7 +358,7 @@ public class AliCloudApiManageController {
 
     @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")
     @GetMapping("/import_swagger")
-    public ImportSwaggerResponse importSwagger(String dataFormat,String data) throws ClientException {
+    public ImportSwaggerResponse importSwagger(@RequestParam("dataFormat") String dataFormat,@RequestParam("data") String data) throws ClientException {
         return this.importSwagger(dataFormat, data);
     }
 }
