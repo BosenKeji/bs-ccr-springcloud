@@ -89,7 +89,7 @@ public class AliCloudApiManageController {
         return this.aliCloudApiManageUtil.deleteApi(apiId);
     }
 
-    @ApiOperation(value = "删除api",httpMethod = "GET")
+    @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")
     @GetMapping("/import_swagger")
     public ImportSwaggerResponse importSwagger(String dataFormat,String data) throws ClientException {
         return this.importSwagger(dataFormat, data);
