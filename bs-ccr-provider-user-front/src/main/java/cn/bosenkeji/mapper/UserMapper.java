@@ -15,8 +15,10 @@ public interface UserMapper {
     int insertSelective(User record);
 
     User selectByPrimaryKey(Integer id);
+    User selectByUsername(String  username);
 
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+    int checkExistByUsername(String username);
 }

@@ -1,14 +1,18 @@
 package cn.bosenkeji.vo;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @Author CAJR
  * @create 2019/7/17 10:34
  */
 
-public class User {
-    private Integer id;
+public class User implements Serializable {
+
+    private int id;
 
     private String username;
 
@@ -16,17 +20,20 @@ public class User {
 
     private String password;
 
-    private Byte status;
+    @ApiModelProperty(hidden = true)
+    private int status;
 
-    private Date createdAt;
+    @ApiModelProperty(hidden = true)
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    @ApiModelProperty(hidden = true)
+    private Timestamp updatedAt;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -54,27 +61,27 @@ public class User {
         this.password = password;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
