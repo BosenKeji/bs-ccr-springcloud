@@ -12,11 +12,11 @@ public class StrategyOther {
 
     private int strategySequenceId;
     private int rate;
-    private int stopProfitRatio;
+    private double stopProfitRatio;
 
     private int isStopProfitTrace;
-    private int stopProfitTraceTriggerRate;
-    private int stopProfitTraceDropRate;
+    private double stopProfitTraceTriggerRate;
+    private double stopProfitTraceDropRate;
 
     private double isStopProfitMoney;
     private int isStopProfitGrid;
@@ -24,7 +24,7 @@ public class StrategyOther {
 
     public StrategyOther() { }
 
-    public StrategyOther(int id, String name, int status, int isDefault, int isTip, int lever, int strategySequenceId, int rate, int stopProfitRatio, int isStopProfitTrace, int stopProfitTraceTriggerRate, int stopProfitTraceDropRate, double isStopProfitMoney, int isStopProfitGrid, int buildReference) {
+    public StrategyOther(int id, String name, int status, int isDefault, int isTip, int lever, int strategySequenceId, int rate, double stopProfitRatio, int isStopProfitTrace, double stopProfitTraceTriggerRate, double stopProfitTraceDropRate, double isStopProfitMoney, int isStopProfitGrid, int buildReference) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -106,11 +106,11 @@ public class StrategyOther {
         this.rate = rate;
     }
 
-    public int getStopProfitRatio() {
+    public double getStopProfitRatio() {
         return stopProfitRatio;
     }
 
-    public void setStopProfitRatio(int stopProfitRatio) {
+    public void setStopProfitRatio(double stopProfitRatio) {
         this.stopProfitRatio = stopProfitRatio;
     }
 
@@ -122,19 +122,19 @@ public class StrategyOther {
         this.isStopProfitTrace = isStopProfitTrace;
     }
 
-    public int getStopProfitTraceTriggerRate() {
+    public double getStopProfitTraceTriggerRate() {
         return stopProfitTraceTriggerRate;
     }
 
-    public void setStopProfitTraceTriggerRate(int stopProfitTraceTriggerRate) {
+    public void setStopProfitTraceTriggerRate(double stopProfitTraceTriggerRate) {
         this.stopProfitTraceTriggerRate = stopProfitTraceTriggerRate;
     }
 
-    public int getStopProfitTraceDropRate() {
+    public double getStopProfitTraceDropRate() {
         return stopProfitTraceDropRate;
     }
 
-    public void setStopProfitTraceDropRate(int stopProfitTraceDropRate) {
+    public void setStopProfitTraceDropRate(double stopProfitTraceDropRate) {
         this.stopProfitTraceDropRate = stopProfitTraceDropRate;
     }
 
