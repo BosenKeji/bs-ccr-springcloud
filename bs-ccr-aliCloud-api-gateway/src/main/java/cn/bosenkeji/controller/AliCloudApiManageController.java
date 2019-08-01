@@ -6,12 +6,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.cloudapi.model.v20160714.*;
 import com.aliyuncs.exceptions.ClientException;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
+import io.swagger.models.parameters.Parameter;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +24,13 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import javax.print.attribute.standard.Media;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 /**
  * @Author CAJR
@@ -45,62 +53,176 @@ public class AliCloudApiManageController {
     ServiceModelToSwagger2Mapper mapper;
 
 
+    @ApiOperation(value = "获取分组api的ID信息",httpMethod = "GET")
+    @GetMapping("/get_describe_apis_id")
+    public Result getDescribeApisId() throws ClientException {
+        List<String> apiIds = aliCloudApiManageUtil.getDescribeApisId();
+
+        return new Result(apiIds);
+    }
+
+    @ApiOperation(value = "授权所有API到APP中",httpMethod = "GET")
+    @GetMapping("/set_apps_authorities_response")
+    public Result setAppsAuthoritiesResponse() throws ClientException {
+        List<String> apiIds = aliCloudApiManageUtil.getDescribeApisId();
+
+        List<List<String>> splitApiIdsList = Lists.partition(apiIds, 30);
+
+
+        if (!splitApiIdsList.isEmpty()){
+            for (List<String> splitApiIds : splitApiIdsList){
+                aliCloudApiManageUtil.setAppsAuthoritiesResponse((long) 110565671,
+                        splitApiIds.stream().collect(Collectors.joining(",")));
+
+            }
+        }
+
+
+        return new Result(apiIds);
+    }
+
+
     @ApiOperation(value = "导入consumer中全部接口的api",httpMethod = "GET")
     @GetMapping("/import_consumer_api")
-    @SuppressWarnings("all")
     public Result importAllConsumerApi() throws ClientException {
         Documentation documentation = documentationCache.documentationByGroup(docket.getGroupName());
-
-        System.out.println(docket.getGroupName());
 
         DescribeApiResponse.RequestConfig requestConfig = new DescribeApiResponse.RequestConfig();
         DescribeApiResponse.ServiceConfig serviceConfig = new DescribeApiResponse.ServiceConfig();
 
         Swagger swagger = mapper.mapDocumentation(documentation);
         Map<String, Path> map = swagger.getPaths();
-        System.out.println(swagger);
-        System.out.println(swagger.getInfo().getDescription());
+
         if (!map.isEmpty()) {
             for (Map.Entry<String, Path> entry : map.entrySet()) {
                 CreateApiRequest request = new CreateApiRequest();
 
                 request.setDescription(String.valueOf(swagger.getInfo()));
-                System.out.println("getKey---->" + entry.getKey());
 
                 /*把路径的'{}'替换成'[]'*/
                 String path = entry.getKey().replace('{', '[').replace('}', ']');
-                System.out.println(path);
 
                 requestConfig.setRequestPath(path);
                 serviceConfig.setServicePath(path);
+                serviceConfig.setServiceVpcEnable(true);
+                serviceConfig.setContentTypeCatagory("CUSTOM");
+                serviceConfig.setContentTypeValue(MediaType.APPLICATION_JSON_UTF8_VALUE);
+
+                DescribeApiResponse.VpcConfig vpcConfig = new DescribeApiResponse.VpcConfig();
+                vpcConfig.setVpcId("vpc-wz9yjesffaen2f2dcvpru");
+                vpcConfig.setInstanceId("lb-wz9v115urnvdiz3y63oef");
+                vpcConfig.setName("bs-ccr-test");
+                serviceConfig.setVpcConfig(vpcConfig);
 
                 List<Operation> operations = entry.getValue().getOperations();
 
+
+
                 if (!operations.isEmpty()) {
                     for (Operation operation : operations) {
-                        System.out.println(operation.getDescription());
+
+
+                        List<DescribeApiResponse.RequestParameter> requestParameters = new ArrayList<>();
+                        List<String> requestParametersName = new ArrayList<>();
+
+                        List<DescribeApiResponse.ServiceParameter> serviceParameters = new ArrayList<>();
+                        List<DescribeApiResponse.ServiceParameterMap> serviceParameterMaps = new ArrayList<>();
+
+                        System.out.println("operation.getSummary()--->"+operation.getSummary());
                         request.setApiName(operation.getOperationId());
                         request.setDescription(operation.getSummary());
 
                         /*获取路由的HTTPMethod名*/
                         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(operation.getVendorExtensions().get("x-aliyun-apigateway-backend"));
-                        System.out.println(jsonObject.get("method"));
-
-                        System.out.println(JSON.toJSONString(entry.getValue().getOperationMap().keySet()));
-                        entry.getValue().getOperationMap();
 
                         requestConfig.setRequestHttpMethod((String) jsonObject.get("method"));
 
                         /*set一个requestMode参数*/
-                        requestConfig.setRequestMode((String) operation.getVendorExtensions().get("x-aliyun-apigateway-paramater-handling"));
+                        requestConfig.setRequestMode("MAPPING");
 
                         serviceConfig.setServiceHttpMethod((String) jsonObject.get("method"));
 
+                        List<Parameter> parameters = operation.getParameters();
+                        if (!parameters.isEmpty()){
+                            for (Parameter parameter : parameters){
+
+                                if (parameter.getName() != null){
+                                    DescribeApiResponse.RequestParameter requestParameter = new DescribeApiResponse.RequestParameter();
+                                    DescribeApiResponse.ServiceParameter serviceParameter = new DescribeApiResponse.ServiceParameter();
+                                    DescribeApiResponse.ServiceParameterMap serviceParameterMap = new DescribeApiResponse.ServiceParameterMap();
+                                    if (parameter.getIn() == "path"){
+
+                                        requestParameter.setLocation("PATH");
+                                        serviceParameter.setLocation("PATH");
+
+                                    } else if (parameter.getIn() == "body"){
+
+                                        requestConfig.setPostBodyDescription(parameter.getDescription());
+                                        break;
+
+                                    } else {
+                                        requestParameter.setLocation("QUERY");
+                                        serviceParameter.setLocation("QUERY");
+
+                                    }
+
+                                    if (parameter.getRequired() == true){
+
+                                        requestParameter.setRequired("REQUIRED");
+                                    }
+
+                                    requestParameter.setParameterType("String");
+                                    serviceParameter.setParameterType("String");
+
+                                    requestParameter.setApiParameterName(parameter.getName());
+                                    serviceParameter.setServiceParameterName(parameter.getName());
+
+                                    serviceParameterMap.setRequestParameterName(parameter.getName());
+                                    serviceParameterMap.setServiceParameterName(parameter.getName());
+
+                                    requestParameter.setDescription(parameter.getDescription());
+
+
+                                    if (!requestParametersName.contains(parameter.getName())){
+                                        requestParametersName.add(parameter.getName());
+
+
+                                        requestParameters.add(requestParameter);
+                                        serviceParameters.add(serviceParameter);
+                                        serviceParameterMaps.add(serviceParameterMap);
+                                    }
+
+
+                                }
+
+
+
+                            }
+                        }
+
+                        System.out.println("parameters--->"+JSON.toJSONString(parameters));
+                        System.out.println("requestParameters--->"+JSON.toJSONString(requestParameters));
+                        System.out.println("serviceParameters--->"+JSON.toJSONString(serviceParameters));
+                        this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig, requestParameters, serviceParameters, serviceParameterMaps);
+
                     }
-                    System.out.println(request.toString());
+
                 }
 
-                this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig);
+
+
+
+
+
+
+                System.out.println("request--->"+JSON.toJSONString(request));
+                System.out.println("requestConfig--->"+JSON.toJSONString(requestConfig));
+                System.out.println("serviceConfig--->"+JSON.toJSONString(serviceConfig));
+                System.out.println("-------------end  end--->"+JSON.toJSONString(serviceConfig));
+
+
+
+//                this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig, requestParameters, serviceParameters, serviceParameterMaps);
             }
         }
         return new Result();
@@ -136,7 +258,24 @@ public class AliCloudApiManageController {
     @GetMapping("/deploy_api")
     public DeployApiResponse deployApi(@RequestParam("apiId") String apiId,@RequestParam("stageName") String stageName,
                                        @RequestParam("description") String description) throws ClientException {
+
+
         return this.aliCloudApiManageUtil.deployApi(apiId, stageName, description);
+    }
+
+
+    @ApiOperation(value = "发布所有api",httpMethod = "GET")
+    @GetMapping("/deploy_all_api")
+    public Result deployAllApi() throws ClientException {
+        List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
+
+        if (!describeApisId.isEmpty()){
+            for (String apiId :describeApisId){
+                this.aliCloudApiManageUtil.deployApi(apiId, "RELEASE", "上线");
+            }
+        }
+
+        return new Result();
     }
 
     @ApiOperation(value = "导入Swagger",httpMethod = "GET")
@@ -433,10 +572,39 @@ public class AliCloudApiManageController {
         return this.aliCloudApiManageUtil.abolishApi(apiId, stageName);
     }
 
+
+    @ApiOperation(value = "下线所有api",httpMethod = "GET")
+    @GetMapping("/abolish_all_api")
+    public Result abolishAllApi() throws ClientException {
+        List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
+        if (!describeApisId.isEmpty()){
+
+            //需要改造成多线程操作
+            for (String api : describeApisId) {
+                aliCloudApiManageUtil.abolishApi(api, "RELEASE");
+            }
+        }
+        return new Result();
+    }
+
     @ApiOperation(value = "删除api",httpMethod = "GET")
     @GetMapping("/delete_api")
     public DeleteApiResponse deleteApi(String apiId) throws ClientException {
         return this.aliCloudApiManageUtil.deleteApi(apiId);
+    }
+
+    @ApiOperation(value = "删除所有api",httpMethod = "GET")
+    @GetMapping("/delete_all_api")
+    public Result deleteAllApi(String apiId) throws ClientException {
+        List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
+        if (!describeApisId.isEmpty()){
+
+            //需要改造成多线程操作
+            for (String api : describeApisId) {
+                aliCloudApiManageUtil.deleteApi(api);
+            }
+        }
+        return new Result();
     }
 
     @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")

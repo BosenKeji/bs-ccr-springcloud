@@ -11,13 +11,13 @@ api:
   regionId: cn-shenzhen
 
 #  api分组id
-  groupId: 9a8b31ba9b44403cb5d9e1e9f987fb0d
+  groupId: 447efa99d88d4696ab480fb1fcfa442e
 
 #  阿里云accessKeyId
-  accessKeyId: LTAIrpUjXEW4piYX
+  accessKeyId: LTAISwQkitLFbG0t
 
 #  阿里云accessSecret
-  accessSecret: zIt4x1FDzv9qhmGb8IUvciUVSn1LQg
+  accessSecret: aCeWQl874e6Jvh76GtfhEAeC24hKl0
 
 #  api是否公开
   visibility: PRIVATE

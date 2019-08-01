@@ -3,10 +3,12 @@ package cn.bosenkeji.util;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.cloudapi.model.v20160714.*;
 import com.aliyuncs.exceptions.ClientException;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -72,6 +74,40 @@ public class AliCloudApiManageUtil {
         request.setGroupId(groupId);
 
         return client.getAcsResponse(request);
+    }
+
+    public DescribeApisResponse describeApis(int pageNumber, int pageSize) throws ClientException {
+        DescribeApisRequest describeApisRequest = new DescribeApisRequest();
+        describeApisRequest.setPageSize(pageSize);
+        describeApisRequest.setPageNumber(pageNumber);
+        describeApisRequest.setGroupId(groupId);
+
+        return client.getAcsResponse(describeApisRequest);
+    }
+
+    public List<String> getDescribeApisId() throws ClientException {
+        List<String> apiIds = new ArrayList<>();
+
+        DescribeApisResponse describeApisResponse = this.describeApis(1, 30);
+
+        int totalCount = describeApisResponse.getTotalCount();
+        if (totalCount > 0){
+            int loopNum = (int)Math.ceil(totalCount / 30.0);
+
+            for (int i=1; i<=loopNum; i++){
+                DescribeApisResponse describeApisResponseLoop  = this.describeApis(i, 30);
+                List<DescribeApisResponse.ApiSummary> apiSummarys = describeApisResponseLoop.getApiSummarys();
+                if (!apiSummarys.isEmpty()){
+                    for (DescribeApisResponse.ApiSummary apiSummary : apiSummarys){
+                        apiIds.add(apiSummary.getApiId());
+                    }
+                }
+            }
+
+
+        }
+
+        return apiIds;
     }
 
     /**
@@ -218,7 +254,11 @@ public class AliCloudApiManageUtil {
      * @throws ClientException
      */
     public CreateApiResponse createApiByReq(CreateApiRequest request, DescribeApiResponse.RequestConfig requestConfig,
-                                            DescribeApiResponse.ServiceConfig serviceConfig) throws ClientException {
+                                            DescribeApiResponse.ServiceConfig serviceConfig,
+                                            List<DescribeApiResponse.RequestParameter> requestParameters,
+                                            List<DescribeApiResponse.ServiceParameter> serviceParameters,
+                                            List<DescribeApiResponse.ServiceParameterMap> serviceParameterMaps
+    ) throws ClientException {
 
         requestConfig.setRequestProtocol(protocol);
         requestConfig.setBodyFormat(bodyFormat);
@@ -235,6 +275,10 @@ public class AliCloudApiManageUtil {
         request.setResultSample("200");
         request.setRequestConfig(requestConfig);
         request.setServiceConfig(serviceConfig);
+
+        request.setRequestParameters(requestParameters);
+        request.setServiceParameters(serviceParameters);
+        request.setServiceParametersMap(serviceParameterMaps);
 
 
         return client.getAcsResponse(request);
@@ -257,6 +301,18 @@ public class AliCloudApiManageUtil {
         request.setPort(port);
 
         return client.getAcsResponse(request);
+    }
+
+
+    public SetApisAuthoritiesResponse setAppsAuthoritiesResponse(Long appId, String apiIds) throws ClientException {
+        SetApisAuthoritiesRequest setApisAuthoritiesRequest = new SetApisAuthoritiesRequest();
+        setApisAuthoritiesRequest.setApiIds(apiIds);
+        setApisAuthoritiesRequest.setAppId(appId);
+        setApisAuthoritiesRequest.setGroupId(groupId);
+        setApisAuthoritiesRequest.setStageName("RELEASE");
+
+
+        return client.getAcsResponse(setApisAuthoritiesRequest);
     }
 
 

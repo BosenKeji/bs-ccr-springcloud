@@ -47,13 +47,13 @@ public class ConsumerAdminController {
 
     @PostMapping(value = "/")
     @ApiOperation(value = "添加管理员信息",httpMethod = "POST",nickname = "addAdmin")
-    public Result add (@NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
+    public Result add (@RequestBody @NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
         return adminClientService.add(admin);
     }
 
     @PutMapping(value = "/")
     @ApiOperation(value = "更新指定id的管理员",httpMethod = "PUT",nickname = "updateAdminById")
-    public Result update(@NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
+    public Result update(@RequestBody @NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
         return adminClientService.update(admin);
     }
 
