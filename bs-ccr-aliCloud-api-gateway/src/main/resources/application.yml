@@ -11,10 +11,28 @@ api:
   regionId: cn-shenzhen
 
 #  api分组id
-  groupId: 447efa99d88d4696ab480fb1fcfa442e
+  groupId: 9a8b31ba9b44403cb5d9e1e9f987fb0d
 
 #  阿里云accessKeyId
-  accessKeyId: LTAISwQkitLFbG0t
+  accessKeyId: LTAIrpUjXEW4piYX
 
 #  阿里云accessSecret
-  accessSecret: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+  accessSecret: zIt4x1FDzv9qhmGb8IUvciUVSn1LQg
+
+#  api是否公开
+  visibility: PRIVATE
+
+#  后端服务返回应答的格式
+  resultType: JSON
+
+#  API安全认证类型
+  authType: APP
+
+#  API 支持的协议类型，可以多选，多选情况下以英文逗号隔开
+  protocol: HTTP
+
+  serviceTimeout: 1000
+
+  serviceAddress: https://www.aliyun.com
+
+  bodyFormat: STREAM

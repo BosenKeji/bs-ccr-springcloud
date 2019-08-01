@@ -1,15 +1,28 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.util.AliCloudApiManageUtil;
+import cn.bosenkeji.util.Result;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.cloudapi.model.v20160714.*;
 import com.aliyuncs.exceptions.ClientException;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Operation;
+import io.swagger.models.Path;
+import io.swagger.models.Swagger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.service.Documentation;
+import springfox.documentation.spring.web.DocumentationCache;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author CAJR
@@ -21,6 +34,77 @@ public class AliCloudApiManageController {
 
     @Resource
     AliCloudApiManageUtil aliCloudApiManageUtil;
+
+    @Resource
+    Docket docket;
+
+    @Resource
+    DocumentationCache documentationCache;
+
+    @Resource
+    ServiceModelToSwagger2Mapper mapper;
+
+
+    @ApiOperation(value = "导入consumer中全部接口的api",httpMethod = "GET")
+    @GetMapping("/import_consumer_api")
+    @SuppressWarnings("all")
+    public Result importAllConsumerApi() throws ClientException {
+        Documentation documentation = documentationCache.documentationByGroup(docket.getGroupName());
+
+        System.out.println(docket.getGroupName());
+
+        DescribeApiResponse.RequestConfig requestConfig = new DescribeApiResponse.RequestConfig();
+        DescribeApiResponse.ServiceConfig serviceConfig = new DescribeApiResponse.ServiceConfig();
+
+        Swagger swagger = mapper.mapDocumentation(documentation);
+        Map<String, Path> map = swagger.getPaths();
+        System.out.println(swagger);
+        System.out.println(swagger.getInfo().getDescription());
+        if (!map.isEmpty()) {
+            for (Map.Entry<String, Path> entry : map.entrySet()) {
+                CreateApiRequest request = new CreateApiRequest();
+
+                request.setDescription(String.valueOf(swagger.getInfo()));
+                System.out.println("getKey---->" + entry.getKey());
+
+                /*把路径的'{}'替换成'[]'*/
+                String path = entry.getKey().replace('{', '[').replace('}', ']');
+                System.out.println(path);
+
+                requestConfig.setRequestPath(path);
+                serviceConfig.setServicePath(path);
+
+                List<Operation> operations = entry.getValue().getOperations();
+
+                if (!operations.isEmpty()) {
+                    for (Operation operation : operations) {
+                        System.out.println(operation.getDescription());
+                        request.setApiName(operation.getOperationId());
+                        request.setDescription(operation.getSummary());
+
+                        /*获取路由的HTTPMethod名*/
+                        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(operation.getVendorExtensions().get("x-aliyun-apigateway-backend"));
+                        System.out.println(jsonObject.get("method"));
+
+                        System.out.println(JSON.toJSONString(entry.getValue().getOperationMap().keySet()));
+                        entry.getValue().getOperationMap();
+
+                        requestConfig.setRequestHttpMethod((String) jsonObject.get("method"));
+
+                        /*set一个requestMode参数*/
+                        requestConfig.setRequestMode((String) operation.getVendorExtensions().get("x-aliyun-apigateway-paramater-handling"));
+
+                        serviceConfig.setServiceHttpMethod((String) jsonObject.get("method"));
+
+                    }
+                    System.out.println(request.toString());
+                }
+
+                this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig);
+            }
+        }
+        return new Result();
+    }
 
     @ApiOperation(value = "查询单个api信息",httpMethod = "GET")
     @GetMapping("/describe_api")
@@ -319,7 +403,7 @@ public class AliCloudApiManageController {
                 "}";
 
 
-        return this.aliCloudApiManageUtil.importSwagger("json", json_data);
+        return this.aliCloudApiManageUtil.importSwagger("json", json_data,true);
     }
 
     /**
@@ -339,7 +423,6 @@ public class AliCloudApiManageController {
     public ModifyApiResponse modifyApi(@RequestParam("apiName") String apiName,@RequestParam("visibility") String visibility, @RequestParam("requestConfig") String requestConfig,
                                        @RequestParam("serviceConfig") String serviceConfig,@RequestParam("resultType") String resultType,
                                        @RequestParam("resultSample") String resultSample,@RequestParam("apiId") String apiId) throws ClientException {
-
         return this.aliCloudApiManageUtil.modifyApi(apiName, visibility, requestConfig, serviceConfig, resultType, resultSample, apiId);
     }
 
@@ -358,7 +441,18 @@ public class AliCloudApiManageController {
 
     @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")
     @GetMapping("/import_swagger")
-    public ImportSwaggerResponse importSwagger(@RequestParam("dataFormat") String dataFormat,@RequestParam("data") String data) throws ClientException {
-        return this.importSwagger(dataFormat, data);
+    public ImportSwaggerResponse importSwagger(@RequestParam("dataFormat") String dataFormat) throws ClientException {
+        String data="";
+        return this.aliCloudApiManageUtil.importSwagger(dataFormat, data,true);
     }
+
+    @ApiOperation(value = "创建api",httpMethod = "GET")
+    @GetMapping("/create_api")
+    public CreateApiResponse createApi(@RequestParam("apiName") String apiName,@RequestParam("visibility") String visibility,@RequestParam("requestConfig") String requestConfig,
+                                       @RequestParam("serviceConfig") String serviceConfig,@RequestParam("resultType") String resultType,
+                                       @RequestParam("resultSample") String resultSample,@RequestParam("authType") String authType) throws ClientException {
+        return this.aliCloudApiManageUtil.createApi(apiName,visibility,requestConfig,serviceConfig,resultType,resultSample,authType);
+    }
+
+
 }
