@@ -106,7 +106,7 @@ public class AliCloudApiManageController {
                 serviceConfig.setServicePath(path);
                 serviceConfig.setServiceVpcEnable(true);
                 serviceConfig.setContentTypeCatagory("CUSTOM");
-                serviceConfig.setContentTypeValue(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                serviceConfig.setContentTypeValue(MediaType.ALL_VALUE);
 
                 DescribeApiResponse.VpcConfig vpcConfig = new DescribeApiResponse.VpcConfig();
                 vpcConfig.setVpcId("vpc-wz9yjesffaen2f2dcvpru");
