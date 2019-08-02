@@ -17,6 +17,8 @@ public interface TradePlatformApiService {
 
     Optional<TradePlatformApi> get(int id);
 
+    Optional<TradePlatformApi> getByTradePlatformIdAndUserId(int tradePlatformId, int userId);
+
     Optional<Integer> update(TradePlatformApi tradePlatformApi);
 
     Optional<Integer> add(TradePlatformApi tradePlatformApi);

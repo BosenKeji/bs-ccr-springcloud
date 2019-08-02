@@ -23,17 +23,24 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public Result addOneTradePlatformApi(int user, TradePlatformApi tradePlatformApi) {
+            public TradePlatformApi getOneTradePlatformApiByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
+                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+                tradePlatformApi.setNickname("hystrix provider-tradePlatform");
+                return tradePlatformApi;
+            }
+
+            @Override
+            public Result addOneTradePlatformApi(TradePlatformApi tradePlatformApi) {
                 return  new Result("0","fail");
             }
 
             @Override
-            public Result updateTradePlatform(TradePlatformApi tradePlatformApi) {
+            public Result updateTradePlatformApi(TradePlatformApi tradePlatformApi) {
                 return  new Result("0","fail");
             }
 
             @Override
-            public Result deleteOneTradePlatform(int tradePlatformId) {
+            public Result deleteOneTradePlatformApi(int tradePlatformId) {
                 return  new Result("0","fail");
             }
 

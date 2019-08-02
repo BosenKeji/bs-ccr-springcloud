@@ -48,10 +48,23 @@
     select exists (select 1 from trade_platform_api where trade_platform_api.trade_platform_id=#{param1} and trade_platform_api.user_id=#{param2} limit 1)
   </select>
 
+  <select id="selectByTradePlatformIdAndUserId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from trade_platform_api
+    where trade_platform_id=#{param1} and user_id = #{param2}
+  </select>
+
   <delete id="deleteByTradePlatformKey" parameterType="int">
     <!--@mbg.generated-->
     delete from trade_platform_api
     where trade_platform_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from trade_platform_api
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" useGeneratedKeys="true">
     <!--@mbg.generated-->

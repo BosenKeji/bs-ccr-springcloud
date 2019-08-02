@@ -14,23 +14,26 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiClientServiceFallbackFactory.class)
 public interface ITradePlatformApiClientService {
 
-    @GetMapping("/trade_platform_apis/{tradePlatformId}")
-    public TradePlatformApi getOneTradePlatformApi(@PathVariable("tradePlatformId") int tradePlatformId);
+    @GetMapping("/trade_platform_apis/{id}")
+    public TradePlatformApi getOneTradePlatformApi(@PathVariable("id") int id);
+
+    @GetMapping("/trade_platform_apis/edit_trade_platform")
+    public TradePlatformApi getOneTradePlatformApiByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") int tradePlatformId,
+                                                                             @RequestParam("userId") int userId);
 
     /**
      *
-     * @param user
      * @param tradePlatformApi
      * @return boolean
      */
     @PostMapping("/trade_platform_apis/")
-    public Result addOneTradePlatformApi(@RequestParam("userId") int user, @RequestBody TradePlatformApi tradePlatformApi);
+    public Result addOneTradePlatformApi(@RequestBody TradePlatformApi tradePlatformApi);
 
     @PutMapping("/trade_platform_apis/")
-    public Result updateTradePlatform(@RequestBody TradePlatformApi tradePlatformApi);
+    public Result updateTradePlatformApi(@RequestBody TradePlatformApi tradePlatformApi);
 
-    @DeleteMapping("/trade_platform_apis/{tradePlatformId}")
-    public Result deleteOneTradePlatform(@PathVariable("tradePlatformId") int tradePlatformId);
+    @DeleteMapping("/trade_platform_apis/{id}")
+    public Result deleteOneTradePlatformApi(@PathVariable("id") int tradePlatformId);
 
     @GetMapping("/trade_platform_apis/user/{userId}")
     TradePlatformApi selectByUserId(@PathVariable("userId") Integer userId);

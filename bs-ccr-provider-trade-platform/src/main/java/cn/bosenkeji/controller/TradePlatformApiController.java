@@ -46,21 +46,27 @@ public class TradePlatformApiController {
         return this.tradePlatformApiService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @ApiOperation(value = "获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
-    @GetMapping("/{tradePlatformId}")
-    public TradePlatformApi get(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
-        return this.tradePlatformApiService.get(tradePlatformId).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
+    @ApiOperation(value = "根据tradePlatformApiId获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
+    @GetMapping("/{id}")
+    public TradePlatformApi get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
+        return this.tradePlatformApiService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
+    }
+
+
+    @ApiOperation(value = "根据tradePlatformId和userId获取交易平台api信息接口",notes = "根据tradePlatformId和userId获取交易平台api信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
+    @GetMapping("/edit_trade_platform")
+    public TradePlatformApi getByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int tradePlatformId,
+                                                          @RequestParam("userId") @Min(1) @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
+        return this.tradePlatformApiService.getByTradePlatformIdAndUserId(tradePlatformId, userId).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
     }
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
-    public Result add(@RequestParam("userId") @ApiParam(value = "user实体", required = true, type = "integer",example = "1") int userId,
-                      @RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+    public Result add(@RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId())
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(TradePlatformApiEnum.NAME));
 
-        tradePlatformApi.setUserId(userId);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformApiService.add(tradePlatformApi)
@@ -78,9 +84,9 @@ public class TradePlatformApiController {
     }
 
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
-    @DeleteMapping("/{tradePlatformId}")
-    public Result delete(@PathVariable("tradePlatformId") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int tradePlatformId){
-        return new Result<>(this.tradePlatformApiService.delete(tradePlatformId)
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int id){
+        return new Result<>(this.tradePlatformApiService.delete(id)
                 .filter((value)->value>=1)
                 .orElseThrow(()->new DeleteException(TradePlatformApiEnum.NAME)));
     }

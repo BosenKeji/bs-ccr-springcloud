@@ -12,11 +12,15 @@ import java.util.List;
 public interface TradePlatformApiMapper {
     int deleteByTradePlatformKey(int id);
 
+    int deleteByPrimaryKey(int id);
+
     int insert(TradePlatformApi record);
 
     int insertSelective(TradePlatformApi record);
 
     TradePlatformApi selectByPrimaryKey(int id);
+
+    TradePlatformApi selectByTradePlatformIdAndUserId(int tradePlatformId, int userId);
 
     int updateByPrimaryKeySelective(TradePlatformApi record);
 

@@ -3,6 +3,7 @@ package cn.bosenkeji;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -11,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Author CAJR
  * @create 2019/7/15 9:27
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 @EnableCircuitBreaker
