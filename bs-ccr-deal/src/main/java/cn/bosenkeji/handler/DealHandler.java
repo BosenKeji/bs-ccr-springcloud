@@ -14,9 +14,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,7 @@ public class DealHandler {
 //        System.out.println("input1"+msg);
 //    }
 
-    @StreamListener("input1")
+    @StreamListener("input2")
     private void consumerMessage(String msg) {
         //将json字符串转换为json对象
         JSONObject jsonObject = JSON.parseObject(msg);
@@ -343,7 +342,7 @@ public class DealHandler {
         rocketMQResult.setType(type);
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
-        return source.output2().send(jsonMessage);
+        return source.output1().send(jsonMessage);
     }
 
 }
