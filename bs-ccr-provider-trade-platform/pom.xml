@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>bs-ccr-springcloud</artifactId>
@@ -9,8 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bs-ccr-provider-coin</artifactId>
-    <version>1.0.0</version>
+    <artifactId>bs-ccr-provider-trade-platform</artifactId>
+
+    <name>bs-ccr-provider-trade-platform</name>
 
 
     <dependencies>
@@ -31,12 +32,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -51,14 +52,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
-
-
-
 
         <!-- 模块依赖 -->
         <dependency>
@@ -68,21 +65,18 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-exception</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-validator</artifactId>
+            <artifactId>bs-ccr-service</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>bosenCCR</groupId>-->
-<!--            <artifactId>bs-ccr-security-client</artifactId>-->
-<!--        </dependency>-->
+
     </dependencies>
-
-
 
 </project>

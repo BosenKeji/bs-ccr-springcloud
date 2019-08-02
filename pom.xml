@@ -18,7 +18,7 @@
         <module>bs-ccr-aliCloud-api-gateway</module>
         <module>bs-ccr-exception</module>
         <module>bs-ccr-swagger</module>
-        <module>bs-ccr-provider-tradePlatform</module>
+        <module>bs-ccr-provider-trade-platform</module>
         <module>bs-ccr-provider-user-boss</module>
         <module>bs-ccr-provider-user-front</module>
         <module>bs-ccr-mybatis-generator</module>
@@ -35,6 +35,7 @@
         <module>bs-ccr-message-rocketMQ</module>
         <module>bs-ccr-deal</module>
         <module>bs-ccr-provider-product-combo</module>
+        <module>bs-ccr-provider-trade-basic-data</module>
 
     </modules>
 
@@ -236,6 +237,16 @@
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-provider-product-combo</artifactId>
                 <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-trade-platform</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-strategy</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
