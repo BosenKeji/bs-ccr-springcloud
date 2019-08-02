@@ -315,5 +315,13 @@ public class AliCloudApiManageUtil {
         return client.getAcsResponse(setApisAuthoritiesRequest);
     }
 
+    public DescribeModelsResponse describeModels() throws ClientException {
+        DescribeModelsRequest describeModelsRequest = new DescribeModelsRequest();
+        describeModelsRequest.setGroupId(groupId);
+
+
+        return client.getAcsResponse(describeModelsRequest);
+    }
+
 
 }

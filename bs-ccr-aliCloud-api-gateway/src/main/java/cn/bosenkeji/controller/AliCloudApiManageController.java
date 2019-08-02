@@ -3,11 +3,9 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.util.AliCloudApiManageUtil;
 import cn.bosenkeji.util.Result;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.cloudapi.model.v20160714.*;
 import com.aliyuncs.exceptions.ClientException;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.HttpMethod;
@@ -25,13 +23,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
-import javax.print.attribute.standard.Media;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.comparingLong;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
 
 /**
  * @Author CAJR
@@ -333,24 +326,6 @@ public class AliCloudApiManageController {
                 "                        \"schema\": {\n" +
                 "                            \"$ref\": \"#/definitions/Result\"\n" +
                 "                        }\n" +
-                "                    },\n" +
-                "                    \"201\": {\n" +
-                "                        \"description\": \"添加或者修改成功\"\n" +
-                "                    },\n" +
-                "                    \"400\": {\n" +
-                "                        \"description\": \"错误请求\"\n" +
-                "                    },\n" +
-                "                    \"401\": {\n" +
-                "                        \"description\": \"未授权\"\n" +
-                "                    },\n" +
-                "                    \"403\": {\n" +
-                "                        \"description\": \"拒绝请求\"\n" +
-                "                    },\n" +
-                "                    \"404\": {\n" +
-                "                        \"description\": \"未找到相关的请求\"\n" +
-                "                    },\n" +
-                "                    \"500\": {\n" +
-                "                        \"description\": \"服务器内部错误\"\n" +
                 "                    }\n" +
                 "                },\n" +
                 "                \"deprecated\": false,\n" +
@@ -393,143 +368,6 @@ public class AliCloudApiManageController {
                 "                }\n" +
                 "            },\n" +
                 "            \"title\": \"Coin\"\n" +
-                "        },\n" +
-                "        \"PageInfo\": {\n" +
-                "            \"type\": \"object\",\n" +
-                "            \"properties\": {\n" +
-                "                \"endRow\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"hasNextPage\": {\n" +
-                "                    \"type\": \"boolean\"\n" +
-                "                },\n" +
-                "                \"hasPreviousPage\": {\n" +
-                "                    \"type\": \"boolean\"\n" +
-                "                },\n" +
-                "                \"isFirstPage\": {\n" +
-                "                    \"type\": \"boolean\"\n" +
-                "                },\n" +
-                "                \"isLastPage\": {\n" +
-                "                    \"type\": \"boolean\"\n" +
-                "                },\n" +
-                "                \"list\": {\n" +
-                "                    \"type\": \"array\",\n" +
-                "                    \"items\": {\n" +
-                "                        \"type\": \"object\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"navigateFirstPage\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"navigateLastPage\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"navigatePages\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"navigatepageNums\": {\n" +
-                "                    \"type\": \"array\",\n" +
-                "                    \"items\": {\n" +
-                "                        \"type\": \"integer\",\n" +
-                "                        \"format\": \"int32\"\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"nextPage\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"pageNum\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"pageSize\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"pages\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"prePage\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"size\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"startRow\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"total\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int64\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"title\": \"PageInfo\"\n" +
-                "        },\n" +
-                "        \"Result\": {\n" +
-                "            \"type\": \"object\",\n" +
-                "            \"properties\": {\n" +
-                "                \"data\": {\n" +
-                "                    \"type\": \"object\"\n" +
-                "                },\n" +
-                "                \"msg\": {\n" +
-                "                    \"type\": \"string\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"title\": \"Result\"\n" +
-                "        },\n" +
-                "        \"Timestamp\": {\n" +
-                "            \"type\": \"object\",\n" +
-                "            \"properties\": {\n" +
-                "                \"date\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"day\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"hours\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"minutes\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"month\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"nanos\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"seconds\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"time\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int64\"\n" +
-                "                },\n" +
-                "                \"timezoneOffset\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                },\n" +
-                "                \"year\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"title\": \"Timestamp\"\n" +
                 "        }\n" +
                 "    },\n" +
                 "    \"schemes\": [\n" +
@@ -616,6 +454,13 @@ public class AliCloudApiManageController {
                                        @RequestParam("serviceConfig") String serviceConfig,@RequestParam("resultType") String resultType,
                                        @RequestParam("resultSample") String resultSample,@RequestParam("authType") String authType) throws ClientException {
         return this.aliCloudApiManageUtil.createApi(apiName,visibility,requestConfig,serviceConfig,resultType,resultSample,authType);
+    }
+
+    @ApiOperation(value = "获取已创建的模型",httpMethod = "GET")
+    @GetMapping("/describe_models")
+    public DescribeModelsResponse describeModels() throws ClientException {
+
+        return this.aliCloudApiManageUtil.describeModels();
     }
 
 
