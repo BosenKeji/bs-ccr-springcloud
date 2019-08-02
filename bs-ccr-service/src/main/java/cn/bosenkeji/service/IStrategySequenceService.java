@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@FeignClient(value = "bs-ccr-provider-strategy",configuration = FeignClientConfig.class,fallbackFactory = IStrategySequenceServiceFallbackFactory.class)
+@FeignClient(value = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = IStrategySequenceServiceFallbackFactory.class)
 public interface IStrategySequenceService {
 
     @PostMapping("/strategy_sequence/")

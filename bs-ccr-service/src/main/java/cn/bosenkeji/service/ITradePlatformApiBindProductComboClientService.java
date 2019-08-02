@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @Version V1.0
  * @create 2019-07-26 19:48
  */
-@FeignClient(name = "bs-ccr-provider-tradePlatform",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiBindProductComboClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiBindProductComboClientServiceFallbackFactory.class)
 public interface ITradePlatformApiBindProductComboClientService {
 
     @GetMapping("/trade_platform_api_bind_product_combo/list_by_user_id/")
