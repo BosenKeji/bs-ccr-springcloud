@@ -51,11 +51,11 @@ public class DealHandler {
 //        Message<String> message = MessageBuilder.withPayload(msg).build();
 //        source.output2().send(message);
 //    }
-
-    @StreamListener("input2")
-    private void consumerInput2(String msg) {
-        System.out.println("input2"+msg);
-    }
+//
+//    @StreamListener("input2")
+//    private void consumerInput2(String msg) {
+//        System.out.println("input2"+msg);
+//    }
 
 //    @StreamListener("input1")
 //    private void consumerInput1(String msg) {
@@ -116,6 +116,9 @@ public class DealHandler {
             Double positionNum = Double.valueOf(resultJOSNObject.get("position_num").toString());
             //实时收益比
             double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
+
+            //redis中添加实时收益比
+            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
 
             if (realTimeEarningRatio >= 1) {
             //if (true) {
@@ -266,7 +269,10 @@ public class DealHandler {
         double callbackAveragePrice = minAveragePrice + averagePosition*followCallbackRatio;
 
         //记录最小拟买入均价
-        updateRedisString(redisKey,"min_averagePrice",averagePrice);
+        if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
+            updateRedisString(redisKey,"min_averagePrice",averagePrice);
+        }
+
 
         //拟买入均价是否大于等于回调均价？ 是则确定买入\
         return (averagePrice >= callbackAveragePrice);
@@ -300,10 +306,11 @@ public class DealHandler {
             if (realTimeEarningRatio >= (1 + triggerRatio)) {
             //if (true) {
                 //记录实时收益比的最高数值
-                updateRedisString(redisKey,"history_max_riskBenefitRatio",realTimeEarningRatio);
-
                 JSONObject jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(redisKey).toString());
                 double maxEarningRation = Double.valueOf(jsonObject.get("history_max_riskBenefitRatio").toString());
+                if (maxEarningRation == 0 || maxEarningRation < realTimeEarningRatio) {
+                    updateRedisString(redisKey,"history_max_riskBenefitRatio",realTimeEarningRatio);
+                }
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio <= (maxEarningRation-callBackRatio)) {
                     return true;

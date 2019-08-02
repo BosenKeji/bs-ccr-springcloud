@@ -8,15 +8,15 @@ spring:
     stream:
       rocketmq:
         binder:
-          name-server: MQ_INST_1021863952199128_BbG2xpyM.mq-internet-access.mq-internet.aliyuncs.com:80
+          name-server: MQ_INST_1021863952199128_BbIjdWKo.mq-internet-access.mq-internet.aliyuncs.com:80
           access-key: LTAIN21RWvvxv9RQ
           secret-key: UlakZf4XZakiaHMvZDzrKwWXrTUe4Y
       bindings:
-        output1: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-1, content-type: application/json}
-        output2: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-2, content-type: application/json}
+        output1: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-1, content-type: application/json}
+        output2: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-2, content-type: application/json}
 
-        input1: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-1, content-type: application/json, group: MQ_INST_1021863952199128_BbG2xpyM%GID-ccr-1}
-        input2: {destination: MQ_INST_1021863952199128_BbG2xpyM%ccr-topic-2, content-type: application/json, group: MQ_INST_1021863952199128_BbG2xpyM%GID-ccr-2}
+        input1: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-1, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-1}
+        input2: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-2, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-2}
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
