@@ -26,6 +26,10 @@
     from trade_platform_coin_pair
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="checkExistByTradePlatformIdAndCoinPairId" parameterType="int" resultType="integer">
+    select exists (select 1 from trade_platform_coin_pair where trade_platform_coin_pair.trade_platform_id=#{param1} and trade_platform_coin_pair.coin_pair_id=#{param2} limit 1)
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from trade_platform_coin_pair

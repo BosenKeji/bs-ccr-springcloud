@@ -57,4 +57,9 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     public TradePlatformApi getByUserId(int userId) {
         return tradePlatformApiMapper.selectByUserId(userId);
     }
+
+    @Override
+    public Optional<Integer> checkExistByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
+        return Optional.ofNullable(tradePlatformApiMapper.checkExistByTradePlatformIdAndUserId(tradePlatformId, userId));
+    }
 }

@@ -56,6 +56,10 @@ public class TradePlatformApiController {
     @PostMapping("/")
     public Result add(@RequestParam("userId") @ApiParam(value = "user实体", required = true, type = "integer",example = "1") int userId,
                       @RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+        this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(TradePlatformApiEnum.NAME));
+
         tradePlatformApi.setUserId(userId);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

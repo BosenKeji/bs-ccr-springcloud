@@ -35,4 +35,7 @@ public interface TradePlatformCoinPairService {
      * @return
      */
     Optional<Integer> delete(int tradePlatformId, int coinPairId);
+
+
+    Optional<Integer> checkByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId);
 }

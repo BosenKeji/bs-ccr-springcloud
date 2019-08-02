@@ -51,5 +51,10 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
         return Optional.ofNullable(tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
     }
 
+    @Override
+    public Optional<Integer> checkByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.checkExistByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
+    }
+
 
 }

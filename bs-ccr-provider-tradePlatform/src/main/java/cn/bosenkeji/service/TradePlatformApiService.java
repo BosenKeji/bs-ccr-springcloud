@@ -24,4 +24,6 @@ public interface TradePlatformApiService {
     Optional<Integer> delete(int id);
 
     TradePlatformApi getByUserId(int userId);
+
+    Optional<Integer> checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
 }
