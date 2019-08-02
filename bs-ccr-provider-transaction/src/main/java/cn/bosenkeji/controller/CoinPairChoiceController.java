@@ -49,6 +49,13 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.listByPage(pageNum,pageSizeCommon,userId,coinId);
     }
 
+    @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
+    @GetMapping("/check_coin_pair_choice")
+    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId,
+                                                  @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
+        return new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId));
+    }
+
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")
     @GetMapping("/{id}")
     public CoinPairChoice get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){

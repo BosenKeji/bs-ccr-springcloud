@@ -41,8 +41,8 @@ public class AdminController {
     @GetMapping(value="/")
     @ApiOperation(value = "获取管理员列表",httpMethod = "GET",nickname = "getAdminByPage")
     public PageInfo listByPage(
-            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) @ApiParam(value = "起始页",type = "Integer") Integer pageNum,
-            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1) @ApiParam(value = "起始页",type = "Integer") Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1)  Integer pageSize
     ) {
         return adminService.listByPage(pageNum,pageSize);
     }
@@ -56,7 +56,7 @@ public class AdminController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除指定id的管理员",httpMethod = "DELETE",nickname = "deleteAdminById")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "Integer",example = "1") Integer id) {
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "integer",example = "1") Integer id) {
         return new Result(adminService.delete(id).filter((v)->v>=0)
                 .orElseThrow(()->new DeleteException(AdminEnum.ADMIN_NOT_FOUND)));
     }
@@ -70,7 +70,7 @@ public class AdminController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "获取指定id的管理员",httpMethod = "GET",nickname = "getAdminById")
-    public Optional<Admin> get(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "Integer",example = "1") Integer id) {
+    public Optional<Admin> get(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "integer",example = "1") Integer id) {
         return adminService.get(id);
     }
 
