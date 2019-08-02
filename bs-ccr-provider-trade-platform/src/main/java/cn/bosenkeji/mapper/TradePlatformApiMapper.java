@@ -27,4 +27,7 @@ public interface TradePlatformApiMapper {
     TradePlatformApi selectByTradePlatformId(int tradePlatformId);
 
     TradePlatformApi selectByUserId(int userId);
+
+    int checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
+
 }

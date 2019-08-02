@@ -14,7 +14,6 @@ public interface TradePlatformApiBindProductComboMapper {
     TradePlatformApiBindProductCombo selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(TradePlatformApiBindProductCombo record);
-
     int updateApiByPrimaryKey(TradePlatformApiBindProductCombo record);
 
     int updateByPrimaryKey(TradePlatformApiBindProductCombo record);
@@ -26,8 +25,6 @@ public interface TradePlatformApiBindProductComboMapper {
     List<Integer> findNotInBindAndInComboIdsByUserId(Integer userId);
 
     int checkExistNotBindApiByUserIdAndTradePlatformApiId(Integer userId,Integer tradePlatformApiId);
-
     int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
-
     int checkExistByUserIdAndId(Integer userId,Integer id);
 }

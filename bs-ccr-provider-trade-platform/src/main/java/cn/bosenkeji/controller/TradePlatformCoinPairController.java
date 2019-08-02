@@ -58,6 +58,10 @@ public class TradePlatformCoinPairController {
     @PostMapping("/")
     public Result add(@RequestBody @NotNull @Valid @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
 
+        this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId())
+                .filter((value)->value==0)
+                .orElseThrow(()->new AddException(TradePlatformCoinPairEnum.NAME));
+
         tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair)

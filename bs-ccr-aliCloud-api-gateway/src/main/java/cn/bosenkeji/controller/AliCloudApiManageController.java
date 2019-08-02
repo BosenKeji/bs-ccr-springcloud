@@ -115,7 +115,6 @@ public class AliCloudApiManageController {
                 vpcConfig.setName("bs-ccr-test");
                 serviceConfig.setVpcConfig(vpcConfig);
 
-//                List<Operation> operations = entry.getValue().getOperations();
 
                 Map<HttpMethod,Operation> operationMap = entry.getValue().getOperationMap();
                 /*获取路由的HTTPMethod数组*/
@@ -136,16 +135,12 @@ public class AliCloudApiManageController {
                         request.setApiName(operation.getOperationId());
                         request.setDescription(operation.getSummary());
 
-                        /*获取路由的HTTPMethod名*/
-//                        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(operation.getVendorExtensions().get("x-aliyun-apigateway-backend"));
 
-//                        requestConfig.setRequestHttpMethod((String) jsonObject.get("method"));
                         requestConfig.setRequestHttpMethod(String.valueOf(httMethods[i]));
 
                         /*set一个requestMode参数*/
                         requestConfig.setRequestMode("MAPPING");
 
-//                        serviceConfig.setServiceHttpMethod((String) jsonObject.get("method"));
 
                         serviceConfig.setServiceHttpMethod(String.valueOf(httMethods[i]));
 

@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.exception.AddException;
+import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinSortEnum;
@@ -77,7 +78,7 @@ public class CoinSortController {
 
         return new Result<>(this.coinSortService.delete(tradePlatformId, coinId)
                 .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinSortEnum.NAME)));
+                .orElseThrow(()->new DeleteException(CoinSortEnum.NAME)));
     }
 
     @ApiOperation(value = "发现服务")
