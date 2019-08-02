@@ -4,10 +4,10 @@ import cn.bosenkeji.service.IAdminClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.Admin;
 import com.github.pagehelper.PageInfo;
+import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 /**
  * @ClassName IAdminClientServiceFallbackFactory
@@ -17,34 +17,41 @@ import java.util.Optional;
  * @Version 1.0
  */
 @Component
-public class IAdminClientServiceFallbackFactory implements IAdminClientService {
-    @Override
-    public PageInfo listByPage(int pageNum, int pageSize) {
-        PageInfo pageInfo = new PageInfo();
-        List<Admin> list = new ArrayList<>();
-        Admin admin = new Admin();
-        list.add(admin);
-        pageInfo.setList(list);
-        return pageInfo;
-    }
+public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdminClientService> {
 
     @Override
-    public Optional<Admin> get(int id) {
-        return Optional.of(new Admin());
+    public IAdminClientService create(Throwable throwable) {
+        return new IAdminClientService() {
+            @Override
+            public PageInfo listByPage(int pageNum, int pageSize) {
+                PageInfo pageInfo = new PageInfo();
+                List<Admin> list = new ArrayList<>();
+                Admin admin = new Admin();
+                list.add(admin);
+                pageInfo.setList(list);
+                return pageInfo;
+            }
+
+            @Override
+            public Optional<Admin> get(int id) {
+                return Optional.of(new Admin());
+            }
+
+            @Override
+            public Result add(Admin admin) {
+                return new Result(1,"failed");
+            }
+
+            @Override
+            public Result update(Admin admin) {
+                return new Result(1,"failed");
+            }
+
+            @Override
+            public Result delete(int id) {
+                return new Result(1,"failed");
+            }
+        };
     }
 
-    @Override
-    public Result add(Admin admin) {
-        return new Result(1,"failed");
-    }
-
-    @Override
-    public Result update(Admin admin) {
-        return new Result(1,"failed");
-    }
-
-    @Override
-    public Result delete(int id) {
-        return new Result(1,"failed");
-    }
 }

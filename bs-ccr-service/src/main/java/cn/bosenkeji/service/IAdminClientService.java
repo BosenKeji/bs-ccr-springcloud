@@ -18,7 +18,7 @@ import java.util.Optional;
  * @Versio V1.0
  **/
 @FeignClient(name = "bs-ccr-provider-user-boss",configuration = FeignClientConfig.class
-        //,fallbackFactory = IAdminClientServiceFallbackFactory.class
+        ,fallbackFactory = IAdminClientServiceFallbackFactory.class
 )
 public interface IAdminClientService {
 
