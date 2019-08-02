@@ -117,4 +117,20 @@ public class CoinPairChoiceAttributeCustom {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "CoinPairChoiceAttributeCustom{" +
+                "id=" + id +
+                ", coinPartnerChoiceId=" + coinPartnerChoiceId +
+                ", stopProfitType=" + stopProfitType +
+                ", stopProfitMoney=" + stopProfitMoney +
+                ", stopProfitTraceTriggerRate=" + stopProfitTraceTriggerRate +
+                ", stopProfitTraceDropRate=" + stopProfitTraceDropRate +
+                ", stopProfitFixedRate=" + stopProfitFixedRate +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

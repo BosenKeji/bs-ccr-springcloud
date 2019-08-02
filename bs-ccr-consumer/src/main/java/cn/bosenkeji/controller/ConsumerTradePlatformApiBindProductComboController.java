@@ -1,9 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,7 +16,7 @@ import javax.annotation.Resource;
  * @create 2019-07-26 18:26
  */
 @RestController
-@RequestMapping("/consumer/trade_platform_api_bind_product_combo")
+@RequestMapping("/trade_platform_api_bind_product_combo")
 @Api(tags = "tradePlatformApiBindProductCombo 交易平台api绑定用户套餐接口",value = "提供交易平台api绑定用户套餐相关功能 Rest接口")
 public class ConsumerTradePlatformApiBindProductComboController {
 

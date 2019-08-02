@@ -33,6 +33,11 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
     }
 
     @Override
+    public Optional<Integer> updateByCoinPairChoiceId(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.updateByCoinPartnerChoiceId(coinPairChoiceAttributeCustom));
+    }
+
+    @Override
     public Optional<Integer> add(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.insertSelective(coinPairChoiceAttributeCustom));
     }

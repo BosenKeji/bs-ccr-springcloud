@@ -16,6 +16,8 @@ public interface CoinPairChoiceAttributeCustomService {
 
     Optional<Integer> update(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom);
 
+    Optional<Integer> updateByCoinPairChoiceId(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom);
+
     Optional<Integer> add(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom);
 
     Optional<Integer> delete(int id);

@@ -139,13 +139,13 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute_custom
     <set>
-      <if test="id != null">
+      <if test="id != 0">
         id = #{id,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitType != null">
+      <if test="stopProfitType != 0">
         stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
       </if>
-      <if test="stopProfitMoney != null">
+      <if test="stopProfitMoney != 0">
         stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
       </if>
       <if test="stopProfitTraceTriggerRate != null">

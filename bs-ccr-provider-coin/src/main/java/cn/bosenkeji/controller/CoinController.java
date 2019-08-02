@@ -32,9 +32,9 @@ import java.util.Optional;
  * @Versio V1.0
 **/
 @RestController
-@RequestMapping(value = "/coin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/coin")
 @Validated
-@Api(tags = "Coin 货币相关接口", value = "提供货币相关接口的 Rest API", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(tags = "Coin 货币相关接口", value = "提供货币相关接口的 Rest API")
 public class CoinController {
 
     @Resource
@@ -54,7 +54,7 @@ public class CoinController {
         return this.coinService.get(id).orElseThrow(()-> new NotFoundException(CoinEnum.NAME)) ;
     }
 
-    @ApiOperation(value = "添加单个货币接口", httpMethod = "POST",nickname = "addCoin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "添加单个货币接口", httpMethod = "POST",nickname = "addCoin")
     @RequestMapping(value="/", method = RequestMethod.POST)
 //    @ApiImplicitParam(paramType = "body", dataType = "Coin", name = "coin", value = "币种实体", required = true)
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {

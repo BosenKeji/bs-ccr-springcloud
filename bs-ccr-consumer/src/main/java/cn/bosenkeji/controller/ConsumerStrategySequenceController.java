@@ -47,7 +47,7 @@ public class ConsumerStrategySequenceController {
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
     public Result insertStrategySequence(
-            @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
+            @RequestBody  @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
     ) {
         return new Result(strategySequenceService.insertStrategySequenceBySelective(sequence));
     }
@@ -55,7 +55,7 @@ public class ConsumerStrategySequenceController {
     @PostMapping(value = "/value/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
     public Result insertStrategySequenceValue(
-            @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
+            @RequestBody  @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
     ) {
         return new Result(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue));
     }
