@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.HttpMethod;
 import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
@@ -114,13 +115,15 @@ public class AliCloudApiManageController {
                 vpcConfig.setName("bs-ccr-test");
                 serviceConfig.setVpcConfig(vpcConfig);
 
-                List<Operation> operations = entry.getValue().getOperations();
+
+                Map<HttpMethod,Operation> operationMap = entry.getValue().getOperationMap();
+                /*获取路由的HTTPMethod数组*/
+                Object [] httMethods = entry.getValue().getOperationMap().keySet().toArray();
 
 
-
-                if (!operations.isEmpty()) {
-                    for (Operation operation : operations) {
-
+                if (!operationMap.isEmpty()) {
+                    for (int i=0;i<operationMap.size();i++) {
+                        Operation operation = operationMap.get(httMethods[i]);
 
                         List<DescribeApiResponse.RequestParameter> requestParameters = new ArrayList<>();
                         List<String> requestParametersName = new ArrayList<>();
@@ -132,15 +135,14 @@ public class AliCloudApiManageController {
                         request.setApiName(operation.getOperationId());
                         request.setDescription(operation.getSummary());
 
-                        /*获取路由的HTTPMethod名*/
-                        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(operation.getVendorExtensions().get("x-aliyun-apigateway-backend"));
 
-                        requestConfig.setRequestHttpMethod((String) jsonObject.get("method"));
+                        requestConfig.setRequestHttpMethod(String.valueOf(httMethods[i]));
 
                         /*set一个requestMode参数*/
                         requestConfig.setRequestMode("MAPPING");
 
-                        serviceConfig.setServiceHttpMethod((String) jsonObject.get("method"));
+
+                        serviceConfig.setServiceHttpMethod(String.valueOf(httMethods[i]));
 
                         List<Parameter> parameters = operation.getParameters();
                         if (!parameters.isEmpty()){
@@ -208,12 +210,6 @@ public class AliCloudApiManageController {
                     }
 
                 }
-
-
-
-
-
-
 
                 System.out.println("request--->"+JSON.toJSONString(request));
                 System.out.println("requestConfig--->"+JSON.toJSONString(requestConfig));

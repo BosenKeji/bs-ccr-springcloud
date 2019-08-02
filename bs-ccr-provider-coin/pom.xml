@@ -84,30 +84,5 @@
     </dependencies>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.6.RELEASE</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>toolkit-maven-plugin</artifactId>
-                <version>1.0.3</version>
-                <configuration>
-                    <accessKeyFile>.aliyun_access_file.yaml</accessKeyFile>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

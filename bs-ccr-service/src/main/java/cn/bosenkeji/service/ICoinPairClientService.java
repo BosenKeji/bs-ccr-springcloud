@@ -14,7 +14,7 @@ import java.util.Optional;
  * @Author CAJR
  * @create 2019/7/11 11:29
  */
-@FeignClient(name = "bs-ccr-provider-coin", configuration = FeignClientConfig.class ,fallbackFactory = ICoinPairClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data", configuration = FeignClientConfig.class ,fallbackFactory = ICoinPairClientServiceFallbackFactory.class)
 public interface ICoinPairClientService {
 
 

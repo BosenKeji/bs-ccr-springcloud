@@ -44,7 +44,7 @@ public class ConsumerCoinPairChoiceAttributeCustomController {
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPairChoiceId}")
-    public Result deleteOneCoinPairChoicAttributeCustom(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
+    public Result deleteOneCoinPairChoiceAttributeCustom(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return this.iCoinPairChoiceAttributeCustomClientService.deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(coinPairChoiceId);
     }
 }

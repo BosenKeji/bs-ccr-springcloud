@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @Author CAJR
  * @create 2019/7/22 10:36
  */
-@FeignClient(name = "bs-ccr-provider-tradePlatform",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformClientServiceFallbackFactory.class)
 public interface ITradePlatformClientService {
     @GetMapping("/trade_platform/")
     public PageInfo listTradePlatformWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,

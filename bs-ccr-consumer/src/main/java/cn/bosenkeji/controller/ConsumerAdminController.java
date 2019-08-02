@@ -33,15 +33,15 @@ public class ConsumerAdminController {
     @GetMapping(value="/")
     @ApiOperation(value = "获取管理员列表",httpMethod = "GET",nickname = "getAdminByPage")
     public PageInfo listByPage(
-            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) @ApiParam(value = "起始页",type = "Integer") Integer pageNum,
-            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1) @ApiParam(value = "起始页",type = "Integer") Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1)  Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1)  Integer pageSize
     ) {
         return adminClientService.listByPage(pageNum,pageSize);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "获取指定id的管理员",httpMethod = "GET",nickname = "getAdminById")
-    public Optional<Admin> get(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "Integer",example = "1") Integer id) {
+    public Optional<Admin> get(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "integer",example = "1") Integer id) {
         return adminClientService.get(id);
     }
 

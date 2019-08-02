@@ -34,6 +34,9 @@ public interface ICoinPairChoiceClientService {
                                                   @RequestParam("userId") int userId,
                                                   @RequestParam("coinId") int coinId);
 
+    @GetMapping("/coin_pair_choice/check_coin_pair_choice")
+    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairId") int coinPairId,@RequestParam("userId") int userId);
+
     @GetMapping("/coin_pair_choice/{id}")
     public CoinPairChoice getOneCoinPairChoice(@PathVariable("id") int id);
 

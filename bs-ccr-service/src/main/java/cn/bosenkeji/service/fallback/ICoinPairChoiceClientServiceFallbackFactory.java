@@ -31,6 +31,11 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
+            public Result checkExistByCoinPairIdAndUserId(int coinPairId, int userId) {
+                return new Result("0","fail");
+            }
+
+            @Override
             public CoinPairChoice getOneCoinPairChoice(int id) {
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 coinPairChoice.setId(0);

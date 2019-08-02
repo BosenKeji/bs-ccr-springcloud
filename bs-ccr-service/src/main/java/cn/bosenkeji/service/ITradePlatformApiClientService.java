@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @Author CAJR
  * @create 2019/7/22 10:37
  */
-@FeignClient(name = "bs-ccr-provider-tradePlatform",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = ITradePlatformApiClientServiceFallbackFactory.class)
 public interface ITradePlatformApiClientService {
 
     @GetMapping("/trade_platform_apis/{tradePlatformId}")
