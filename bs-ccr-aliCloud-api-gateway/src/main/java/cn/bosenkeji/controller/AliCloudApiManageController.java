@@ -204,14 +204,6 @@ public class AliCloudApiManageController {
 
                 }
 
-                System.out.println("request--->"+JSON.toJSONString(request));
-                System.out.println("requestConfig--->"+JSON.toJSONString(requestConfig));
-                System.out.println("serviceConfig--->"+JSON.toJSONString(serviceConfig));
-                System.out.println("-------------end  end--->"+JSON.toJSONString(serviceConfig));
-
-
-
-//                this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig, requestParameters, serviceParameters, serviceParameterMaps);
             }
         }
         return new Result();
