@@ -72,6 +72,7 @@ public class TradePlatformController {
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(TradePlatformEnum.NAME));
 
+        tradePlatform.setStatus(1);
         tradePlatform.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformService.add(tradePlatform)
