@@ -87,10 +87,11 @@ public class CoinPairChoiceAttributeController {
         }
         coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(strategyOther.getStopProfitTraceTriggerRate());
         coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(strategyOther.getStopProfitTraceDropRate());
+        coinPairChoiceAttributeCustom.setStatus(1);
 
-        for (int i=0;i<coinPairChoiceIds.length;i++){
-            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceIds[i]);
-            coinPairChoiceAttributeCustom.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
+        for (int coinPairChoiceId : coinPairChoiceIds){
+            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceId);
+            coinPairChoiceAttributeCustom.setCoinPartnerChoiceId(coinPairChoiceId);
             System.out.println(coinPairChoiceAttributeCustom.toString());
 
             /* 数据库已存在的就直接更新其预算和更新时间*/
@@ -104,7 +105,7 @@ public class CoinPairChoiceAttributeController {
                         .filter((value)->value>=1)
                         .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeEnum.NAME));
                 /*更新已有自选币的自定义的属性*/
-                if (this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceIds[i]).isPresent()){
+                if (this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId).isPresent()){
                     this.coinPairChoiceAttributeCustomService.updateByCoinPairChoiceId(coinPairChoiceAttributeCustom)
                             .filter((value)->value>=1)
                             .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
@@ -117,9 +118,10 @@ public class CoinPairChoiceAttributeController {
 
             }else {
                 CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
-                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceIds[i]);
+                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceId);
                 coinPairChoiceAttribute1.setStrategyId(strategyId);
                 coinPairChoiceAttribute1.setIsCustom(isCustom);
+                coinPairChoiceAttribute1.setStatus(1);
                 coinPairChoiceAttribute1.setExpectMoney(expectMoney);
                 coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
                 coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -140,7 +142,7 @@ public class CoinPairChoiceAttributeController {
 
     /**
      * 根据自选币id来查是否有其数据
-     * @param coinPartnerChoiceId
+     * @param coinPartnerChoiceId 货币对id
      * @return CoinPairChoiceAttribute
      */
     private CoinPairChoiceAttribute getByCoinPartnerChoiceId(int coinPartnerChoiceId){

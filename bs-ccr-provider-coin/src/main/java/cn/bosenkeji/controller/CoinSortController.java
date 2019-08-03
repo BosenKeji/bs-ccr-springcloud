@@ -54,6 +54,7 @@ public class CoinSortController {
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(CoinSortEnum.NAME));
 
+        coinSort.setStatus(1);
         coinSort.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinSortService.add(coinSort)

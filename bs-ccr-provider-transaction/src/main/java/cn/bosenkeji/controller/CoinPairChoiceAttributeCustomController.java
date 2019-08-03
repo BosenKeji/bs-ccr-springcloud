@@ -51,6 +51,7 @@ public class CoinPairChoiceAttributeCustomController {
         this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId())
                 .filter((value)->value==0).orElseThrow(()->new AddException(CoinPairChoiceAttributeCustomEnum.NAME));
 
+        coinPairChoiceAttributeCustom.setStatus(1);
         coinPairChoiceAttributeCustom.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
