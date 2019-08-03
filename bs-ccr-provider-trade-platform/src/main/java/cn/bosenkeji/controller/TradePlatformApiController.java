@@ -67,6 +67,7 @@ public class TradePlatformApiController {
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(TradePlatformApiEnum.NAME));
 
+        tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformApiService.add(tradePlatformApi)

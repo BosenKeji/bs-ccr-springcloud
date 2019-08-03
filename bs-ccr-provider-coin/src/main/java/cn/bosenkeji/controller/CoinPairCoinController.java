@@ -57,6 +57,7 @@ public class CoinPairCoinController {
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(CoinPairCoinEnum.NAME));
 
+        coinPairCoin.setStatus(1);
         coinPairCoin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinPairCoinService.add(coinPairCoin)

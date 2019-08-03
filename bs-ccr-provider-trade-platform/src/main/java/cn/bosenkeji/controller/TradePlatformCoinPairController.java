@@ -62,6 +62,7 @@ public class TradePlatformCoinPairController {
                 .filter((value)->value==0)
                 .orElseThrow(()->new AddException(TradePlatformCoinPairEnum.NAME));
 
+        tradePlatformCoinPair.setStatus(1);
         tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair)
