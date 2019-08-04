@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,8 @@ public class UserController {
                 .filter((value) -> value == 0)
                 .orElseThrow(() -> new AddException(UserEnum.NAME));
 
+        user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
+
         user.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         user.setStatus(1);
@@ -65,6 +68,8 @@ public class UserController {
         userService.checkExistByUsrename(user.getUsername())
                 .filter((value)->value==0)
                 .orElseThrow(()->new UpdateException(UserEnum.NAME));
+
+        user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
 
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 

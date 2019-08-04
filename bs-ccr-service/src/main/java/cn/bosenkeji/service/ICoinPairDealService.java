@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import cn.bosenkeji.service.fallback.ICoinPairDealServiceFallbackFactory;
 
 
-@FeignClient(value = "bs-ccr-provider-transaction",configuration = FeignClientConfig.class
+@FeignClient(value = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class
         , fallbackFactory = ICoinPairDealServiceFallbackFactory.class
 )
 public interface ICoinPairDealService {

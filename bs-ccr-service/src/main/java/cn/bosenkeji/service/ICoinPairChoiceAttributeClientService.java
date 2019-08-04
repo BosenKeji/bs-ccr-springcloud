@@ -14,7 +14,7 @@ import java.util.Optional;
  * @create 2019/7/22 14:50
  */
 
-@FeignClient(name = "bs-ccr-provider-transaction" ,configuration = FeignClientConfig.class,fallbackFactory = ICoinPairChoiceAttributeClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data" ,configuration = FeignClientConfig.class,fallbackFactory = ICoinPairChoiceAttributeClientServiceFallbackFactory.class)
 public interface ICoinPairChoiceAttributeClientService {
     @GetMapping("/coin_pair_choice_attribute/{coinPartnerChoiceId}")
     public CoinPairChoiceAttribute getCoinPairChoiceAttributeByCoinPartnerChoiceID(@PathVariable("coinPartnerChoiceId") int coinPartnerChoiceId);

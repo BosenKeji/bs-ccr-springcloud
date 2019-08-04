@@ -37,6 +37,8 @@
         <module>bs-ccr-provider-product-combo</module>
         <module>bs-ccr-provider-trade-basic-data</module>
         <module>bs-ccr-jwt</module>
+        <module>bs-ccr-provider-user</module>
+        <module>bs-ccr-security-jwt-server</module>
 
     </modules>
 
@@ -120,6 +122,12 @@
                 <artifactId>spring-security-oauth2</artifactId>
                 <version>2.3.6.RELEASE</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>1.0.10.RELEASE</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -254,6 +262,22 @@
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-provider-strategy</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-transaction</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-user-front</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-user-boss</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
