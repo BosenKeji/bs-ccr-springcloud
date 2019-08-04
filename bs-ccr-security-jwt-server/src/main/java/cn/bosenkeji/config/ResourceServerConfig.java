@@ -33,17 +33,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //        http.authorizeRequests().antMatchers("/employee").hasRole("ADMIN");
 //    }
 
-//    @Override
-//    public void configure(final HttpSecurity http) throws Exception {
-//        // @formatter:off
-//        http.authorizeRequests().antMatchers("/login/**").permitAll()
-//                .antMatchers("/oauth/token/revokeById/**").permitAll()
-//                .antMatchers("/tokens/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and().formLogin().permitAll()
-//                .and().csrf().disable();
-//        // @formatter:on
-//    }
+    @Override
+    public void configure(final HttpSecurity http) throws Exception {
+        // @formatter:off
+        http.authorizeRequests().antMatchers("/login/**").permitAll()
+                .antMatchers("/oauth/token/revokeById/**").permitAll()
+                .antMatchers("/tokens/**").permitAll()
+                .anyRequest().authenticated()
+                .and().formLogin().permitAll()
+                .and().csrf().disable();
+        // @formatter:on
+    }
 
     @Autowired
     private DataSource dataSource;

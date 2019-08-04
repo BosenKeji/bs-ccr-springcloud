@@ -29,8 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         final User user = userService.getByUsername(username).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
 
-        System.out.println("user----->"+user);
-
         return new CustomUserDetailsImpl(user);
     }
 }
