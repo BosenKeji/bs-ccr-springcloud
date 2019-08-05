@@ -27,9 +27,9 @@ public interface IStrategyService {
             @RequestParam("pageSize") Integer pageSize);
 
     @PostMapping("/strategy/")
-    Result addStrategyBySelective(Strategy strategy);
+    Result addStrategyBySelective(@RequestBody Strategy strategy);
 
     @PostMapping("/strategy/attribute/")
-    Result addStrategyAttributeBySelective(StrategyAttribute strategyAttribute);
+    Result addStrategyAttributeBySelective(@RequestBody StrategyAttribute strategyAttribute);
 
 }

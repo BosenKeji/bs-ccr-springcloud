@@ -39,13 +39,13 @@ public class IStrategyServiceFallbackFactory implements FallbackFactory<IStrateg
             @Override
             public Result addStrategyBySelective(Strategy strategy) {
                 Optional<Integer> result = Optional.of(0);
-                return new Result(result,"failed");
+                return new Result<>(result,"failed");
             }
 
             @Override
             public Result addStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
                 Optional<Integer> result = Optional.of(0);
-                return new Result(result,"failed");
+                return new Result<>(result,"failed");
             }
         };
     }
