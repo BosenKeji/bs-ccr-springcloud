@@ -42,6 +42,12 @@ public class UserController {
         return userService.getByUsername(username).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
     }
 
+    @GetMapping("/get_by_tel")
+    @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
+    public User getByTel(@RequestParam("tel") @NotNull @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
+        return userService.getByTel(tel).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
+    }
+
     @PostMapping("/")
     @ApiOperation(value = "添加单个用户接口", httpMethod = "POST", nickname = "addOneUser")
     public Result add(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user) {

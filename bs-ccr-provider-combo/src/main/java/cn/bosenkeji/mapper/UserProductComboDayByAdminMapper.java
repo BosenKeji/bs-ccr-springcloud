@@ -31,4 +31,7 @@ public interface UserProductComboDayByAdminMapper {
 
     List<UserProductComboDayByAdmin> selectUserProductComboDayByUserProductComboId(int userProductComboId);
     List<UserProductComboDayByAdmin> selectUserProductComboDayByUserTel(String  userTel);
+
+    UserProductComboDayByAdmin selectByUserProductComboDayId(int userProductComboDayId);
+
 }

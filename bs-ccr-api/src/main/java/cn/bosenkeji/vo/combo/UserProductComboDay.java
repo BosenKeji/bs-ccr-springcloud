@@ -1,9 +1,7 @@
 package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.User;
-import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.ApiModelProperty;
-
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -34,6 +32,17 @@ public class UserProductComboDay implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private User user;
+
+    @ApiModelProperty(hidden = true)
+    private UserProductComboDayByAdmin userProductComboDayByAdmin;
+
+    public UserProductComboDayByAdmin getUserProductComboDayByAdmin() {
+        return userProductComboDayByAdmin;
+    }
+
+    public void setUserProductComboDayByAdmin(UserProductComboDayByAdmin userProductComboDayByAdmin) {
+        this.userProductComboDayByAdmin = userProductComboDayByAdmin;
+    }
 
     public User getUser() {
         return user;
@@ -143,6 +152,7 @@ public class UserProductComboDay implements Serializable {
                 ", updatedAt=" + updatedAt +
                 ", userProductCombo=" + userProductCombo +
                 ", user=" + user +
+                ", userProductComboDayByAdmin=" + userProductComboDayByAdmin +
                 '}';
     }
 }

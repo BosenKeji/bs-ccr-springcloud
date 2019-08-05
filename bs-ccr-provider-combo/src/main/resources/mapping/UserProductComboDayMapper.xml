@@ -10,6 +10,10 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+    <!--<association property="user" column="user_id" javaType="cn.bosenkeji.vo.User" select="cn.bosenkeji.mapper.UserMapper.selectByPrimaryKey" />-->
+    <association property="userProductComboDayByAdmin" column="id" javaType="cn.bosenkeji.vo.combo.UserProductComboDayByAdmin"
+                 select="cn.bosenkeji.mapper.UserProductComboDayByAdminMapper.selectByUserProductComboDayId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, user_product_combo_id, type, number, status, created_at, updated_at
@@ -20,6 +24,14 @@
     from user_product_combo_day
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!--<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo_day
+    where user_id=#{userId}
+  </select>-->
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo_day
     where id = #{id,jdbcType=INTEGER}
@@ -132,4 +144,20 @@
     from user_product_combo_day
 
   </select>
+
+
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo_day
+    where user_id=#{userId}
+  </select>
+
+  <select id="selectByUserProductComboId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo_day
+    where user_product_combo_id=#{userProductComboId}
+  </select>
+
 </mapper>
