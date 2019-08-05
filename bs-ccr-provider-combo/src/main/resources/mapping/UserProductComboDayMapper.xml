@@ -25,13 +25,6 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <!--<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user_product_combo_day
-    where user_id=#{userId}
-  </select>-->
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo_day
     where id = #{id,jdbcType=INTEGER}

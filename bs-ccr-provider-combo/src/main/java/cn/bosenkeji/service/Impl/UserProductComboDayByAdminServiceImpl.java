@@ -7,12 +7,9 @@ import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -63,38 +60,13 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         return Optional.ofNullable(userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin));
     }
 
-    /**
-     * 多表联合查询
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<UserProductComboDayByAdmin> list(int pageNum,int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(userProductComboDayByAdminMapper.selectUserProductComboDayByAdminList());
-    }
+
 
     @Override
     public Optional<UserProductComboDayByAdmin> get(int id) {
         return Optional.ofNullable(userProductComboDayByAdminMapper.selectByPrimaryKey(id));
     }
 
-    @Override
-    public List<UserProductComboDayByAdmin> getByUserProductComboId(int userProductComboId) {
-        return this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserProductComboId(userProductComboId);
-    }
 
-    @Override
-    public PageInfo<UserProductComboDayByAdmin> getByUserTel(String userTel,int pageNum,int pageSize) {
 
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo<>(this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserTel(userTel));
-    }
-
-    @Override
-    public PageInfo<UserProductComboDayByAdmin> getByUserProductComboIdWithPage(int userProductComboId, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo<>(getByUserProductComboId(userProductComboId));
-    }
 }
