@@ -1,5 +1,7 @@
 package cn.bosenkeji.config;
 
+import cn.bosenkeji.exception.AuthExceptionEntryPoint;
+import cn.bosenkeji.exception.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,36 +29,34 @@ import javax.sql.DataSource;
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    @Autowired
+    private DataSource dataSource;
 
-//    @Override
-//    public void configure(final HttpSecurity http) throws Exception {
-//        http.authorizeRequests().antMatchers("/employee").hasRole("ADMIN");
-//    }
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Override
+    /**
+     * example:
+     *      http.authorizeRequests().antMatchers("/employee").hasRole("ADMIN");
+     */
     public void configure(final HttpSecurity http) throws Exception {
-        // @formatter:off
         http.authorizeRequests().antMatchers("/login/**").permitAll()
                 .antMatchers("/oauth/token/revokeById/**").permitAll()
                 .antMatchers("/tokens/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
                 .and().csrf().disable();
-        // @formatter:on
     }
 
-    @Autowired
-    private DataSource dataSource;
 
     @Override
     public void configure(final ResourceServerSecurityConfigurer config) {
-        config.tokenServices(tokenServices());
+        config.tokenServices(tokenServices())
+                .authenticationEntryPoint(new AuthExceptionEntryPoint())
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
-//    @Bean
-//    public TokenStore tokenStore() {
-//        return new JwtTokenStore(accessTokenConverter());
-//    }
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
@@ -78,5 +78,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }
+
 
 }

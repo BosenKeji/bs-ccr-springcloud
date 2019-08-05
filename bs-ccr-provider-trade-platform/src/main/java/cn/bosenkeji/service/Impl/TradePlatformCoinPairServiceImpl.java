@@ -26,6 +26,11 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
+    public List<TradePlatformCoinPair> listByTradePlatform(int tradePlatformId) {
+        return this.tradePlatformCoinPairMapper.findAllByTradePlatformId(tradePlatformId);
+    }
+
+    @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(list());

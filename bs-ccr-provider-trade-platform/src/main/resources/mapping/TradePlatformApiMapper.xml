@@ -13,12 +13,19 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_id, trade_platform_id, sign, access_key, secret_key, nickname, `status`, 
     created_at, updated_at
   </sql>
+  <select id="findAllByUserId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from trade_platform_api
+   where user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <select id="findAll" resultMap="BaseResultMap">
     select
      <include refid="Base_Column_List"/>

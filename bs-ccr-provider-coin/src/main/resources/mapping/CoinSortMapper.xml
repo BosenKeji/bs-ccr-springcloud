@@ -11,14 +11,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-
-    <association property="coin" javaType="cn.bosenkeji.vo.coin.Coin">
-      <id column="cId" property="id"/>
-      <result column="cName" property="name"/>
-      <result column="cStatus" property="status"/>
-      <result column="cUpdatedAt" property="updatedAt"/>
-      <result column="cCreatedAt" property="createdAt"/>
-    </association>
+    <association property="coin" javaType="cn.bosenkeji.vo.coin.Coin" column="coin_id" select="cn.bosenkeji.mapper.CoinMapper.selectByPrimaryKey"/>
 
   </resultMap>
   <sql id="Base_Column_List">
@@ -31,22 +24,11 @@
 
   <select id="findAllByTradePlatformId" parameterType="int" resultMap="BaseResultMap">
     select
-    cs.id,
-    cs.trade_platform_id,
-    cs.coin_id,
-    cs.type,
-    cs.sort_num,
-    cs.status,
-    cs.created_at,
-    cs.updated_at,
-    c.id 'cId',
-    c.name 'cName',
-    c.status 'cStatus',
-    c.created_at 'cUpdatedAt',
-    c.updated_at 'cCreatedAt'
-   from coin_sort cs left join coin c on cs.coin_id=c.id
+    <include refid="Base_Column_List"/>
+   from coin_sort
    where trade_platform_id =#{tradePlatformId,jdbcType=INTEGER}
   </select>
+
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

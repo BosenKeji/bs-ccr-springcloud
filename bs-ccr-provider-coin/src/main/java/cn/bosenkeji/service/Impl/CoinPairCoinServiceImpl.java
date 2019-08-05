@@ -27,6 +27,11 @@ public class CoinPairCoinServiceImpl implements CoinPairCoinService {
     }
 
     @Override
+    public List<CoinPairCoin> listByCoinId(int coinId) {
+        return this.coinPairCoinMapper.findAllByCoinId(coinId);
+    }
+
+    @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(list());

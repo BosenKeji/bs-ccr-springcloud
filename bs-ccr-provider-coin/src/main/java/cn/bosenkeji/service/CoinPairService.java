@@ -17,6 +17,8 @@ public interface CoinPairService {
 
     Optional<CoinPair> get(int id);
 
+    Optional<CoinPair> getByName(String name);
+
     Optional<Integer> add(CoinPair coinPair);
 
     Optional<Integer> update(CoinPair coinPair);

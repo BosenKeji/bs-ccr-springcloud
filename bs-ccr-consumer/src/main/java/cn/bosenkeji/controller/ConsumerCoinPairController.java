@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.util.Optional;
 
 /**
@@ -23,6 +24,13 @@ public class ConsumerCoinPairController {
 
     @Autowired
     ICoinPairClientService iCoinPairClientService;
+
+
+    @ApiOperation(value = "根据货币对name获取货币对信息接口",httpMethod = "GET",nickname = "getOneCoinPairByName")
+    @GetMapping("/by_name/{name}")
+    public CoinPair getOneCoinPairByName(@PathVariable("name")   @ApiParam(value = "货币对name", required = true, type = "string") String name){
+        return this.iCoinPairClientService.getCoinPairByName(name);
+    }
 
     @ApiOperation(value = "获取单个货币对接口",httpMethod = "GET",nickname = "getCoinPairByPage")
     @GetMapping("/{id}")

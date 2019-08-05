@@ -22,4 +22,8 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
 
+    Optional<Integer> setting(String coinPairChoiceIdStr,int strategyId,int money ,int isCustom);
+
+
+
 }

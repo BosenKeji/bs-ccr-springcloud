@@ -27,9 +27,7 @@ public class TradePlatform {
 
     private Timestamp updatedAt;
 
-    /*非数据库字段*/
-    private TradePlatformApi tradePlatformApi;
-
+    /**非数据库字段*/
     private List<CoinPair> coinPairs;
 
     public int getId() {
@@ -80,13 +78,6 @@ public class TradePlatform {
         this.updatedAt = updatedAt;
     }
 
-    public TradePlatformApi getTradePlatformApi() {
-        return tradePlatformApi;
-    }
-
-    public void setTradePlatformApi(TradePlatformApi tradePlatformApi) {
-        this.tradePlatformApi = tradePlatformApi;
-    }
     public List<CoinPair> getCoinPairs() {
         return coinPairs;
     }

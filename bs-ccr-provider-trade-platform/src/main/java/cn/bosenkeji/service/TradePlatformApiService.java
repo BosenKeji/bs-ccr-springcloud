@@ -11,9 +11,8 @@ import java.util.Optional;
  * @create 2019/7/15 14:56
  */
 public interface TradePlatformApiService {
-    List<TradePlatformApi> list();
 
-    PageInfo listByPage(int pageNum,int pageSize);
+    PageInfo listByPage(int pageNum,int pageSize,int userId);
 
     Optional<TradePlatformApi> get(int id);
 

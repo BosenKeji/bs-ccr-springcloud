@@ -4,6 +4,8 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +23,11 @@ public interface ITradePlatformApiClientService {
     public TradePlatformApi getOneTradePlatformApiByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") int tradePlatformId,
                                                                              @RequestParam("userId") int userId);
 
-    /**
-     *
-     * @param tradePlatformApi
-     * @return boolean
-     */
+    @GetMapping("/trade_platform_apis/")
+    public PageInfo listTradePlatformApi(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                         @RequestParam("userId") int userId);
+
     @PostMapping("/trade_platform_apis/")
     public Result addOneTradePlatformApi(@RequestBody TradePlatformApi tradePlatformApi);
 

@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -42,6 +42,12 @@ public class CoinPairCoinController {
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinPairCoinService.listByPage(pageNum,pageSizeCommon);
+    }
+
+    @ApiOperation(value = "根据货币ID获取货币对货币列表接口",httpMethod = "GET",nickname = "getCoinPairCoinListByCoinId")
+    @GetMapping("/list_by_coinId")
+    public List<CoinPairCoin> listByCoinId(@RequestParam( value="coinId",defaultValue="1") int coinId){
+        return this.coinPairCoinService.listByCoinId(coinId);
     }
 
     @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")

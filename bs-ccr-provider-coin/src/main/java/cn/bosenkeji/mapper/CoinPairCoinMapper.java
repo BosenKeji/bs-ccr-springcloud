@@ -12,7 +12,7 @@ import java.util.List;
 public interface CoinPairCoinMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int deleteByCoinIdAndCoinPairId(int coinId,int coinPairId);
+    int deleteByCoinIdAndCoinPairId(Integer coinId,Integer coinPairId);
 
     int insert(CoinPairCoin record);
 
@@ -26,5 +26,7 @@ public interface CoinPairCoinMapper {
 
     List<CoinPairCoin> findAll();
 
-    Integer checkByCoinIdAndCoinPairId(int coinId,int coinPairId);
+    List<CoinPairCoin> findAllByCoinId(Integer coinId);
+
+    Integer checkByCoinIdAndCoinPairId(Integer coinId,Integer coinPairId);
 }
