@@ -44,7 +44,7 @@ public class StrategySequenceController {
         strategySequenceService.checkSequenceByName(sequence.getName())
                 .filter((value)->value==0)
                 .orElseThrow( ()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST));
-        return new Result(strategySequenceService.insertStrategySequenceBySelective(sequence)
+        return new Result<>(strategySequenceService.insertStrategySequenceBySelective(sequence)
                 .filter((value)->value>=0)
                 .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
                 );
@@ -58,7 +58,7 @@ public class StrategySequenceController {
         strategySequenceService.checkSequenceById(sequenceValue.getStrategySequenceId())
                 .filter((v)->v!=0)
                 .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_NOT_FOUND));
-        return new Result(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue)
+        return new Result<>(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue)
                 .filter((value)->value>=0)
                 .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
         );
@@ -67,8 +67,8 @@ public class StrategySequenceController {
     @GetMapping(value = "/")
     @ApiOperation(value = "获取数列列表",notes = "带分页")
     public PageInfo<StrategySequence> findAll(
-            @RequestParam("pageNum") @Min(value = 1) @ApiParam(value = "分页起始页",example = "1",required = true)  Integer pageNum,
-            @RequestParam("pageSize") @Min(value = 1) @ApiParam(value = "每页条数",example = "3",required = true) Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(value = 1) @ApiParam(value = "分页起始页",example = "1",required = true)  Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(value = 1) @ApiParam(value = "每页条数",example = "3",required = true) Integer pageSize
     ) {
         PageInfo pageInfo = strategySequenceService.findAll(pageNum, pageSize);
         return pageInfo;
@@ -79,7 +79,7 @@ public class StrategySequenceController {
     public Result findSequenceByPrimaryKey(
             @PathVariable("id") @Min(value = 0) @ApiParam(value = "数列ID",required = true,example = "1") Integer id
     ){
-        return new Result(strategySequenceService.findSequenceByPrimaryKey(id));
+        return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
     }
 
     @GetMapping(value = "/value/{strategyId}")
@@ -87,7 +87,9 @@ public class StrategySequenceController {
     public Result getSequenceValueByStrategyId(
             @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
     ) {
-        return new Result(strategySequenceService.getSequenceValueByStrategyId(strategyId));
+        Result result = new Result<>();
+        result.setData(strategySequenceService.getSequenceValueByStrategyId(strategyId));
+        return result;
     }
 
     @GetMapping(value = "/discover")

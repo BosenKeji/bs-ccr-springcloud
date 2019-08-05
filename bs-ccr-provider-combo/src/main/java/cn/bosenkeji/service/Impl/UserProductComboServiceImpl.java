@@ -3,7 +3,9 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
+import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
+import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,6 +34,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     @Resource
     private UserProductComboRedisTemplate userProductComboRedisTemplate;
+
+    @Resource
+    private IUserClientService iUserClientService;
 
    // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
@@ -149,9 +154,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel) {
 
-        //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
-        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserTel(userTel);
+        User user = iUserClientService.getOneUserByTel(userTel);
+
+        //查不到用户
+        if(user==null) {
+            return new PageInfo<>();
+        }
+        //从数据库查询
+
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(user.getId());
 
         for (UserProductCombo userProductCombo : userProductCombos) {
 

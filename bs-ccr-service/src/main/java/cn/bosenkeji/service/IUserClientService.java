@@ -22,6 +22,9 @@ public interface IUserClientService {
     @GetMapping("/user/get_by_username/")
     User getOneUserByUsername(@RequestParam("username") String username);
 
+    @GetMapping("/user/get_by_tel/")
+    User getOneUserByTel(@RequestParam("tel") String tel);
+
     @PostMapping("/user/")
     Result addOneUser(@RequestBody User user);
 

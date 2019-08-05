@@ -9,6 +9,9 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
+    <!--<association property="admin" column="admin_id" javaType="cn.bosenkeji.vo.Admin"
+                 select="cn.bosenkeji.mapper.AdminMapper.selectByPrimaryKey" />-->
+
   </resultMap>
 
   <resultMap id="ComboDayAdminResultMap" type="cn.bosenkeji.vo.combo.UserProductComboDayByAdmin">
@@ -170,11 +173,26 @@
     where d.user_product_combo_id=#{userProductComboId}
   </select>
 
-  <select id="selectUserProductComboDayByUserTel" resultMap="ComboDayAdminResultMap" parameterType="java.lang.String">
+  <select id="selectUserProductComboDayByUserTel" resultMap="BaseResultMap" parameterType="java.lang.String">
     <include refid="UserProductComboDayByAdminSELECT" />
     where u.tel=#{userTel}
   </select>
-  <select id="selectUserProductComboDayByAdminList" resultMap="ComboDayAdminResultMap">
+  <select id="selectUserProductComboDayByAdminList" resultMap="BaseResultMap">
     <include refid="UserProductComboDayByAdminSELECT" />
+  </select>
+
+  <select id="selectUserProductComboDayByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo_day_by_admin
+  </select>
+
+  <select id="selectByUserProductComboDayId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo_day_by_admin
+    where
+    user_product_combo_day_id=#{userProductComboDayId}
+      limit 1
   </select>
 </mapper>

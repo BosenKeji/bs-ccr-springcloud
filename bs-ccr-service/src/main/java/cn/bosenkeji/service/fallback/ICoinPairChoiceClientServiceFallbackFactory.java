@@ -60,7 +60,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             @Override
             public List<CoinPairChoiceJoinCoinPair> listCoinPairChoice() {
                 List list = new ArrayList();
-                list.add(new CoinPairChoice());
+                list.add(new CoinPairChoiceJoinCoinPair());
                 return list;
             }
         };
