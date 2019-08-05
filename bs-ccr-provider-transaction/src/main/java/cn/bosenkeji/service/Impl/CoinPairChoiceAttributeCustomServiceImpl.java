@@ -6,6 +6,8 @@ import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -14,6 +16,7 @@ import java.util.Optional;
  */
 @Service
 public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceAttributeCustomService {
+
     @Resource
     CoinPairChoiceAttributeCustomMapper coinPairChoiceAttributeCustomMapper;
 
@@ -29,7 +32,25 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
 
     @Override
     public Optional<Integer> update(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoiceAttributeCustom));
+        int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
+
+        if (stopProfitType == CoinPairChoiceAttributeCustomService.PROFIT_TRACE_TYPE){
+            coinPairChoiceAttributeCustom.setStopProfitFixedRate(0.00);
+
+            coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoiceAttributeCustom));
+        }
+
+        if (stopProfitType == CoinPairChoiceAttributeCustomService.PROFIT_FIXED_TYPE){
+            coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
+            coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
+
+            coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoiceAttributeCustom));
+
+        }
+
+        return Optional.ofNullable(0);
     }
 
     @Override
