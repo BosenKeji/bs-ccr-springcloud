@@ -16,5 +16,8 @@ public interface IUserProductComboDayService {
     boolean add(UserProductComboDay userProductComboDay);
     boolean update(UserProductComboDay userProductComboDay);
     PageInfo<UserProductComboDay> list(int pageNum,int pageSize);
+    PageInfo<UserProductComboDay> selectByUserTel(String tel,int pageNum,int pageSize);
+
+    PageInfo<UserProductComboDay> selectByUserProductComboId(Integer userProductComboId,int pageNum,int pageSize);
     Optional<UserProductComboDay> get(int id);
 }

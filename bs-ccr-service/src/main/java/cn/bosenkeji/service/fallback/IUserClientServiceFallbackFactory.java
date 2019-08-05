@@ -42,6 +42,11 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
             public Result deleteOneUser(int id) {
                 return new Result("0","fail");
             }
+
+            @Override
+            public User getOneUserByTel(String tel) {
+                return null;
+            }
         };
     }
 }

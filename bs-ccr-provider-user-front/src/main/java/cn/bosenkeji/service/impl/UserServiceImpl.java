@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getByTel(String tel) {
+        return Optional.ofNullable(userMapper.selectByTel(tel));
+    }
+
+    @Override
     public Optional<Integer> add(User user) {
         return Optional.ofNullable(userMapper.insertSelective(user));
     }

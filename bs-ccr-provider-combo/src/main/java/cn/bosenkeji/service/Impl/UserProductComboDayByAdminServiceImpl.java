@@ -3,6 +3,7 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
+import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
@@ -30,6 +31,9 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Resource
     private UserProductComboRedisTemplate userProductComboRedisTemplate;
 
+    @Resource
+    private IUserClientService iUserClientService;
+
 
     @Override
     public Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId) {
@@ -39,18 +43,17 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         //添加缓存
         int id = userProductComboDay.getUserProductComboId();
 
+        //设置增加的有效时间
         Long expire = userProductComboRedisTemplate.getExpire(id);
-
-        /*if(expire>0) {
-            //设置有效时间
+        if(expire>0) {
             userProductComboRedisTemplate.setExpire(id,expire+userProductComboDay.getNumber());
-            //return userProductComboDayMapper.insert(userProductComboDay);
-        }*/
+        }
 
         //新增用户套餐时长操作
         UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
         userProductComboDayByAdmin.setAdminId(adminId);
         userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
+
         return Optional.ofNullable(userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin));
 
     }
@@ -84,6 +87,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
     @Override
     public PageInfo<UserProductComboDayByAdmin> getByUserTel(String userTel,int pageNum,int pageSize) {
+
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(this.userProductComboDayByAdminMapper.selectUserProductComboDayByUserTel(userTel));
     }

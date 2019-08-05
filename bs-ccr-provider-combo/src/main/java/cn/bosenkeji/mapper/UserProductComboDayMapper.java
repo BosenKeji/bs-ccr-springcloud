@@ -11,9 +11,13 @@ public interface UserProductComboDayMapper {
 
     int insertSelective(UserProductComboDay record);
 
+    boolean updateByPrimaryKeySelective(UserProductComboDay record);
+
     UserProductComboDay selectByPrimaryKey(Integer id);
 
-    boolean updateByPrimaryKeySelective(UserProductComboDay record);
+    List<UserProductComboDay> selectByUserId(Integer userId);
+
+    List<UserProductComboDay> selectByUserProductComboId(Integer userProductComboId);
 
     int updateByPrimaryKey(UserProductComboDay record);
 
