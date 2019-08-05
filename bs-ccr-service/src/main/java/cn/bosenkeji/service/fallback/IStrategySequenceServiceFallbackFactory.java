@@ -47,8 +47,8 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public Result getSequenceValueByStrategyId(Integer strategyId) {
-                return new Result<>("strategy sequence hystrix","Failed");
+            public String getSequenceValueByStrategyId(Integer strategyId) {
+                return "Failed";
             }
         };
     }
