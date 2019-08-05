@@ -20,6 +20,8 @@ public interface AdminService {
 
     Optional<Admin> get(int id);
 
+    Optional<Admin> selectByAccount(String account);
+
     Optional<Integer> add(Admin admin);
 
     Optional<Integer> update(Admin admin);

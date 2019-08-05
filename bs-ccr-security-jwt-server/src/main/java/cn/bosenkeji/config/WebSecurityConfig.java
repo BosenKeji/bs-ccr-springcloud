@@ -26,15 +26,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
 
     @Autowired
+    /**
+     * example:
+     *  	auth.inMemoryAuthentication()
+     * 	        .withUser("john").password(passwordEncoder.encode("123")).roles("USER").and()
+     * 	        .withUser("tom").password(passwordEncoder.encode("111")).roles("ADMIN").and()
+     * 	        .withUser("user1").password(passwordEncoder.encode("pass")).roles("USER").and()
+     * 	        .withUser("admin").password(passwordEncoder.encode("nimda")).roles("ADMIN");
+     */
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-        // @formatter:off
-        auth.userDetailsService(userDetailsServiceImpl);
-//	auth.inMemoryAuthentication()
-//	  .withUser("john").password(passwordEncoder.encode("123")).roles("USER").and()
-//	  .withUser("tom").password(passwordEncoder.encode("111")).roles("ADMIN").and()
-//	  .withUser("user1").password(passwordEncoder.encode("pass")).roles("USER").and()
-//	  .withUser("admin").password(passwordEncoder.encode("nimda")).roles("ADMIN");
-    }// @formatter:on
+        auth.userDetailsService(userDetailsServiceImpl)
+                .and()
+                .userDetailsService(userDetailsServiceImpl);
+
+    }
 
     @Override
     @Bean
@@ -49,17 +54,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
-
-//    @Override
-//    protected void configure(final HttpSecurity http) throws Exception {
-//        // @formatter:off
-//        http.authorizeRequests().antMatchers("/login").permitAll()
-//                .antMatchers("/oauth/token/revokeById/**").permitAll()
-//                .antMatchers("/tokens/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and().formLogin().permitAll()
-//                .and().csrf().disable();
-//        // @formatter:on
-//    }
 
 }

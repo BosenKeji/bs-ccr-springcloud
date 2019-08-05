@@ -1,8 +1,7 @@
 server:
   port: 8100
 mybatis:
-  mapper-locations:
-    - classpath:mapping/*.xml
+  mapper-locations: classpath*:mapping/*.xml
 spring:
   application:
     name: bs-ccr-security-jwt-server
