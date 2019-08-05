@@ -47,4 +47,9 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     public Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId) {
         return Optional.ofNullable(this.coinPairChoiceAttributeMapper.checkByCoinPartnerChoiceId(coinPartnerChoiceId));
     }
+
+    @Override
+    public Optional<Integer> setting(String coinPairChoiceIdStr, int strategyId, int money, int isCustom) {
+        return Optional.empty();
+    }
 }
