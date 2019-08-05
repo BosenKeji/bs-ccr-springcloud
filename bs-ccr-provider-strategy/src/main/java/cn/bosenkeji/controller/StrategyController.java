@@ -42,7 +42,7 @@ public class StrategyController {
     public Result addStrategyBySelective(
             @RequestBody Strategy strategy
     ) {
-        return new Result(strategyService.addStrategyBySelective(strategy)
+        return new Result<>(strategyService.addStrategyBySelective(strategy)
                 .filter((value)->value>=0)
                 .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
         );
@@ -55,7 +55,7 @@ public class StrategyController {
     public Result addStrategyAttributeBySelective(
             @RequestBody StrategyAttribute strategyAttribute
     ) {
-        return new Result(strategyService.insertStrategyAttributeBySelective(strategyAttribute)
+        return new Result<>(strategyService.insertStrategyAttributeBySelective(strategyAttribute)
                 .filter((value)->value>=0)
                 .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
         );
@@ -76,8 +76,8 @@ public class StrategyController {
             nickname = "findStrategyByPage",httpMethod = "GET"
     )
     public PageInfo listByPage(
-            @RequestParam("pageNum") @Min(value = 1) @ApiParam(value = "分页的起始页",example = "1",required = true) Integer pageNum,
-            @RequestParam("pageSize") @Min(value = 1) @ApiParam(value = "每页条数",example = "3",required = true) Integer pageSize
+            @RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(value = 1) @ApiParam(value = "分页的起始页",example = "1",required = true) Integer pageNum,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(value = 1) @ApiParam(value = "每页条数",example = "3",required = true) Integer pageSize
     ){
         return strategyService.listByPage(pageNum,pageSize);
     }

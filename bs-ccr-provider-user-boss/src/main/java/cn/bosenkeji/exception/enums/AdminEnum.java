@@ -4,8 +4,10 @@ import cn.bosenkeji.enums.IProviderEnum;
 
 public enum  AdminEnum implements IProviderEnum {
 
-    ADMIN_EXIST(400,"策略已存在"),
-    ADMIN_NOT_FOUND(400,"未找到相关的策略");
+    ADMIN_EXIST(400,"管理员已存在"),
+    ADMIN_NOT_FOUND(400,"管理员不存在"),
+
+    NAME(10000, "管理员");
 
     private Integer code;
 

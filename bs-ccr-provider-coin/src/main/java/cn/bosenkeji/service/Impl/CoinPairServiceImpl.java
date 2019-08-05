@@ -38,6 +38,11 @@ public class CoinPairServiceImpl implements CoinPairService {
     }
 
     @Override
+    public Optional<CoinPair> getByName(String name) {
+        return Optional.ofNullable(coinPairMapper.selectByName(name));
+    }
+
+    @Override
     public Optional<Integer> add(CoinPair coinPair) {
         return Optional.ofNullable(coinPairMapper.insertSelective(coinPair));
     }

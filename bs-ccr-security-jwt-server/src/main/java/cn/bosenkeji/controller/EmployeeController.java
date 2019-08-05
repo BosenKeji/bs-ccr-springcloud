@@ -21,7 +21,6 @@ public class EmployeeController {
     @GetMapping("/employee")
     @ResponseBody
     public String getEmployee() {
-        System.out.println(passwordEncoder.encode("secret"));
         return "success";
     }
 

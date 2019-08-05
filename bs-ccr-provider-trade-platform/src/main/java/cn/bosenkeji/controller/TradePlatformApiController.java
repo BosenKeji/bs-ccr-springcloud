@@ -42,8 +42,9 @@ public class TradePlatformApiController {
     @ApiOperation(value = "获取交易平台api列表接口",notes = "交易平台api列表",httpMethod = "GET",nickname = "getListTradePlatformApiByPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
-        return this.tradePlatformApiService.listByPage(pageNum,pageSizeCommon);
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                         @RequestParam("userId") @ApiParam(value = "用户ID", required = true, type = "integer",example = "1") int userId){
+        return this.tradePlatformApiService.listByPage(pageNum,pageSizeCommon,userId);
     }
 
     @ApiOperation(value = "根据tradePlatformApiId获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")

@@ -14,6 +14,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class DealHandler {
 //    private void consumerInput2(String msg) {
 //        System.out.println("input2"+msg);
 //    }
-
+//
 //    @StreamListener("input1")
 //    private void consumerInput1(String msg) {
 //        System.out.println("input1"+msg);
@@ -86,6 +87,7 @@ public class DealHandler {
         List<CoinPairChoiceJoinCoinPair> coinPairChoiceList = coinPairChoiceClientService.listCoinPairChoice();
 
         //过滤暂停和停止、不是该货币对的信息
+        //TODO cn.bosenkeji.vo.transaction.CoinPairChoice cannot be cast to cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair
         List<CoinPairChoiceJoinCoinPair> filterList = coinPairChoiceList.stream()
                 .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPairName())))
                 .collect(Collectors.toList());

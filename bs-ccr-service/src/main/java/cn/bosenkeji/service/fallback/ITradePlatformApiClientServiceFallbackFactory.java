@@ -3,8 +3,12 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -27,6 +31,15 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
                 TradePlatformApi tradePlatformApi = new TradePlatformApi();
                 tradePlatformApi.setNickname("hystrix provider-tradePlatform");
                 return tradePlatformApi;
+            }
+
+            @Override
+            public PageInfo listTradePlatformApi(int pageNum, int pageSizeCommon, int userId) {
+                List<TradePlatformApi> tradePlatformApiList = new ArrayList<>();
+                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+                tradePlatformApi.setNickname("hystrix provider-tradePlatform");
+                tradePlatformApiList.add(tradePlatformApi);
+                return new PageInfo(tradePlatformApiList);
             }
 
             @Override

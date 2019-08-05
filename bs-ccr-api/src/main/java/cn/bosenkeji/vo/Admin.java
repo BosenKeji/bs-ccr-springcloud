@@ -1,8 +1,9 @@
 package cn.bosenkeji.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Admin {
+public class Admin implements Serializable {
     private Integer id;
 
     private String account;

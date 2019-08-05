@@ -28,14 +28,6 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
                 return new PageInfo(tradePlatforms);
             }
 
-            @Override
-            public PageInfo listTradePlatformWithPageByUserId(int pageNum, int pageSizeCommon, int userId) {
-                List<TradePlatform> tradePlatforms=new ArrayList<>();
-                TradePlatform tradePlatform=new TradePlatform();
-                tradePlatform.setName("hystrix provider-tradePlatform");
-                tradePlatforms.add(tradePlatform);
-                return new PageInfo(tradePlatforms);
-            }
 
             @Override
             public TradePlatform getOneTrdPatform(int id) {

@@ -53,6 +53,12 @@ public class CoinPairController {
         return this.coinPairService.get(id).orElseThrow(()->new NotFoundException(CoinPairEnum.NAME));
     }
 
+    @ApiOperation(value = "根据货币对name获取货币对信息接口",httpMethod = "GET",nickname = "getOneCoinPairByName")
+    @GetMapping("/by_name/{name}")
+    public CoinPair getOneCoinPairByName(@PathVariable("name")   @ApiParam(value = "货币对name", required = true, type = "string") String name){
+        return this.coinPairService.getByName(name).orElseThrow(()->new NotFoundException(CoinPairEnum.NAME));
+    }
+
     @ApiOperation(value = "添加单个货币对接口",httpMethod = "POST",nickname = "addOneCoinPair")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){

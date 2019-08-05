@@ -32,7 +32,8 @@ public class ConsumerStrategyController {
     public Result addStrategyBySelective(
             @RequestBody   @ApiParam("策略基本属性映射的对象") @NotNull Strategy strategy
     ) {
-        return strategyService.addStrategyBySelective(strategy);
+        Result result = strategyService.addStrategyBySelective(strategy);
+        return result;
     }
 
     @PostMapping(value = "/attribute/")
@@ -40,7 +41,7 @@ public class ConsumerStrategyController {
             nickname = "addStrategyAttributeBySelective",httpMethod = "POST"
     )
     public Result addStrategyAttributeBySelective(
-            @RequestBody    @ApiParam("策略的详细属性映射的对象") @NotNull StrategyAttribute strategyAttribute
+            @RequestBody @ApiParam("策略的详细属性映射的对象") @NotNull StrategyAttribute strategyAttribute
     ) {
         return strategyService.addStrategyAttributeBySelective(strategyAttribute);
     }

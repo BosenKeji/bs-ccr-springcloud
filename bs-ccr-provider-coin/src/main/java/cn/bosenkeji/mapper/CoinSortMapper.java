@@ -26,7 +26,7 @@ public interface CoinSortMapper {
 
     List<CoinSort> findAll();
 
-    List<CoinSort> findAllByTradePlatformId(int tradePlatformId);
+    List<CoinSort> findAllByTradePlatformId(Integer tradePlatformId);
 
-    Integer checkByTradePlatformIdAndCoinId(int tradePlatformId,int coinId);
+    Integer checkByTradePlatformIdAndCoinId(Integer tradePlatformId,Integer coinId);
 }

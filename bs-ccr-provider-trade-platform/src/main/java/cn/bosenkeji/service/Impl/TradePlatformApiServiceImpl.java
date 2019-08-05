@@ -2,6 +2,8 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
+import cn.bosenkeji.service.TradePlatformService;
+import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,15 +24,24 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Resource
     TradePlatformApiMapper tradePlatformApiMapper;
 
-    @Override
-    public List<TradePlatformApi> list() {
-        return tradePlatformApiMapper.findAll();
-    }
+    @Resource
+    TradePlatformService tradePlatformService;
 
     @Override
-    public PageInfo listByPage(int pageNum, int pageSize) {
+    public PageInfo listByPage(int pageNum, int pageSize,int userId) {
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(list());
+        List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(userId);
+        if (!tradePlatformApis.isEmpty()){
+            fill(tradePlatformApis);
+        }
+        return new PageInfo(tradePlatformApis);
+    }
+
+    private void fill(List<TradePlatformApi> tradePlatformApis) {
+        for (TradePlatformApi t : tradePlatformApis) {
+            TradePlatform tradePlatform = this.tradePlatformService.get(t.getTradePlatformId()).get();
+            t.setTradePlatform(tradePlatform);
+        }
     }
 
     @Override

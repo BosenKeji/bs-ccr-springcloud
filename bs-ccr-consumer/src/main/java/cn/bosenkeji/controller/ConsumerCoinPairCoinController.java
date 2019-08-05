@@ -25,6 +25,13 @@ public class ConsumerCoinPairCoinController {
     @Resource
     ICoinPairCoinClientService iCoinPairCoinClientService;
 
+    @ApiOperation(value = "获取货币对货币列表接口",httpMethod = "GET",nickname = "getCoinPairCoinListWithPage")
+    @GetMapping("/")
+    public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+        return this.iCoinPairCoinClientService.listByPage(pageNum,pageSizeCommon);
+    }
+
     @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST",nickname = "addOneCoinPairCoin")
     @PostMapping("/")
     public Result addCoinPairCoin(@RequestBody @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin) {

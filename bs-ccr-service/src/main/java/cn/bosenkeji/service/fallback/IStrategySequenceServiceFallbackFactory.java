@@ -20,12 +20,12 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
         return new IStrategySequenceService() {
             @Override
             public Result insertStrategySequenceBySelective(StrategySequence sequence) {
-                return new Result(Optional.of(0),"failed");
+                return new Result<>(Optional.of(0),"failed");
             }
 
             @Override
             public Result insertStrategySequenceValueBySelective(StrategySequenceValue sequenceValue) {
-                return new Result(Optional.of(0),"failed");
+                return new Result<>(Optional.of(0),"failed");
             }
 
             @Override
@@ -48,7 +48,7 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
 
             @Override
             public Result getSequenceValueByStrategyId(Integer strategyId) {
-                return new Result("strategy sequence hystrix");
+                return new Result<>("strategy sequence hystrix","Failed");
             }
         };
     }

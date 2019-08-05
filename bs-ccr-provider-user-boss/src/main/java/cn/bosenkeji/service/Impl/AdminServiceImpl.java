@@ -43,6 +43,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Optional<Admin> selectByAccount(String account) {
+        return Optional.ofNullable(adminMapper.selectByAccount(account));
+    }
+
+    @Override
     public Optional<Integer> add(Admin admin) {
         admin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         admin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

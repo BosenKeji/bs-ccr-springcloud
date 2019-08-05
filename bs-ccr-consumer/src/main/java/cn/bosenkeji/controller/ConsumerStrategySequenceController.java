@@ -33,7 +33,7 @@ public class ConsumerStrategySequenceController {
     public Result findSequenceByPrimaryKey(
             @PathVariable("id") @Min(value = 0) @ApiParam(value = "数列ID",required = true,example = "1") Integer id
     ){
-        return new Result(strategySequenceService.findSequenceByPrimaryKey(id));
+        return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
     }
 
     @GetMapping(value = "/value/{strategyId}")
@@ -41,22 +41,22 @@ public class ConsumerStrategySequenceController {
     public Result getSequenceValueByStrategyId(
             @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
     ) {
-        return new Result(strategySequenceService.getSequenceValueByStrategyId(strategyId));
+        return strategySequenceService.getSequenceValueByStrategyId(strategyId);
     }
 
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
     public Result insertStrategySequence(
-            @RequestBody  @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
+            @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
     ) {
-        return new Result(strategySequenceService.insertStrategySequenceBySelective(sequence));
+        return strategySequenceService.insertStrategySequenceBySelective(sequence);
     }
 
     @PostMapping(value = "/value/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
     public Result insertStrategySequenceValue(
-            @RequestBody  @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
+            @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
     ) {
-        return new Result(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue));
+        return strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue);
     }
 }

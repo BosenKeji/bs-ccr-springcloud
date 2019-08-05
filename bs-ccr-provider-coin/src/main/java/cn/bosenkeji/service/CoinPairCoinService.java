@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface CoinPairCoinService {
     List<CoinPairCoin> list();
 
+    List<CoinPairCoin> listByCoinId(int coinId);
+
     PageInfo listByPage(int pageNum, int pageSize);
 
     Optional<CoinPairCoin> get(int id);

@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.coin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
