@@ -33,5 +33,5 @@ public interface IStrategySequenceService {
     StrategySequenceOther findSequenceByPrimaryKey(@PathVariable("id") Integer id);
 
     @GetMapping("/strategy_sequence/value/{strategyId}")
-    Result getSequenceValueByStrategyId(@PathVariable("strategyId") Integer strategyId);
+    String getSequenceValueByStrategyId(@PathVariable("strategyId") Integer strategyId);
 }
