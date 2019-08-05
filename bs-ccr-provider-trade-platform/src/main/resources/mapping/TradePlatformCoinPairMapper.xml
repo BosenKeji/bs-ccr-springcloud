@@ -19,6 +19,12 @@
     <include refid="Base_Column_List"/>
    from trade_platform_coin_pair
   </select>
+  <select id="findAllByTradePlatformId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from trade_platform_coin_pair
+   where trade_platform_id = #{tradePlatformId，jdbcType=INTEGER}
+  </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 

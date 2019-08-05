@@ -41,12 +41,6 @@ public class CoinPairChoiceAttributeController {
     CoinPairChoiceAttributeService coinPairChoiceAttributeService;
 
     @Resource
-    IStrategyService iStrategyService;
-
-    @Resource
-    CoinPairChoiceAttributeCustomService coinPairChoiceAttributeCustomService;
-
-    @Resource
     DiscoveryClient client;
 
 
@@ -62,92 +56,12 @@ public class CoinPairChoiceAttributeController {
                       @RequestParam("strategyId") @Min(1) @ApiParam(value = "策略id'", required = true, type = "integer" ,example = "1") int strategyId,
                       @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
-        //字符串切割
-        String [] coinPairChoiceIdStrings = coinPairChoiceIdStr.split(",");
-
-        int[] coinPairChoiceIds=new int[coinPairChoiceIdStrings.length];
-        for (int i=0;i<coinPairChoiceIdStrings.length;i++){
-            coinPairChoiceIds[i]=Integer.parseInt(coinPairChoiceIdStrings[i]);
-        }
-
-        if (coinPairChoiceIds.length == 0){
+        if (coinPairChoiceIdStr.length() == 0){
             return new Result<>(0,"fail");
         }
-
-        /*根据strategyId查询StrategyOther*/
-        StrategyOther strategyOther = this.iStrategyService.getStrategy(strategyId);
-
-        int lever = strategyOther.getLever();
-        int expectMoney=(money*lever)/coinPairChoiceIds.length;
-
-
-        CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom = new CoinPairChoiceAttributeCustom();
-        if (strategyOther.getIsStopProfitTrace()!=0){
-            coinPairChoiceAttributeCustom.setStopProfitType(1);
-        }
-        coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(strategyOther.getStopProfitTraceTriggerRate());
-        coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(strategyOther.getStopProfitTraceDropRate());
-        coinPairChoiceAttributeCustom.setStatus(1);
-
-        for (int coinPairChoiceId : coinPairChoiceIds){
-            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceId);
-            coinPairChoiceAttributeCustom.setCoinPartnerChoiceId(coinPairChoiceId);
-            System.out.println(coinPairChoiceAttributeCustom.toString());
-
-            /* 数据库已存在的就直接更新其预算和更新时间*/
-            if (coinPairChoiceAttribute != null){
-                coinPairChoiceAttribute.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute.setStrategyId(strategyId);
-                coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
-                /*更新已有自选币的属性*/
-                this.coinPairChoiceAttributeService.update(coinPairChoiceAttribute)
-                        .filter((value)->value>=1)
-                        .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeEnum.NAME));
-                /*更新已有自选币的自定义的属性*/
-                if (this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId).isPresent()){
-                    this.coinPairChoiceAttributeCustomService.updateByCoinPairChoiceId(coinPairChoiceAttributeCustom)
-                            .filter((value)->value>=1)
-                            .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
-                }else {
-                    this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
-                            .filter((value)->value>=1)
-                            .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
-                }
-
-
-            }else {
-                CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
-                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceId);
-                coinPairChoiceAttribute1.setStrategyId(strategyId);
-                coinPairChoiceAttribute1.setIsCustom(isCustom);
-                coinPairChoiceAttribute1.setStatus(1);
-                coinPairChoiceAttribute1.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
-                this.coinPairChoiceAttributeService.add(coinPairChoiceAttribute1)
-                        .filter((value)->value>=1)
-                        .orElseThrow(()->new AddException(CoinPairChoiceAttributeEnum.NAME));
-
-                this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
-                        .filter((value)->value>=1)
-                        .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME));
-            }
-        }
-
-        return new Result<>(1,"success");
-
+        return new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
     }
 
-    /**
-     * 根据自选币id来查是否有其数据
-     * @param coinPartnerChoiceId 货币对id
-     * @return CoinPairChoiceAttribute
-     */
-    private CoinPairChoiceAttribute getByCoinPartnerChoiceId(int coinPartnerChoiceId){
-        return this.coinPairChoiceAttributeService.getByCoinPartnerChoiceId(coinPartnerChoiceId);
-    }
 
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoiceAttribute")
     @PutMapping("/")

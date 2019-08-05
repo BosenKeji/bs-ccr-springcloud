@@ -18,11 +18,6 @@ public interface ITradePlatformClientService {
     public PageInfo listTradePlatformWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon);
 
-    @GetMapping("/trade_platform/all_tradePlatform/{userId}")
-    public PageInfo listTradePlatformWithPageByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
-                                              @PathVariable("userId") int userId);
-
     @GetMapping("/trade_platform/{id}")
     public TradePlatform getOneTrdPatform(@PathVariable("id") int id);
 

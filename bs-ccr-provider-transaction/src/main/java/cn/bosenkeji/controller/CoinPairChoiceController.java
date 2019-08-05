@@ -6,7 +6,9 @@ import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairChoiceEnum;
 import cn.bosenkeji.service.CoinPairChoiceService;
+import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -36,6 +38,10 @@ public class CoinPairChoiceController {
 
     @Resource
     CoinPairChoiceService coinPairChoiceService;
+
+    @Resource
+    ICoinPairClientService iCoinPairClientService;
+
     @Resource
     DiscoveryClient client;
 
@@ -51,9 +57,20 @@ public class CoinPairChoiceController {
 
     @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
     @GetMapping("/check_coin_pair_choice")
-    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId,
+    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
                                                   @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
-        return new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId));
+
+        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get().equals(0)){
+            Result<CoinPair> result = new Result<>();
+            CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
+
+            result.setData(coinPair);
+            return result;
+        }else{
+            Result result = new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId));
+            return result;
+        }
+
     }
 
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")

@@ -62,29 +62,9 @@ public class CoinPairChoiceAttributeCustomController {
     @ApiOperation(value = "更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
-        int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
 
-        if (stopProfitType == 1){
-            coinPairChoiceAttributeCustom.setStopProfitFixedRate(0.00);
-            coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
-                    .filter((value)->value>=1)
-                    .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
-        }
-
-        if (stopProfitType == 2){
-            coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
-            coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
-            coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            return  new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
-                    .filter((value)->value>=1)
-                    .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
-        }
-
-        coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
+                .filter((value)->value>=1).orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
     }
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")

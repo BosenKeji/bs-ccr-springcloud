@@ -21,8 +21,6 @@ public interface TradePlatformService {
      */
     PageInfo listByPage(int pageNum, int pageSize);
 
-    PageInfo listByPageAndUserId(int pageNum, int pageSize,int userId);
-
     Optional<TradePlatform> get(int id);
 
     Optional<Integer> add(TradePlatform tradePlatform);

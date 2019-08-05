@@ -24,6 +24,7 @@ public class ConsumerCoinPairChoiceController {
     @Resource
     ICoinPairChoiceClientService iCoinPairChoiceClientService;
 
+
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoiceWithPage")
     @GetMapping("/")
     public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
@@ -35,9 +36,10 @@ public class ConsumerCoinPairChoiceController {
 
     @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
     @GetMapping("/check_coin_pair_choice")
-    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId,
+    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
                                                   @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
-        return this.iCoinPairChoiceClientService.checkExistByCoinPairIdAndUserId(coinPairId, userId);
+       return this.iCoinPairChoiceClientService.checkExistByCoinPairNameAndUserId(coinPairName, userId);
+
     }
 
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")

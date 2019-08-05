@@ -24,6 +24,8 @@ public interface TradePlatformCoinPairMapper {
 
     List<TradePlatformCoinPair> findAll();
 
+    List<TradePlatformCoinPair> findAllByTradePlatformId(int tradePlatformId);
+
     int deleteByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);
 
     int checkExistByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);

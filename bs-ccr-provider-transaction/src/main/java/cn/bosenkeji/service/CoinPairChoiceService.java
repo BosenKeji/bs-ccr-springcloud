@@ -13,7 +13,6 @@ import java.util.Optional;
  * @create 2019/7/17 11:48
  */
 public interface CoinPairChoiceService {
-    List<CoinPairChoice> list(int userId,int coinId);
 
     PageInfo listByPage(int pageNum,int pageSize,int userId,int coinId);
 
@@ -25,7 +24,9 @@ public interface CoinPairChoiceService {
 
     Optional<Integer> delete(int id);
 
-    Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
+    Optional<Integer> checkExistByCoinPartnerNameAndUserId(String coinPairName,int userId);
+
+    Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId,int userId);
 
     List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
 }

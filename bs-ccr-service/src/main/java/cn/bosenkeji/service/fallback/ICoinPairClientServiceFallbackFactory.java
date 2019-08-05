@@ -30,6 +30,13 @@ public class ICoinPairClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
+            public CoinPair getCoinPairByName(String name) {
+                CoinPair coinPair=new CoinPair();
+                coinPair.setName("hystrix provider-coin");
+                return coinPair;
+            }
+
+            @Override
             public PageInfo listCoinPair(int pageNum,int pageSize) {
                 CoinPair coinPair=new CoinPair();
                 coinPair.setName("hystrix provider-coin");

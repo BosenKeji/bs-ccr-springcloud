@@ -34,6 +34,12 @@
     from coin_pair
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByName" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from coin_pair
+   where name = #{name,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from coin_pair

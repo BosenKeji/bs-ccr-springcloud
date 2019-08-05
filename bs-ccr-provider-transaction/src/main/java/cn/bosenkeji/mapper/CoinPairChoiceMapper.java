@@ -26,7 +26,7 @@ public interface CoinPairChoiceMapper {
 
     Integer checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
 
-    List<CoinPairChoice> findAll(int userId,int coinId);
+    List<CoinPairChoice> findAllByUserId (int userId);
 
     List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
 }

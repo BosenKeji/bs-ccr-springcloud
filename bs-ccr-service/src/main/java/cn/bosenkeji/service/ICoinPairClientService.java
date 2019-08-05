@@ -21,6 +21,9 @@ public interface ICoinPairClientService {
     @GetMapping("/coin_pair/{id}")
     public CoinPair getCoinPair(@PathVariable("id") int id);
 
+    @GetMapping("/coin_pair/by_name/{name}")
+    public CoinPair getCoinPairByName(@PathVariable("name") String name);
+
     @GetMapping("/coin_pair/")
     public PageInfo listCoinPair(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;

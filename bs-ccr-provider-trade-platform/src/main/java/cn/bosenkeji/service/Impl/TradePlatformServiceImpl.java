@@ -1,13 +1,21 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformMapper;
+import cn.bosenkeji.service.ICoinPairClientService;
+import cn.bosenkeji.service.TradePlatformApiService;
+import cn.bosenkeji.service.TradePlatformCoinPairService;
 import cn.bosenkeji.service.TradePlatformService;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatform;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +29,13 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     @Resource
     TradePlatformMapper tradePlatformMapper;
 
+    @Resource
+    TradePlatformCoinPairService tradePlatformCoinPairService;
+
+    @Resource
+    ICoinPairClientService iCoinPairClientService;
+
+
 
     @Override
     public List<TradePlatform> list() {
@@ -30,18 +45,44 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(list());
+
+        List<TradePlatform> tradePlatforms = list();
+        if (!tradePlatforms.isEmpty()){
+            fill(tradePlatforms);
+        }
+        return new PageInfo(tradePlatforms);
     }
 
-    @Override
-    public PageInfo listByPageAndUserId(int pageNum, int pageSize, int userId) {
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(this.tradePlatformMapper.findAllByUserId(userId));
+    private void fill(List<TradePlatform> tradePlatforms) {
+        for (TradePlatform t : tradePlatforms) {
+            List<TradePlatformCoinPair> tradePlatformCoinPairs = this.tradePlatformCoinPairService.listByTradePlatform(t.getId());
+            if (!tradePlatformCoinPairs.isEmpty()){
+                fill(t,tradePlatformCoinPairs);
+            }
+        }
     }
+
+    private void fill(TradePlatform tradePlatform, List<TradePlatformCoinPair> tradePlatformCoinPairs) {
+        List<CoinPair> coinPairs = new ArrayList<>();
+
+        for (TradePlatformCoinPair t : tradePlatformCoinPairs) {
+            CoinPair coinPair = this.iCoinPairClientService.getCoinPair(t.getCoinPairId());
+            coinPairs.add(coinPair);
+        }
+        tradePlatform.setCoinPairs(coinPairs);
+    }
+
 
     @Override
     public Optional<TradePlatform> get(int id) {
-        return Optional.ofNullable(tradePlatformMapper.selectByPrimaryKey(id));
+        TradePlatform tradePlatform = tradePlatformMapper.selectByPrimaryKey(id);
+
+        if (tradePlatform != null){
+            List<TradePlatformCoinPair> tradePlatformCoinPairs = this.tradePlatformCoinPairService.listByTradePlatform(tradePlatform.getId());
+            fill(tradePlatform,tradePlatformCoinPairs);
+        }
+
+        return Optional.ofNullable(tradePlatform);
     }
 
     @Override

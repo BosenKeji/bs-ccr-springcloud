@@ -1,6 +1,7 @@
 package cn.bosenkeji.vo.transaction;
 
 import cn.bosenkeji.vo.coin.CoinPair;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.util.List;
  * @create 2019/7/17 10:09
  */
 
+@JsonIgnoreProperties(value = {"handler"})
 public class CoinPairChoice {
     @ApiModelProperty("自选币 id")
     private int id;
