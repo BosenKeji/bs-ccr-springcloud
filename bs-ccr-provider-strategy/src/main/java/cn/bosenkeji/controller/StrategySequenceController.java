@@ -84,12 +84,10 @@ public class StrategySequenceController {
 
     @GetMapping(value = "/value/{strategyId}")
     @ApiOperation(value = "获取指定数列信息",notes = "通过策略Id获取对应的数列的值")
-    public Result getSequenceValueByStrategyId(
+    public String getSequenceValueByStrategyId(
             @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
     ) {
-        Result result = new Result<>();
-        result.setData(strategySequenceService.getSequenceValueByStrategyId(strategyId));
-        return result;
+        return strategySequenceService.getSequenceValueByStrategyId(strategyId);
     }
 
     @GetMapping(value = "/discover")

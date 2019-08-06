@@ -1,5 +1,7 @@
 package cn.bosenkeji.config;
 
+import cn.bosenkeji.plugin.SwaggerManualApiPlugin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -7,7 +9,11 @@ import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.ApiListingScannerPlugin;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spring.web.readers.operation.CachingOperationNameGenerator;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
@@ -104,5 +110,18 @@ public class SwaggerConfig {
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
                 .contact(contact)
                 .build();
+    }
+
+    @Autowired
+    private CachingOperationNameGenerator cachingOperationNameGenerator;
+
+    @Bean
+    public ApiListingScannerPlugin listingScanner() {
+        return new SwaggerManualApiPlugin(cachingOperationNameGenerator);
+    }
+
+    @Bean
+    public UiConfiguration uiConfig() {
+        return UiConfigurationBuilder.builder().validatorUrl("").build();
     }
 }

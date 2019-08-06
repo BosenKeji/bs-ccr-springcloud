@@ -1,12 +1,11 @@
 server:
   port: 7040
-
 mybatis:
   mapper-locations:
     - classpath:mapping/*.xml
 spring:
   application:
-    name: bs-ccr-provider-tradePlatform
+    name: bs-ccr-provider-trade-platform
   cloud:
     nacos:
       discovery:

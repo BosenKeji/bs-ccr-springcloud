@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Author CAJR
  * @create 2019/7/15 9:27
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 @EnableCircuitBreaker
