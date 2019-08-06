@@ -27,4 +27,7 @@ public interface TradePlatformApiBindProductComboMapper {
     int checkExistNotBindApiByUserIdAndTradePlatformApiId(Integer userId,Integer tradePlatformApiId);
     int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
     int checkExistByUserIdAndId(Integer userId,Integer id);
+
+    List<Integer> selectApiIdsByUserId(Integer userId);
+    List<Integer> selectComboIdsByUserId(Integer userId);
 }

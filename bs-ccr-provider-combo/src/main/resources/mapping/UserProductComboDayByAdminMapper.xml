@@ -9,62 +9,13 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
-    <!--<association property="admin" column="admin_id" javaType="cn.bosenkeji.vo.Admin"
-                 select="cn.bosenkeji.mapper.AdminMapper.selectByPrimaryKey" />-->
-
   </resultMap>
 
-  <resultMap id="ComboDayAdminResultMap" type="cn.bosenkeji.vo.combo.UserProductComboDayByAdmin">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
-    <result column="user_product_combo_day_id" jdbcType="INTEGER" property="userProductComboDayId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-
-    <association property="userProductComboDay" javaType="cn.bosenkeji.vo.combo.UserProductComboDay">
-      <id column="did" property="id" />
-      <result column="userId" property="userId" />
-      <result column="number" property="number" />
-      <result column="type" property="type" />
-      <result column="status" property="status" />
-      <result column="user_product_combo_id" property="userProductComboId" />
-      <result column="dcreated_at" property="createdAt" />
-      <result column="dupdated_at" property="updatedAt" />
-      <association property="user" javaType="cn.bosenkeji.vo.User">
-        <id column="uid" property="id" />
-        <result column="uusername" property="username" />
-        <result column="utel" property="tel" />
-        <result column="ustatus" property="status" />
-        <result column="ucreated_at" property="createdAt" />
-        <result column="uupdated_at" property="updatedAt" />
-      </association>
-    </association>
-    <association property="admin" javaType="cn.bosenkeji.vo.Admin">
-      <id column="aid" property="id" />
-      <result column="account" property="account"/>
-
-    </association>
-
-  </resultMap>
 
   <sql id="Base_Column_List">
     id, admin_id, user_product_combo_day_id, status, created_at, updated_at
   </sql>
 
-  <sql id="UserProductComboDayByAdminSELECT">
-    select
-    dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
-    d.id did,d.number,d.user_product_combo_id,d.created_at dcreated_at,d.updated_at dupdated_at,
-    u.id uid,u.username uusername,u.tel utel,u.status ustatus,u.created_at ucreated_at,u.updated_at uupdated_at,
-    a.id aid,a.account
-    from user_product_combo_day_by_admin dba
-    left join admin a on dba.admin_id=a.id
-    left join user_product_combo_day d
-    on dba.user_product_combo_day_id=d.id
-    left join user u
-    on d.user_id=u.id
-  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -161,38 +112,11 @@
     from user_product_combo_day_by_admin
   </select>
 
-  <select id="selectUserProductComboDayByUserProductComboId" resultMap="ComboDayAdminResultMap" parameterType="java.lang.Integer">
-    select
-    dba.id,dba.admin_id,dba.user_product_combo_day_id,dba.status,dba.created_at,dba.updated_at,
-    d.id did,d.number,d.user_product_combo_id,d.created_at dcreated_at,d.updated_at dupdated_at,
-    a.id aid,a.account
-    from user_product_combo_day_by_admin dba
-    left join admin a on dba.admin_id=a.id
-    left join user_product_combo_day d
-    on dba.user_product_combo_day_id=d.id
-    where d.user_product_combo_id=#{userProductComboId}
-  </select>
-
-  <select id="selectUserProductComboDayByUserTel" resultMap="BaseResultMap" parameterType="java.lang.String">
-    <include refid="UserProductComboDayByAdminSELECT" />
-    where u.tel=#{userTel}
-  </select>
-  <select id="selectUserProductComboDayByAdminList" resultMap="BaseResultMap">
-    <include refid="UserProductComboDayByAdminSELECT" />
-  </select>
-
-  <select id="selectUserProductComboDayByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByUserProductComboDayId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user_product_combo_day_by_admin
+    where user_product_combo_day_id=#{userProductComboDayId}
   </select>
 
-  <select id="selectByUserProductComboDayId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
-    select
-    <include refid="Base_Column_List" />
-    from user_product_combo_day_by_admin
-    where
-    user_product_combo_day_id=#{userProductComboDayId}
-      limit 1
-  </select>
 </mapper>

@@ -54,41 +54,42 @@ public class TradePlatformController {
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET" ,nickname = "getOneTradePlatform")
     @GetMapping("/{id}")
     public TradePlatform get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformEnum.NAME));
+        return this.tradePlatformService.get(id);
     }
 
     @ApiOperation(value = "添加交易平台单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatform")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
-        this.tradePlatformService.checkExistByName(tradePlatform.getName())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(TradePlatformEnum.NAME));
+        if (this.tradePlatformService.checkExistByName(tradePlatform.getName()).get() >= 1){
+            return new Result<>(null,"交易平台已存在");
+        }
 
         tradePlatform.setStatus(1);
         tradePlatform.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformService.add(tradePlatform)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(TradePlatformEnum.NAME)));
+        return new Result<>(this.tradePlatformService.add(tradePlatform));
     }
 
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台实体", required = true, type = "string") TradePlatform tradePlatform){
 
+        if (this.tradePlatformService.get(tradePlatform.getId()) == null){
+            return new Result<>(null,"交易平台不存在");
+        }
+
         tradePlatform.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformService.update(tradePlatform)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(TradePlatformEnum.NAME)));
+        return new Result<>(this.tradePlatformService.update(tradePlatform));
     }
 
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
 
-        return new Result<>(this.tradePlatformService.delete(id)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(TradePlatformEnum.NAME)));
+        if (this.tradePlatformService.get(id) == null){
+            return new Result<>(null,"交易平台不存在");
+        }
+        return new Result<>(this.tradePlatformService.delete(id));
     }
 
     @ApiOperation(value = "发现服务")

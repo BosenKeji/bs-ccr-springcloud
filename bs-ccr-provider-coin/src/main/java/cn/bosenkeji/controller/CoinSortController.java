@@ -40,7 +40,7 @@ public class CoinSortController {
 
     @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
     @GetMapping("/{tradePlatformId}")
-    public PageInfo listCoinSortByTradePlatformId(@PathVariable( value="tradePlatformId") @ApiParam(value = "货币排序id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+    public PageInfo listCoinSortByTradePlatformId(@PathVariable( value="tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
                                                   @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                                   @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
         return this.coinSortService.listByTradePlatformId(tradePlatformId, pageNum, pageSizeCommon);
@@ -50,26 +50,26 @@ public class CoinSortController {
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
     public Result add(@RequestBody @ApiParam(value = "货币排序实体", required = true, type = "String" ) CoinSort coinSort){
-        this.coinSortService.checkByTradePlatformIdAndCoinId(coinSort.getTradePlatformId(),coinSort.getCoinId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(CoinSortEnum.NAME));
+        if (this.coinSortService.checkByTradePlatformIdAndCoinId(coinSort.getTradePlatformId(),coinSort.getCoinId()).get() >= 1){
+            return new Result(null,"货币排序实体已存在");
+        }
 
         coinSort.setStatus(1);
         coinSort.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinSortService.add(coinSort)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinSortEnum.NAME)));
+        return new Result<>(this.coinSortService.add(coinSort));
     }
 
     @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT",nickname = "updateCoinSort")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "货币排序实体", required = true, type = "String" ) CoinSort coinSort){
 
+        if (this.coinSortService.checkByTradePlatformIdAndCoinId(coinSort.getTradePlatformId(),coinSort.getCoinId()).get() < 1){
+            return new Result(null,"货币排序实体不存在");
+        }
+
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinSortService.update(coinSort)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(CoinSortEnum.NAME)));
+        return new Result<>(this.coinSortService.update(coinSort));
     }
 
     @ApiOperation(value = "删除货币排序接口",httpMethod = "DELETE",nickname = "deleteOneCoinSort")
@@ -77,9 +77,11 @@ public class CoinSortController {
     public Result delete(@RequestParam("tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
                          @RequestParam("coinId") @ApiParam(value = "货币id", required = true, type = "integer" ,example = "1") int coinId){
 
-        return new Result<>(this.coinSortService.delete(tradePlatformId, coinId)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(CoinSortEnum.NAME)));
+        if (this.coinSortService.checkByTradePlatformIdAndCoinId(tradePlatformId,coinId).get() < 1){
+            return new Result(null,"货币排序实体不存在");
+        }
+
+        return new Result<>(this.coinSortService.delete(tradePlatformId, coinId));
     }
 
     @ApiOperation(value = "发现服务")

@@ -3,15 +3,19 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
+import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +42,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Resource
     private IUserClientService iUserClientService;
 
+    @Resource
+    private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
+
    // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
     public Optional<Integer> add(UserProductCombo userProductCombo) {
@@ -54,6 +61,14 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //添加缓存
         userProductComboRedisTemplate.add(userProductCombo,time);
+
+        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
+        tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
+        tradePlatformApiBindProductCombo.setUserId(userProductCombo.getUserId());
+        tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+        iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
         return Optional.ofNullable(1);
 
     }

@@ -38,7 +38,14 @@ public class ConsumerUserController {
         return this.iUserClientService.getOneUserByUsername(username);
     }
 
-    @PostMapping("/")
+    @GetMapping("/get_by_tel")
+    @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
+    public User getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
+
+        return this.iUserClientService.getOneUserByTel(tel);
+    }
+
+        @PostMapping("/")
     @ApiOperation(value = "添加单个用户接口", httpMethod = "POST", nickname = "addOneUser")
     public Object add(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 

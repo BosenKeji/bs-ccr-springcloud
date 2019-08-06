@@ -14,9 +14,9 @@ public interface TradePlatformApiService {
 
     PageInfo listByPage(int pageNum,int pageSize,int userId);
 
-    Optional<TradePlatformApi> get(int id);
+    TradePlatformApi get(int id);
 
-    Optional<TradePlatformApi> getByTradePlatformIdAndUserId(int tradePlatformId, int userId);
+    TradePlatformApi getByTradePlatformIdAndUserId(int tradePlatformId, int userId);
 
     Optional<Integer> update(TradePlatformApi tradePlatformApi);
 

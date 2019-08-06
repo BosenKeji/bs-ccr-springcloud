@@ -1,19 +1,18 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper;
+import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.vo.combo.UserProductCombo;
-import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
-import com.alibaba.fastjson.JSON;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +28,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Autowired
     private TradePlatformApiBindProductComboMapper tradePlatformApiBindProductComboMapper;
 
+    @Autowired
+    private TradePlatformApiMapper tradePlatformApiMapper;
+
     //注入用户套餐生产者
     @Resource
     private IUserProductComboClientService iUserProductComboClientService;
@@ -41,19 +43,15 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
         //查询用户下的
         PageHelper.startPage(pageNum,pageSize);
-        PageInfo<TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboPageInfo =
-                new PageInfo<>(tradePlatformApiBindProductComboMapper.findByUserId(userId));
-        List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboPageInfo.getList();
-
-        System.out.println("pageList--->"+ JSON.toJSONString(pageList));
+        /*PageInfo<TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboPageInfo =
+                new PageInfo<>(tradePlatformApiBindProductComboMapper.findByUserId(userId));*/
+        List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboMapper.findByUserId(userId);
 
         //分别查询对应的用户套餐——调用用户套餐的服务
         for (TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo : pageList) {
-            int upc_id = tradePlatformApiBindProductCombo.getUserProductComboId();
-            System.out.println("upc_id--->"+ upc_id);
+            int upc_id=tradePlatformApiBindProductCombo.getUserProductComboId();
             if(upc_id>0) {
-                UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(upc_id);
-                System.out.println("userProductCombo--->"+ userProductCombo);
+                UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId());
                 if (userProductCombo != null) {
                     tradePlatformApiBindProductCombo.setUserProductCombo(userProductCombo);
                 }
@@ -62,7 +60,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
        // tradePlatformApiBindProductComboPageInfo.setList(pageList);
 
-        return tradePlatformApiBindProductComboPageInfo;
+        return new PageInfo<>(pageList);
     }
 
 
@@ -82,7 +80,19 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Override
     public PageInfo<TradePlatformApi> findNoBindTradePlatformApiListByUserId(int userId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo(this.tradePlatformApiBindProductComboMapper.findNotInBindAndInApiListByUserId(userId));
+        List<Integer> existApiIds = tradePlatformApiBindProductComboMapper.selectApiIdsByUserId(userId);
+        List<TradePlatformApi> userApi = tradePlatformApiMapper.findAllByUserId(userId);
+        if(existApiIds!=null&&existApiIds.size()>0) {
+            //if(userApi!=null&&userApi.size()>0) {
+                for (int i=existApiIds.size();i>=0;i--) {
+                    if(existApiIds.contains(userApi.get(i).getId())) {
+                        userApi.remove(i);
+                    }
+                }
+            //}
+        }
+       // PageInfo<TradePlatformApi> pagei = new PageInfo<>(usetApi);
+        return new PageInfo(userApi);
     }
 
     /**
@@ -96,18 +106,39 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     public PageInfo<UserProductCombo> findNoBindUserProductComboListByUserId(int userId, int pageNum, int pageSize) {
 
         //分页查询用户为绑定的用户套餐
-        PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Integer> pageInfo = new PageInfo<>(this.tradePlatformApiBindProductComboMapper.findNotInBindAndInComboIdsByUserId(userId));
-        List<Integer> ids = pageInfo.getList();
-        //用来保存用户套餐列表
+        /*PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Integer> pageInfo = new PageInfo<>(this.tradePlatformApiBindProductComboMapper.findNotInBindAndInComboIdsByUserId(userId));*/
+        //获取
+        List<Integer> existComboIds = tradePlatformApiBindProductComboMapper.selectComboIdsByUserId(userId);
+
+
+        PageInfo pageInfo = iUserProductComboClientService.listByUserId(userId,pageNum,pageSize);
+        List<UserProductCombo> userComboList = pageInfo.getList();
+
+
+        if(existComboIds!=null&&existComboIds.size()>0) {
+            if(userComboList!=null&&userComboList.size()>0) {
+
+                for (int i=0;i<userComboList.size()-1;i++) {
+                    //userComboIds.add(combo.getId());
+                    if(existComboIds.contains(userComboList.get(i).getId())) {
+                        userComboList.remove(userComboList.get(i));
+                    }
+
+                }
+
+            }
+        }
+
+        /*//用来保存用户套餐列表
         List<UserProductCombo> userProductComboList=new ArrayList<>();
         //根据用户套餐ID 调用套餐服务获取套餐信息
         for (Integer id : ids) {
             UserProductCombo userProductCombo = this.iUserProductComboClientService.getUserProductCombo(id);
             userProductComboList.add(userProductCombo);
-        }
+        }*/
 
-        return new PageInfo<>(userProductComboList);
+        return new PageInfo<>(userComboList);
     }
 
     @Override
@@ -134,4 +165,5 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     public Optional<Integer> checkExistByUserIdAndId(int userId, int id) {
         return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id));
     }
+
 }

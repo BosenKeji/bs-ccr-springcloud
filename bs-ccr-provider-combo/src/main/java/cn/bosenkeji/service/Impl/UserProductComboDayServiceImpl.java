@@ -82,7 +82,7 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     }
 
     @Override
-    public PageInfo<UserProductComboDay> selectByUserProductComboId(Integer userProductComboId, int pageNum, int pageSize) {
+    public PageInfo<UserProductComboDay> selectByUserProductComboId(int userProductComboId, int pageNum, int pageSize) {
         //User user = iUserClientService.getOneUser(tel);
 
         PageHelper.startPage(pageNum,pageSize);

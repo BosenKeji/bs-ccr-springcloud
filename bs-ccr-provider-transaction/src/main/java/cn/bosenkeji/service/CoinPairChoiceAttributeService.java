@@ -12,7 +12,7 @@ public interface CoinPairChoiceAttributeService {
 
     CoinPairChoiceAttribute getByCoinPartnerChoiceId(int coinPartnerChoiceId);
 
-    Optional<CoinPairChoiceAttribute> get(int id);
+    CoinPairChoiceAttribute get(int id);
 
     Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute);
 

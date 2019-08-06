@@ -2,6 +2,7 @@ package cn.bosenkeji.config;
 
 import feign.Logger;
 import feign.auth.BasicAuthRequestInterceptor;
+import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

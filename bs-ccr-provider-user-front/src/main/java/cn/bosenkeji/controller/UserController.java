@@ -55,6 +55,8 @@ public class UserController {
         userService.checkExistByUsrename(user.getUsername())
                 .filter((value) -> value == 0)
                 .orElseThrow(() -> new AddException(UserEnum.NAME));
+        /*if(userService.checkExistByUsrename(user.getUsername()).get()!=0)
+            return new Result();*/
 
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
 
