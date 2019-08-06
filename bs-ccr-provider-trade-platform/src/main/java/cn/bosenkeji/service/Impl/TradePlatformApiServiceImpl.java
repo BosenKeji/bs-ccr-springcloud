@@ -39,19 +39,19 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     private void fill(List<TradePlatformApi> tradePlatformApis) {
         for (TradePlatformApi t : tradePlatformApis) {
-            TradePlatform tradePlatform = this.tradePlatformService.get(t.getTradePlatformId()).get();
+            TradePlatform tradePlatform = this.tradePlatformService.get(t.getTradePlatformId());
             t.setTradePlatform(tradePlatform);
         }
     }
 
     @Override
-    public Optional<TradePlatformApi> get(int id) {
-        return Optional.ofNullable(tradePlatformApiMapper.selectByPrimaryKey(id));
+    public TradePlatformApi get(int id) {
+        return tradePlatformApiMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public Optional<TradePlatformApi> getByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
-        return Optional.ofNullable(tradePlatformApiMapper.selectByTradePlatformIdAndUserId(tradePlatformId, userId));
+    public TradePlatformApi getByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
+        return tradePlatformApiMapper.selectByTradePlatformIdAndUserId(tradePlatformId, userId);
     }
 
     @Override

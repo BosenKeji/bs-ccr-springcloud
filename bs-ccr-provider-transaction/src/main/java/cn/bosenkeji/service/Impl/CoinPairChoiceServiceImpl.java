@@ -66,13 +66,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
-    public Optional<CoinPairChoice> get(int id) {
+    public CoinPairChoice get(int id) {
         CoinPairChoice coinPairChoice = this.coinPairChoiceMapper.selectByPrimaryKey(id);
         if (coinPairChoice != null){
             CoinPair coinPair = this.iCoinPairClientService.getCoinPair(coinPairChoice.getCoinPartnerId());
             coinPairChoice.setCoinPair(coinPair);
         }
-        return Optional.ofNullable(coinPairChoice);
+        return coinPairChoice;
     }
 
     @Override

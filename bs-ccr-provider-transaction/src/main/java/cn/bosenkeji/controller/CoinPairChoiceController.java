@@ -5,6 +5,7 @@ import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairChoiceEnum;
+import cn.bosenkeji.handler.CustomErrorResponse;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.util.Result;
@@ -76,7 +77,7 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")
     @GetMapping("/{id}")
     public CoinPairChoice get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
-        return this.coinPairChoiceService.get(id).orElseThrow(()->new NotFoundException(CoinPairChoiceEnum.NAME));
+        return this.coinPairChoiceService.get(id);
     }
 
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
@@ -84,9 +85,9 @@ public class CoinPairChoiceController {
     public Result add(@RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
                       @RequestParam("isStrategy")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int isStrategy,
                       @RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
-        this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId)
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(CoinPairChoiceEnum.NAME));
+        if (this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId).get() >= 1){
+            return new Result<>(null,"自选币已存在");
+        }
 
         CoinPairChoice coinPairChoice =new CoinPairChoice();
         coinPairChoice.setUserId(userId);
@@ -98,30 +99,28 @@ public class CoinPairChoiceController {
         coinPairChoice.setIsStart(isStrategy);
 
 
-        return new Result<>(this.coinPairChoiceService.add(coinPairChoice)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinPairChoiceEnum.NAME)));
+        return new Result<>(this.coinPairChoiceService.add(coinPairChoice));
     }
 
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
-        this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairChoice.getCoinPartnerId(),coinPairChoice.getUserId())
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinPairChoiceEnum.NAME));
+        if (this.coinPairChoiceService.get(coinPairChoice.getId()) == null){
+            return new Result<>(null,"自选币不存在");
+        }
 
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinPairChoiceService.update(coinPairChoice)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(CoinPairChoiceEnum.NAME)));
+        return new Result<>(this.coinPairChoiceService.update(coinPairChoice));
     }
 
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
-        return new Result<>(this.coinPairChoiceService.delete(id)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(CoinPairChoiceEnum.NAME)));
+        if (this.coinPairChoiceService.get(id) == null){
+            return new Result<>(null,"自选币不存在");
+        }
+
+        return new Result<>(this.coinPairChoiceService.delete(id));
     }
 
     

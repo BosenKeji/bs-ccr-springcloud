@@ -37,8 +37,8 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public Optional<TradePlatformCoinPair> get(int id) {
-        return Optional.ofNullable(tradePlatformCoinPairMapper.selectByPrimaryKey(id));
+    public TradePlatformCoinPair get(int id) {
+        return tradePlatformCoinPairMapper.selectByPrimaryKey(id);
     }
 
     @Override

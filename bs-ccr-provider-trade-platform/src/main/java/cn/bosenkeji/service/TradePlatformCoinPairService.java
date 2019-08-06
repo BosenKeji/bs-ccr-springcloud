@@ -24,7 +24,7 @@ public interface TradePlatformCoinPairService {
      */
     PageInfo listByPage(int pageNum, int pageSize);
 
-    Optional<TradePlatformCoinPair> get(int id);
+   TradePlatformCoinPair get(int id);
 
     Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair);
 

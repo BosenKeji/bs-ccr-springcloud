@@ -74,7 +74,7 @@ public class TradePlatformServiceImpl implements TradePlatformService {
 
 
     @Override
-    public Optional<TradePlatform> get(int id) {
+    public TradePlatform get(int id) {
         TradePlatform tradePlatform = tradePlatformMapper.selectByPrimaryKey(id);
 
         if (tradePlatform != null){
@@ -82,7 +82,7 @@ public class TradePlatformServiceImpl implements TradePlatformService {
             fill(tradePlatform,tradePlatformCoinPairs);
         }
 
-        return Optional.ofNullable(tradePlatform);
+        return tradePlatform;
     }
 
     @Override

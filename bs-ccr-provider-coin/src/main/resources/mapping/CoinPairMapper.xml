@@ -23,7 +23,7 @@
 
   <select id="checkExistByName" resultType="java.lang.Integer">
 
-    SELECT EXISTS(SELECT 1 FROM coin WHERE `name` = #{name} LIMIT 1)
+    SELECT  EXISTS(SELECT 1 FROM coin_pair WHERE `name` = #{name} LIMIT 1)
 
   </select>
 

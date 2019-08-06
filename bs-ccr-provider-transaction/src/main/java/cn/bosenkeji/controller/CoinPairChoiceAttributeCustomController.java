@@ -41,38 +41,41 @@ public class CoinPairChoiceAttributeCustomController {
     @ApiOperation(value = "获取交易参数接口",httpMethod = "GET" ,nickname = "getOneCoinPairChoiceAttributeCustomByCoinPairChoiceID")
     @GetMapping("/{coinPairChoiceId}")
     public CoinPairChoiceAttributeCustom getByCoinPairChoiceID(@PathVariable("coinPairChoiceId") @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
-        return this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId).orElseThrow(()->new NotFoundException(CoinPairChoiceAttributeCustomEnum.NAME));
+        return this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId);
     }
 
     @ApiOperation(value = "设置交易参数接口",httpMethod = "POST",nickname = "settingParameters")
     @PostMapping("/")
     public Result settingParameters(@RequestBody @Valid @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
 
-        this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId())
-                .filter((value)->value==0).orElseThrow(()->new AddException(CoinPairChoiceAttributeCustomEnum.NAME));
+        if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()).get() >=1){
+            return new Result<>(null,"自选币自定义属性已存在");
+        }
 
         coinPairChoiceAttributeCustom.setStatus(1);
         coinPairChoiceAttributeCustom.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinPairChoiceAttributeCustomEnum.NAME)));
+        return new Result<>(this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom));
     }
 
     @ApiOperation(value = "更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
+        if (this.coinPairChoiceAttributeCustomService.get(coinPairChoiceAttributeCustom.getId()) == null){
+            return new Result<>(null,"自选币自定义属性不存在");
+        }
 
-        return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom)
-                .filter((value)->value>=1).orElseThrow(()->new UpdateException(CoinPairChoiceAttributeCustomEnum.NAME)));
+        return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom));
     }
 
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
     public Result delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){
-        return new Result<>(this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(CoinPairChoiceAttributeCustomEnum.NAME)));
+        if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPartnerChoiceId).get() < 1){
+            return new Result<>(null,"自选币自定义属性不存在");
+        }
+
+        return new Result<>(this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId));
     }
 
 

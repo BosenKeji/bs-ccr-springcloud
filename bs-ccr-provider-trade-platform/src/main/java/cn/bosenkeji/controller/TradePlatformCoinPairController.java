@@ -51,41 +51,44 @@ public class TradePlatformCoinPairController {
     @ApiOperation(value = "获取平台货币对单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformCoinPair")
     @GetMapping("/{id}")
     public TradePlatformCoinPair get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformCoinPairService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformCoinPairEnum.NAME));
+        return this.tradePlatformCoinPairService.get(id);
     }
 
     @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
     public Result add(@RequestBody @NotNull @Valid @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
 
-        this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(TradePlatformCoinPairEnum.NAME));
+        if (this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId()).get() >= 1){
+            return new Result<>(null,"交易平台货币对已存在");
+        }
 
         tradePlatformCoinPair.setStatus(1);
         tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(TradePlatformCoinPairEnum.NAME)));
+        return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair));
     }
 
     @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT",nickname = "updateTradePlatformCoinPair")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
+        if (this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId()).get() <1){
+            return new Result<>(null,"交易平台货币对不存在");
+        }
+
         tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformCoinPairService.update(tradePlatformCoinPair)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(TradePlatformCoinPairEnum.NAME)));
+        return new Result<>(this.tradePlatformCoinPairService.update(tradePlatformCoinPair));
     }
 
     @ApiOperation(value = "删除单个平台货币对接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformCoinPair")
     @DeleteMapping("/")
     public Result delete(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int tradePlatformId,
             @RequestParam("coinPairId") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int coinPairId){
-        return new Result<>(this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(TradePlatformCoinPairEnum.NAME)));
+
+        if (this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId).get() < 1){
+            return new Result<>(null,"交易平台货币对不存在");
+        }
+
+        return new Result<>(this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId));
     }
 
     @ApiOperation(value = "发现服务")

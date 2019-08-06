@@ -16,7 +16,7 @@ public interface CoinPairChoiceService {
 
     PageInfo listByPage(int pageNum,int pageSize,int userId,int coinId);
 
-    Optional<CoinPairChoice> get(int id);
+    CoinPairChoice get(int id);
 
     Optional<Integer> add(CoinPairChoice coinPairChoice);
 
