@@ -46,47 +46,52 @@ public class CoinPairCoinController {
 
     @ApiOperation(value = "根据货币ID获取货币对货币列表接口",httpMethod = "GET",nickname = "getCoinPairCoinListByCoinId")
     @GetMapping("/list_by_coinId")
-    public List<CoinPairCoin> listByCoinId(@RequestParam( value="coinId",defaultValue="1") int coinId){
+    public List<CoinPairCoin> listByCoinId(@RequestParam( value="coinId",defaultValue="1")  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinId){
         return this.coinPairCoinService.listByCoinId(coinId);
     }
 
     @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairCoin get(@PathVariable("id") @Min(1) @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
-        return this.coinPairCoinService.get(id).orElseThrow(()-> new NotFoundException(CoinPairCoinEnum.NAME));
+        return this.coinPairCoinService.get(id);
     }
 
     @ApiOperation(value = "添加货币对货币接口",httpMethod = "POST",nickname = "addOneCoinPairCoin")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
-        this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinPairCoin.getCoinId(),coinPairCoin.getCoinPairId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(CoinPairCoinEnum.NAME));
+
+        if (this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinPairCoin.getCoinId(),coinPairCoin.getCoinPairId()).get() >= 1){
+            return new Result<>(null,"货币对货币已存在");
+        }
 
         coinPairCoin.setStatus(1);
         coinPairCoin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinPairCoinService.add(coinPairCoin)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(CoinPairCoinEnum.NAME)));
+
+        return new Result<>(this.coinPairCoinService.add(coinPairCoin));
     }
 
     @ApiOperation(value = "更新货币对货币接口",httpMethod = "PUT",nickname = "updateCoinPairCoin")
     @PutMapping("/")
     public Result update(@RequestBody @Valid @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
+
+        if (this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinPairCoin.getCoinId(),coinPairCoin.getCoinPairId()).get() < 1){
+            return new Result<>(null,"货币对货币id不存在");
+        }
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinPairCoinService.update(coinPairCoin)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(CoinPairCoinEnum.NAME)));
+        return new Result<>(this.coinPairCoinService.update(coinPairCoin));
     }
 
     @ApiOperation(value = "删除货币对货币接口",httpMethod = "DELETE",nickname = "deleteCoinPairCoin")
     @DeleteMapping("/")
     public Result delete(@RequestParam("coinId") @Min(1) @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId,
                                     @RequestParam("coinPairId") @Min(1) @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinPairId){
-        return new Result<>(this.coinPairCoinService.delete(coinId, coinPairId)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(CoinPairCoinEnum.NAME)));
+
+        if (this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinId,coinPairId).get() < 1){
+            return new Result<>(null,"货币对货币不存在");
+        }
+
+        return new Result<>(this.coinPairCoinService.delete(coinId, coinPairId));
     }
 
     @ApiOperation(value = "发现服务")

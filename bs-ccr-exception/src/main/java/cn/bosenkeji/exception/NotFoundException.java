@@ -1,9 +1,6 @@
 package cn.bosenkeji.exception;
 
 import cn.bosenkeji.enums.IProviderEnum;
-import org.springframework.stereotype.Controller;
-
-import javax.annotation.Resource;
 
 /**
  * @ClassName NotFoundException

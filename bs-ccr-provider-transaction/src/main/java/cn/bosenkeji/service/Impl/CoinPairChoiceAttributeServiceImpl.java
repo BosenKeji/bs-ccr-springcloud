@@ -35,13 +35,13 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     }
 
     @Override
-    public Optional<CoinPairChoiceAttribute> get(int id) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id));
+    public CoinPairChoiceAttribute get(int id) {
+        return this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.updateByCoinPartnerChoiceIdSelective(coinPairChoiceAttribute));
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute));
     }
 
     @Override

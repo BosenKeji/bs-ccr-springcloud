@@ -21,7 +21,7 @@ public interface CoinService {
 
     Optional<Integer> checkExistByName(String name);
 
-    Optional<Coin> get(int id);
+    Coin get(int id);
 
     Optional<Integer> add(Coin coin);
 

@@ -50,7 +50,7 @@ public class TradePlatformApiController {
     @ApiOperation(value = "根据tradePlatformApiId获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
     @GetMapping("/{id}")
     public TradePlatformApi get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
-        return this.tradePlatformApiService.get(id).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
+        return this.tradePlatformApiService.get(id);
     }
 
 
@@ -58,39 +58,42 @@ public class TradePlatformApiController {
     @GetMapping("/edit_trade_platform")
     public TradePlatformApi getByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int tradePlatformId,
                                                           @RequestParam("userId") @Min(1) @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
-        return this.tradePlatformApiService.getByTradePlatformIdAndUserId(tradePlatformId, userId).orElseThrow(()-> new NotFoundException(TradePlatformApiEnum.NAME));
+        return this.tradePlatformApiService.getByTradePlatformIdAndUserId(tradePlatformId, userId);
     }
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
     public Result add(@RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
-        this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(TradePlatformApiEnum.NAME));
+        if (this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId()).get() >= 1){
+            return new Result<>(null,"交易平台API已存在");
+        }
 
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.add(tradePlatformApi)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(TradePlatformApiEnum.NAME)));
+        return new Result<>(this.tradePlatformApiService.add(tradePlatformApi));
     }
 
     @ApiOperation(value = "更新交易平台api接口",notes = "更新交易平台api接口",httpMethod = "PUT",nickname = "updateOneTradePlatformApi")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
+        if (this.tradePlatformApiService.get(tradePlatformApi.getId()) == null){
+            return new Result<>(null,"交易平台API不存在");
+        }
+
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.update(tradePlatformApi)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new UpdateException(TradePlatformApiEnum.NAME)));
+        return new Result<>(this.tradePlatformApiService.update(tradePlatformApi));
     }
 
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int id){
-        return new Result<>(this.tradePlatformApiService.delete(id)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new DeleteException(TradePlatformApiEnum.NAME)));
+
+        if (this.tradePlatformApiService.get(id) == null){
+            return new Result<>(null,"交易平台API不存在");
+        }
+
+        return new Result<>(this.tradePlatformApiService.delete(id));
     }
 
     @GetMapping("/user/{userId}")

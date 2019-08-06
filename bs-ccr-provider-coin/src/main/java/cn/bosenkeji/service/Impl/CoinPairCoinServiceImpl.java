@@ -38,8 +38,8 @@ public class CoinPairCoinServiceImpl implements CoinPairCoinService {
     }
 
     @Override
-    public Optional<CoinPairCoin> get(int id) {
-        return Optional.ofNullable(coinPairCoinMapper.selectByPrimaryKey(id));
+    public CoinPairCoin get(int id) {
+        return coinPairCoinMapper.selectByPrimaryKey(id);
     }
 
     @Override
