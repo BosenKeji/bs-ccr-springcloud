@@ -51,18 +51,18 @@ public class TradePlatformApiBindProductComboController {
     public Result add(@RequestBody @NotNull @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
         //判断该交易平台api是否未用户未绑定的
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
+       /* tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
                 tradePlatformApiBindProductCombo.getUserId()
                 , tradePlatformApiBindProductCombo.getTradePlatformApiId())
                 .filter((value)->value==1)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));
+                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
 
         //判断该套餐是否为用户为绑定的
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndUserProductComboId(
+        /*tradePlatformApiBindProductComboService.checkExistByUserIdAndUserProductComboId(
                 tradePlatformApiBindProductCombo.getUserId()
                 ,tradePlatformApiBindProductCombo.getUserProductComboId())
                 .filter((value)->value==1)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));
+                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
 
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -81,11 +81,11 @@ public class TradePlatformApiBindProductComboController {
                 .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
 
         //判断该交易平台api是否未用户未绑定的
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
+        /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
                 userId
                 , tradePlatformApiId)
                 .filter((value)->value==1)
-                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
+                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));*/
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setId(id);

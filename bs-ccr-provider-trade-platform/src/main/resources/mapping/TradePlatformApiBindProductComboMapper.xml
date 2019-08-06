@@ -1,38 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper">
-  <resultMap id="ComboResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
-    <id column="pab_id" jdbcType="INTEGER" property="id" />
-    <result column="pab_user_id" jdbcType="INTEGER" property="userId" />
-    <result column="pab_trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
-    <result column="pab_user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
-    <result column="pab_created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="pab_updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <!--<association property="tradePlatformApi" fetchType="lazy" column="trade_platform_api_id"
-                 javaType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo"
-                 select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />-->
-    <association javaType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" property="tradePlatformApi">
-      <id column="pa_id" property="id"/>
-      <result column="pa_trade_platform_id" property="tradePlatformId"/>
-      <result column="pa_user_id" property="userId"/>
-      <result column="pa_nickname" property="nickname"/>
-      <result column="pa_access_key" property="accessKey"/>
-      <result column="pa_secret_key" property="secretKey"/>
-      <result column="pa_sign" property="sign"/>
-      <result column="pa_status" property="status"/>
-      <result column="pa_created_at" property="createdAt"/>
-      <result column="pa_updated_at" property="updatedAt"/>
-      <association property="tradePlatform" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform">
-        <id column="p_id" property="id" />
-        <result column="p_name" property="name" />
-        <result column="p_logo" property="logo" />
-        <result column="p_status" property="status" />
-        <result column="p_created_at" property="createdAt" />
-        <result column="p_updated_at" property="updatedAt" />
-      </association>
-    </association>
 
-  </resultMap>
+
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
@@ -40,7 +10,8 @@
     <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-
+    <association property="tradePlatformApi" column="trade_platform_api_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi"
+                 select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />
   </resultMap>
 
   <resultMap id="ApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApi">
@@ -155,7 +126,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="findByUserId" parameterType="java.lang.Integer" resultMap="ComboResultMap">
+  <!--<select id="findByUserId" parameterType="java.lang.Integer" resultMap="ComboResultMap">
     select
     pab.id pab_id, pab.user_id pab_user_id, pab.trade_platform_api_id pab_trade_platform_api_id,
     pab.user_product_combo_id pab_user_product_combo_id,
@@ -174,6 +145,14 @@
     on pa.trade_platform_id=p.id
 
     where pab.user_id=#{userId}
+  </select>-->
+  <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from
+    trade_platform_api_bind_product_combo
+    where user_id=#{userId}
+
   </select>
 
   <!--通过用户ID 查询没有绑定的品台api-->
@@ -188,6 +167,16 @@
     (SELECT count(0)
     from trade_platform_api_bind_product_combo pab
     where pab.trade_platform_api_id=pa.id and user_id=#{userId} )=0
+  </select>
+
+  <select id="selectApiIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select trade_platform_api_id from trade_platform_api_bind_product_combo
+    where user_id=#{userId}
+  </select>
+
+  <select id="selectComboIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select user_product_combo_id from trade_platform_api_bind_product_combo
+    where user_id=#{userId}
   </select>
 
   <!--查询没有绑定的用户套餐ID-->
@@ -217,6 +206,7 @@
      where pab.user_product_combo_id=upc.id
       and pab.user_id=#{param1})=0 limit 1 )
   </select>
+
 
   <!-- 同理 此处查询是否存在没有绑定的api  ，当存在 api还没绑定时才能执行 绑定的添加或更新操作  -->
   <select id="checkExistNotBindApiByUserIdAndTradePlatformApiId" resultType="java.lang.Integer">

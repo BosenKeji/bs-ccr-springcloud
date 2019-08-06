@@ -22,7 +22,7 @@
     select
     <include refid="Base_Column_List" />
     from user_product_combo
-    where upc.id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo

@@ -13,6 +13,8 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <association property="tradePlatform" column="trade_platform_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform"
+                 select="cn.bosenkeji.mapper.TradePlatformMapper.selectByPrimaryKey" />
 
   </resultMap>
   <sql id="Base_Column_List">
