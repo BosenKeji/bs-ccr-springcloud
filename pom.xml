@@ -38,7 +38,8 @@
         <module>bs-ccr-provider-trade-basic-data</module>
         <module>bs-ccr-jwt</module>
         <module>bs-ccr-provider-user</module>
-        <module>bs-ccr-security-jwt-server</module>
+        <module>bs-ccr-security-jwt-auth-server</module>
+        <module>bs-ccr-security-jwt-all</module>
 
     </modules>
 
@@ -283,6 +284,11 @@
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-security-jwt-server</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-security-jwt-client</artifactId>
+                <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

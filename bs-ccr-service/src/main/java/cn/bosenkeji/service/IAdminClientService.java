@@ -37,4 +37,7 @@ public interface IAdminClientService {
 
     @DeleteMapping("/admin/{id}")
     Result delete(@PathVariable("id") int id);
+
+    @GetMapping("/admin/account/{account}")
+    public Optional<Admin> selectByAccount(@PathVariable("account")  String account);
 }

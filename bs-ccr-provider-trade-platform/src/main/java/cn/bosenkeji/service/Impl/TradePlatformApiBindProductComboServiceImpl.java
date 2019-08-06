@@ -6,6 +6,7 @@ import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,15 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
                 new PageInfo<>(tradePlatformApiBindProductComboMapper.findByUserId(userId));
         List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboPageInfo.getList();
 
+        System.out.println("pageList--->"+ JSON.toJSONString(pageList));
+
         //分别查询对应的用户套餐——调用用户套餐的服务
         for (TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo : pageList) {
-            int upc_id=tradePlatformApiBindProductCombo.getUserProductComboId();
+            int upc_id = tradePlatformApiBindProductCombo.getUserProductComboId();
+            System.out.println("upc_id--->"+ upc_id);
             if(upc_id>0) {
-                UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId());
+                UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(upc_id);
+                System.out.println("userProductCombo--->"+ userProductCombo);
                 if (userProductCombo != null) {
                     tradePlatformApiBindProductCombo.setUserProductCombo(userProductCombo);
                 }
