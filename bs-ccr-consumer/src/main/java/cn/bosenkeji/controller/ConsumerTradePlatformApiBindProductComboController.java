@@ -1,7 +1,6 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -45,7 +44,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
         return iTradePlatformApiBindProductComboClientService.getNoBindTradePlatformApiListByUserId(pageNum,pageSize,userId);
     }
 
-    @GetMapping("/get_no_bind_user_product_combo_list_by_user_id")
+    /*@GetMapping("/get_no_bind_user_product_combo_list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取用户未绑定的用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getNoBindUserProductComboListByUserIdWithPage")
     public Object getNoBindUserProductComboListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
@@ -53,16 +52,16 @@ public class ConsumerTradePlatformApiBindProductComboController {
                                                           @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         return iTradePlatformApiBindProductComboClientService.getNoBindUserProductComboListByUserId(pageNum,pageSize,userId);
-    }
+    }*/
 
-    @PostMapping("/")
+   /* @PostMapping("/")
     @ApiOperation(value = "添加 交易平台api绑定用户套餐 api接口"
             ,httpMethod = "POST",nickname = "addTradePlatformApiBindProductComboList")
     public Object add(@RequestBody @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
       return iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
 
-    }
+    }*/
 
     @PutMapping("/{id}")
     @ApiOperation(value = "更新 交易平添api绑定用户套餐 api接口",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
