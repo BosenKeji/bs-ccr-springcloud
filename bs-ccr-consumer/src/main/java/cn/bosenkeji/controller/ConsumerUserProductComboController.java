@@ -38,4 +38,12 @@ public class ConsumerUserProductComboController {
         return this.iUserProductComboClientService.listByUserTel(userTel,pageNum,pageSize);
     }
 
-}
+    @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
+    @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
+    public Object listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+                                 @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+
+        return this.iUserProductComboClientService.listByUserId(userId,pageNum,pageSize);
+    }
+
+    }

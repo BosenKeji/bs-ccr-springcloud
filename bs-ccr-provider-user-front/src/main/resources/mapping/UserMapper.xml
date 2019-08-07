@@ -138,4 +138,9 @@
     select EXISTS
     (select 1 from user where username=#{username} limit 1)
   </select>
+
+  <select id="checkExistByTel" parameterType="java.lang.String" resultType="java.lang.Integer" >
+    select EXISTS
+    (select 1 from user where tel=#{tel} limit 1)
+  </select>
 </mapper>

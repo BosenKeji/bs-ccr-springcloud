@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -47,7 +46,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
    // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
-    public Optional<Integer> add(UserProductCombo userProductCombo) {
+    public int add(UserProductCombo userProductCombo) {
 
         //判断用户是否已买过该产品  如果该用户已买过该产品，则不能部署机器人
         /*if(userProductComboMapper.selectCountByProductId(userProductCombo.getProductCombo().getProductId(),userProductCombo.getUserId())>0)
@@ -69,13 +68,13 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
         iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
-        return Optional.ofNullable(1);
+        return 1;
 
     }
 
     @Override
-    public Optional<Integer> update(UserProductCombo userProductCombo) {
-        return Optional.ofNullable(userProductComboMapper.updateByPrimaryKeySelective(userProductCombo));
+    public int update(UserProductCombo userProductCombo) {
+        return userProductComboMapper.updateByPrimaryKeySelective(userProductCombo);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     //多表查询
     @Override
-    public Optional<UserProductCombo> get(int id) {
+    public UserProductCombo get(int id) {
 
         //数据库联表查询用户套餐信息
         UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
@@ -99,7 +98,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             userProductCombo.setRemainTime(0);
         }
 
-        return Optional.ofNullable(userProductCombo);
+        return userProductCombo;
 
         //以下单表查询，目前用处不大
         /*try {
@@ -217,8 +216,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     }
 
     @Override
-    public Optional<Integer> checkExistByProductIdAndUserId(int productComboId,int userId) {
+    public int checkExistByProductIdAndUserId(int productComboId,int userId) {
         int productId=productComboMapper.selectProductIdByPrimaryKey(productComboId);
-        return Optional.ofNullable(userProductComboMapper.checkExistByProductIdAndUserId(productId,userId));
+        return userProductComboMapper.checkExistByProductIdAndUserId(productId,userId);
     }
 }

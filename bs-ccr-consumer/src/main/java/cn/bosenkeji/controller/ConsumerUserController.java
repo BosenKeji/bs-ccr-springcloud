@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xivin
@@ -40,7 +42,7 @@ public class ConsumerUserController {
 
     @GetMapping("/get_by_tel")
     @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
-    public User getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
+    public Object getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
 
         return this.iUserClientService.getOneUserByTel(tel);
     }
@@ -65,4 +67,32 @@ public class ConsumerUserController {
 
         return this.iUserClientService.deleteOneUser(id);
     }
+
+    @PutMapping("/update_password/{id}")
+    @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
+    public Object updatePassword(@PathVariable("id") @Min(1)
+                                 @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                                 @RequestParam("password") @NotNull @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") String password) {
+
+        return this.iUserClientService.updateUserPassword(id,password);
+    }
+
+    @PutMapping("/update_username/{id}")
+    @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
+    public Object updateUsername(@PathVariable("id") @Min(1)
+                                 @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                                 @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") String username) {
+
+        return this.iUserClientService.updateUserUsername(id,username);
+    }
+
+    @PutMapping("/update_tel/{id}")
+    @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
+    public Object updateTel(@PathVariable("id") @Min(1)
+                            @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                            @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
+
+        return this.iUserClientService.updateUserTel(id,tel);
+    }
+
 }

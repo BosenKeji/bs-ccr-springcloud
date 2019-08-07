@@ -44,7 +44,13 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
 
             @Override
             public PageInfo listByUserId(int userId, int pageNum, int pageSize) {
-                return null;
+
+                UserProductCombo userProductCombo=new UserProductCombo();
+                userProductCombo.setOrderNumber("hystrix");
+                userProductCombo.setRemark("hystrix");
+                List list=new ArrayList();
+                list.add(userProductCombo);
+                return new PageInfo(list);
             }
         };
     }

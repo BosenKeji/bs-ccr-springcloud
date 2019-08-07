@@ -1,7 +1,6 @@
 package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.vo.Admin;
-import cn.bosenkeji.vo.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

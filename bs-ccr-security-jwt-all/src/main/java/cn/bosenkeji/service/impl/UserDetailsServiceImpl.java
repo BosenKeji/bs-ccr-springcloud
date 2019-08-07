@@ -1,13 +1,13 @@
 package cn.bosenkeji.service.impl;
 
+import cn.bosenkeji.enums.exception.user.UserEnum;
 import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.enums.AdminEnum;
-import cn.bosenkeji.exception.enums.UserEnum;
-import cn.bosenkeji.service.AdminService;
-import cn.bosenkeji.service.UserService;
+import cn.bosenkeji.service.IAdminClientService;
+import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,22 +23,23 @@ import java.util.Optional;
  * @Versio V1.0
  **/
 @Service
+@EnableFeignClients("cn.bosenkeji.service")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserService userService;
+    private IUserClientService iUserClientService;
 
     @Autowired
-    private AdminService adminService;
+    private IAdminClientService iAdminClientService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        final Optional<User> user = userService.getByUsername(username);
+        final Optional<User> user = Optional.ofNullable(iUserClientService.getOneUserByTel(username));
 
         if (user.isPresent() == true){
             return new CustomUserDetailsImpl(user.get());
         } else {
-            final Admin admin = adminService.selectByAccount(username).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
+            final Admin admin = iAdminClientService.selectByAccount(username).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
 
             return new CustomAdminDetailsImpl(admin);
         }

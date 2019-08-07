@@ -7,11 +7,11 @@ import java.util.List;
 public interface UserProductComboDayMapper {
     int deleteByPrimaryKey(Integer id);
 
-    boolean insert(UserProductComboDay record);
+    int insert(UserProductComboDay record);
 
     int insertSelective(UserProductComboDay record);
 
-    boolean updateByPrimaryKeySelective(UserProductComboDay record);
+    int updateByPrimaryKeySelective(UserProductComboDay record);
 
     UserProductComboDay selectByPrimaryKey(Integer id);
 

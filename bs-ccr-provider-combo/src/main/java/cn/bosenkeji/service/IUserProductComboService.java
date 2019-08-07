@@ -4,7 +4,6 @@ import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -14,14 +13,14 @@ import java.util.Optional;
  */
 public interface IUserProductComboService {
 
-    Optional<Integer> add(UserProductCombo userProductCombo);
-    Optional<Integer> update(UserProductCombo userProductCombo);
+    int add(UserProductCombo userProductCombo);
+    int update(UserProductCombo userProductCombo);
     PageInfo<UserProductCombo> list(int pageNum,int pageSize);
-    Optional<UserProductCombo> get(int id);
+    UserProductCombo get(int id);
 
     List<UserProductCombo> getByUserId(int userId);
     PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel);
     PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId);
-    Optional<Integer> checkExistByProductIdAndUserId(int productId,int userId);
+    int checkExistByProductIdAndUserId(int productId,int userId);
 
 }
