@@ -5,6 +5,7 @@ import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.vo.RocketMQResult;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -14,8 +15,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +63,34 @@ public class DealHandler {
 //        System.out.println("input1"+msg);
 //    }
 
+    @GetMapping("/redis")
+    public String setRedis() {
+        String s = "{\"symbol\":\"btsusdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"max_trade_order\":6,\"budget\":10,\"finished_order\":0,\"leverage\":2,\"trade_times\":101,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"10.10\",\"1\":\"20.20\",\"2\":\"40.40\",\"3\":\"80.80\",\"4\":\"161.60\",\"5\":\"323.20\"},\"first_order_price\":0.0457,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0051765\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"emit_ratio\":\"0.2\",\"turn_down_ratio\":\"0.1\",\"follow_lower_ratio\":\"0.01\",\"follow_callback_ratio\":\"0.1\",\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":\"50\"}";
+        JSONObject jsonObject = JSON.parseObject(s);
+        redisTemplate.opsForValue().set("90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btsusdt",s);
+        return "success";
+    }
+
+    @RequestMapping("/handle")
+    public String testHandle() {
+        String msg =    "{\n" +
+                        " \"price\": 2,\n" +
+                        " \"deep\": [\n" +
+                        "  [7964, 0.0678],\n" +
+                        "  [7963, 0.9162],\n" +
+                        "  [7961, 0.1],\n" +
+                        "  [7960, 12.8898],\n" +
+                        "  [7958, 1.2]\n" +
+                        " ],\n" +
+                        " \"symbol\": \"btsusdt\"\n" +
+                        "}";
+        consumerMessage(msg);
+        return "test";
+    }
+
     @StreamListener("input2")
     private void consumerMessage(String msg) {
+
         //将json字符串转换为json对象
         JSONObject jsonObject = JSON.parseObject(msg);
 
@@ -71,32 +98,38 @@ public class DealHandler {
         Double price = Double.valueOf(jsonObject.get("price").toString());
 
         //获取深度
-        Map<Integer,Double> deep = new HashMap<>();
+        Map<Double,Double> deep = new HashMap<>();
 
         JSONArray deepArray = (JSONArray) jsonObject.get("deep");
-
-        for (int i=0;i<deepArray.size();i++) {
-            JSONArray o = (JSONArray) deepArray.get(i);
-            deep.put(Integer.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
+        if (deepArray.get(0) != null) {
+            for (int i=0;i<deepArray.size();i++) {
+                JSONArray o = (JSONArray) deepArray.get(i);
+                deep.put(Double.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
+            }
+        } else {
+            return;
         }
+
 
         //获取货币对的值
         String symbol = jsonObject.get("symbol").toString();
 
         //获取 自选货币对信息
-        List<CoinPairChoiceJoinCoinPair> coinPairChoiceList = coinPairChoiceClientService.listCoinPairChoice();
+        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceClientService.findAll();
 
         //过滤暂停和停止、不是该货币对的信息
-        //TODO cn.bosenkeji.vo.transaction.CoinPairChoice cannot be cast to cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair
-        List<CoinPairChoiceJoinCoinPair> filterList = coinPairChoiceList.stream()
-                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPairName())))
+        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
+                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPair().getName())))
                 .collect(Collectors.toList());
+
+        //获取所有用户API
+        List<TradePlatformApi> allApi = tradePlatformApiClientService.findAll();
 
         //遍历自选货币对 执行判断逻辑
         filterList.parallelStream().forEach((e)->{
             //通过userId获取平台对应的key
             int userId = e.getUserId();
-            TradePlatformApi api = tradePlatformApiClientService.selectByUserId(userId);
+            TradePlatformApi api = allApi.stream().filter((v)->v.getUserId()==userId).findFirst().get();
             String accessKey = api.getAccessKey();
             String secretKey = api.getSecretKey();
 
@@ -178,7 +211,7 @@ public class DealHandler {
                         ,minAveragePrice,firstOrderPrice,redisKey);
                 if (isBuy) {
                     //mq发送买的消息
-                    boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
+                     boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
                 }
             }
         });
@@ -204,11 +237,12 @@ public class DealHandler {
      * @param quantity 某交易量
      * @return 拟买入均价
      */
-    private double countAveragePrice(Map<Integer,Double> deep,double quantity) {
+    private double countAveragePrice(Map<Double,Double> deep,double quantity) {
         double priceSum = 0;
         double deepSum = 0;
-        for (Map.Entry<Integer, Double> entry : deep.entrySet()) {
-            Integer key = entry.getKey();
+
+        for (Map.Entry<Double, Double> entry : deep.entrySet()) {
+            Double key = entry.getKey();
             Double value = entry.getValue();
             if ( quantity >= value) {
                 priceSum += key*value;
@@ -217,6 +251,8 @@ public class DealHandler {
             } else {
                 priceSum += key*quantity;
                 deepSum += quantity;
+                quantity = 0;
+                break;
             }
         }
         return priceSum/deepSum;
@@ -331,7 +367,10 @@ public class DealHandler {
 
     private void updateRedisString(String redisKey,String valueKey, Double newValue) {
         JSONObject jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(redisKey).toString());
-        String replace = jsonObject.replace(valueKey, newValue).toString();
+        if (newValue.isNaN()) {
+            newValue = 0.0;
+        }
+        String replace = jsonObject.replace(valueKey, newValue.toString()).toString();
         redisTemplate.opsForValue().set(redisKey,jsonObject.toJSONString());
     }
 

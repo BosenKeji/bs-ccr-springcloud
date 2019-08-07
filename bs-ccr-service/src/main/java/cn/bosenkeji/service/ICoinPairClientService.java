@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,5 +37,8 @@ public interface ICoinPairClientService {
 
     @DeleteMapping("/coin_pair/{id}")
     public Result deleteCoinPair(@PathVariable("id") int id );
+
+    @GetMapping("/coin_pair/all")
+    List<CoinPair> findAll();
 
 }

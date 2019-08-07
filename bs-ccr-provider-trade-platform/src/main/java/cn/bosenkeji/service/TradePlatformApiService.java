@@ -27,4 +27,6 @@ public interface TradePlatformApiService {
     TradePlatformApi getByUserId(int userId);
 
     Optional<Integer> checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
+
+    List<TradePlatformApi> findAll();
 }

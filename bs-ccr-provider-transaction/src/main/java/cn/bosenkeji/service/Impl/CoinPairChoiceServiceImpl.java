@@ -12,8 +12,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Autowired
     ICoinPairClientService iCoinPairClientService;
 
-
+    @Autowired
+    ICoinPairClientService coinPairClientService;
 
 
     @Override
@@ -102,7 +105,15 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
-    public List<CoinPairChoiceJoinCoinPair> listCoinPairChoice() {
-        return coinPairChoiceMapper.listCoinPairChoice();
+    public List<CoinPairChoice> findAll() {
+        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceMapper.findAll();
+        List<CoinPair> coinPairList = coinPairClientService.findAll();
+        if (!CollectionUtils.isEmpty(coinPairChoiceList) && !CollectionUtils.isEmpty(coinPairList)) {
+            for (CoinPairChoice c : coinPairChoiceList) {
+                Optional<CoinPair> first = coinPairList.stream().filter((v) -> v.getId() == c.getCoinPartnerId()).findFirst();
+                c.setCoinPair(first.get());
+            }
+        }
+        return coinPairChoiceList;
     }
 }

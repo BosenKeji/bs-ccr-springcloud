@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author CAJR
  * @create 2019/7/22 10:37
@@ -39,4 +41,7 @@ public interface ITradePlatformApiClientService {
 
     @GetMapping("/trade_platform_apis/user/{userId}")
     TradePlatformApi selectByUserId(@PathVariable("userId") Integer userId);
+
+    @GetMapping("/trade_platform_apis/all")
+    List<TradePlatformApi> findAll();
 }

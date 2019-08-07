@@ -61,6 +61,14 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             public TradePlatformApi selectByUserId(Integer userId) {
                 return new TradePlatformApi();
             }
+
+            @Override
+            public List<TradePlatformApi> findAll() {
+                List<TradePlatformApi> tradePlatformApiList = new ArrayList<>();
+                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+                tradePlatformApiList.add(tradePlatformApi);
+                return tradePlatformApiList;
+            }
         };
     }
 }
