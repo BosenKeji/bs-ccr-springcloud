@@ -54,6 +54,21 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
                 user.setUsername("hystrix");
                 return user;
             }
+
+            @Override
+            public Result updateUserPassword(int id, String password) {
+                return new Result("0","hystrix");
+            }
+
+            @Override
+            public Result updateUserTel(int id, String tel) {
+                return new Result("0","hystrix");
+            }
+
+            @Override
+            public Result updateUserUsername(int id, String username) {
+                return new Result("0","hystrix");
+            }
         };
     }
 }

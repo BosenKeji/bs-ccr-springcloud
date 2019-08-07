@@ -4,6 +4,7 @@ import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.service.IAdminClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayService;
+import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageHelper;
@@ -70,15 +71,31 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
     @Override
     public PageInfo<UserProductComboDay> selectByUserTel(String tel, int pageNum, int pageSize) {
-        User user = iUserClientService.getOneUserByTel(tel);
-
-        PageHelper.startPage(pageNum,pageSize);
-        List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserId(user.getId());
-        for (UserProductComboDay userProductComboDay : userProductComboDays) {
-            userProductComboDay.setUser(user);
-            userProductComboDay.getUserProductComboDayByAdmin().setAdmin(iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get());
+        User user=null;
+        try {
+            user = iUserClientService.getOneUserByTel(tel);
+        }catch (Exception e) {
+            System.out.println("获取用户发生异常"+e.getMessage());
         }
-        return new PageInfo<>(userProductComboDays);
+        if(user!=null) {
+            PageHelper.startPage(pageNum,pageSize);
+            List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserId(user.getId());
+            for (UserProductComboDay userProductComboDay : userProductComboDays) {
+                userProductComboDay.setUser(user);
+                try {
+
+                    Admin admin = iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get();
+                    if(admin!=null) {
+                        userProductComboDay.getUserProductComboDayByAdmin().setAdmin(admin);
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+            }
+            return new PageInfo<>(userProductComboDays);
+        }
+        return new PageInfo<>();
     }
 
     @Override
@@ -88,8 +105,25 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserProductComboId(userProductComboId);
         for (UserProductComboDay userProductComboDay : userProductComboDays) {
-            userProductComboDay.setUser(iUserClientService.getOneUser(userProductComboDay.getUserId()));
-            userProductComboDay.getUserProductComboDayByAdmin().setAdmin(iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get());
+            try {
+                User user = iUserClientService.getOneUser(userProductComboDay.getUserId());
+                if(user!=null) {
+                    userProductComboDay.setUser(user);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+
+                Admin admin = iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get();
+                if(admin!=null) {
+
+                    userProductComboDay.getUserProductComboDayByAdmin().setAdmin(admin);
+                }
+            }catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
         }
         return new PageInfo<>(userProductComboDays);
     }

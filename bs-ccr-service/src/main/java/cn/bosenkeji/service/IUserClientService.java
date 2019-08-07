@@ -33,4 +33,14 @@ public interface IUserClientService {
 
     @DeleteMapping("/user/{id}")
     Result deleteOneUser(@PathVariable("id") int id);
+
+    @PutMapping("/user/update_password/{id}")
+    Result updateUserPassword(@PathVariable("id") int id,@RequestParam("password") String password);
+
+    @PutMapping("/user/update_tel/{id}")
+    Result updateUserTel(@PathVariable("id") int id,@RequestParam("tel") String tel);
+
+    @PutMapping("/user/update_username/{id}")
+    Result updateUserUsername(@PathVariable("id") int id,@RequestParam("username") String username);
+
 }

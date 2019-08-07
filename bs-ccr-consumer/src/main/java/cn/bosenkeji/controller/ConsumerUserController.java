@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +9,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xivin
@@ -65,4 +68,32 @@ public class ConsumerUserController {
 
         return this.iUserClientService.deleteOneUser(id);
     }
+
+    @PutMapping("/update_password/{id}")
+    @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
+    public Object updatePassword(@PathVariable("id") @Min(1)
+                                 @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                                 @RequestParam("password") @NotNull @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") String password) {
+
+        return this.iUserClientService.updateUserPassword(id,password);
+    }
+
+    @PutMapping("/update_username/{id}")
+    @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
+    public Result updateUsername(@PathVariable("id") @Min(1)
+                                 @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                                 @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") String username) {
+
+        return this.iUserClientService.updateUserUsername(id,username);
+    }
+
+    @PutMapping("/update_tel/{id}")
+    @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
+    public Result updateTel(@PathVariable("id") @Min(1)
+                            @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                            @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
+
+        return this.iUserClientService.updateUserTel(id,tel);
+    }
+
 }

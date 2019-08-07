@@ -3,17 +3,16 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.User;
 
-import java.util.Optional;
-
 public interface UserService {
 
-    Optional<User> get(int id);
-    Optional<User> getByUsername(String username);
-    Optional<User> getByTel(String tel);
-    Optional<Integer> add(User user);
-    Optional<Integer> update(User user);
-    Optional<Integer> delete(int id);
-    Optional<Integer> checkExistByUsrename(String username);
+    User get(int id);
+    User getByUsername(String username);
+    User getByTel(String tel);
+    Integer add(User user);
+    Integer updateByPrimaryKeySelective(User user);
+    Integer delete(int id);
+    Integer checkExistByUsrename(String username);
+    Integer checkExistByTel(String tel);
 
 
 
