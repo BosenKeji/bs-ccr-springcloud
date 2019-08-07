@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -26,36 +25,36 @@ public class ProductServiceImpl implements IProductService {
         return new PageInfo<Product>(this.productMapper.findAll());
     }
     @Override
-    public Optional<Product> get(int id) {
-        return Optional.ofNullable(this.productMapper.selectByPrimaryKey(id));
+    public Product get(int id) {
+        return this.productMapper.selectByPrimaryKey(id);
     }
     @Override
-    public Optional<Integer> add(Product product) {
+    public int add(Product product) {
 
-        return Optional.ofNullable(productMapper.insert(product));
+        return productMapper.insert(product);
         // return flag==1?true:false;
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
+    public int delete(int id) {
 
-        return Optional.ofNullable(productMapper.deleteByPrimaryKey(id));
+        return productMapper.deleteByPrimaryKey(id);
         //return flag==1?true:false;
     }
 
     @Override
-    public Optional<Integer> update(Product product) {
-        return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
+    public int update(Product product) {
+        return this.productMapper.updateByPrimaryKeySelective(product);
     }
 
     @Override
-    public Optional<Integer> updateStatus(Product product) {
+    public int updateStatus(Product product) {
 
-        return Optional.ofNullable(this.productMapper.updateByPrimaryKeySelective(product));
+        return this.productMapper.updateByPrimaryKeySelective(product);
     }
 
     @Override
-    public Optional<Integer> checkExistByName(String name) {
-        return Optional.ofNullable(productMapper.checkExistByName(name));
+    public int checkExistByName(String name) {
+        return productMapper.checkExistByName(name);
     }
 }

@@ -174,8 +174,8 @@
     and status=#{param2}
   </select>
 
-  <select id="checkExistByName" parameterType="java.lang.String" resultType="java.lang.Integer" >
-    select EXISTS (select 1 from product_combo where `name`=#{name} limit 1)
+  <select id="checkExistByNameAndProductId" resultType="java.lang.Integer" >
+    select EXISTS (select 1 from product_combo where `name`=#{param1} and product_id=#{param2} limit 1)
   </select>
 
   <select id="selectProductIdByPrimaryKey" parameterType="java.lang.Integer" resultType="java.lang.Integer" >

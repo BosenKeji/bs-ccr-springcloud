@@ -20,32 +20,54 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
 
             @Override
             public User getOneUser(int id) {
-                return null;
+                User user=new User();
+                user.setUsername("hystrix");
+                return user;
             }
 
             @Override
             public User getOneUserByUsername(String username) {
-                return null;
+                User user=new User();
+                user.setUsername("hystrix");
+                return user;
             }
 
             @Override
             public Result addOneUser(User user) {
-                return new Result("0","fail");
+                return new Result("0","fail hystrix");
             }
 
             @Override
             public Result updateUser(User user) {
-                return new Result("0","fail");
+                return new Result("0","fail hystrix");
             }
 
             @Override
             public Result deleteOneUser(int id) {
-                return new Result("0","fail");
+                return new Result("0","fail hystrix");
             }
 
             @Override
             public User getOneUserByTel(String tel) {
-                return null;
+
+                User user=new User();
+                user.setUsername("hystrix");
+                return user;
+            }
+
+            @Override
+            public Result updateUserPassword(int id, String password) {
+                return new Result("0","hystrix");
+            }
+
+            @Override
+            public Result updateUserTel(int id, String tel) {
+                return new Result("0","hystrix");
+            }
+
+            @Override
+            public Result updateUserUsername(int id, String username) {
+                return new Result("0","hystrix");
             }
         };
     }

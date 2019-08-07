@@ -139,6 +139,7 @@ public class AliCloudApiManageController {
 
                         List<Parameter> parameters = operation.getParameters();
                         if (!parameters.isEmpty()){
+                            //begin for
                             for (Parameter parameter : parameters){
 
                                 if (parameter.getName() != null){
@@ -190,9 +191,32 @@ public class AliCloudApiManageController {
 
                                 }
 
+                            } //end for
 
 
-                            }
+                            DescribeApiResponse.RequestParameter requestParameter = new DescribeApiResponse.RequestParameter();
+                            DescribeApiResponse.ServiceParameter serviceParameter = new DescribeApiResponse.ServiceParameter();
+                            DescribeApiResponse.ServiceParameterMap serviceParameterMap = new DescribeApiResponse.ServiceParameterMap();
+
+                            requestParameter.setLocation("HEAD");
+                            serviceParameter.setLocation("HEAD");
+
+                            requestParameter.setParameterType("String");
+                            serviceParameter.setParameterType("String");
+
+                            requestParameter.setApiParameterName("Authorization");
+                            serviceParameter.setServiceParameterName("Authorization");
+
+                            requestParameter.setRequired("REQUIRED");
+
+                            serviceParameterMap.setRequestParameterName("Authorization");
+                            serviceParameterMap.setServiceParameterName("Authorization");
+
+
+                            requestParameters.add(requestParameter);
+                            serviceParameters.add(serviceParameter);
+                            serviceParameterMaps.add(serviceParameterMap);
+
                         }
 
                         System.out.println("parameters--->"+JSON.toJSONString(parameters));

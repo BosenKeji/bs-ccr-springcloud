@@ -52,11 +52,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-flyway</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
     </dependencies>
 

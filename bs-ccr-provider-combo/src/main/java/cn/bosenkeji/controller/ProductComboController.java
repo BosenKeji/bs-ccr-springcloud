@@ -1,10 +1,5 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.DeleteException;
-import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.UpdateException;
-import cn.bosenkeji.exception.enums.ProductComboEnum;
 import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
@@ -83,21 +78,25 @@ public class ProductComboController {
     @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getOneProductCombo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public ProductCombo get(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
-        return this.iProductComboService.get(id).orElseThrow(()->new NotFoundException(ProductComboEnum.NAME));
+        return this.iProductComboService.get(id);
     }
 
     @ApiOperation(value ="获添加品套餐信息api接口",httpMethod = "POST",nickname = "addProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
-        this.iProductComboService.checkExistByName(productCombo.getName())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(ProductComboEnum.NAME));
+        //判断套餐时长是否合法
+        if(productCombo.getTime()<1)
+            return new Result("0","套餐时间必须大于等于1");
+        //判断 产品套餐名称是否存在
+        if(this.iProductComboService.checkExistByNameAndProductId(productCombo.getName(),productCombo.getProductId())>=1)
+            return new Result("0","产品套餐已存在");
+               /* .filter((value)->value==0)
+                .orElseThrow(()->new AddException(ProductComboEnum.NAME));*/
+
         productCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         productCombo.setStatus(1);
-        return new Result(this.iProductComboService.add(productCombo)
-                .filter((value)->value==1)
-                .orElseThrow(()->new AddException(ProductComboEnum.NAME)));
+        return new Result(this.iProductComboService.add(productCombo));
 
     }
 
@@ -105,13 +104,13 @@ public class ProductComboController {
     @RequestMapping(value="/",method = RequestMethod.PUT)
     public Result update(@RequestBody @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(this.iProductComboService.update(productCombo).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductComboEnum.NAME)));
+        return new Result(this.iProductComboService.update(productCombo));
     }
 
     @ApiOperation(value ="删除产品套餐信息api接口",httpMethod = "DELETE",nickname = "deleteProductComboInfo")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public Result delete(@PathVariable("id") @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
-        return new Result(this.iProductComboService.delete(id).filter((value)->value>=1).orElseThrow(()->new DeleteException(ProductComboEnum.NAME)));
+        return new Result(this.iProductComboService.delete(id));
     }
 
     @ApiOperation(value ="启用、关闭产品套餐api接口",httpMethod = "PUT",nickname = "updateProductComboStatus")
@@ -122,7 +121,7 @@ public class ProductComboController {
         productCombo.setId(id);
         productCombo.setStatus(status);
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(this.iProductComboService.update(productCombo).filter((value)->value>=1).orElseThrow(()->new UpdateException(ProductComboEnum.NAME)));
+        return new Result(this.iProductComboService.update(productCombo));
     }
 
     @ApiOperation(value ="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")

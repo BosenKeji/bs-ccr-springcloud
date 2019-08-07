@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -51,28 +50,28 @@ public class ProductComboServiceImpl implements IProductComboService {
     }
 
     @Override
-    public Optional<ProductCombo> get(int id) {
-        return Optional.ofNullable(this.productComboMapper.selectByPrimaryKey(id));
+    public ProductCombo get(int id) {
+        return this.productComboMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public Optional<Integer> add(ProductCombo productCombo) {
-        return Optional.ofNullable(this.productComboMapper.insert(productCombo));
+    public int add(ProductCombo productCombo) {
+        return this.productComboMapper.insert(productCombo);
     }
 
     @Override
-    public Optional<Integer> update(ProductCombo productCombo) {
+    public int update(ProductCombo productCombo) {
 
-        return Optional.ofNullable(this.productComboMapper.updateByPrimaryKeySelective(productCombo));
+        return this.productComboMapper.updateByPrimaryKeySelective(productCombo);
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(this.productComboMapper.deleteByPrimaryKey(id));
+    public int delete(int id) {
+        return this.productComboMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public Optional<Integer> checkExistByName(String name) {
-        return Optional.ofNullable(productComboMapper.checkExistByName(name));
+    public int checkExistByNameAndProductId(String name,int productId) {
+        return productComboMapper.checkExistByNameAndProductId(name,productId);
     }
 }

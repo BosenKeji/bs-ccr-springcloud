@@ -3,8 +3,6 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 
-import java.util.Optional;
-
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.service
@@ -13,8 +11,8 @@ import java.util.Optional;
  */
 public interface IUserProductComboDayByAdminService {
 
-    Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId);
-    Optional<Integer> update(UserProductComboDayByAdmin userProductComboDayByAdmin);
-    Optional<UserProductComboDayByAdmin> get(int id);
+    int add(UserProductComboDay userProductComboDay,int adminId);
+    int update(UserProductComboDayByAdmin userProductComboDayByAdmin);
+    UserProductComboDayByAdmin get(int id);
 
 }

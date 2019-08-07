@@ -10,7 +10,6 @@ import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -33,7 +32,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
 
     @Override
-    public Optional<Integer> add(UserProductComboDay userProductComboDay,int adminId) {
+    public int add(UserProductComboDay userProductComboDay,int adminId) {
 
         //新增用户套餐时长
         userProductComboDayMapper.insert(userProductComboDay);
@@ -51,20 +50,20 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         userProductComboDayByAdmin.setAdminId(adminId);
         userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
 
-        return Optional.ofNullable(userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin));
+        return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
 
     }
 
     @Override
-    public Optional<Integer> update(UserProductComboDayByAdmin userProductComboDayByAdmin) {
-        return Optional.ofNullable(userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin));
+    public int update(UserProductComboDayByAdmin userProductComboDayByAdmin) {
+        return userProductComboDayByAdminMapper.updateByPrimaryKeySelective(userProductComboDayByAdmin);
     }
 
 
 
     @Override
-    public Optional<UserProductComboDayByAdmin> get(int id) {
-        return Optional.ofNullable(userProductComboDayByAdminMapper.selectByPrimaryKey(id));
+    public UserProductComboDayByAdmin get(int id) {
+        return userProductComboDayByAdminMapper.selectByPrimaryKey(id);
     }
 
 

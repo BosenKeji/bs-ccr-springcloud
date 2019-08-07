@@ -6,45 +6,48 @@ import cn.bosenkeji.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
     @Override
-    public Optional<User> get(int id) {
-        return Optional.ofNullable(userMapper.selectByPrimaryKey(id));
+    public User get(int id) {
+        return userMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public Optional<User> getByUsername(String username) {
-        return Optional.ofNullable(userMapper.selectByUsername(username));
+    public User getByUsername(String username) {
+        return userMapper.selectByUsername(username);
     }
 
     @Override
-    public Optional<User> getByTel(String tel) {
-        return Optional.ofNullable(userMapper.selectByTel(tel));
+    public User getByTel(String tel) {
+        return userMapper.selectByTel(tel);
     }
 
     @Override
-    public Optional<Integer> add(User user) {
-        return Optional.ofNullable(userMapper.insertSelective(user));
+    public Integer add(User user) {
+        return userMapper.insertSelective(user);
     }
 
     @Override
-    public Optional<Integer> update(User user) {
-        return Optional.ofNullable(userMapper.updateByPrimaryKeySelective(user));
+    public Integer updateByPrimaryKeySelective(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(userMapper.deleteByPrimaryKey(id));
+    public Integer delete(int id) {
+        return userMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public Optional<Integer> checkExistByUsrename(String username) {
-        return Optional.ofNullable(userMapper.checkExistByUsername(username));
+    public Integer checkExistByUsrename(String username) {
+        return userMapper.checkExistByUsername(username);
+    }
+
+    @Override
+    public Integer checkExistByTel(String tel) {
+        return userMapper.checkExistByTel(tel);
     }
 }

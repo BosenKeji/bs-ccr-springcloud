@@ -24,7 +24,7 @@ public interface ProductComboMapper {
     List<ProductCombo> findByProductIdAndStatus(Integer productId,Integer status);
 
     int selectTimeByPrimaryKey(Integer id);
-    int checkExistByName(String name);
+    int checkExistByNameAndProductId(String name,Integer productId);
 
     int selectProductIdByPrimaryKey(Integer id);
 

@@ -24,4 +24,5 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     int checkExistByUsername(String username);
+    int checkExistByTel(String tel);
 }
