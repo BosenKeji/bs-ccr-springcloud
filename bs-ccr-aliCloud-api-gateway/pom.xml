@@ -29,10 +29,10 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-cloudapi</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
         <!--模块依赖-->
         <dependency>
@@ -58,6 +58,10 @@
                 <exclusion>
                     <groupId>org.springframework.cloud</groupId>
                     <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>bosenCCR</groupId>
+                    <artifactId>bs-ccr-security-jwt-client</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
