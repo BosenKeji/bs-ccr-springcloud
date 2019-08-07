@@ -1,6 +1,5 @@
 package cn.bosenkeji.config;
 
-import cn.bosenkeji.plugin.SwaggerManualApiPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -115,10 +114,6 @@ public class SwaggerConfig {
     @Autowired
     private CachingOperationNameGenerator cachingOperationNameGenerator;
 
-    @Bean
-    public ApiListingScannerPlugin listingScanner() {
-        return new SwaggerManualApiPlugin(cachingOperationNameGenerator);
-    }
 
     @Bean
     public UiConfiguration uiConfig() {

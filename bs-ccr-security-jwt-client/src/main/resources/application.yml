@@ -1,0 +1,11 @@
+server:
+  port: 7300
+mybatis:
+  mapper-locations: classpath*:mapping/*.xml
+spring:
+  application:
+    name: bs-ccr-security-jwt-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848

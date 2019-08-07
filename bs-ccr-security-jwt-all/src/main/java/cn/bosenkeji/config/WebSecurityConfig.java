@@ -23,9 +23,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     /**
      * example:
      *  	auth.inMemoryAuthentication()
@@ -35,9 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 	        .withUser("admin").password(passwordEncoder.encode("nimda")).roles("ADMIN");
      */
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceImpl)
-                .and()
-                .userDetailsService(userDetailsServiceImpl);
+        auth.userDetailsService(userDetailsServiceImpl);
 
     }
 

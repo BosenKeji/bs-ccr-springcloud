@@ -9,7 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bs-ccr-security-jwt-server</artifactId>
+    <artifactId>bs-ccr-security-jwt-auth-server</artifactId>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -48,38 +49,11 @@
 
         <dependency>
             <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-swagger</artifactId>
-        </dependency>
-
-
-        <!-- 用户模块 -->
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-provider-user-front</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>bs-ccr-api</artifactId>
         </dependency>
         <dependency>
             <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-provider-user-boss</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>bs-ccr-service</artifactId>
         </dependency>
     </dependencies>
 

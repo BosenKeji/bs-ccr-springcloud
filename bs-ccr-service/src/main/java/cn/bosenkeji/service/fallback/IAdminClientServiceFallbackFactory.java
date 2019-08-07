@@ -34,7 +34,9 @@ public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdmi
 
             @Override
             public Optional<Admin> get(int id) {
-                return Optional.of(new Admin());
+                Admin admin = new Admin();
+                admin.setAccount("failed");
+                return Optional.of(admin);
             }
 
             @Override
@@ -50,6 +52,13 @@ public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdmi
             @Override
             public Result delete(int id) {
                 return new Result(1,"failed");
+            }
+
+            @Override
+            public Optional<Admin> selectByAccount(String account) {
+                Admin admin = new Admin();
+                admin.setAccount("failed");
+                return Optional.of(admin);
             }
         };
     }
