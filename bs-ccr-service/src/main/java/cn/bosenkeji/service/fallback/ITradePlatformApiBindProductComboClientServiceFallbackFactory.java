@@ -2,6 +2,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -26,6 +26,7 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             @Override
             public PageInfo getListByUserId(int pageNum,int pageSize,int userId) {
                 TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
+                //tradePlatformApiBindProductCombo.set
                 List list=new ArrayList();
                 list.add(tradePlatformApiBindProductCombo);
                 return new PageInfo(list);
@@ -33,27 +34,34 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
 
             @Override
             public Result addTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+
                 return new Result("0","hystrix");
             }
 
             @Override
             public PageInfo getNoBindTradePlatformApiListByUserId(int pageNum, int pageSize, int userId) {
-                return new PageInfo();
+                TradePlatformApi tradePlatformApi=new TradePlatformApi();
+                tradePlatformApi.setNickname("hystrix");
+                tradePlatformApi.setStatus(0);
+                List list=new ArrayList();
+                list.add(tradePlatformApi);
+                return new PageInfo(list);
             }
 
             @Override
             public PageInfo getNoBindUserProductComboListByUserId(int pageNum, int pageSize, int userId) {
+
                 return new PageInfo();
             }
 
             @Override
             public Result updateTradePlatformApiBindProductCombo(int id, int tradePlatformApiId, int userId) {
-                return new Result("0","fail");
+                return new Result("0","hystrix");
             }
 
             @Override
             public Result deleteTradePlatformApiBindProductCombo(int id, int userId) {
-                return new Result("0","fail");
+                return new Result("0","hystrix");
             }
         };
     }
