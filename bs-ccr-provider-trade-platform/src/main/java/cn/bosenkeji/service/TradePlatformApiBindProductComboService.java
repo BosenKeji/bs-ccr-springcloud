@@ -5,8 +5,6 @@ import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
 
-import java.util.Optional;
-
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.service
@@ -17,7 +15,7 @@ public interface TradePlatformApiBindProductComboService {
 
     PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId,int pageNum,int pageSize);
 
-    Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+    int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
 
     PageInfo<TradePlatformApi> findNoBindTradePlatformApiListByUserId(int userId,int pageNum,int pageSize);
 
@@ -30,11 +28,11 @@ public interface TradePlatformApiBindProductComboService {
      */
     PageInfo<UserProductCombo> findNoBindUserProductComboListByUserId(int userId,int pageNum,int pageSize);
 
-    Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId,int tradePlatformApiId);
-    //Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId,int userProductComboId);
-    Optional<Integer> checkExistByUserIdAndId(int userId,int id);
-    Optional<Integer> updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
-    Optional<Integer> delete(int id);
+    int checkExistByUserIdAndTradePlatformApiId(int userId,int tradePlatformApiId);
+    //int checkExistByUserIdAndUserProductComboId(int userId,int userProductComboId);
+    int checkExistByUserIdAndId(int userId,int id);
+    int updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
+    int delete(int id);
     int removeBinding(int id);
 
 }

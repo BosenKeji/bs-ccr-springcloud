@@ -7,9 +7,6 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.enums.UserProductComboEnum;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -52,7 +49,7 @@ public class UserProductComboController {
     @ApiOperation(value="获取用户套餐详情api接口",httpMethod = "GET",nickname = "getOneUserProductCombo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public UserProductCombo get(@PathVariable("id") @Min(1) @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int id) {
-        return this.iUserProductComboService.get(id).orElseThrow(()->new NotFoundException(UserProductComboEnum.NAME));
+        return this.iUserProductComboService.get(id);
     }
 
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
@@ -61,15 +58,14 @@ public class UserProductComboController {
                       ) {
 
         //判断用户是否没过该产品
-        this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())
-                .filter((value)->value==0)
-                .orElseThrow(()->new AddException(UserProductComboEnum.NAME));
+        if(this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())>=1)
+            return new Result("0","该用户不能重复买该产品");
+                /*.filter((value)->value==0)
+                .orElseThrow(()->new AddException(UserProductComboEnum.NAME));*/
         userProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductCombo.setStatus(1);
-        return new Result(this.iUserProductComboService.add(userProductCombo)
-                .filter((value)->value==1)
-                .orElseThrow(()->new AddException(UserProductComboEnum.NAME)));
+        return new Result(this.iUserProductComboService.add(userProductCombo));
     }
 
     @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")

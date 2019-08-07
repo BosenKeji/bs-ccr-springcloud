@@ -1,9 +1,5 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.DeleteException;
-import cn.bosenkeji.exception.UpdateException;
-import cn.bosenkeji.exception.enums.TradePlatformApiBindProductComboEnum;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
@@ -66,9 +62,7 @@ public class TradePlatformApiBindProductComboController {
 
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo)
-                .filter((value)->value>=1)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME)));
+        return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo));
     }
 
     @PutMapping("/{id}")
@@ -77,11 +71,19 @@ public class TradePlatformApiBindProductComboController {
                          @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api ID",required = true,type = "integer",example = "1") int tradePlatformApiId,
                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
         //判断该 api绑定是否为 该用户下的 否则不能操作
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
+        if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0) {
+            return new Result("0", "权限不足，不能进行更新操作");
+        }
+        //判断 是否为该用户 未绑定的 api
+        if(tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)>=1)
+            return new Result("0","交易平台api已被绑定或不存在");
+
+
+        /* }filter((value)->value==1)
                 .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
         tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)
                 .filter((value)->value==0)
-                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
+                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));*/
 
         //判断该交易平台api是否未用户未绑定的
         /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
@@ -103,8 +105,12 @@ public class TradePlatformApiBindProductComboController {
                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         //判断该 api绑定是否为 该用户下的 否则不能操作
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
-                .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));
+
+        if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0)
+            return new Result("0","权限不足，不能执行删除操作");
+
+              /*  .filter((value)->value==1)
+                .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));*/
 
         return new Result<>(this.tradePlatformApiBindProductComboService.removeBinding(id));
     }

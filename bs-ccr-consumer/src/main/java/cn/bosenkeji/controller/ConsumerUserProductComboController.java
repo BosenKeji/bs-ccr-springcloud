@@ -2,7 +2,6 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.vo.combo.UserProductCombo;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -41,7 +40,7 @@ public class ConsumerUserProductComboController {
 
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
     @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
-    public PageInfo listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+    public Object listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
                                  @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
 
         return this.iUserProductComboClientService.listByUserId(userId,pageNum,pageSize);

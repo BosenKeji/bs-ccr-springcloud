@@ -50,6 +50,10 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
+        </dependency>
 
 
         <!-- 用户模块 -->

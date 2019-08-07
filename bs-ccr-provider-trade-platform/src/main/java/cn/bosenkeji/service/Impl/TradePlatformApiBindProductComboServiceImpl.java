@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author xivin
@@ -65,9 +64,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
 
     @Override
-    public Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+    public int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
-        return Optional.ofNullable(tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo));
+        return tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo);
     }
 
 
@@ -85,7 +84,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         List<TradePlatformApi> userApi = tradePlatformApiMapper.findAllByUserId(userId);
         if(existApiIds!=null&&existApiIds.size()>0) {
             //if(userApi!=null&&userApi.size()>0) {
-                for (int i=existApiIds.size()-1;i>=0;i--) {
+                for (int i=userApi.size()-1;i>=0;i--) {
                     if(existApiIds.contains(userApi.get(i).getId())) {
                         userApi.remove(i);
                     }
@@ -143,37 +142,37 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     }
 
     @Override
-    public Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId, int tradePlatformApiId) {
+    public int checkExistByUserIdAndTradePlatformApiId(int userId, int tradePlatformApiId) {
 
         int i = tradePlatformApiMapper.checkExistByIdAndUserId(tradePlatformApiId, userId);
         if(i>=1) {
             //如果存在就不能插入，即api已经绑定了
-            return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindApiByUserIdAndTradePlatformApiId(userId,tradePlatformApiId));
+            return this.tradePlatformApiBindProductComboMapper.checkExistNotBindApiByUserIdAndTradePlatformApiId(userId,tradePlatformApiId);
         }else {
             //api不存在或者不属于该用户
-            return Optional.ofNullable(1);
+            return 1;
         }
 
     }
 
     /*@Override
-    public Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
+    public int checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
         return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindComboByUserIdAndUserProductComboId(userId,userProductComboId));
     }*/
 
     @Override
-    public Optional<Integer> updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
-        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.updateApiByPrimaryKey(tradePlatformApiBindProductCombo));
+    public int updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+        return this.tradePlatformApiBindProductComboMapper.updateApiByPrimaryKey(tradePlatformApiBindProductCombo);
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id));
+    public int delete(int id) {
+        return this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public Optional<Integer> checkExistByUserIdAndId(int userId, int id) {
-        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id));
+    public int checkExistByUserIdAndId(int userId, int id) {
+        return this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id);
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,7 +37,7 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     private IAdminClientService iAdminClientService;
 
     @Override
-    public boolean add(UserProductComboDay userProductComboDay) {
+    public int add(UserProductComboDay userProductComboDay) {
         //添加缓存
         int id = userProductComboDay.getUserProductComboId();
         String key="userproductcombo:id_"+id;
@@ -50,11 +49,11 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
             return userProductComboDayMapper.insert(userProductComboDay);
         }
         //当原来的用户套餐已过时时返回false
-        return false;
+        return 0;
     }
 
     @Override
-    public boolean update(UserProductComboDay userProductComboDay) {
+    public int update(UserProductComboDay userProductComboDay) {
         return userProductComboDayMapper.updateByPrimaryKeySelective(userProductComboDay);
     }
 
@@ -65,8 +64,8 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     }
 
     @Override
-    public Optional<UserProductComboDay> get(int id) {
-        return Optional.ofNullable(userProductComboDayMapper.selectByPrimaryKey(id));
+    public UserProductComboDay get(int id) {
+        return userProductComboDayMapper.selectByPrimaryKey(id);
     }
 
     @Override

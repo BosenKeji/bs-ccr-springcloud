@@ -48,7 +48,10 @@ public class UserController {
     public Result add(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
         if(userService.checkExistByUsrename(user.getUsername())!=0) {
-            return new Result("0","用户名已存在！");
+            return new Result("0","此用户名已存在！");
+        }
+        if(userService.checkExistByTel(user.getTel())!=0) {
+            return new Result("0","此电话号码已注册");
         }
 
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));

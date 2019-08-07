@@ -7,9 +7,8 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
-import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.enums.UserProductComboDayEnum;
 import cn.bosenkeji.service.IUserProductComboDayService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -45,14 +44,14 @@ public class UserProductComboDayController {
 
     @ApiOperation(value="获取用户套餐时长详情api接口",notes="获取用户套餐时长详情api接口",httpMethod = "GET")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
-    public UserProductComboDay get(@PathVariable("id") @Min(1) int id) { return this.iUserProductComboDayService.get(id).orElseThrow(()->new NotFoundException(UserProductComboDayEnum.NAME));}
+    public UserProductComboDay get(@PathVariable("id") @Min(1) int id) { return this.iUserProductComboDayService.get(id);}
 
     @ApiOperation(value="添加用户套餐时长信息api接口",notes="添加用户套餐时长信息api接口",httpMethod = "POST")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public boolean add(@RequestBody UserProductComboDay userProductComboDay) {
+    public Result add(@RequestBody UserProductComboDay userProductComboDay) {
         userProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return this.iUserProductComboDayService.add(userProductComboDay);
+        return new Result(this.iUserProductComboDayService.add(userProductComboDay));
     }
 
     @GetMapping("/list_by_tel")
