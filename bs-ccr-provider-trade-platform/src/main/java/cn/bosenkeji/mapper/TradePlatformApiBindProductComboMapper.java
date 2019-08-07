@@ -20,14 +20,16 @@ public interface TradePlatformApiBindProductComboMapper {
 
     List<TradePlatformApiBindProductCombo> findByUserId(Integer userId);
 
-    List<TradePlatformApiMapper> findNotInBindAndInApiListByUserId(Integer userId);
+    //List<TradePlatformApiMapper> findNotInBindAndInApiListByUserId(Integer userId);
 
-    List<Integer> findNotInBindAndInComboIdsByUserId(Integer userId);
+    //List<Integer> findNotInBindAndInComboIdsByUserId(Integer userId);
 
     int checkExistNotBindApiByUserIdAndTradePlatformApiId(Integer userId,Integer tradePlatformApiId);
-    int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
+    //int checkExistNotBindComboByUserIdAndUserProductComboId(Integer userId,Integer userProductComboId);
     int checkExistByUserIdAndId(Integer userId,Integer id);
 
     List<Integer> selectApiIdsByUserId(Integer userId);
     List<Integer> selectComboIdsByUserId(Integer userId);
+
+    int updateApiIdByPrimaryKey(Integer id,Integer tradePlatformApiId);
 }

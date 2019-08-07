@@ -79,6 +79,9 @@ public class TradePlatformApiBindProductComboController {
         //判断该 api绑定是否为 该用户下的 否则不能操作
         tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
                 .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
+        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)
+                .filter((value)->value==0)
+                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
 
         //判断该交易平台api是否未用户未绑定的
         /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
@@ -103,7 +106,7 @@ public class TradePlatformApiBindProductComboController {
         tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id).filter((value)->value==1)
                 .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));
 
-        return new Result<>(this.tradePlatformApiBindProductComboService.delete(id));
+        return new Result<>(this.tradePlatformApiBindProductComboService.removeBinding(id));
     }
 
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")

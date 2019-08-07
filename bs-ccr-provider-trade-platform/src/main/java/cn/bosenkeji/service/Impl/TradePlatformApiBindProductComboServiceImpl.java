@@ -66,6 +66,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Override
     public Optional<Integer> add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+
         return Optional.ofNullable(tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo));
     }
 
@@ -84,7 +85,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         List<TradePlatformApi> userApi = tradePlatformApiMapper.findAllByUserId(userId);
         if(existApiIds!=null&&existApiIds.size()>0) {
             //if(userApi!=null&&userApi.size()>0) {
-                for (int i=existApiIds.size();i>=0;i--) {
+                for (int i=existApiIds.size()-1;i>=0;i--) {
                     if(existApiIds.contains(userApi.get(i).getId())) {
                         userApi.remove(i);
                     }
@@ -143,13 +144,22 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Override
     public Optional<Integer> checkExistByUserIdAndTradePlatformApiId(int userId, int tradePlatformApiId) {
-        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindApiByUserIdAndTradePlatformApiId(userId,tradePlatformApiId));
+
+        int i = tradePlatformApiMapper.checkExistByIdAndUserId(tradePlatformApiId, userId);
+        if(i>=1) {
+            //如果存在就不能插入，即api已经绑定了
+            return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindApiByUserIdAndTradePlatformApiId(userId,tradePlatformApiId));
+        }else {
+            //api不存在或者不属于该用户
+            return Optional.ofNullable(1);
+        }
+
     }
 
-    @Override
+    /*@Override
     public Optional<Integer> checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
         return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindComboByUserIdAndUserProductComboId(userId,userProductComboId));
-    }
+    }*/
 
     @Override
     public Optional<Integer> updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
@@ -166,4 +176,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id));
     }
 
+    @Override
+    public int removeBinding(int id) {
+
+        return tradePlatformApiBindProductComboMapper.updateApiIdByPrimaryKey(id,0);
+    }
 }
