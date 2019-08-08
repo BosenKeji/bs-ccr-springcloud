@@ -11,10 +11,10 @@
       <arg column="lever" javaType="_int" jdbcType="INTEGER" />
       <arg column="strategy_sequence_id" javaType="_int" jdbcType="INTEGER" />
       <arg column="rate" javaType="_int" jdbcType="INTEGER" />
-      <arg column="stop_profit_ratio" javaType="_double" jdbcType="TINYINT" />
+      <arg column="stop_profit_ratio" javaType="_double" jdbcType="FLOAT" />
       <arg column="is_stop_profit_trace" javaType="_int" jdbcType="TINYINT" />
-      <arg column="stop_profit_trace_trigger_rate" javaType="_double" jdbcType="TINYINT" />
-      <arg column="stop_profit_trace_drop_rate" javaType="_double" jdbcType="TINYINT" />
+      <arg column="stop_profit_trace_trigger_rate" javaType="_double" jdbcType="FLOAT" />
+      <arg column="stop_profit_trace_drop_rate" javaType="_double" jdbcType="FLOAT" />
       <arg column="is_stop_profit_money" javaType="_int" jdbcType="TINYINT" />
       <arg column="is_stop_profit_grid" javaType="_int" jdbcType="TINYINT" />
       <arg column="build_reference" javaType="_int" jdbcType="TINYINT" />

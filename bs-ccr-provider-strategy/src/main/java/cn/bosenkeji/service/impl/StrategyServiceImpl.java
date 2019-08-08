@@ -98,11 +98,11 @@ public class StrategyServiceImpl implements StrategyService{
 
         other.setStrategySequenceId(strategyAttribute.getStrategySequenceId());
         other.setRate(strategyAttribute.getRate());
-        other.setStopProfitRatio(strategyAttribute.getStopProfitRatio());
+        other.setStopProfitRatio(strategyAttribute.getStopProfitRatio()/100);
 
         other.setIsStopProfitTrace(strategyAttribute.getIsStopProfitTrace());
-        other.setStopProfitTraceTriggerRate(strategyAttribute.getStopProfitTraceTriggerRate());
-        other.setStopProfitTraceDropRate(strategyAttribute.getStopProfitTraceDropRate());
+        other.setStopProfitTraceTriggerRate(strategyAttribute.getStopProfitTraceTriggerRate()/100);
+        other.setStopProfitTraceDropRate(strategyAttribute.getStopProfitTraceDropRate()/100);
 
         other.setIsStopProfitMoney(strategyAttribute.getIsStopProfitMoney());
         other.setIsStopProfitGrid(strategyAttribute.getIsStopProfitGrid());
