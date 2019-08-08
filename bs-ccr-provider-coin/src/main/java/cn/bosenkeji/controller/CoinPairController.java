@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -92,6 +93,12 @@ public class CoinPairController {
         }
 
         return new Result <>(this.coinPairService.delete(id));
+    }
+
+    @GetMapping("/all")
+    @ApiIgnore
+    public List<CoinPair> findAll() {
+        return coinPairService.list();
     }
 
     @ApiOperation(value = "发现服务")

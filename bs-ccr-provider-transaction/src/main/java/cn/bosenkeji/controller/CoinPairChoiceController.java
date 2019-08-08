@@ -134,7 +134,7 @@ public class CoinPairChoiceController {
     @GetMapping("/all")
     @ApiIgnore
     public List listCoinPairChoice() {
-        return coinPairChoiceService.listCoinPairChoice();
+        return coinPairChoiceService.findAll();
     }
 
 

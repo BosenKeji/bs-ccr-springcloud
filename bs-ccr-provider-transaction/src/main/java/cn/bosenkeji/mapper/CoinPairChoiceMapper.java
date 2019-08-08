@@ -28,5 +28,5 @@ public interface CoinPairChoiceMapper {
 
     List<CoinPairChoice> findAllByUserId (int userId);
 
-    List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
+    List<CoinPairChoice> findAll();
 }

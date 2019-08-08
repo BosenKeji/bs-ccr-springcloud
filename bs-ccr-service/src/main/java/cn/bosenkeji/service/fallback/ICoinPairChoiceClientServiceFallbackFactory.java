@@ -58,9 +58,10 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public List<CoinPairChoiceJoinCoinPair> listCoinPairChoice() {
+            public List<CoinPairChoice> findAll() {
                 List list = new ArrayList();
-                list.add(new CoinPairChoiceJoinCoinPair());
+                CoinPairChoice coinPairChoice = new CoinPairChoice();
+                list.add(coinPairChoice);
                 return list;
             }
         };

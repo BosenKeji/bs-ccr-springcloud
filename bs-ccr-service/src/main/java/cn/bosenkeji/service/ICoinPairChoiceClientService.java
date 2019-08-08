@@ -50,5 +50,5 @@ public interface ICoinPairChoiceClientService {
     public Result deleteOneCoinPairChoice(@PathVariable("id") int id);
 
     @GetMapping("/coin_pair_choice/all")
-    List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
+    List<CoinPairChoice> findAll();
 }

@@ -28,5 +28,5 @@ public interface CoinPairChoiceService {
 
     Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId,int userId);
 
-    List<CoinPairChoiceJoinCoinPair> listCoinPairChoice();
+    List<CoinPairChoice> findAll();
 }

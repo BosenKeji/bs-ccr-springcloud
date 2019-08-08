@@ -22,6 +22,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -99,6 +100,12 @@ public class TradePlatformApiController {
     @GetMapping("/user/{userId}")
     public TradePlatformApi selectByUserId(@PathVariable("userId") int userId) {
         return tradePlatformApiService.getByUserId(userId);
+    }
+
+    @GetMapping("/all")
+    @ApiIgnore
+    public List<TradePlatformApi> findAll() {
+        return tradePlatformApiService.findAll();
     }
 
     @RequestMapping("/discover")
