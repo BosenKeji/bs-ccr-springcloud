@@ -1,4 +1,3 @@
-drop table if exists oauth_client_details;
 create table oauth_client_details (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   client_id VARCHAR(255) ,
@@ -13,8 +12,7 @@ create table oauth_client_details (
   additional_information VARCHAR(4096),
   autoapprove VARCHAR(255)
 );
- 
-drop table if exists oauth_client_token;
+
 create table oauth_client_token (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   token_id VARCHAR(255),
@@ -23,8 +21,7 @@ create table oauth_client_token (
   user_name VARCHAR(255),
   client_id VARCHAR(255)
 );
- 
-drop table if exists oauth_access_token;
+
 create table oauth_access_token (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   token_id VARCHAR(255),
@@ -35,23 +32,20 @@ create table oauth_access_token (
   authentication LONG VARBINARY,
   refresh_token VARCHAR(255)
 );
- 
-drop table if exists oauth_refresh_token;
+
 create table oauth_refresh_token (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   token_id VARCHAR(255),
   token LONG VARBINARY,
   authentication LONG VARBINARY
 );
- 
-drop table if exists oauth_code;
+
 create table oauth_code (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   code VARCHAR(255),
   authentication LONG VARBINARY
 );
- 
-drop table if exists oauth_approvals;
+
 create table oauth_approvals (
     id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userId VARCHAR(255),
@@ -61,8 +55,7 @@ create table oauth_approvals (
     expiresAt TIMESTAMP,
     lastModifiedAt TIMESTAMP default '1970-01-01 08:00:01'
 );
- 
-drop table if exists ClientDetails;
+
 create table ClientDetails (
   id int (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   appId VARCHAR(255),

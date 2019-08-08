@@ -64,6 +64,13 @@ public class SwaggerConfig {
                     .build());
     @Bean
     public Docket createRestApi() {
+        ParameterBuilder authorizationParameterBuilder = new ParameterBuilder();
+        authorizationParameterBuilder.name("Authorization").description("认证Token").modelRef(new ModelRef("string")).parameterType("header").required(true).build();
+
+
+        List<Parameter> addParameters = new ArrayList<Parameter>();
+        addParameters.add(authorizationParameterBuilder.build());
+
         return new Docket(DocumentationType.SWAGGER_2).extensions(getExtension())
                 .apiInfo(getApiInfo())
                     .select()
@@ -75,6 +82,7 @@ public class SwaggerConfig {
                 .globalResponseMessage(RequestMethod.POST,globalResponses)
                 .globalResponseMessage(RequestMethod.PUT,globalResponses)
                 .globalResponseMessage(RequestMethod.DELETE,globalResponses)
+                .globalOperationParameters(addParameters)
                 ;
     }
 
