@@ -95,6 +95,12 @@ public class CoinPairController {
         return new Result <>(this.coinPairService.delete(id));
     }
 
+    @GetMapping("/section")
+    @ApiIgnore
+    public List<CoinPair> findSection(@RequestParam("ids") List<Integer> ids){
+        return this.coinPairService.listSection(ids);
+    }
+
     @GetMapping("/all")
     @ApiIgnore
     public List<CoinPair> findAll() {

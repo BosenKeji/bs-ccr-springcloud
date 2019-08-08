@@ -15,7 +15,7 @@ public interface TradePlatformCoinPairService {
 
     List<TradePlatformCoinPair> list();
 
-    List<TradePlatformCoinPair> listByTradePlatform(int tradePlatformId);
+    List<TradePlatformCoinPair> listByTradePlatformId(Integer tradePlatformId);
 
     /**
      * @param pageNum

@@ -9,6 +9,9 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+    <collection property="tradePlatformCoinPairs" ofType="cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair"
+                column="id" select="cn.bosenkeji.mapper.TradePlatformCoinPairMapper.findAllByTradePlatformId"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->

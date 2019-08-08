@@ -27,4 +27,6 @@ public interface CoinPairMapper {
     int updateByPrimaryKey(CoinPair record);
 
     List<CoinPair> findAll();
+
+    List<CoinPair> findSectionByIds(List<Integer> ids);
 }

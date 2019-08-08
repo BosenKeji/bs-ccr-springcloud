@@ -26,7 +26,7 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public List<TradePlatformCoinPair> listByTradePlatform(int tradePlatformId) {
+    public List<TradePlatformCoinPair> listByTradePlatformId(Integer tradePlatformId) {
         return this.tradePlatformCoinPairMapper.findAllByTradePlatformId(tradePlatformId);
     }
 

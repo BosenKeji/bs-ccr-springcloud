@@ -69,6 +69,15 @@ public class ICoinPairClientServiceFallbackFactory implements FallbackFactory<IC
                 return coinPairs;
             }
 
+            @Override
+            public List<CoinPair> findSection(List<Integer> ids) {
+                CoinPair coinPair=new CoinPair();
+                coinPair.setName("hystrix provider-coin");
+                List<CoinPair> coinPairs=new ArrayList<>();
+                coinPairs.add(coinPair);
+                return coinPairs;
+            }
+
         };
     }
 }
