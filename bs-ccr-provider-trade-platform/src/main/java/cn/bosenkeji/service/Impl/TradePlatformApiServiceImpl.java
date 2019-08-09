@@ -34,7 +34,7 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
         if (!tradePlatformApis.isEmpty()){
             fill(tradePlatformApis);
         }
-        return new PageInfo(tradePlatformApis);
+        return new PageInfo<>(tradePlatformApis);
     }
 
     private void fill(List<TradePlatformApi> tradePlatformApis) {

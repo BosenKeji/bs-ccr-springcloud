@@ -169,8 +169,8 @@ public class DealHandler {
                  */
                 int stopProfitType = Integer.valueOf(resultJOSNObject.get("is_use_follow_target_profit").toString());
                 double stopProfitPrice = Double.valueOf(resultJOSNObject.get("target_profit_price").toString());
-                double stopProfitRatio = Double.valueOf(resultJOSNObject.get("turn_down_ratio").toString());
-                double callBackRatio = Double.valueOf(resultJOSNObject.get("emit_ratio").toString());
+                double callBackRatio = Double.valueOf(resultJOSNObject.get("turn_down_ratio").toString());
+                double stopProfitRatio = Double.valueOf(resultJOSNObject.get("emit_ratio").toString());
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
 

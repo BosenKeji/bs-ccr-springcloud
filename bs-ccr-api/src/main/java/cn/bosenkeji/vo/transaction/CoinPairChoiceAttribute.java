@@ -28,8 +28,10 @@ public class CoinPairChoiceAttribute {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Date updatedAt;
 
     public int getId() {

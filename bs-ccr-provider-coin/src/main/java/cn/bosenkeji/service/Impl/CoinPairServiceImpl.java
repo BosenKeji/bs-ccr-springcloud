@@ -27,6 +27,11 @@ public class CoinPairServiceImpl implements CoinPairService {
     }
 
     @Override
+    public List<CoinPair> listSection(List<Integer> ids) {
+        return this.coinPairMapper.findSectionByIds(ids);
+    }
+
+    @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(list());

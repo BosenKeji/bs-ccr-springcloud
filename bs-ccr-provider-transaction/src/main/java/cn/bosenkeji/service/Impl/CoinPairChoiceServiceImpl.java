@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @Author CAJR
@@ -42,31 +40,49 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(fill( userId, coinId));
+        return new PageInfo<>(fill( userId, coinId));
     }
 
     private List<CoinPairChoice> fill(int userId,int coinId) {
+        //货币对Map
+        Map<Integer, CoinPair> coinPairMap = new HashMap<>();
+        //根据userId查询自选币list
         List<CoinPairChoice>  coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
+        //根据货币id查询货币对货币的列表
+        List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
+
+        //获取货币对的id的list
+        List<Integer> coinPairIds = new ArrayList<>();
+        if (!coinPairCoinList.isEmpty()){
+            for (CoinPairCoin c : coinPairCoinList) {
+                coinPairIds.add(c.getCoinPairId());
+            }
+        }
+
+        //根据货币对id列表的填充coinPairMap
+        List<CoinPair> coinPairs = this.iCoinPairClientService.findSection(coinPairIds);
+        if (!coinPairs.isEmpty()){
+            for (CoinPair c : coinPairs) {
+                coinPairMap.put(c.getId(), c);
+            }
+        }
+
+        //填充自选币的货币对数据
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
-                List<CoinPairCoin> coinPairCoins = this.iCoinPairCoinClientService.listByCoinId(coinId);
-                if (!coinPairCoins.isEmpty()){
-                    fill(c,coinPairCoins);
-                }
+                fill(c,coinPairMap);
             }
 
         }
         return coinPairChoices;
     }
 
-    private void fill(CoinPairChoice coinPairChoice, List<CoinPairCoin> coinPairCoins) {
-        for (CoinPairCoin coinPairCoin : coinPairCoins) {
-            if (coinPairCoin.getCoinPairId() == coinPairChoice.getCoinPartnerId()){
-                CoinPair coinPair = this.iCoinPairClientService.getCoinPair(coinPairCoin.getCoinPairId());
-                coinPairChoice.setCoinPair(coinPair);
-            }
+    private void fill(CoinPairChoice c, Map<Integer, CoinPair> coinPairMap) {
+        if (coinPairMap.containsKey(c.getCoinPartnerId())){
+            c.setCoinPair(coinPairMap.get(c.getCoinPartnerId()));
         }
     }
+
 
     @Override
     public CoinPairChoice get(int id) {

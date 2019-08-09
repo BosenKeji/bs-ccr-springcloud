@@ -1,6 +1,7 @@
 package cn.bosenkeji.vo.tradeplatform;
 
 import cn.bosenkeji.vo.coin.CoinPair;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
@@ -23,12 +24,19 @@ public class TradePlatform {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     /**非数据库字段*/
+    @ApiModelProperty(hidden = true)
     private List<CoinPair> coinPairs;
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    private List<TradePlatformCoinPair> tradePlatformCoinPairs;
 
     public int getId() {
         return id;
@@ -86,5 +94,11 @@ public class TradePlatform {
         this.coinPairs = coinPairs;
     }
 
+    public List<TradePlatformCoinPair> getTradePlatformCoinPairs() {
+        return tradePlatformCoinPairs;
+    }
 
+    public void setTradePlatformCoinPairs(List<TradePlatformCoinPair> tradePlatformCoinPairs) {
+        this.tradePlatformCoinPairs = tradePlatformCoinPairs;
+    }
 }

@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface CoinPairService {
     List<CoinPair> list();
 
+    List<CoinPair> listSection(List<Integer> ids);
+
     PageInfo listByPage(int pageNum, int pageSize);
 
     CoinPair get(int id);

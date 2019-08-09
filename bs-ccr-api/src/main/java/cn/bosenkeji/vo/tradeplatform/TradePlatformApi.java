@@ -34,11 +34,12 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("别名")
     private String nickname;
 
-
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     /**

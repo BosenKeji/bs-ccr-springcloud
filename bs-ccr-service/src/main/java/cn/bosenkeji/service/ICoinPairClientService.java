@@ -41,4 +41,7 @@ public interface ICoinPairClientService {
     @GetMapping("/coin_pair/all")
     List<CoinPair> findAll();
 
+    @GetMapping("/coin_pair/section")
+    public List<CoinPair> findSection(@RequestParam("ids") List<Integer> ids);
+
 }
