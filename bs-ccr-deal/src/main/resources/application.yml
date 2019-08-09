@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: bs-ccr-deal
+  nacos:
+    discovery:
+      server-addr: 127.0.0.1:8848
   cloud:
     stream:
       rocketmq:
@@ -17,9 +20,7 @@ spring:
 
         input1: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-1, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-1}
         input2: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-2, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-2}
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
+
   cache:
     type: redis
     redis:
