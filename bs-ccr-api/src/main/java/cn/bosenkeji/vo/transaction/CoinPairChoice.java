@@ -27,11 +27,14 @@ public class CoinPairChoice {
     @ApiModelProperty("是否开始策略")
     private int isStart;
 
+    @ApiModelProperty(hidden = true)
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    private Date updatedAt;
+    @ApiModelProperty(hidden = true)
+    private Timestamp updatedAt;
 
     /**非数据库字段*/
     private CoinPair coinPair;
@@ -88,11 +91,11 @@ public class CoinPairChoice {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

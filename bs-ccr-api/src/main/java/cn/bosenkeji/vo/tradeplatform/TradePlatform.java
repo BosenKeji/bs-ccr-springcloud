@@ -24,14 +24,18 @@ public class TradePlatform {
 
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     /**非数据库字段*/
+    @ApiModelProperty(hidden = true)
     private List<CoinPair> coinPairs;
 
     @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private List<TradePlatformCoinPair> tradePlatformCoinPairs;
 
     public int getId() {

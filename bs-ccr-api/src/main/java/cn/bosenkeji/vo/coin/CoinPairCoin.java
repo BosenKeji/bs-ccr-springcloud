@@ -27,8 +27,10 @@ public class CoinPairCoin implements Serializable {
     @ApiModelProperty("货币对货币 状态")
     private int status;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
     public int getId() {
