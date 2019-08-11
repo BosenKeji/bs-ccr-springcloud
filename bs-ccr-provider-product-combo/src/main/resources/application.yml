@@ -6,6 +6,8 @@ mybatis:
 spring:
   application:
     name: bs-ccr-provider-product-combo
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:

@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IProductService {
 
-    PageInfo<Product> list(int pageNum,int pageSize);
+    PageInfo<Product> list(int pageNum, int pageSize);
     Product get(int id);
 
     int add(Product product);

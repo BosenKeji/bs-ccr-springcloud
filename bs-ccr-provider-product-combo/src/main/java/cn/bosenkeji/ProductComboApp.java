@@ -12,7 +12,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableCircuitBreaker
 @MapperScan("cn.bosenkeji.mapper")
 public class ProductComboApp
 {

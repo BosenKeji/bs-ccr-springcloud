@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @Versio V1.0
  **/
 @SpringBootApplication
-@EnableResourceServer
 public class SpringSecurityApp {
     public static void main(String[] args) {
         SpringApplication.run(SpringSecurityApp.class, args);

@@ -88,7 +88,7 @@ public class DealHandler {
         return "test";
     }
 
-    @StreamListener("input2")
+    @StreamListener("input1")
     private void consumerMessage(String msg) {
 
         //将json字符串转换为json对象

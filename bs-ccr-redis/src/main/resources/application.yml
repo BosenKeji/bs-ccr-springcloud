@@ -3,32 +3,12 @@ server:
 spring:
   application:
     name: bs-ccr-redis
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: 127.0.0.1:8848
-  cache:
-    type: redis
-    redis:
-      time-to-live: 200000ms
-      cache-null-values: false
 
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    password: 123zxc
-    timeout: 1000ms
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
-        max-wait: -1ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 
 
-logging:
-  level:
-    cn.bosenkeji.mapper: debug
 

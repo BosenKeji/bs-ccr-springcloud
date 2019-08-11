@@ -14,8 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Email 8586826@qq.com
  * @Versio V1.0
  **/
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-//@RibbonClient(name = "BS-CCR-PROVIDER-COIN", configuration = RibbonConfig.class)
+@SpringBootApplication
 @EnableFeignClients("cn.bosenkeji.service")
 @EnableDiscoveryClient
 public class ConsumerApp {

@@ -10,10 +10,8 @@ import org.springframework.cache.annotation.EnableCaching;
  * Hello world!
  *
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @EnableCaching
-//@EnableDiscoveryClient
-//@EnableCircuitBreaker
 public class RedisApp
 {
     public static void main( String[] args )

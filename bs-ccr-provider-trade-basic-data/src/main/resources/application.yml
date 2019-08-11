@@ -5,6 +5,8 @@ mybatis:
 spring:
   application:
     name: bs-ccr-provider-trade-basic-data
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:

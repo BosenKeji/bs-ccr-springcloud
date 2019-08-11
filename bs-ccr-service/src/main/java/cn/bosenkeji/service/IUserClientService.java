@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @Version V1.0
  * @create 2019-07-31 19:16
  */
-@FeignClient(name = "bs-ccr-provider-user",configuration = FeignClientConfig.class,fallbackFactory = IUserClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = IUserClientServiceFallbackFactory.class)
 public interface IUserClientService {
 
     @GetMapping("/user/{id}")

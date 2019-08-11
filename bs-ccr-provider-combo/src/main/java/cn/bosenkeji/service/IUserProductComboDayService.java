@@ -13,9 +13,9 @@ public interface IUserProductComboDayService {
 
     int add(UserProductComboDay userProductComboDay);
     int update(UserProductComboDay userProductComboDay);
-    PageInfo<UserProductComboDay> list(int pageNum,int pageSize);
-    PageInfo<UserProductComboDay> selectByUserTel(String tel,int pageNum,int pageSize);
+    PageInfo<UserProductComboDay> list(int pageNum, int pageSize);
+    PageInfo<UserProductComboDay> selectByUserTel(String tel, int pageNum, int pageSize);
 
-    PageInfo<UserProductComboDay> selectByUserProductComboId(int userProductComboId,int pageNum,int pageSize);
+    PageInfo<UserProductComboDay> selectByUserProductComboId(int userProductComboId, int pageNum, int pageSize);
     UserProductComboDay get(int id);
 }

@@ -1,43 +1,15 @@
 server:
-  port: 8099
-
+  port: 9100
 spring:
   application:
     name: bs-ccr-deal
-  nacos:
-    discovery:
-      server-addr: 127.0.0.1:8848
+  main:
+    allow-bean-definition-overriding: true
   cloud:
-    stream:
-      rocketmq:
-        binder:
-          name-server: MQ_INST_1021863952199128_BbIjdWKo.mq-internet-access.mq-internet.aliyuncs.com:80
-          access-key: LTAIN21RWvvxv9RQ
-          secret-key: UlakZf4XZakiaHMvZDzrKwWXrTUe4Y
-      bindings:
-        output1: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-1, content-type: application/json}
-        output2: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-2, content-type: application/json}
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
-        input1: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-1, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-1}
-        input2: {destination: MQ_INST_1021863952199128_BbIjdWKo%bs-ccr-topic-2, content-type: application/json, group: MQ_INST_1021863952199128_BbIjdWKo%GID-bs-ccr-2}
-
-  cache:
-    type: redis
-    redis:
-      time-to-live: 200000ms
-      cache-null-values: false
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    password: 123zxc
-    timeout: 1000ms
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
-        max-wait: -1ms
 feign:
   hystrix:
     enabled: true

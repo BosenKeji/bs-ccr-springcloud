@@ -15,12 +15,12 @@ public interface IUserProductComboService {
 
     int add(UserProductCombo userProductCombo);
     int update(UserProductCombo userProductCombo);
-    PageInfo<UserProductCombo> list(int pageNum,int pageSize);
+    PageInfo<UserProductCombo> list(int pageNum, int pageSize);
     UserProductCombo get(int id);
 
     List<UserProductCombo> getByUserId(int userId);
-    PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel);
-    PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum,int pageSize,int userId);
-    int checkExistByProductIdAndUserId(int productId,int userId);
+    PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum, int pageSize, String userTel);
+    PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum, int pageSize, int userId);
+    int checkExistByProductIdAndUserId(int productId, int userId);
 
 }

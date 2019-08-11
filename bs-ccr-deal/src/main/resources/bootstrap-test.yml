@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        watch:
+          enabled: false
+      config:
+        server-addr: 127.0.0.1:8848
+        endpoint: addr-sz-internal.edas.aliyun.com
+        namespace : 3893fbec-c3c3-49d2-9843-ff20fdbc4219
+
+        file-extension : yml
+        ext-config[0]:
+          data-id: bs-ccr-page-size-config.yml
+        ext-config[1]:
+          data-id: bs-ccr-database-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-mq-config.yml
+        ext-config[3]:
+          data-id: bs-crr-common-config.yml
+logging:
+  level:
+    com:
+      alibaba: ERROR

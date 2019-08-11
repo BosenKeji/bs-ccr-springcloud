@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: bs-ccr-security-jwt-auth-server
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
