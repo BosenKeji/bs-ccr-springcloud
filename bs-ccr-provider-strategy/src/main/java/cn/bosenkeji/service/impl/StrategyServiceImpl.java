@@ -2,11 +2,9 @@ package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.StrategyAttributeMapper;
 import cn.bosenkeji.mapper.StrategyMapper;
-import cn.bosenkeji.mapper.StrategySequenceMapper;
 import cn.bosenkeji.service.StrategyService;
 import cn.bosenkeji.vo.strategy.Strategy;
 import cn.bosenkeji.vo.strategy.StrategyAttribute;
-import cn.bosenkeji.vo.strategy.StrategySequence;
 import cn.bosenkeji.vo.strategy.StrategyOther;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +25,6 @@ public class StrategyServiceImpl implements StrategyService{
     @Autowired
     private StrategyAttributeMapper strategyAttributeMapper;
 
-    @Autowired
-    private StrategySequenceMapper strategySequenceMapper;
-
 
     @Override
     public Optional<Integer> addStrategyBySelective(Strategy strategy) {
@@ -40,33 +35,19 @@ public class StrategyServiceImpl implements StrategyService{
 
     @Override
     public Optional<Integer> insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
-        Optional result = Optional.ofNullable(null);
-        boolean checkStrategy = false , checkSequence = false;
-        Strategy strategy = strategyMapper.findStrategy(strategyAttribute.getStrategyId());
-        StrategySequence sequence = strategySequenceMapper.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId());
-        if (strategy != null) {
-            checkStrategy = true;
-        }
-        if (sequence != null) {
-            checkSequence = true;
-        }
-        if (checkStrategy && checkSequence) {
-            strategyAttribute.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            strategyAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            int i = strategyAttributeMapper.insertSelective(strategyAttribute);
-            if (i > 0) {
-                result = Optional.of(i);
-            }
-        }
-        return result;
+        strategyAttribute.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        strategyAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        return Optional.of(strategyAttributeMapper.insertSelective(strategyAttribute));
     }
 
     @Override
     public StrategyOther getStrategy(Integer id) {
         Strategy strategy = strategyMapper.findStrategy(id);
+        if (strategy == null) {
+            return null;
+        }
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        StrategyOther strategyOther = convertStrategyOther(strategy, strategyAttribute);
-        return strategyOther;
+        return convertStrategyOther(strategy, strategyAttribute);
     }
 
     @Override
@@ -77,13 +58,23 @@ public class StrategyServiceImpl implements StrategyService{
 
     @Override
     public Optional<Integer> checkStrategyByName(String name) {
-        return Optional.ofNullable(strategyMapper.checkStrategyExistByName(name));
+        return Optional.of(strategyMapper.checkStrategyExistByName(name));
     }
 
 
     @Override
     public Optional<Integer> checkStrategyById(Integer id) {
         return Optional.of(strategyMapper.checkStrategyExistById(id));
+    }
+
+    @Override
+    public Optional<Integer> checkAttributeByIdOrNameOrStrategyId(Integer id, String name, Integer strategyId) {
+        return Optional.of(strategyAttributeMapper.checkStrategyAttributeByIdOrNameOrStrategyId(id,name,strategyId));
+    }
+
+    @Override
+    public Optional<Integer> checkStrategyAttributeBySequenceId(Integer sequenceId) {
+        return Optional.of(strategyAttributeMapper.checkStrategyAttributeBySequenceId(sequenceId));
     }
 
     private StrategyOther convertStrategyOther(Strategy strategy, StrategyAttribute strategyAttribute) {

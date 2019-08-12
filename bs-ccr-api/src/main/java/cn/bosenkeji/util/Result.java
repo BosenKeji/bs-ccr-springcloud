@@ -35,6 +35,7 @@ public class Result<T> implements Serializable {
 
     public Result(T data, String msg) {
         super();
+        this.data = data;
         this.msg = msg;
     }
 }

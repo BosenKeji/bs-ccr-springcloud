@@ -22,4 +22,8 @@ public interface StrategyService {
     Optional<Integer> checkStrategyByName(String name);
 
     Optional<Integer> checkStrategyById(Integer id);
+
+    Optional<Integer> checkStrategyAttributeBySequenceId(Integer sequenceId);
+
+    Optional<Integer> checkAttributeByIdOrNameOrStrategyId(Integer id, String name, Integer strategyId);
 }

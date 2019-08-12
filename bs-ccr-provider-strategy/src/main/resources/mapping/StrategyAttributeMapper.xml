@@ -171,4 +171,23 @@
     from strategy_attribute
     where strategy_id = #{strategyId}
   </select>
+
+  <select id="checkStrategyAttributeBySequenceId" resultType="java.lang.Integer">
+    select EXISTS(select 1 from strategy_attribute where strategy_sequence_id = #{sequenceId})
+  </select>
+
+  <select id="checkStrategyAttributeByIdOrNameOrStrategyId" resultType="java.lang.Integer">
+    select EXISTS(select 1 from strategy_attribute
+      <where>
+        <if test="id != null">
+          or id = #{id}
+        </if>
+        <if test="name != null">
+          or name = #{name}
+        </if>
+        <if test="strategyId != null">
+          or strategy_id = #{strategyId}
+        </if>
+      </where>)
+  </select>
 </mapper>

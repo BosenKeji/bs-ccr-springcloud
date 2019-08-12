@@ -1,8 +1,5 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.enums.StrategyEnum;
-import cn.bosenkeji.exception.enums.StrategySequenceEnum;
 import cn.bosenkeji.service.StrategyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
@@ -20,7 +17,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
-import java.util.Optional;
 
 
 @RestController
@@ -42,10 +38,12 @@ public class StrategyController {
     public Result addStrategyBySelective(
             @RequestBody Strategy strategy
     ) {
-        return new Result<>(strategyService.addStrategyBySelective(strategy)
-                .filter((value)->value>=0)
-                .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
-        );
+        boolean checkStrategyId = strategyService.checkStrategyById(strategy.getId()).get() > 0;
+        boolean checkStrategyName = strategyService.checkStrategyByName(strategy.getName()).get() > 0;
+        if (checkStrategyName || checkStrategyId) {
+            return new Result<>(0 , "添加策略失败，该策略已存在！");
+        }
+        return new Result<>(strategyService.addStrategyBySelective(strategy));
     }
 
     @PostMapping(value = "/attribute/")
@@ -55,10 +53,21 @@ public class StrategyController {
     public Result addStrategyAttributeBySelective(
             @RequestBody StrategyAttribute strategyAttribute
     ) {
-        return new Result<>(strategyService.insertStrategyAttributeBySelective(strategyAttribute)
-                .filter((value)->value>=0)
-                .orElseThrow(()-> new AddException(StrategyEnum.STRATEGY_EXIST))
-        );
+        boolean checkStrategyId = strategyService.checkStrategyById(strategyAttribute.getStrategyId()).get() > 0;
+        if (!checkStrategyId) {
+            return new Result<>(0,"策略属性添加失败，对应的策略信息不存在！");
+        }
+        boolean checkStrategyBySequenceId = strategyService.checkStrategyAttributeBySequenceId(strategyAttribute.getStrategySequenceId()).get() > 0;
+        if (!checkStrategyBySequenceId) {
+            return new Result<>(0,"添加失败，不存在对应的数列！");
+        }
+        boolean checkAttribute = strategyService.checkAttributeByIdOrNameOrStrategyId(
+                strategyAttribute.getId(),strategyAttribute.getName(),strategyAttribute.getStrategyId()
+        ).get() > 0;
+        if (checkAttribute) {
+            return new Result<>(0,"策略属性添加失败，该策略属性已存在！");
+        }
+        return new Result<>(strategyService.insertStrategyAttributeBySelective(strategyAttribute));
     }
 
     @GetMapping(value = "/{id}")
@@ -68,7 +77,11 @@ public class StrategyController {
     public StrategyOther get(
             @PathVariable("id") @Min(value = 1) @ApiParam(value = "策略的ID值",example = "1",required = true) Integer id
     ) {
-        return strategyService.getStrategy(id);
+        StrategyOther strategyOther = strategyService.getStrategy(id);
+        if (strategyOther == null) {
+            return new StrategyOther();
+        }
+        return strategyOther;
     }
 
     @GetMapping(value="/")
