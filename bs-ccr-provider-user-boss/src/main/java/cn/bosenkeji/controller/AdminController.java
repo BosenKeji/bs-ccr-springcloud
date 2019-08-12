@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -78,6 +79,12 @@ public class AdminController {
     @ApiOperation(value = "获取指定Account的管理员",httpMethod = "GET",nickname = "getAdminByAccount")
     public Optional<Admin> selectByAccount(@PathVariable("account") @Min(1) @ApiParam(value = "管理员的Account",type = "integer") String account) {
         return adminService.selectByAccount(account);
+    }
+
+    @GetMapping("/list_by_ids")
+    @ApiOperation(value = "获取多个ID的管理员列表",httpMethod = "GET",nickname = "getAdminListByIds")
+    public Map<Integer,Admin> listByIds(@RequestParam("ids") @ApiParam(value = "管理员ID列表",required = true,type = "list",example = "1,2") List<Integer> ids) {
+        return adminService.selectByPrimaryKeys(ids);
     }
 
 }

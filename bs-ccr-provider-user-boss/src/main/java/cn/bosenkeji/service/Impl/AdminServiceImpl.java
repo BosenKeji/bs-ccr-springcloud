@@ -8,9 +8,11 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Optional;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
+    @Resource
     private AdminMapper adminMapper;
 
     @Override
@@ -64,5 +66,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Optional<Integer> delete(int id) {
         return Optional.of(adminMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Map<Integer, Admin> selectByPrimaryKeys(List<Integer> ids) {
+
+        return adminMapper.selectByPrimaryKeys(ids);
     }
 }

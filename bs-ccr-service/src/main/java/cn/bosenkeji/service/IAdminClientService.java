@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -40,4 +42,7 @@ public interface IAdminClientService {
 
     @GetMapping("/admin/account/{account}")
     public Optional<Admin> selectByAccount(@PathVariable("account")  String account);
+
+    @GetMapping("/admin/list_by_ids")
+    public Map<Integer,Admin> listByIds(@RequestParam("ids") List<Integer> ids);
 }

@@ -8,7 +8,9 @@ import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -51,6 +53,17 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
                 List list=new ArrayList();
                 list.add(userProductCombo);
                 return new PageInfo(list);
+            }
+
+            @Override
+            public Map<Integer, UserProductCombo> getByPrimaryKeys(List<Integer> ids) {
+                Map<Integer,UserProductCombo> map=new HashMap<>();
+                UserProductCombo userProductCombo=new UserProductCombo();
+                userProductCombo.setId(0);
+                userProductCombo.setOrderNumber("hystrix");
+                userProductCombo.setRemark("hystrix");
+                map.put(0,userProductCombo);
+                return map;
             }
         };
     }

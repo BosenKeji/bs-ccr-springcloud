@@ -25,6 +25,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user_product_combo")
@@ -82,6 +84,11 @@ public class UserProductComboController {
                                   @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
         //return this.iUserProductComboService.getByUserId(userId);
         return this.iUserProductComboService.selectUserProductComboByUserId(pageNum,pageSize,userId);
+    }
+
+    @GetMapping("/list_by_ids")
+    public Map<Integer,UserProductCombo> listByPrimaryKeys(@RequestParam("ids") List<Integer> ids) {
+        return iUserProductComboService.selectByPrimaryKeys(ids);
     }
 
     //获取单个用户套餐交易平台api接口

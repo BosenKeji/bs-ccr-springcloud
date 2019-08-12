@@ -1,8 +1,10 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.Admin;
+import org.apache.ibatis.annotations.MapKey;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +22,7 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     List<Admin> findAll();
+
+    @MapKey("id")
+    Map<Integer,Admin> selectByPrimaryKeys(List<Integer> ids);
 }
