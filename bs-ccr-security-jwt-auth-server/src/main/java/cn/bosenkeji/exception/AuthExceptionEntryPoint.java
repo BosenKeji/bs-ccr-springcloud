@@ -8,9 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
@@ -22,9 +20,11 @@ public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
             throws ServletException {
 
         Map map = new HashMap();
+        List<String> errorList = new ArrayList<>();
+        errorList.add(authException.getMessage());
         map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
         map.put("status", "401");
-        map.put("message", authException.getMessage());
+        map.put("message", errorList);
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         try {

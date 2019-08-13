@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName customAccessDeniedHandler
@@ -31,10 +29,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
+
+        List<String> errorList = new ArrayList<>();
+        errorList.add(accessDeniedException.getMessage());
         Map map = new HashMap();
         map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
         map.put("status", "400");
-        map.put("errors", accessDeniedException.getMessage());
+        map.put("errors", errorList);
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(objectMapper.writeValueAsString(map));
