@@ -8,6 +8,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 
@@ -22,10 +23,9 @@ public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthExc
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         gen.writeStartObject();
-        gen.writeStringField("error", String.valueOf(value.getHttpErrorCode()));
-        gen.writeStringField("message", value.getMessage());
-        gen.writeStringField("path", request.getServletPath());
-        gen.writeStringField("timestamp", String.valueOf(new Date().getTime()));
+        gen.writeStringField("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
+        gen.writeStringField("status", String.valueOf(value.getHttpErrorCode()));
+        gen.writeStringField("errors", value.getMessage());
         if (value.getAdditionalInformation()!=null) {
             for (Map.Entry<String, String> entry : value.getAdditionalInformation().entrySet()) {
                 String key = entry.getKey();

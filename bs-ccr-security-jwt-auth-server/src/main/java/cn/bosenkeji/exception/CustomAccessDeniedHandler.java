@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +32,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
         Map map = new HashMap();
-        map.put("error", "400");
-        map.put("message", accessDeniedException.getMessage());
-        map.put("path", request.getServletPath());
-        map.put("timestamp", String.valueOf(new Date().getTime()));
+        map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
+        map.put("status", "400");
+        map.put("errors", accessDeniedException.getMessage());
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(objectMapper.writeValueAsString(map));
