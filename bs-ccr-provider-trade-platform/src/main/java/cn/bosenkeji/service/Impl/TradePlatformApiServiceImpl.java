@@ -24,24 +24,12 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Resource
     TradePlatformApiMapper tradePlatformApiMapper;
 
-    @Resource
-    TradePlatformService tradePlatformService;
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId) {
         PageHelper.startPage(pageNum,pageSize);
         List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(userId);
-        if (!tradePlatformApis.isEmpty()){
-            fill(tradePlatformApis);
-        }
         return new PageInfo<>(tradePlatformApis);
-    }
-
-    private void fill(List<TradePlatformApi> tradePlatformApis) {
-        for (TradePlatformApi t : tradePlatformApis) {
-            TradePlatform tradePlatform = this.tradePlatformService.get(t.getTradePlatformId());
-            t.setTradePlatform(tradePlatform);
-        }
     }
 
     @Override

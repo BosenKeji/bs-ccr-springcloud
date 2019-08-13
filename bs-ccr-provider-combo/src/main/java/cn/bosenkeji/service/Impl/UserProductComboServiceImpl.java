@@ -3,11 +3,15 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
+import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.vo.User;
+import cn.bosenkeji.vo.combo.ProductCombo;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +22,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -40,6 +45,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     @Resource
     private IUserClientService iUserClientService;
+
+    @Resource
+    private IProductClientService iProductClientService;
 
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
@@ -126,7 +134,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
      * @param userId
      * @return
      */
-    @Override
+    /*@Override
     public List<UserProductCombo> getByUserId(int userId) {
 
         //查询用户id列表
@@ -155,7 +163,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         return list;
 
-    }
+    }*/
 
 
     /**
@@ -169,13 +177,23 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     public PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel) {
 
         PageHelper.startPage(pageNum,pageSize);
-        User user = iUserClientService.getOneUserByTel(userTel);
+        User user=null;
+
+        try{
+            user = iUserClientService.getOneUserByTel(userTel);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new PageInfo<>();
+        }
+
 
         //查不到用户
         if(user==null) {
             return new PageInfo<>();
         }
         //从数据库查询
+
+        List<Integer> pids=new ArrayList<>();
 
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(user.getId());
 
@@ -185,7 +203,23 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             int id = userProductCombo.getId();
             long time=userProductComboRedisTemplate.getExpire(id);
 
-            userProductCombo.setRemainTime((int)time);
+            userProductCombo.setRemainTime(time>0?(int)time:0);
+
+            //循环收集产品ID
+            pids.add(userProductCombo.getProductCombo().getProductId());
+        }
+
+        if(pids!=null&&pids.size()>0) {
+
+            //通过多个id获取产品的 map
+            Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
+            //循环把产品 映射到套餐中
+            for (UserProductCombo userProductCombo:userProductCombos) {
+                Integer id=userProductCombo.getProductCombo().getProductId();
+                if(id!=null&&id>0&productMap.containsKey(id)) {
+                    userProductCombo.getProductCombo().setProduct(productMap.get(id));
+                }
+            }
         }
         return new PageInfo<>(userProductCombos);
     }
@@ -203,6 +237,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
+        List<Integer> pids=new ArrayList<>();
 
         for (UserProductCombo userProductCombo : userProductCombos) {
 
@@ -210,8 +245,26 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             int id = userProductCombo.getId();
             long time=userProductComboRedisTemplate.getExpire(id);
 
-            userProductCombo.setRemainTime((int)time);
+
+            userProductCombo.setRemainTime(time>0?(int) time:0);
+
+            //收集多个产品 ID
+            pids.add(userProductCombo.getProductCombo().getProductId());
         }
+
+        if(pids!=null&&pids.size()>0) {
+
+            //通过多个产品ID查询产品列表
+            Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
+            //逐一映射
+            for (UserProductCombo userProductCombo:userProductCombos) {
+                Integer id=userProductCombo.getProductCombo().getProductId();
+                if(id!=null&&id>0&productMap.containsKey(id)) {
+                    userProductCombo.getProductCombo().setProduct(productMap.get(id));
+                }
+            }
+        }
+
         return new PageInfo<>(userProductCombos);
     }
 
@@ -219,5 +272,42 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     public int checkExistByProductIdAndUserId(int productComboId,int userId) {
         int productId=productComboMapper.selectProductIdByPrimaryKey(productComboId);
         return userProductComboMapper.checkExistByProductIdAndUserId(productId,userId);
+    }
+
+    @Override
+    public Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids) {
+        Map<Integer,UserProductCombo> userProductCombosMap=userProductComboMapper.selectByPrimaryKeys(ids);
+        List<UserProductCombo> userProductCombos=new ArrayList<>(userProductCombosMap.values());
+        getProductByPids(userProductCombos);
+        return userProductCombosMap;
+    }
+
+    public List<UserProductCombo> getProductByPids(List<UserProductCombo> userProductCombos) {
+        List<Integer> pids=new ArrayList<>();
+        for (UserProductCombo userProductCombo : userProductCombos) {
+
+            //从缓存拿去剩余时间
+            int id = userProductCombo.getId();
+            long time=userProductComboRedisTemplate.getExpire(id);
+
+            userProductCombo.setRemainTime(time>0?(int)time:0);
+
+            //循环收集产品ID
+            pids.add(userProductCombo.getProductCombo().getProductId());
+        }
+
+        if(pids!=null&&pids.size()>0) {
+
+            //通过多个id获取产品的 map
+            Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
+            //循环把产品 映射到套餐中
+            for (UserProductCombo userProductCombo:userProductCombos) {
+                Integer id=userProductCombo.getProductCombo().getProductId();
+                if(id!=null&&id>0&productMap.containsKey(id)) {
+                    userProductCombo.getProductCombo().setProduct(productMap.get(id));
+                }
+            }
+        }
+        return userProductCombos;
     }
 }

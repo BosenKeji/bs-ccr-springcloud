@@ -18,6 +18,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -83,6 +85,11 @@ public class ProductController {
         product.setStatus(status);
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(this.iProductService.updateStatus(product));
+    }
+
+    @GetMapping("/list_by_ids")
+    public Map<Integer,Product> listByPrimaryKes(@RequestParam("ids") List<Integer> ids) {
+        return this.iProductService.selectByPrimaryKeys(ids);
     }
 
 

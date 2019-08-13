@@ -1,9 +1,11 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -18,9 +20,11 @@ public interface IUserProductComboService {
     PageInfo<UserProductCombo> list(int pageNum, int pageSize);
     UserProductCombo get(int id);
 
-    List<UserProductCombo> getByUserId(int userId);
+    //List<UserProductCombo> getByUserId(int userId);
     PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum, int pageSize, String userTel);
     PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum, int pageSize, int userId);
     int checkExistByProductIdAndUserId(int productId, int userId);
+
+    Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
 
 }

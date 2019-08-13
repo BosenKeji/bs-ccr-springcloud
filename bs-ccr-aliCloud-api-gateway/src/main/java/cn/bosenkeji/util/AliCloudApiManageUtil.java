@@ -5,6 +5,7 @@ import com.aliyuncs.cloudapi.model.v20160714.*;
 import com.aliyuncs.exceptions.ClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -46,6 +47,17 @@ public class AliCloudApiManageUtil {
 
     @Value("${api.bodyFormat}")
     private String bodyFormat;
+
+    @Value("${api.vpcConfig.vpcId}")
+    private String vpcId;
+
+    @Value("${api.vpcConfig.instanceId}")
+    private String instanceId;
+
+    @Value("${api.vpcConfig.name}")
+    private String vpcName;
+
+
 
 
     /**
@@ -266,7 +278,10 @@ public class AliCloudApiManageUtil {
 
         serviceConfig.setServiceTimeout(serviceTimeout);
         serviceConfig.setServiceAddress(serviceAddress);
-
+        serviceConfig.setServiceVpcEnable(true);
+        serviceConfig.setContentTypeCatagory("CUSTOM");
+        serviceConfig.setContentTypeValue(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        setVpcConfig(serviceConfig);
 
         request.setGroupId(groupId);
         request.setVisibility(visibility);
@@ -323,5 +338,17 @@ public class AliCloudApiManageUtil {
         return client.getAcsResponse(describeModelsRequest);
     }
 
+    /**
+     * TODO 设置vpc
+     * @param serviceConfig
+     */
+    public void setVpcConfig(DescribeApiResponse.ServiceConfig serviceConfig){
+        DescribeApiResponse.VpcConfig vpcConfig = new DescribeApiResponse.VpcConfig();
+        vpcConfig.setVpcId(vpcId);
+        vpcConfig.setInstanceId(instanceId);
+        vpcConfig.setName(vpcName);
+
+        serviceConfig.setVpcConfig(vpcConfig);
+    }
 
 }

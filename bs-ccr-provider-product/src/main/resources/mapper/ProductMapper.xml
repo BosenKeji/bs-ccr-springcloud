@@ -136,4 +136,14 @@
     <select id="checkExistByName" parameterType="java.lang.String" resultType="java.lang.Integer">
     SELECT EXISTS (select 1 from product where `name`=#{name} limit 1)
   </select>
+
+    <select id="selectByPrimaryKeys" parameterType="List" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from product
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator="," >
+            #{id}
+        </foreach>
+    </select>
 </mapper>

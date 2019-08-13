@@ -60,6 +60,16 @@ public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdmi
                 admin.setAccount("failed");
                 return Optional.of(admin);
             }
+
+            @Override
+            public Map<Integer, Admin> listByIds(List<Integer> ids) {
+                Map<Integer,Admin> map=new HashMap<>();
+                Admin admin=new Admin();
+                admin.setId(0);
+                admin.setAccount("hystrix");
+                map.put(0,admin);
+                return map;
+            }
         };
     }
 

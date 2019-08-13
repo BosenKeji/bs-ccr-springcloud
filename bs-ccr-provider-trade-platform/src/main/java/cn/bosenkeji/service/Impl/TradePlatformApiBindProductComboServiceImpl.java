@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -24,10 +26,10 @@ import java.util.List;
 @Service
 public class TradePlatformApiBindProductComboServiceImpl implements TradePlatformApiBindProductComboService {
 
-    @Autowired
+    @Resource
     private TradePlatformApiBindProductComboMapper tradePlatformApiBindProductComboMapper;
 
-    @Autowired
+    @Resource
     private TradePlatformApiMapper tradePlatformApiMapper;
 
     //注入用户套餐生产者
@@ -46,15 +48,30 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
                 new PageInfo<>(tradePlatformApiBindProductComboMapper.findByUserId(userId));*/
         List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboMapper.findByUserId(userId);
 
+        //
+        List<Integer> upcIds=new ArrayList<>();
+
         //分别查询对应的用户套餐——调用用户套餐的服务
         for (TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo : pageList) {
             int upc_id=tradePlatformApiBindProductCombo.getUserProductComboId();
             if(upc_id>0) {
-                UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId());
+                upcIds.add(upc_id);
+                /*UserProductCombo userProductCombo = iUserProductComboClientService.getUserProductCombo(tradePlatformApiBindProductCombo.getUserProductComboId());
                 if (userProductCombo != null) {
                     tradePlatformApiBindProductCombo.setUserProductCombo(userProductCombo);
+                }*/
+            }
+        }
+
+        if(upcIds.size()>0) {
+            Map<Integer,UserProductCombo> userProductComboMap=iUserProductComboClientService.getByPrimaryKeys(upcIds);
+            for (int i=0;i<pageList.size();i++) {
+                Integer upc_id=pageList.get(i).getUserProductComboId();
+                if(upc_id!=null&&upc_id>0&&userProductComboMap.containsKey(upc_id)) {
+                    pageList.get(i).setUserProductCombo(userProductComboMap.get(upc_id));
                 }
             }
+
         }
 
        // tradePlatformApiBindProductComboPageInfo.setList(pageList);

@@ -9,6 +9,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName IProductClientService
@@ -37,4 +39,7 @@ public interface IProductClientService {
 
     @PutMapping("/product/{id}")
     public Result updateProductStatus(@PathVariable("id") int id,@RequestParam("status") int status);
+
+    @GetMapping("/product/list_by_ids")
+    public Map<Integer,Product> listByPrimaryKeys(@RequestParam("ids") List<Integer> ids);
 }

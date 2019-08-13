@@ -33,7 +33,7 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(list());
+        return new PageInfo<>(list());
     }
 
     @Override

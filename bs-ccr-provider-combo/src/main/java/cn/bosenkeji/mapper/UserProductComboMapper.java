@@ -1,8 +1,11 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
+import org.apache.ibatis.annotations.MapKey;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserProductComboMapper {
     int deleteByPrimaryKey(Integer id);
@@ -26,5 +29,8 @@ public interface UserProductComboMapper {
     List<UserProductCombo> selectUserProductComboByUserId(Integer userId);
 
     Integer checkExistByProductIdAndUserId(Integer productId, Integer userId);
+
+    @MapKey("id")
+    Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
 
 }
