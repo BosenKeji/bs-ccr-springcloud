@@ -77,7 +77,7 @@ public class AdminController {
 
     @GetMapping("/account/{account}")
     @ApiOperation(value = "获取指定Account的管理员",httpMethod = "GET",nickname = "getAdminByAccount")
-    public Optional<Admin> selectByAccount(@PathVariable("account") @Min(1) @ApiParam(value = "管理员的Account",type = "integer") String account) {
+    public Optional<Admin> selectByAccount(@PathVariable("account") @ApiParam(value = "管理员的Account",type = "integer") String account) {
         return adminService.selectByAccount(account);
     }
 
