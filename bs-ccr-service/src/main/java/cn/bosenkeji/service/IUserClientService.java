@@ -43,4 +43,6 @@ public interface IUserClientService {
     @PutMapping("/user/update_username/{id}")
     Result updateUserUsername(@PathVariable("id") int id,@RequestParam("username") String username);
 
+    @PutMapping("/user/update_binding")
+    Result updateBinding(@RequestParam("id") int id,@RequestParam("isBinding") int isBinding);
 }

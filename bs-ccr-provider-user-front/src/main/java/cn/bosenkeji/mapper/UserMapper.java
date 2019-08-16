@@ -25,4 +25,6 @@ public interface UserMapper {
 
     int checkExistByUsername(String username);
     int checkExistByTel(String tel);
+
+    int updateBinding(Integer id,Integer isBinding);
 }

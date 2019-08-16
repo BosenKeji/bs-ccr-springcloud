@@ -55,7 +55,7 @@ public class UserController {
         }
 
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
-
+        user.setIsBinding(0);
         user.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         user.setStatus(1);
@@ -122,6 +122,13 @@ public class UserController {
                              @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
 
         return new Result(userService.delete(id));
+    }
+
+    @ApiOperation(value = "更新用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
+    @PutMapping("/update_binding")
+    public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
+                                @RequestParam("isBinding") @ApiParam(value = "绑定值",required = true,type = "integer",example = "1") int isBinding) {
+        return new Result(userService.updateBinding(id,isBinding));
     }
 
 }

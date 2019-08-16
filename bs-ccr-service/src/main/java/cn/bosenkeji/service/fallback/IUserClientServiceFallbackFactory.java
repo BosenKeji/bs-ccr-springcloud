@@ -69,6 +69,11 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
             public Result updateUserUsername(int id, String username) {
                 return new Result("0","hystrix");
             }
+
+            @Override
+            public Result updateBinding(int id, int isBinding) {
+                return new Result(-1,"hystrix");
+            }
         };
     }
 }
