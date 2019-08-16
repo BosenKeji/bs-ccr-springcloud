@@ -8,7 +8,9 @@ import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName IProductClientServiceFallbackFactory
@@ -57,6 +59,17 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
             @Override
             public Result deleteProduct(int id) {
                 return new Result("0","hystrix");
+            }
+
+            @Override
+            public Map<Integer, Product> listByPrimaryKeys(List<Integer> ids) {
+                Map<Integer,Product> map=new HashMap<>();
+                Product product=new Product();
+                product.setId(0);
+                product.setName("hystrix");
+                product.setVersionName("hystrix");
+                map.put(product.getId(),product);
+                return map;
             }
         };
 

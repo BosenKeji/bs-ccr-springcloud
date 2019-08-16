@@ -76,6 +76,12 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
         return Optional.of(strategySequenceMapper.checkSequenceById(id));
     }
 
+
+    @Override
+    public Optional<Integer> checkSequenceByIdOrValueOrSequenceId(Integer id, String value, Integer sequenceId) {
+        return Optional.of(strategySequenceValueMapper.checkSequenceByIdOrValueOrSequenceId(id,value,sequenceId));
+    }
+
     private StrategySequenceOther convertStrategySequenceVo(StrategySequence sequence, StrategySequenceValue sequenceValue) {
         StrategySequenceOther sequenceOther = new StrategySequenceOther();
         sequenceOther.setId(sequence.getId());

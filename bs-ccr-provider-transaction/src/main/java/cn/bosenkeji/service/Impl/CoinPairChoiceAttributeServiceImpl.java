@@ -36,7 +36,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Override
     public CoinPairChoiceAttribute get(int id) {
-        return this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
+        return this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id);
     }
 
     @Override
@@ -75,33 +75,34 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         int lever = strategyOther.getLever();
         int expectMoney=(money*lever)/coinPairChoiceIds.length;
 
-        for (int coinPairChoiceId : coinPairChoiceIds){
-            CoinPairChoiceAttribute coinPairChoiceAttribute =getByCoinPartnerChoiceId(coinPairChoiceId);
+        if (coinPairChoiceIds.length !=0) {
+            for (int coinPairChoiceId : coinPairChoiceIds) {
+                CoinPairChoiceAttribute coinPairChoiceAttribute = getByCoinPartnerChoiceId(coinPairChoiceId);
 
-            /* 数据库已存在的就直接更新其预算和更新时间*/
-            if (coinPairChoiceAttribute != null){
-                coinPairChoiceAttribute.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute.setStrategyId(strategyId);
-                coinPairChoiceAttribute.setIsCustom(isCustom);
-                coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                /* 数据库已存在的就直接更新其预算和更新时间*/
+                if (coinPairChoiceAttribute != null) {
+                    coinPairChoiceAttribute.setExpectMoney(expectMoney);
+                    coinPairChoiceAttribute.setStrategyId(strategyId);
+                    coinPairChoiceAttribute.setIsCustom(isCustom);
+                    coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-                /*更新已有自选币的属性*/
-                this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute);
+                    /*更新已有自选币的属性*/
+                    this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute);
 
-            }else {
-                CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
-                coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceId);
-                coinPairChoiceAttribute1.setStrategyId(strategyId);
-                coinPairChoiceAttribute1.setIsCustom(isCustom);
-                coinPairChoiceAttribute1.setStatus(1);
-                coinPairChoiceAttribute1.setExpectMoney(expectMoney);
-                coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                } else {
+                    CoinPairChoiceAttribute coinPairChoiceAttribute1 = new CoinPairChoiceAttribute();
+                    coinPairChoiceAttribute1.setCoinPartnerChoiceId(coinPairChoiceId);
+                    coinPairChoiceAttribute1.setStrategyId(strategyId);
+                    coinPairChoiceAttribute1.setIsCustom(isCustom);
+                    coinPairChoiceAttribute1.setStatus(1);
+                    coinPairChoiceAttribute1.setExpectMoney(expectMoney);
+                    coinPairChoiceAttribute1.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                    coinPairChoiceAttribute1.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-                return Optional.ofNullable(this.coinPairChoiceAttributeMapper.insert(coinPairChoiceAttribute1));
+                    return Optional.ofNullable(this.coinPairChoiceAttributeMapper.insert(coinPairChoiceAttribute1));
+                }
             }
         }
-
         return Optional.ofNullable(1);
     }
 }

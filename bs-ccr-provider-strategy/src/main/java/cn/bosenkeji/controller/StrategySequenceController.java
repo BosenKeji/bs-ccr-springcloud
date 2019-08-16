@@ -1,10 +1,9 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.enums.StrategySequenceEnum;
 import cn.bosenkeji.service.StrategySequenceService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
+import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -35,19 +34,17 @@ public class StrategySequenceController {
     private DiscoveryClient client;
 
 
-
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
     public Result insertStrategySequence(
             @RequestBody @NotNull @ApiParam(value = "数列基本属性映射的对象",required = true) StrategySequence sequence
     ) {
-        strategySequenceService.checkSequenceByName(sequence.getName())
-                .filter((value)->value==0)
-                .orElseThrow( ()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST));
-        return new Result<>(strategySequenceService.insertStrategySequenceBySelective(sequence)
-                .filter((value)->value>=0)
-                .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
-                );
+        boolean checkSequenceId = strategySequenceService.checkSequenceById(sequence.getId()).get() > 0;
+        boolean checkSequenceName = strategySequenceService.checkSequenceByName(sequence.getName()).get() > 0;
+        if (checkSequenceId || checkSequenceName) {
+            return new Result<>(0,"添加失败，该数列已存在！");
+        }
+        return new Result<>(strategySequenceService.insertStrategySequenceBySelective(sequence));
     }
 
     @PostMapping(value = "/value/")
@@ -55,13 +52,16 @@ public class StrategySequenceController {
     public Result insertStrategySequenceValue(
             @RequestBody @NotNull @ApiParam(value = "数列详细信息映射的对象",required = true) StrategySequenceValue sequenceValue
     ) {
-        strategySequenceService.checkSequenceById(sequenceValue.getStrategySequenceId())
-                .filter((v)->v!=0)
-                .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_NOT_FOUND));
-        return new Result<>(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue)
-                .filter((value)->value>=0)
-                .orElseThrow(()-> new AddException(StrategySequenceEnum.STRATEGY_SEQUENCE_EXIST))
-        );
+        boolean checkSequenceId = strategySequenceService.checkSequenceById(sequenceValue.getStrategySequenceId()).get() > 0;
+        if (!checkSequenceId) {
+            return new Result<>(0,"添加数列值失败，对应的数列信息不存在！");
+        }
+        boolean checkIdAndValueAndSequenceId = strategySequenceService.checkSequenceByIdOrValueOrSequenceId(
+                sequenceValue.getId(),sequenceValue.getValue(),sequenceValue.getStrategySequenceId()).get() > 0;
+        if (checkIdAndValueAndSequenceId) {
+            return new Result<>(0,"添加失败，该数列信息已存在！");
+        }
+        return new Result<>(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue));
     }
 
     @GetMapping(value = "/")
@@ -79,6 +79,11 @@ public class StrategySequenceController {
     public Result findSequenceByPrimaryKey(
             @PathVariable("id") @Min(value = 0) @ApiParam(value = "数列ID",required = true,example = "1") Integer id
     ){
+        boolean checkSequenceId = strategySequenceService.checkSequenceById(id).get() > 0;
+        if (!checkSequenceId) {
+            StrategySequenceOther sequenceOther = new StrategySequenceOther();
+            return new Result<>(sequenceOther,"数列不存在");
+        }
         return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
     }
 

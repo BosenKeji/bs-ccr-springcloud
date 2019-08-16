@@ -4,6 +4,7 @@ import cn.bosenkeji.vo.Admin;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -27,5 +28,7 @@ public interface AdminService {
     Optional<Integer> update(Admin admin);
 
     Optional<Integer> delete(int id);
+
+    Map<Integer,Admin> selectByPrimaryKeys(List<Integer> ids);
 
 }

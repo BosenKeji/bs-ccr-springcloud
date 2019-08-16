@@ -12,7 +12,7 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
-    <association property="product" column="product_id" javaType="cn.bosenkeji.vo.product.Product" select="cn.bosenkeji.mapper.ProductMapper.selectByPrimaryKey" />
+    <!--<association property="product" column="product_id" javaType="cn.bosenkeji.vo.product.Product" select="cn.bosenkeji.mapper.ProductMapper.selectByPrimaryKey" />-->
   </resultMap>
   <sql id="Base_Column_List">
     id, product_id, name, time, price, remark, status, created_at, updated_at
@@ -181,5 +181,6 @@
   <select id="selectProductIdByPrimaryKey" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
     select product_id from product_combo where `id`=#{id} limit 1
   </select>
+
 
 </mapper>

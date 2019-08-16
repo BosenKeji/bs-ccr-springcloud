@@ -8,6 +8,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.service
@@ -30,6 +33,9 @@ public interface IUserProductComboClientService {
 
     @GetMapping("/user_product_combo/{id}")
     UserProductCombo getUserProductCombo(@PathVariable("id") int id);
+
+    @GetMapping("/user_product_combo/list_by_ids")
+    Map<Integer,UserProductCombo> getByPrimaryKeys(@RequestParam("ids") List<Integer> ids);
 
 
 }

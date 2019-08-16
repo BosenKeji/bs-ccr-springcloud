@@ -46,23 +46,9 @@ public class TradePlatformServiceImpl implements TradePlatformService {
         PageHelper.startPage(pageNum,pageSize);
 
         List<TradePlatform> tradePlatforms = list();
-        if (!tradePlatforms.isEmpty()){
-            fill(tradePlatforms);
-        }
         return new PageInfo<>(tradePlatforms);
     }
 
-    private void fill(List<TradePlatform> tradePlatforms) {
-        for (TradePlatform t : tradePlatforms) {
-            List<TradePlatformCoinPair> tradePlatformCoinPairs = t.getTradePlatformCoinPairs();
-            List<Integer> coinPairIds = new ArrayList<>();
-            for (TradePlatformCoinPair tradePlatformCoinPair : tradePlatformCoinPairs) {
-                coinPairIds.add(tradePlatformCoinPair.getCoinPairId());
-            }
-            fill(t,coinPairIds);
-        }
-
-    }
 
     private void fill(TradePlatform tradePlatform, List<Integer> coinPairIds) {
         if (!coinPairIds.isEmpty()){

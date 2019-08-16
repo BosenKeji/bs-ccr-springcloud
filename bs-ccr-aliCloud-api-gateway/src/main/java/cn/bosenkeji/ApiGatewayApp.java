@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @Email 8586826@qq.com
  * @Versio V1.0
  **/
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 public class ApiGatewayApp {
 
     public static void main(String[] args) {

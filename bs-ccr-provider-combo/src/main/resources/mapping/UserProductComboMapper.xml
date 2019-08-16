@@ -165,5 +165,14 @@
     where user_id=#{userId}
   </select>
 
+  <select id="selectByPrimaryKeys" parameterType="List" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from user_product_combo
+    where id in
+    <foreach collection="list" item="id" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </select>
 
 </mapper>

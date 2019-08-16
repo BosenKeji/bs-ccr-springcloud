@@ -1,4 +1,4 @@
-package cn.bosenkeji.service.Impl;
+package cn.bosenkeji.service.impl;
 
 
 import cn.bosenkeji.mapper.ProductMapper;
@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -57,5 +59,10 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public int checkExistByName(String name) {
         return productMapper.checkExistByName(name);
+    }
+
+    @Override
+    public Map<Integer, Product> selectByPrimaryKeys(List ids) {
+        return this.productMapper.selectByPrimaryKeys(ids);
     }
 }

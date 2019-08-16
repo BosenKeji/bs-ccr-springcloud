@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
+import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.IAdminClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayService;
@@ -13,7 +14,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +30,10 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
     @Resource
     private UserProductComboDayMapper userProductComboDayMapper;
+
+    @Resource
+    private UserProductComboMapper userProductComboMapper;
+
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -76,12 +83,17 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         }catch (Exception e) {
             System.out.println("获取用户发生异常"+e.getMessage());
         }
+        List<Integer> adminIds=new ArrayList<>();
         if(user!=null) {
             PageHelper.startPage(pageNum,pageSize);
             List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserId(user.getId());
             for (UserProductComboDay userProductComboDay : userProductComboDays) {
                 userProductComboDay.setUser(user);
-                try {
+                int adminId=userProductComboDay.getUserProductComboDayByAdmin().getAdminId();
+                if(adminId>0) {
+                    adminIds.add(adminId);
+                }
+                /*try {
 
                     Admin admin = iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get();
                     if(admin!=null) {
@@ -90,10 +102,15 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
                 }catch (Exception e) {
                     e.printStackTrace();
 
-                }
+                }*/
+            }
+            if(adminIds.size()>0) {
+                this.getAdminByIds(userProductComboDays,adminIds);
             }
             return new PageInfo<>(userProductComboDays);
         }
+
+
         return new PageInfo<>();
     }
 
@@ -103,16 +120,26 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserProductComboId(userProductComboId);
+
+        Integer userId=userProductComboMapper.selectByPrimaryKey(userProductComboId).getUserId();
+        User user=null;
+        if(userId!=null&&userId>0) {
+            user = iUserClientService.getOneUser(userId);
+        }
+
+        List<Integer> adminIds=new ArrayList<>();
         for (UserProductComboDay userProductComboDay : userProductComboDays) {
-            try {
-                User user = iUserClientService.getOneUser(userProductComboDay.getUserId());
-                if(user!=null) {
-                    userProductComboDay.setUser(user);
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
+
+            if(user!=null) {
+                userProductComboDay.setUser(user);
             }
-            try {
+            Integer adminId=userProductComboDay.getUserProductComboDayByAdmin().getAdminId();
+            if(adminId!=null&&userId>0) {
+                adminIds.add(adminId);
+            }
+
+
+            /*try {
 
                 Admin admin = iAdminClientService.get(userProductComboDay.getUserProductComboDayByAdmin().getAdminId()).get();
                 if(admin!=null) {
@@ -121,9 +148,32 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
                 }
             }catch (Exception e) {
                 System.out.println(e.getMessage());
-            }
+            }*/
 
         }
+
+        if(adminIds.size()>0) {
+            Map<Integer,Admin> adminMap=iAdminClientService.listByIds(adminIds);
+            for (UserProductComboDay upcd : userProductComboDays) {
+                int aId=upcd.getUserProductComboDayByAdmin().getAdminId();
+                if(aId>0&&adminMap.containsKey(aId)) {
+                    upcd.getUserProductComboDayByAdmin().setAdmin(adminMap.get(aId));
+                }
+            }
+        }
         return new PageInfo<>(userProductComboDays);
+    }
+
+    public List<UserProductComboDay> getAdminByIds(List<UserProductComboDay> userProductComboDays,List<Integer> adminIds) {
+        if(adminIds.size()>0) {
+            Map<Integer,Admin> adminMap=iAdminClientService.listByIds(adminIds);
+            for (UserProductComboDay upcd : userProductComboDays) {
+                int aId=upcd.getUserProductComboDayByAdmin().getAdminId();
+                if(aId>0&&adminMap.containsKey(aId)) {
+                    upcd.getUserProductComboDayByAdmin().setAdmin(adminMap.get(aId));
+                }
+            }
+        }
+        return userProductComboDays;
     }
 }

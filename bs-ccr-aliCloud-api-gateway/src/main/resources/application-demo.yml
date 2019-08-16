@@ -4,19 +4,20 @@ server:
 spring:
   application:
     name: bs-ccr-aliCloud-api-gateway
-
+  main:
+    allow-bean-definition-overriding: true
 
 api:
-  #  地区id
-  regionId: cn-shenzhen
+  #   mock 地区id
+  regionId: cn-shanghai
 
-  #  api分组id
-  groupId: 66ca60e1054d4050a04ba184b0f9a663
+  #  mock api分组id
+  groupId: 3cdd2ec6b01d4ee69b0652b8153e2404
 
-  #  阿里云accessKeyId
+  #  mock阿里云accessKeyId
   accessKeyId: LTAIrpUjXEW4piYX
 
-  #  阿里云accessSecret
+  #  mock阿里云accessSecret
   accessSecret: zIt4x1FDzv9qhmGb8IUvciUVSn1LQg
 
   #  api是否公开
@@ -36,3 +37,9 @@ api:
   serviceAddress: https://www.aliyun.com
 
   bodyFormat: STREAM
+
+  #vpcConfig mock
+  vpcConfig:
+    vpcId: vpc-uf63m5w85eqkzoe57o1hx
+    instanceId: i-uf6fzz04jbp6wqlfs6np
+    name: cajr_ccr_demo

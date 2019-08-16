@@ -23,4 +23,6 @@ public interface StrategySequenceService {
     Optional<Integer> checkSequenceByName(String name);
 
     Optional<Integer> checkSequenceById(Integer id);
+
+    Optional<Integer> checkSequenceByIdOrValueOrSequenceId(Integer id,String value,Integer sequenceId);
 }
