@@ -111,7 +111,6 @@ public class DealHandler {
             return;
         }
 
-
         //获取货币对的值
         String symbol = jsonObject.get("symbol").toString();
 
@@ -300,6 +299,8 @@ public class DealHandler {
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
         if (averagePrice > lowerAveragePrice) {
+            //标志已触发追踪建仓
+            updateRedisString(redisKey,"isFollowBuild",1);
             return false;
         }
 
@@ -343,8 +344,16 @@ public class DealHandler {
             //收益比≥1+触发比例？ 追踪止盈
             if (realTimeEarningRatio >= (1 + triggerRatio)) {
             //if (true) {
-                //记录实时收益比的最高数值
+
+                //获取Redis的值
                 JSONObject jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(redisKey).toString());
+
+                //标志进入追踪止盈
+                Integer isTriggerTraceStopProfit = Integer.valueOf(jsonObject.get("is_trigger_trace_stop_profit").toString());
+                if (isTriggerTraceStopProfit == 0) {
+                    updateRedisString(redisKey,"is_trigger_trace_stop_profit",1);
+                }
+                //记录实时收益比的最高数值
                 double maxEarningRation = Double.valueOf(jsonObject.get("history_max_riskBenefitRatio").toString());
                 if (maxEarningRation == 0 || maxEarningRation < realTimeEarningRatio) {
                     updateRedisString(redisKey,"history_max_riskBenefitRatio",realTimeEarningRatio);
@@ -371,6 +380,12 @@ public class DealHandler {
         if (newValue.isNaN()) {
             newValue = 0.0;
         }
+        String replace = jsonObject.replace(valueKey, newValue.toString()).toString();
+        redisTemplate.opsForValue().set(redisKey,jsonObject.toJSONString());
+    }
+
+    private void updateRedisString(String redisKey,String valueKey, Integer newValue) {
+        JSONObject jsonObject = JSON.parseObject(redisTemplate.opsForValue().get(redisKey).toString());
         String replace = jsonObject.replace(valueKey, newValue.toString()).toString();
         redisTemplate.opsForValue().set(redisKey,jsonObject.toJSONString());
     }

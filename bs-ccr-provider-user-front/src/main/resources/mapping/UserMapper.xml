@@ -8,12 +8,13 @@
     <result column="tel" jdbcType="VARCHAR" property="tel" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_binding" jdbcType="TINYINT" property="isBinding" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, username, tel, `password`, `status`, created_at, updated_at
+    id, username, tel, `password`, `status`, is_binding, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -47,10 +48,10 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.User" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into user (username, tel, `password`, 
-      `status`, created_at, updated_at
+      `status`, is_binding, created_at, updated_at
       )
     values (#{username,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      #{status,jdbcType=TINYINT}, #{isBinding,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.User" useGeneratedKeys="true">
@@ -68,6 +69,9 @@
       </if>
       <if test="status != null">
         `status`,
+      </if>
+      <if test="isBinding != null">
+        `is_binding`,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -88,6 +92,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isBinding != null">
+        #{isBinding,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -143,4 +150,10 @@
     select EXISTS
     (select 1 from user where tel=#{tel} limit 1)
   </select>
+
+  <update id="updateBinding" parameterType="java.lang.Integer">
+    update user
+    set is_binding = #{param2}
+    where id= #{param1}
+  </update>
 </mapper>

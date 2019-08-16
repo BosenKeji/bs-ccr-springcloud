@@ -23,6 +23,8 @@ public class User implements Serializable {
     @ApiModelProperty(hidden = true)
     private int status;
 
+    private int isBinding;
+
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
@@ -85,6 +87,14 @@ public class User implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public int getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(int isBinding) {
+        this.isBinding = isBinding;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -93,6 +103,7 @@ public class User implements Serializable {
                 ", tel='" + tel + '\'' +
                 ", password='" + password + '\'' +
                 ", status=" + status +
+                ", isBinding=" + isBinding +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

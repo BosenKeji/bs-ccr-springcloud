@@ -50,4 +50,10 @@ public class UserServiceImpl implements UserService {
     public Integer checkExistByTel(String tel) {
         return userMapper.checkExistByTel(tel);
     }
+
+    @Override
+    public Integer updateBinding(int id, int isBinding) {
+        return userMapper.updateBinding(id,isBinding);
+    }
+
 }

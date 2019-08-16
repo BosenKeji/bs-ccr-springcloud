@@ -13,6 +13,7 @@ public interface UserService {
     Integer delete(int id);
     Integer checkExistByUsrename(String username);
     Integer checkExistByTel(String tel);
+    Integer updateBinding(int id,int isBinding);
 
 
 

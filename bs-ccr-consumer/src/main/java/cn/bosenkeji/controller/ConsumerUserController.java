@@ -1,6 +1,9 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.enums.exception.user.UserEnum;
+import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.service.IUserClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -93,6 +96,15 @@ public class ConsumerUserController {
                             @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
 
         return this.iUserClientService.updateUserTel(id,tel);
+    }
+
+    @ApiOperation(value = "用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
+    @PutMapping("/update_binding")
+    public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
+
+        int isBinding=1;
+        return iUserClientService.updateBinding(id,isBinding);
+
     }
 
 }

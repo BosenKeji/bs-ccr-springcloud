@@ -6,6 +6,7 @@ import cn.bosenkeji.vo.Admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -53,6 +54,7 @@ public class AdminServiceImpl implements AdminService {
     public Optional<Integer> add(Admin admin) {
         admin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         admin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        admin.setPassword(new BCryptPasswordEncoder().encode(admin.getPassword()));
         return Optional.of(adminMapper.insert(admin));
     }
 
@@ -60,6 +62,9 @@ public class AdminServiceImpl implements AdminService {
     public Optional<Integer> update(Admin admin) {
         admin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         admin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        if (admin.getPassword() != null) {
+            admin.setPassword(new BCryptPasswordEncoder().encode(admin.getPassword()));
+        }
         return Optional.of(adminMapper.updateByPrimaryKeySelective(admin));
     }
 
