@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.*;
+
 /**
  * @author xivin
  * @ClassName cn.bosenkeji
@@ -17,19 +19,29 @@ import org.springframework.test.context.junit4.SpringRunner;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = RedisApp.class)
 public class RedisTest {
-
+//
 //    @Autowired
 //    private RedisTemplate redisTemplate;
-
-
-
-
+//
+//
+//
+//
 //    @Test
 //    public void testPackage() {
-//        redisTemplate.opsForValue().set("test_springboot_redis","测试springboot2 集成 redis");
-//        String str = (String) redisTemplate.opsForValue().get("test_springboot_redis");
-//        System.err.println("str = " + str);
+//        for (int i=0;i<100;i++){
+//            redisTemplate.opsForValue().set("test_springboot_redis_"+i+1111+"_"+i+2222+"_"+i,"测试springboot2 集成 redis"+i);
+//        }
+//        Set<String> str =  redisTemplate.keys("test_springboot_redis*");
+//        List<String> stringList =new ArrayList<>(str);
+//        Map<String,Object> stringObjectMap = new HashMap<>();
+//        if (!stringList.isEmpty()) {
+//            for (String s : stringList) {
+//                stringObjectMap.put(s,redisTemplate.opsForValue().get(s));
+//                System.err.println("key = " + s+"|value="+stringObjectMap.get(s));
+//            }
+//        }
 //
+//        System.out.println(stringObjectMap.size());
 //    }
 //
 //    @Test

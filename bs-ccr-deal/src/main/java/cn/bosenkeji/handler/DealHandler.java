@@ -4,9 +4,9 @@ import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.vo.RocketMQResult;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
-import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -15,12 +15,9 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -71,6 +68,7 @@ public class DealHandler {
         return "success";
     }
 
+
     @RequestMapping("/handle")
     public String testHandle() {
         String msg =    "{\n" +
@@ -86,6 +84,65 @@ public class DealHandler {
                         "}";
         consumerMessage(msg);
         return "test";
+    }
+
+    /**
+     * TODO 从redis中取数据填充自选币List
+     * @Author CAJR
+     * @return
+     */
+    private List<CoinPairChoice> fillCoinPairChoiceList(){
+        List<CoinPairChoice> coinPairChoices = new ArrayList<>();
+
+        //获取redis中的所有交易情况的Key
+        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
+
+        if (tradeConditionKeys != null){
+            for (String tradeConditionKey : tradeConditionKeys){
+                CoinPairChoice coinPairChoice = new CoinPairChoice();
+                CoinPair coinPair = new CoinPair();
+                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
+
+                String coinPairName = tradeConditionValueJson.getString("symbol");
+                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
+                coinPairChoice.setUserId(userId);
+                coinPair.setName(coinPairName);
+                coinPairChoice.setCoinPair(coinPair);
+
+                System.out.println(coinPairChoice.toString());
+                coinPairChoices.add(coinPairChoice);
+            }
+        }
+
+        return coinPairChoices;
+    }
+
+    /**
+     * TODO 从redis中取数据填充用户交易平台Api List
+     * @param
+     */
+    private List<TradePlatformApi> fillTradePlatformApiList(){
+        List<TradePlatformApi> tradePlatformApis = new ArrayList<>();
+
+        //获取redis中的所有交易情况的Key
+        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
+        if (tradeConditionKeys != null){
+            for (String tradeConditionKey : tradeConditionKeys){
+                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
+                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
+                String accessKey = tradeConditionValueJson.getString("accessKey");
+                String secretKey = tradeConditionValueJson.getString("secretKey");
+
+                tradePlatformApi.setUserId(userId);
+                tradePlatformApi.setAccessKey(accessKey);
+                tradePlatformApi.setSecretKey(secretKey);
+
+                tradePlatformApis.add(tradePlatformApi);
+            }
+        }
+
+        return tradePlatformApis;
     }
 
     @StreamListener("input1")
@@ -114,15 +171,23 @@ public class DealHandler {
         String symbol = jsonObject.get("symbol").toString();
 
         //获取 自选货币对信息
-        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceClientService.findAll();
+//        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceClientService.findAll();
+        List<CoinPairChoice> coinPairChoiceList = fillCoinPairChoiceList();
+
 
         //过滤暂停和停止、不是该货币对的信息
+//        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
+//                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPair().getName())))
+//                .collect(Collectors.toList());
         List<CoinPairChoice> filterList = coinPairChoiceList.stream()
-                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPair().getName())))
+                .filter((e) -> symbol.equals(e.getCoinPair().getName()))
                 .collect(Collectors.toList());
 
         //获取所有用户API
-        List<TradePlatformApi> allApi = tradePlatformApiClientService.findAll();
+//        List<TradePlatformApi> allApi = tradePlatformApiClientService.findAll();
+        List<TradePlatformApi> allApi = fillTradePlatformApiList();
+
+        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
 
         //遍历自选货币对 执行判断逻辑
         filterList.parallelStream().forEach((e)->{
