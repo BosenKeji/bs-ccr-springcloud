@@ -24,6 +24,7 @@ import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,7 +53,7 @@ public class AliCloudApiManageController {
     public Result getDescribeApisId() throws ClientException {
         List<String> apiIds = aliCloudApiManageUtil.getDescribeApisId();
 
-        return new Result(apiIds);
+        return new Result<>(apiIds);
     }
 
     @ApiOperation(value = "授权所有API到APP中",httpMethod = "GET")
@@ -61,7 +62,6 @@ public class AliCloudApiManageController {
         List<String> apiIds = aliCloudApiManageUtil.getDescribeApisId();
 
         List<List<String>> splitApiIdsList = Lists.partition(apiIds, 30);
-
 
         if (!splitApiIdsList.isEmpty()){
             for (List<String> splitApiIds : splitApiIdsList){
@@ -79,6 +79,7 @@ public class AliCloudApiManageController {
     @ApiOperation(value = "导入consumer中全部接口的api",httpMethod = "GET")
     @GetMapping("/import_consumer_api")
     public Result importAllConsumerApi() throws ClientException {
+
         Documentation documentation = documentationCache.documentationByGroup(docket.getGroupName());
 
         DescribeApiResponse.RequestConfig requestConfig = new DescribeApiResponse.RequestConfig();
@@ -130,7 +131,7 @@ public class AliCloudApiManageController {
                         if (!parameters.isEmpty()){
                             //begin for
                             settingParameter(parameters,requestConfig,requestParametersName,serviceParameters,serviceParameterMaps,requestParameters);
-                             //end for
+                            //end for
                             settingParameter2(serviceParameters,serviceParameterMaps,requestParameters);
                         }
 
@@ -139,13 +140,13 @@ public class AliCloudApiManageController {
                         System.out.println("serviceParameters--->"+JSON.toJSONString(serviceParameters));
                         System.out.println("serviceParameterMaps--->"+JSON.toJSONString(serviceParameterMaps));
                         this.aliCloudApiManageUtil.createApiByReq(request, requestConfig, serviceConfig, requestParameters, serviceParameters, serviceParameterMaps);
-
                     }
 
                 }
 
             }
         }
+
         return new Result();
     }
 
@@ -246,7 +247,6 @@ public class AliCloudApiManageController {
 
         requestParameters.add(requestParameter);
         serviceParameters.add(serviceParameter);
-//        serviceParameterMaps.add(serviceParameterMap);
     }
 
     @ApiOperation(value = "查询单个api信息",httpMethod = "GET")
@@ -267,148 +267,70 @@ public class AliCloudApiManageController {
         return this.aliCloudApiManageUtil.describeApiByApp(appId);
     }
 
-    /**
-     * TODO 部署发布api
-     * @param apiId API编号
-     * @param stageName 运行环境名称，取值:1.RELEASE(线上) 2.PRE(预发) 3.TEST(测试)
-     * @param description 本次发布备注说明
-     * @return DeployApiResponse
-     * @throws ClientException
-     */
-    @ApiOperation(value = "发布api",httpMethod = "GET")
-    @GetMapping("/deploy_api")
-    public DeployApiResponse deployApi(@RequestParam("apiId") String apiId,@RequestParam("stageName") String stageName,
-                                       @RequestParam("description") String description) throws ClientException {
 
-
-        return this.aliCloudApiManageUtil.deployApi(apiId, stageName, description);
-    }
 
 
     @ApiOperation(value = "发布所有api",httpMethod = "GET")
     @GetMapping("/deploy_all_api")
     public Result deployAllApi() throws ClientException {
+
+        //建议10个线程以下
+        int nThreads =9;
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
+        int size = describeApisId.size();
+        System.out.println(size);
 
         if (!describeApisId.isEmpty()){
-            for (String apiId :describeApisId){
-                this.aliCloudApiManageUtil.deployApi(apiId, "RELEASE", "上线");
+
+            //需要改造成多线程操作
+            ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(nThreads,nThreads+5,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
+            for (int i=0;i<nThreads;i++) {
+                final List<String> suList ;
+                if (size-size/nThreads*(i+1) < size/nThreads){
+                    suList= describeApisId.subList(size/nThreads*i,size);
+                }else {
+                    suList = describeApisId.subList(size/nThreads*i,size/nThreads*(i+1));
+                }
+
+//                try {
+//                    Thread.sleep(200);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
+                threadPoolExecutor.execute(()->{
+                    try {
+                        countDownLatch.await();
+                        System.out.println(suList.size());
+                        for (String apiId : suList){
+                            this.aliCloudApiManageUtil.deployApi(apiId, "RELEASE", "上线");
+                            System.out.println(Thread.currentThread().getName()+"-->"+apiId);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
+            countDownLatch.countDown();
         }
+
 
         return new Result();
     }
 
-    @ApiOperation(value = "导入Swagger",httpMethod = "GET")
-    @GetMapping("/import_to_swagger")
-    public ImportSwaggerResponse import2Swagger() throws Exception {
-        String json_data = "{\n" +
-                "    \"swagger\": \"2.0\",\n" +
-                "    \"info\": {\n" +
-                "        \"description\": \"博森CCR系统API信息\",\n" +
-                "        \"version\": \"1.0.0\",\n" +
-                "        \"title\": \"博森CCR系统\",\n" +
-                "        \"contact\": {\n" +
-                "            \"name\": \"YuXueWen\",\n" +
-                "            \"url\": \"https://github.com/xiaoemoxiw\",\n" +
-                "            \"email\": \"yuxuewen23@qq.com\"\n" +
-                "        },\n" +
-                "        \"license\": {\n" +
-                "            \"name\": \"Apache 2.0\",\n" +
-                "            \"url\": \"http://www.apache.org/licenses/LICENSE-2.0\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"host\": \"127.0.0.1:7030\",\n" +
-                "    \"basePath\": \"/\",\n" +
-                "    \"tags\": [\n" +
-                "        {\n" +
-                "            \"name\": \"Coin 货币相关接口\",\n" +
-                "            \"description\": \"Coin Controller\"\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"paths\": {\n" +
-                "        \"/coin/\": {\n" +
-                "            \"put\": {\n" +
-                "                \"x-aliyun-apigateway-api-force-nonce-check\": true,\n" +
-                "                \"tags\": [\n" +
-                "                    \"Coin 货币相关接口\"\n" +
-                "                ],\n" +
-                "                \"summary\": \"添加单个货币接口\",\n" +
-                "                \"operationId\": \"addCoin\",\n" +
-                "                \"consumes\": [\n" +
-                "                    \"application/json;charset=UTF-8\"\n" +
-                "                ],\n" +
-                "                \"produces\": [\n" +
-                "                    \"application/json;charset=UTF-8\"\n" +
-                "                ],\n" +
-                "                \"parameters\": [\n" +
-                "                    {\n" +
-                "                        \"in\": \"body\",\n" +
-                "                        \"name\": \"coin\",\n" +
-                "                        \"description\": \"币种实体\",\n" +
-                "                        \"required\": true,\n" +
-                "                        \"schema\": {\n" +
-                "                            \"$ref\": \"#/definitions/Coin\"\n" +
-                "                        }\n" +
-                "                    }\n" +
-                "                ],\n" +
-                "                \"responses\": {\n" +
-                "                    \"200\": {\n" +
-                "                        \"description\": \"OK\",\n" +
-                "                        \"schema\": {\n" +
-                "                            \"$ref\": \"#/definitions/Result\"\n" +
-                "                        }\n" +
-                "                    }\n" +
-                "                },\n" +
-                "                \"deprecated\": false,\n" +
-                "                \"x-aliyun-apigateway-backend\": {\n" +
-                "                    \"method\": \"put\",\n" +
-                "                    \"path\": \"/coin/\",\n" +
-                "                    \"timeout\": \"10000\",\n" +
-                "                    \"type\": \"HTTP-VPC\",\n" +
-                "                    \"vpcAccessName\": \"bs-ccr-test\"\n" +
-                "                },\n" +
-                "                \"x-aliyun-apigateway-paramater-handling\": \"MAPPING\"\n" +
-                "            }\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"definitions\": {\n" +
-                "        \"Coin\": {\n" +
-                "            \"type\": \"object\",\n" +
-                "            \"properties\": {\n" +
-                "                \"createdAt\": {\n" +
-                "                    \"description\": \"货币创建时间\",\n" +
-                "                    \"$ref\": \"#/definitions/Timestamp\"\n" +
-                "                },\n" +
-                "                \"id\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\",\n" +
-                "                    \"description\": \"货币 id\"\n" +
-                "                },\n" +
-                "                \"name\": {\n" +
-                "                    \"type\": \"string\",\n" +
-                "                    \"description\": \"货币名\"\n" +
-                "                },\n" +
-                "                \"status\": {\n" +
-                "                    \"type\": \"integer\",\n" +
-                "                    \"format\": \"int32\",\n" +
-                "                    \"description\": \"货币状态\"\n" +
-                "                },\n" +
-                "                \"updatedAt\": {\n" +
-                "                    \"description\": \"货币更新时间\",\n" +
-                "                    \"$ref\": \"#/definitions/Timestamp\"\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"title\": \"Coin\"\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"schemes\": [\n" +
-                "        \"http\"\n" +
-                "    ]\n" +
-                "}";
+    @ApiOperation(value = "发布所有api test",httpMethod = "GET")
+    @GetMapping("/deploy_all_api_test")
+    public Result deploy2AllApi() throws ClientException {
+        long start = System.currentTimeMillis();
 
+        deployAllApi();
 
-        return this.aliCloudApiManageUtil.importSwagger("json", json_data,true);
+        long end = System.currentTimeMillis();
+        System.out.println("消耗的时间为：");
+        System.out.println(end-start);
+        return new Result();
     }
 
     /**
@@ -432,16 +354,11 @@ public class AliCloudApiManageController {
     }
 
 
-    @ApiOperation(value = "废除api",httpMethod = "GET")
-    @GetMapping("/abolish_api")
-    public AbolishApiResponse abolishApi(@RequestParam("apiId") String apiId, @RequestParam("stageName") String stageName) throws ClientException {
-        return this.aliCloudApiManageUtil.abolishApi(apiId, stageName);
-    }
-
-
     @ApiOperation(value = "下线所有api",httpMethod = "GET")
     @GetMapping("/abolish_all_api")
     public Result abolishAllApi() throws ClientException {
+        long start = System.currentTimeMillis();
+
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
         if (!describeApisId.isEmpty()){
 
@@ -450,19 +367,21 @@ public class AliCloudApiManageController {
                 aliCloudApiManageUtil.abolishApi(api, "RELEASE");
             }
         }
+
+        long end = System.currentTimeMillis();
+        System.out.println("消耗的时间为：");
+        System.out.println(end-start);
         return new Result();
     }
 
-    @ApiOperation(value = "删除api",httpMethod = "GET")
-    @GetMapping("/delete_api")
-    public DeleteApiResponse deleteApi(String apiId) throws ClientException {
-        return this.aliCloudApiManageUtil.deleteApi(apiId);
-    }
 
     @ApiOperation(value = "删除所有api",httpMethod = "GET")
     @GetMapping("/delete_all_api")
-    public Result deleteAllApi(String apiId) throws ClientException {
+    public Result deleteAllApi() throws ClientException {
+        long start = System.currentTimeMillis();
+
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
+
         if (!describeApisId.isEmpty()){
 
             //需要改造成多线程操作
@@ -470,22 +389,11 @@ public class AliCloudApiManageController {
                 aliCloudApiManageUtil.deleteApi(api);
             }
         }
+
+        long end = System.currentTimeMillis();
+        System.out.println("消耗的时间为：");
+        System.out.println(end-start);
         return new Result();
-    }
-
-    @ApiOperation(value = "导入swagger到阿里云网关",httpMethod = "GET")
-    @GetMapping("/import_swagger")
-    public ImportSwaggerResponse importSwagger(@RequestParam("dataFormat") String dataFormat) throws ClientException {
-        String data="";
-        return this.aliCloudApiManageUtil.importSwagger(dataFormat, data,true);
-    }
-
-    @ApiOperation(value = "创建api",httpMethod = "GET")
-    @GetMapping("/create_api")
-    public CreateApiResponse createApi(@RequestParam("apiName") String apiName,@RequestParam("visibility") String visibility,@RequestParam("requestConfig") String requestConfig,
-                                       @RequestParam("serviceConfig") String serviceConfig,@RequestParam("resultType") String resultType,
-                                       @RequestParam("resultSample") String resultSample,@RequestParam("authType") String authType) throws ClientException {
-        return this.aliCloudApiManageUtil.createApi(apiName,visibility,requestConfig,serviceConfig,resultType,resultSample,authType);
     }
 
     @ApiOperation(value = "获取已创建的模型",httpMethod = "GET")
