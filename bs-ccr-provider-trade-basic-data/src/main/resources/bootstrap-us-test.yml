@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        watch:
+          enabled: false
+      config:
+        server-addr: 127.0.0.1:8848
+        endpoint: addr-us-east-1-internal.acm.aliyun.com
+        namespace : c4067486-17d5-4a22-bb04-c192866c9128
+        file-extension : yml
+        ext-config[0]:
+          data-id: bs-ccr-page-size-config.yml
+        ext-config[1]:
+          data-id: bs-ccr-database-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-mq-config.yml
+        ext-config[3]:
+          data-id: bs-crr-common-config.yml
+logging:
+  level:
+    com:
+      alibaba: ERROR

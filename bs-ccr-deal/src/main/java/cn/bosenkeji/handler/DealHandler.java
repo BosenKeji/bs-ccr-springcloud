@@ -90,6 +90,7 @@ public class DealHandler {
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
+        System.out.println("consumerMessage--input1->"+msg);
 
         //将json字符串转换为json对象
         JSONObject jsonObject = JSON.parseObject(msg);
