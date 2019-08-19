@@ -7,9 +7,9 @@ import cn.bosenkeji.service.ICoinPairCoinClientService;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
-import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,7 +45,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     private List<CoinPairChoice> fill(int userId,int coinId) {
         //货币对Map
-        Map<Integer, CoinPair> coinPairMap = new HashMap<>();
+        Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
         //根据userId查询自选币list
         List<CoinPairChoice>  coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
         //根据货币id查询货币对货币的列表
@@ -131,5 +131,29 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }
         }
         return coinPairChoiceList;
+    }
+
+    @Override
+    public Optional<Integer> batchDelete(String idStr) {
+        //转格式
+        String[] coinPairChoiceIdStr = idStr.split(",");
+        List<Integer> coinPairChoiceIds = new ArrayList<>();
+        if (coinPairChoiceIdStr.length != 0){
+            for (String s : coinPairChoiceIdStr) {
+                coinPairChoiceIds.add(Integer.valueOf(s));
+            }
+        }
+
+        //验证
+        List<Integer> coinPairChoiceList = this.coinPairChoiceMapper.findAllCoinPairChoiceId();
+        if (!coinPairChoiceIds.isEmpty()) {
+            for (Integer id : coinPairChoiceIds) {
+                if (!coinPairChoiceList.contains(id)){
+                    return Optional.of(-1);
+                }
+            }
+        }
+
+        return Optional.of(this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds));
     }
 }

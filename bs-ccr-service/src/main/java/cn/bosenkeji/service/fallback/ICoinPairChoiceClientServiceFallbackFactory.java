@@ -27,12 +27,12 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 coinPairChoice.setId(0);
                 coinPairChoices.add(coinPairChoice);
-                return new PageInfo(coinPairChoices);
+                return new PageInfo<>(coinPairChoices);
             }
 
             @Override
             public Result checkExistByCoinPairNameAndUserId(String coinPairName, int userId) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
@@ -44,17 +44,17 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
 
             @Override
             public Result addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
-                return  new Result("0","fail");
+                return  new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinPairChoice(CoinPairChoice coinPairChoice) {
-                return  new Result("0","fail");
+                return  new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteOneCoinPairChoice(int id) {
-                return  new Result("0","fail");
+                return  new Result<>(0,"fail");
             }
 
             @Override
@@ -63,6 +63,11 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 list.add(coinPairChoice);
                 return list;
+            }
+
+            @Override
+            public Result batchDelete(String coinPairChoiceIds) {
+                return  new Result<>(0,"hystrix fail");
             }
         };
     }

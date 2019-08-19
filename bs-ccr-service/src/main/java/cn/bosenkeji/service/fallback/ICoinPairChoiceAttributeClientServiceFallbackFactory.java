@@ -26,17 +26,17 @@ public class ICoinPairChoiceAttributeClientServiceFallbackFactory implements Fal
 
             @Override
             public Result addOneCoinPairChoiceAttribute(String coinPairChoiceIds, int strategyId, int money, int isCustom) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinPairChoiceAttribute(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteOneCoinPairChoiceAttribute(int coinPartnerChoiceId) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
 

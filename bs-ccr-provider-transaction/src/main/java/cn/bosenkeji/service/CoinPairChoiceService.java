@@ -29,4 +29,6 @@ public interface CoinPairChoiceService {
     Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId,int userId);
 
     List<CoinPairChoice> findAll();
+
+    Optional<Integer> batchDelete(String idStr);
 }

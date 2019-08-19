@@ -67,4 +67,10 @@ public class ConsumerCoinPairChoiceController {
     public Result deleteOneCoinPairChoice(@PathVariable("id") @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id){
         return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id);
     }
+
+    @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
+    @DeleteMapping("/batch")
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds){
+        return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds);
+    }
 }

@@ -51,4 +51,7 @@ public interface ICoinPairChoiceClientService {
 
     @GetMapping("/coin_pair_choice/all")
     List<CoinPairChoice> findAll();
+
+    @DeleteMapping("/coin_pair_choice/batch")
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds);
 }

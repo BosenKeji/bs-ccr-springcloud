@@ -25,7 +25,7 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
                 TradePlatform tradePlatform=new TradePlatform();
                 tradePlatform.setName("hystrix provider-tradePlatform");
                 tradePlatforms.add(tradePlatform);
-                return new PageInfo(tradePlatforms);
+                return new PageInfo<>(tradePlatforms);
             }
 
 
@@ -38,17 +38,17 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
 
             @Override
             public Result addOneTradePlatform(TradePlatform tradePlatform) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateTradePlatform(TradePlatform tradePlatform) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteOneTradePlatform(int id) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
 
