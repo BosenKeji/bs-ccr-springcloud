@@ -14,6 +14,8 @@ import java.util.List;
 public interface CoinPairChoiceMapper {
     int deleteByPrimaryKey(int id);
 
+    int batchDelete(List<Integer> id);
+
     int insert(CoinPairChoice record);
 
     int insertSelective(CoinPairChoice record);
@@ -29,4 +31,6 @@ public interface CoinPairChoiceMapper {
     List<CoinPairChoice> findAllByUserId (int userId);
 
     List<CoinPairChoice> findAll();
+
+    List<Integer> findAllCoinPairChoiceId();
 }

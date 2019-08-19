@@ -11,7 +11,6 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 
 @SpringBootApplication
 @EnableBinding({MySource.class, MySink.class})
-@EnableFeignClients("cn.bosenkeji.service")
 @EnableDiscoveryClient
 public class DealApp {
 

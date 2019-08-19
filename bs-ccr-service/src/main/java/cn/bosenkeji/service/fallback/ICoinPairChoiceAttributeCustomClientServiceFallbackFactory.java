@@ -26,17 +26,17 @@ public class ICoinPairChoiceAttributeCustomClientServiceFallbackFactory implemen
 
             @Override
             public Result settingParameters(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(int coinPairChoiceId) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
         };

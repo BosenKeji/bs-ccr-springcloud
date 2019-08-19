@@ -26,7 +26,7 @@ public class ICoinPairCoinClientServiceFallbackFactory implements FallbackFactor
                 CoinPairCoin coinPairCoin = new CoinPairCoin();
                 coinPairCoin.setCoinId(0);
                 coinPairCoins.add(coinPairCoin);
-                return new PageInfo(coinPairCoins);
+                return new PageInfo<>(coinPairCoins);
             }
 
             @Override
@@ -40,17 +40,17 @@ public class ICoinPairCoinClientServiceFallbackFactory implements FallbackFactor
 
             @Override
             public Result addCoinPairCoin(CoinPairCoin coinPairCoin) {
-                return  new Result(0,"fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinPairCoin(CoinPairCoin coinPairCoin) {
-                return  new Result(0,"fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteCoinPairCoin(int coinId, int coinPairId) {
-                return  new Result(0,"fail");
+                return new Result<>(0,"hystrix fail");
             }
 
 
