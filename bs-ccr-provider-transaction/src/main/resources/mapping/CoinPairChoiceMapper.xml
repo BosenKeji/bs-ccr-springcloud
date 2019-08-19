@@ -30,6 +30,9 @@
   <select id="checkExistByCoinPartnerIdAndUserId" resultType="integer">
     select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and user_id=#{param2}  LIMIT 1)
   </select>
+  <select id="findAllCoinPairChoiceId" resultType="integer">
+    select id from coin_pair_choice
+  </select>
   <select id="findAllByUserId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
@@ -54,6 +57,13 @@
     <!--@mbg.generated-->
     delete from coin_pair_choice
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="batchDelete" parameterType="list">
+    delete from coin_pair_choice
+    where id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
     <!--@mbg.generated-->

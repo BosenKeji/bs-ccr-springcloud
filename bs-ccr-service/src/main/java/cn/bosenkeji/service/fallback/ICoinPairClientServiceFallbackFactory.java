@@ -47,17 +47,17 @@ public class ICoinPairClientServiceFallbackFactory implements FallbackFactory<IC
 
             @Override
             public Result addCoinPair(CoinPair coinPair) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateCoinPair(CoinPair coinPair) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteCoinPair(int id) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override

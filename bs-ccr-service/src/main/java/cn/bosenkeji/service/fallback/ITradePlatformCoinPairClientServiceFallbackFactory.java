@@ -25,7 +25,7 @@ public class ITradePlatformCoinPairClientServiceFallbackFactory implements Fallb
                 TradePlatformCoinPair tradePlatformCoinPair = new TradePlatformCoinPair();
                 tradePlatformCoinPair.setId(0);
                 tradePlatformCoinPairs.add(tradePlatformCoinPair);
-                return new PageInfo(tradePlatformCoinPairs);
+                return new PageInfo<>(tradePlatformCoinPairs);
             }
 
             @Override
@@ -37,17 +37,17 @@ public class ITradePlatformCoinPairClientServiceFallbackFactory implements Fallb
 
             @Override
             public Result addOneTradePlatformCoinPair(TradePlatformCoinPair tradePlatformCoinPair) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result updateTradePlatformCoinPair(TradePlatformCoinPair tradePlatformCoinPair) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result deleteOneTradePlatformCoinPair(int tradePlatformId, int coinPairId) {
-                return  new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
 

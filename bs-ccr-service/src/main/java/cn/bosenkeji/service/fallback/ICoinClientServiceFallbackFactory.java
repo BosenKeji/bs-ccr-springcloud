@@ -41,17 +41,17 @@ public class ICoinClientServiceFallbackFactory implements FallbackFactory<ICoinC
 
             @Override
             public Result add(Coin coin) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result update(Coin coin) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
             @Override
             public Result delete(int id) {
-                return new Result("0","fail");
+                return new Result<>(0,"hystrix fail");
             }
 
 
