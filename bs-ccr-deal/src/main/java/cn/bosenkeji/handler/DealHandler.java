@@ -1,8 +1,6 @@
 package cn.bosenkeji.handler;
 
 import cn.bosenkeji.messaging.MySource;
-import cn.bosenkeji.service.ICoinPairChoiceClientService;
-import cn.bosenkeji.service.ITradePlatformApiClientService;
 import cn.bosenkeji.vo.RocketMQResult;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
@@ -30,35 +28,7 @@ public class DealHandler {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    private ICoinPairChoiceClientService coinPairChoiceClientService;
 
-    @Autowired
-    private ITradePlatformApiClientService tradePlatformApiClientService;
-
-//    @RequestMapping("/test1/{msg}")
-//    public void testSend1(@PathVariable("msg") String msg) {
-//
-//        Message<String> message = MessageBuilder.withPayload(msg).build();
-//        source.output1().send(message);
-//    }
-//
-//    @RequestMapping("/test2/{msg}")
-//    public void testSend2(@PathVariable("msg") String msg) {
-//
-//        Message<String> message = MessageBuilder.withPayload(msg).build();
-//        source.output2().send(message);
-//    }
-//
-//    @StreamListener("input2")
-//    private void consumerInput2(String msg) {
-//        System.out.println("input2"+msg);
-//    }
-//
-//    @StreamListener("input1")
-//    private void consumerInput1(String msg) {
-//        System.out.println("input1"+msg);
-//    }
 
     @GetMapping("/redis")
     public String setRedis() {

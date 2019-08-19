@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   cloud:
     nacos:
       config:
@@ -11,9 +13,8 @@ spring:
         ext-config[0]:
           data-id: bs-ccr-page-size-config.yml
         ext-config[1]:
-          data-id: bs-ccr-redis-config.yml
+          data-id: bs-ccr-database-config.yml
         ext-config[2]:
-          data-id: bs-ccr-mq-config.yml
-        ext-config[3]:
           data-id: bs-crr-common-config.yml
-        group: 7f499ba6-9135-4e49-9a7c-996ca34c36b8
+
+
