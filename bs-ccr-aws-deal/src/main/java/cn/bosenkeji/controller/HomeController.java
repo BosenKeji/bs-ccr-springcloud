@@ -1,5 +1,6 @@
-package controller;
+package cn.bosenkeji.controller;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
@@ -13,10 +14,11 @@ import javax.validation.constraints.Min;
  * @Versio V1.0
  **/
 @RestController
+@RequestMapping(value = "/home")
 public class HomeController {
 
-    @GetMapping(value="/")
-    String home(){
+    @RequestMapping(value="/")
+    public String home(){
         return "Hello Docker World2";
     }
 

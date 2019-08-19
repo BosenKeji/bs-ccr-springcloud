@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        endpoint: acm.aliyun.com
+        namespace : fd17da33-56a4-4aff-9733-313af23296dc
+        access-key : 0d7c3e931a044086b0c967f4677ecbd0
+        secret-key : bARCLCtTrjoRHsfMJjZO2XfNcfQ=
+        file-extension : yml
+        ext-config[0]:
+          data-id: bs-ccr-page-size-config.yml
+        ext-config[1]:
+          data-id: bs-ccr-redis-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-mq-config.yml
+        ext-config[3]:
+          data-id: bs-crr-common-config.yml
