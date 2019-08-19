@@ -51,21 +51,21 @@ public class AdminController {
     @PostMapping(value = "/")
     @ApiOperation(value = "添加管理员信息",httpMethod = "POST",nickname = "addAdmin")
     public Result add (@RequestBody @NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
-        return new Result(adminService.add(admin).filter((v)->v>=0)
+        return new Result<>(adminService.add(admin).filter((v)->v>=0)
                 .orElseThrow(()->new AddException(AdminEnum.ADMIN_EXIST)));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除指定id的管理员",httpMethod = "DELETE",nickname = "deleteAdminById")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "integer",example = "1") Integer id) {
-        return new Result(adminService.delete(id).filter((v)->v>=0)
+        return new Result<>(adminService.delete(id).filter((v)->v>=0)
                 .orElseThrow(()->new DeleteException(AdminEnum.ADMIN_NOT_FOUND)));
     }
 
     @PutMapping(value = "/")
     @ApiOperation(value = "更新指定id的管理员",httpMethod = "PUT",nickname = "updateAdminById")
     public Result update(@RequestBody @NotNull @ApiParam(value = "管理员信息",required = true,type = "Admin") Admin admin) {
-        return new Result(adminService.update(admin).filter((v)->v>=0)
+        return new Result<>(adminService.update(admin).filter((v)->v>=0)
                 .orElseThrow(()->new UpdateException(AdminEnum.ADMIN_NOT_FOUND)));
     }
 
@@ -85,6 +85,16 @@ public class AdminController {
     @ApiOperation(value = "获取多个ID的管理员列表",httpMethod = "GET",nickname = "getAdminListByIds")
     public Map<Integer,Admin> listByIds(@RequestParam("ids") @ApiParam(value = "管理员ID列表",required = true,type = "list",example = "1,2") List<Integer> ids) {
         return adminService.selectByPrimaryKeys(ids);
+    }
+
+    @PutMapping("/reset_password")
+    public Result resetPassword(@RequestParam("id") @ApiParam(value = "管理员id",type = "integer",required = true) Integer id,
+                                @RequestParam("password") @ApiParam(value = "管理员密码",type = "string",required = true) String password) {
+        Optional<Integer> optional = adminService.resetPassword(id, password);
+        if (optional.get()>0) {
+            return new Result<>(optional.get(),"重置密码成功！");
+        }
+        return new Result<>(optional.get(),"重置密码失败！");
     }
 
 }

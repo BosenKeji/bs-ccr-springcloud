@@ -78,4 +78,13 @@ public class AdminServiceImpl implements AdminService {
 
         return adminMapper.selectByPrimaryKeys(ids);
     }
+
+    @Override
+    public Optional<Integer> resetPassword(int id, String password) {
+        password = new BCryptPasswordEncoder().encode(password);
+        Admin a = new Admin();
+        a.setId(id);
+        a.setPassword(password);
+        return Optional.of(adminMapper.updateByPrimaryKeySelective(a));
+    }
 }

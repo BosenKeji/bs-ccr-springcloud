@@ -31,4 +31,5 @@ public interface AdminService {
 
     Map<Integer,Admin> selectByPrimaryKeys(List<Integer> ids);
 
+    Optional<Integer> resetPassword(int id,String password);
 }

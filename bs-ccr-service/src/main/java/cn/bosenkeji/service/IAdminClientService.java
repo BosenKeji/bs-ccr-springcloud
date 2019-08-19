@@ -45,4 +45,7 @@ public interface IAdminClientService {
 
     @GetMapping("/admin/list_by_ids")
     public Map<Integer,Admin> listByIds(@RequestParam("ids") List<Integer> ids);
+
+    @PutMapping("/admin/reset_password")
+    Result resetPassword(@RequestParam("id") int id,@RequestParam("password") String password);
 }
