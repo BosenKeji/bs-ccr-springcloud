@@ -41,17 +41,17 @@ public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdmi
 
             @Override
             public Result add(Admin admin) {
-                return new Result(1,"failed");
+                return new Result<>(1,"failed");
             }
 
             @Override
             public Result update(Admin admin) {
-                return new Result(1,"failed");
+                return new Result<>(1,"failed");
             }
 
             @Override
             public Result delete(int id) {
-                return new Result(1,"failed");
+                return new Result<>(1,"failed");
             }
 
             @Override
@@ -70,6 +70,9 @@ public class IAdminClientServiceFallbackFactory implements FallbackFactory<IAdmi
                 map.put(0,admin);
                 return map;
             }
+
+            @Override
+            public Result resetPassword(int id, String password) { return new Result<>(1,"failed"); }
         };
     }
 

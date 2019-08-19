@@ -39,6 +39,8 @@ public class CustomUserDetailsImpl implements UserDetails {
         return user.getTel();
     }
 
+    public int getId() { return user.getId(); }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

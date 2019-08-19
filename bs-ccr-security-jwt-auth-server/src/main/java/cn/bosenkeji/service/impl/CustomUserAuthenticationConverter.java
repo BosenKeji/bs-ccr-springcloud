@@ -41,8 +41,16 @@ public class CustomUserAuthenticationConverter extends JwtAccessTokenConverter {
             result.put("grant_type",authentication.getOAuth2Request().getGrantType());
         }
 
-        if (authentication.getPrincipal() != null) {
-            result.put("user",principal);
+        if ( principal != null) {
+            if ( principal instanceof CustomUserDetailsImpl) {
+                CustomUserDetailsImpl user = (CustomUserDetailsImpl) principal;
+                result.put("user",user);
+            } else if (principal instanceof CustomAdminDetailsImpl) {
+                CustomAdminDetailsImpl admin = (CustomAdminDetailsImpl) principal;
+                result.put("user",admin);
+            }else {
+                result.put("user", authentication.getOAuth2Request().getGrantType());
+            }
         }
         return result;
     }

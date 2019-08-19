@@ -62,4 +62,9 @@ public class ConsumerAdminController {
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "管理员的id",type = "Integer",example = "1") Integer id) {
         return adminClientService.delete(id);
     }
+
+    @PutMapping("/reset_password")
+    public Result resetPassword(@RequestParam("id") int id,@RequestParam(value = "password",required = false,defaultValue = "888888") String password) {
+        return adminClientService.resetPassword(id,password);
+    }
 }

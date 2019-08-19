@@ -40,6 +40,8 @@ public class CustomAdminDetailsImpl implements UserDetails {
         return admin.getAccount();
     }
 
+    public int getId() { return admin.getId(); }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
