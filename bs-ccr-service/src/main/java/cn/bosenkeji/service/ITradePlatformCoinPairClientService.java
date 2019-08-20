@@ -29,6 +29,6 @@ public interface ITradePlatformCoinPairClientService {
     public Result updateTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
 
     @DeleteMapping("/trade_platform_coin_pairs/")
-    public Result deleteOneTradePlatformCoinPair(@RequestParam("id") int tradePlatformId, @RequestParam("id") int id);
+    public Result deleteOneTradePlatformCoinPair(@RequestParam("tradePlatformId") int tradePlatformId, @RequestParam("coinPairId") int coinPairId);
 
 }
