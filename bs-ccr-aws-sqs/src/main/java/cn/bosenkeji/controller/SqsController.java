@@ -37,10 +37,4 @@ public class SqsController {
         LOG.info("send Message  -->"+message);
         this.queueMessagingTemplate.send(sqsEndPoint, MessageBuilder.withPayload(message).build());
     }
-
-//    @SqsListener("bs-ccr-test")
-//    public void getMessage(String message){
-//        LOG.info(message);
-//        LOG.info("receiveMessage  -->"+this.queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
-//    }
 }

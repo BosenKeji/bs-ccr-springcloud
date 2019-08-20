@@ -47,7 +47,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         //货币对Map
         Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
         //根据userId查询自选币list
-        List<CoinPairChoice>  coinPairChoices = new ArrayList<>();
+        List<CoinPairChoice>  coinPairChoices;
         //根据货币id查询货币对货币的列表
         List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
         //真正返回的结果列表
@@ -60,7 +60,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 coinPairIds.add(c.getCoinPairId());
             }
         }else {
-            return coinPairChoices;
+            return resultCoinPairChoiceList;
         }
 
         //根据货币对id列表的填充coinPairMap
@@ -72,7 +72,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 }
             }
         }else {
-            return coinPairChoices;
+            return resultCoinPairChoiceList;
         }
 
         //根据userId填充自选币的货币对数据
@@ -90,7 +90,6 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                }
            }
         }
-
 
         return resultCoinPairChoiceList;
     }
