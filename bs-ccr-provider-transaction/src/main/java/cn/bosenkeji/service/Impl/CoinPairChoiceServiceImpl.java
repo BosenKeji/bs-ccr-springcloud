@@ -47,9 +47,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         //货币对Map
         Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
         //根据userId查询自选币list
-        List<CoinPairChoice>  coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
+        List<CoinPairChoice>  coinPairChoices = new ArrayList<>();
         //根据货币id查询货币对货币的列表
         List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
+        //真正返回的结果列表
+        List<CoinPairChoice> resultCoinPairChoiceList = new ArrayList<>();
 
         //获取货币对的id的list
         List<Integer> coinPairIds = new ArrayList<>();
@@ -57,31 +59,42 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             for (CoinPairCoin c : coinPairCoinList) {
                 coinPairIds.add(c.getCoinPairId());
             }
+        }else {
+            return coinPairChoices;
         }
 
         //根据货币对id列表的填充coinPairMap
-        List<CoinPair> coinPairs = this.iCoinPairClientService.findSection(coinPairIds);
-        if (!coinPairs.isEmpty()){
-            for (CoinPair c : coinPairs) {
-                coinPairMap.put(c.getId(), c);
+        if (!coinPairIds.isEmpty()){
+            List<CoinPair> coinPairs = this.iCoinPairClientService.findSection(coinPairIds);
+            if (!coinPairs.isEmpty()){
+                for (CoinPair c : coinPairs) {
+                    coinPairMap.put(c.getId(), c);
+                }
             }
+        }else {
+            return coinPairChoices;
         }
 
-        //填充自选币的货币对数据
+        //根据userId填充自选币的货币对数据
+        coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
-                fill(c,coinPairMap);
+                if (coinPairMap.containsKey(c.getCoinPartnerId())){
+                    c.setCoinPair(coinPairMap.get(c.getCoinPartnerId()));
+                }
             }
-
+            //把货币对不为空的数据填充
+           for (CoinPairChoice coinPairChoice : coinPairChoices){
+               if (coinPairChoice.getCoinPair() != null){
+                   resultCoinPairChoiceList.add(coinPairChoice);
+               }
+           }
         }
-        return coinPairChoices;
+
+
+        return resultCoinPairChoiceList;
     }
 
-    private void fill(CoinPairChoice c, Map<Integer, CoinPair> coinPairMap) {
-        if (coinPairMap.containsKey(c.getCoinPartnerId())){
-            c.setCoinPair(coinPairMap.get(c.getCoinPartnerId()));
-        }
-    }
 
 
     @Override

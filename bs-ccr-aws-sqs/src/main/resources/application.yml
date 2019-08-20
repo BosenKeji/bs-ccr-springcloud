@@ -1,0 +1,18 @@
+server:
+  port: 7200
+
+spring:
+  application:
+    name: bs-ccr-aws-sqs
+
+cloud:
+  aws:
+    region:
+      static: us-west-1
+
+    credentials:
+      access-key: AKIAI4RUEMRESXQES3BQ
+      secret-key: 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
+
+    end-point:
+      uri: https://sqs.us-west-1.amazonaws.com/332812614748/bs-ccr-test
