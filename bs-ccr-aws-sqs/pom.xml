@@ -30,6 +30,7 @@
             <artifactId>spring-cloud-aws-messaging</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-swagger</artifactId>

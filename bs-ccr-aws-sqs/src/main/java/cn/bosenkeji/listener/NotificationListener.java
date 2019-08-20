@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -31,20 +32,24 @@ public class NotificationListener {
     @Autowired
     SqsMessagingConfig sqsMessagingConfig;
 
+    @Autowired
+    QueueMessagingTemplate queueMessagingTemplate;
+
     @Scheduled(cron = "0 */2 * ? * *")
     public void getMessage(){
         final AmazonSQS sqs = sqsMessagingConfig.amazonSQSAsync();
 
         while (true){
             LOGGER.info("Receiving messages from"+QUEUE_NAME+"\n");
-            final ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(sqsEndPoint)
-                    .withMaxNumberOfMessages(1).withWaitTimeSeconds(3);
-            final List<Message> messages =sqs.receiveMessage(receiveMessageRequest).getMessages();
-
-            for (Message message :
-                    messages) {
-                LOGGER.info("Body:"+message.getBody());
-            }
+//            final ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(sqsEndPoint)
+//                    .withMaxNumberOfMessages(1).withWaitTimeSeconds(3);
+//            final List<Message> messages =sqs.receiveMessage(receiveMessageRequest).getMessages();
+//
+//            for (final Message message :
+//                    messages) {
+//                LOGGER.info("Body:"+message.getBody());
+//            }
+            LOGGER.info("message -->"+queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
         }
     }
 

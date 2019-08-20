@@ -36,13 +36,11 @@ public class SqsController {
     public void sendMessageToMessageProcessingQueue(@RequestParam String message){
         LOG.info("send Message  -->"+message);
         this.queueMessagingTemplate.send(sqsEndPoint, MessageBuilder.withPayload(message).build());
-
-        LOG.info("receiveMessage  -->"+this.queueMessagingTemplate.receiveAndConvert(QUEUE_NAME,String.class));
     }
 
-    @SqsListener("bs-ccr-test")
-    public void getMessage(String message){
-        LOG.info(message);
-        LOG.info("receiveMessage  -->"+this.queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
-    }
+//    @SqsListener("bs-ccr-test")
+//    public void getMessage(String message){
+//        LOG.info(message);
+//        LOG.info("receiveMessage  -->"+this.queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
+//    }
 }
