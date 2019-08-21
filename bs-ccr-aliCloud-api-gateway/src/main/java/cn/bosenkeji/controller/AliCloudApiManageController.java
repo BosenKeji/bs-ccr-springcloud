@@ -273,14 +273,16 @@ public class AliCloudApiManageController {
     @ApiOperation(value = "发布所有api",httpMethod = "GET")
     @GetMapping("/deploy_all_api")
     public Result deployAllApi() throws ClientException {
+        long start = System.currentTimeMillis();
 
         //建议10个线程以下
-        int nThreads =9;
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        int nThreads =5;
+
+        CountDownLatch countDownLatch = new CountDownLatch(nThreads);
 
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
         int size = describeApisId.size();
-        System.out.println(size);
+
 
         if (!describeApisId.isEmpty()){
 
@@ -294,15 +296,8 @@ public class AliCloudApiManageController {
                     suList = describeApisId.subList(size/nThreads*i,size/nThreads*(i+1));
                 }
 
-//                try {
-//                    Thread.sleep(200);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-
                 threadPoolExecutor.execute(()->{
                     try {
-                        countDownLatch.await();
                         System.out.println(suList.size());
                         for (String apiId : suList){
                             this.aliCloudApiManageUtil.deployApi(apiId, "RELEASE", "上线");
@@ -310,26 +305,23 @@ public class AliCloudApiManageController {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }finally {
+                        countDownLatch.countDown();
                     }
                 });
             }
-            countDownLatch.countDown();
+
+            try {
+                countDownLatch.await();
+                long end = System.currentTimeMillis();
+                System.out.println("消耗的时间为：");
+                System.out.println(end-start);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 
-        return new Result();
-    }
-
-    @ApiOperation(value = "发布所有api test",httpMethod = "GET")
-    @GetMapping("/deploy_all_api_test")
-    public Result deploy2AllApi() throws ClientException {
-        long start = System.currentTimeMillis();
-
-        deployAllApi();
-
-        long end = System.currentTimeMillis();
-        System.out.println("消耗的时间为：");
-        System.out.println(end-start);
         return new Result();
     }
 
