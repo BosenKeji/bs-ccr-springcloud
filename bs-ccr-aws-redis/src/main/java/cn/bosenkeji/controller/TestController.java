@@ -29,8 +29,8 @@ public class TestController {
     @GetMapping("/testTemplate")
     public String testTemplate(int id) {
         try{
-            redisTemplate.opsForValue().set("template","test template!!!");
-            return "success"+redisTemplate.opsForValue().get("template");
+            redisTemplate.opsForValue().set("template"+id,"test template!!!");
+            return "success"+redisTemplate.opsForValue().get("template"+id);
         }catch (Exception e) {
             e.printStackTrace();
             return "fail"+e.getLocalizedMessage();
