@@ -1,13 +1,19 @@
 server:
-  port: 8099
+  port: 8379
 spring:
   application:
     name: bs-ccr-redis
 
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
+  redis:
+    host: redis-small-02.3qgr5x.ng.0001.usw1.cache.amazonaws.com
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 32
+        max-wait: 3000ms
+        max-idle: 16
+        min-idle: 8
+
 
 
 
