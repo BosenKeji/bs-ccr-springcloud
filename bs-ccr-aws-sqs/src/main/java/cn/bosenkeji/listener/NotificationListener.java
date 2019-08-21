@@ -20,7 +20,7 @@ import java.util.List;
  * @create 2019/8/20 14:12
  */
 @Component
-@EnableScheduling
+//@EnableScheduling
 public class NotificationListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationListener.class);
@@ -35,23 +35,23 @@ public class NotificationListener {
     @Autowired
     QueueMessagingTemplate queueMessagingTemplate;
 
-    @Scheduled(cron = "0 */2 * ? * *")
-    public void getMessage(){
-        final AmazonSQS sqs = sqsMessagingConfig.amazonSQSAsync();
-
-        while (true){
-            LOGGER.info("Receiving messages from"+QUEUE_NAME+"\n");
-//            final ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(sqsEndPoint)
-//                    .withMaxNumberOfMessages(1).withWaitTimeSeconds(3);
-//            final List<Message> messages =sqs.receiveMessage(receiveMessageRequest).getMessages();
+//    @Scheduled(cron = "0 */2 * ? * *")
+//    public void getMessage(){
+//        final AmazonSQS sqs = sqsMessagingConfig.amazonSQSAsync();
 //
-//            for (final Message message :
-//                    messages) {
-//                LOGGER.info("Body:"+message.getBody());
-//            }
-            LOGGER.info("message -->"+queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
-        }
-    }
+//        while (true){
+//            LOGGER.info("Receiving messages from"+QUEUE_NAME+"\n");
+////            final ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(sqsEndPoint)
+////                    .withMaxNumberOfMessages(1).withWaitTimeSeconds(3);
+////            final List<Message> messages =sqs.receiveMessage(receiveMessageRequest).getMessages();
+////
+////            for (final Message message :
+////                    messages) {
+////                LOGGER.info("Body:"+message.getBody());
+////            }
+//            LOGGER.info("message -->"+queueMessagingTemplate.receiveAndConvert("bs-ccr-test",String.class));
+//        }
+//    }
 
 
 }

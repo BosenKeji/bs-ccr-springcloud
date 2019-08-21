@@ -38,6 +38,23 @@
 <!--        </dependency>-->
 
 
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-aws-sqs</artifactId>
+        </dependency>
 
     </dependencies>
 
