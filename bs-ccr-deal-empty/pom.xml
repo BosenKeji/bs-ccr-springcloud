@@ -27,17 +27,34 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-config -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-config &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+<!--        </dependency>-->
 
 
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-aws-sqs</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -46,7 +63,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.1.6.RELEASE</version>
                 <executions>
                     <execution>
                         <goals>
@@ -55,7 +71,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Docker maven plugin -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.12</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>${project.artifactId}-${project.version}</repository>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+
+                </configuration>
+            </plugin>
+            <!-- Docker maven plugin -->
         </plugins>
     </build>
+
 
 </project>
