@@ -8,6 +8,7 @@ import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -57,6 +58,7 @@ public class ConsumerUserController {
         return this.iUserClientService.addOneUser(user);
     }
 
+    //@PreAuthorize("principal.username.equals(#user.username)")
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口", httpMethod = "PUT", nickname = "updateUser")
     public Object update(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {

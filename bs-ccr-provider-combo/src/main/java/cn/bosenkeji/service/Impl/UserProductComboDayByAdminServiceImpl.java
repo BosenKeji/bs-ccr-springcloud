@@ -41,8 +41,8 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
         //设置增加的有效时间
         Long expire = userProductComboRedisTemplate.getExpire(id);
-        if(expire>0) {
-            userProductComboRedisTemplate.setExpire(id,expire+userProductComboDay.getNumber());
+        if(expire>0&&userProductComboDay.getNumber()>0) {
+            userProductComboRedisTemplate.setExpire(id,expire+userProductComboDay.getNumber()+1);
         }
 
         //新增用户套餐时长操作
