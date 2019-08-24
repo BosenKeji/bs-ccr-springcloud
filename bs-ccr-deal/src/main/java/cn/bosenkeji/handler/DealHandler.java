@@ -148,10 +148,10 @@ public class DealHandler {
 //        Set<String> keys = new HashSet<>();
 //        keys.add("aaa");
         //TODO 过滤不是该货币对的key
-        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
+//        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
         //获取key对应的value
         ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
-        filterSet.stream().forEach((s)->{
+        keys.stream().forEach((s)->{
             JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
             tradeMap.put(s,o);
         });
@@ -218,7 +218,7 @@ public class DealHandler {
 //        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
 
         //TODO 遍历所有的交易trade
-        filterSet.parallelStream().forEach((s)->{
+        keys.parallelStream().forEach((s)->{
 //        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
