@@ -1,7 +1,7 @@
 spring:
   redis:
     database: 0
-    host: r-0xi4tnxo3hchu3lyfrpd.redis.rds.aliyuncs.com
+    host: inside-network.redis.rds.aliyuncs.com
     port: 6379
     password: AYbosenkj19
     timeout: 1000ms
