@@ -28,5 +28,7 @@ public interface TradePlatformApiService {
 
     Optional<Integer> checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
 
+    Optional<Integer> checkExistByUserIdAndNickName (int userId, String nickName);
+
     List<TradePlatformApi> findAll();
 }
