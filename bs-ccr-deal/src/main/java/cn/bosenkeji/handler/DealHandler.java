@@ -32,26 +32,23 @@ public class DealHandler {
 
     @GetMapping("/redis")
     public String setRedis() {
-        String s = "{\"symbol\":\"btsusdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"max_trade_order\":6,\"budget\":10,\"finished_order\":0,\"leverage\":2,\"trade_times\":101,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"10.10\",\"1\":\"20.20\",\"2\":\"40.40\",\"3\":\"80.80\",\"4\":\"161.60\",\"5\":\"323.20\"},\"first_order_price\":0.0457,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0051765\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"emit_ratio\":\"0.2\",\"turn_down_ratio\":\"0.1\",\"follow_lower_ratio\":\"0.01\",\"follow_callback_ratio\":\"0.1\",\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":\"50\"}";
+        String s = "{\"symbol\":\"btcusdt\",\"quote_currency\":\"usdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"userId\":9,\"max_trade_order\":6,\"budget\":100,\"finished_order\":0,\"leverage\":2,\"trade_times\":4,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"0.000400\",\"1\":\"0.000800\",\"2\":\"0.001600\",\"3\":\"0.003200\",\"4\":\"0.006400\",\"5\":\"0.012800\"},\"first_order_price\":10023.94,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"1309.2153560303\",\"trade_status\":\"3\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"stopProfitRatio\":0.05,\"emit_ratio\":0.05,\"turn_down_ratio\":0.02,\"is_rigger_trace_stop_profit\":\"0\",\"target_profit_price\":null}";
         JSONObject jsonObject = JSON.parseObject(s);
-        redisTemplate.opsForValue().set("90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btsusdt",s);
-        return "success";
+        redisTemplate.opsForValue().set("aaa",s);
+        return redisTemplate.opsForValue().get("aaa").toString();
+    }
+
+
+    @RequestMapping("/testRedis")
+    public String testRedis() {
+        Object o = redisTemplate.opsForValue().get("trade-condition_90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btcusdt");
+        return o.toString();
     }
 
 
     @RequestMapping("/handle")
     public String testHandle() {
-        String msg =    "{\n" +
-                        " \"price\": 2,\n" +
-                        " \"deep\": [\n" +
-                        "  [7964, 0.0678],\n" +
-                        "  [7963, 0.9162],\n" +
-                        "  [7961, 0.1],\n" +
-                        "  [7960, 12.8898],\n" +
-                        "  [7958, 1.2]\n" +
-                        " ],\n" +
-                        " \"symbol\": \"btsusdt\"\n" +
-                        "}";
+        String msg = "{\"price\":49.32,\"deep\":[[49.32,7.315],[49.31,50.4387],[49.3,6.2796],[49.27,10.1365],[49.26,39.959],[49.24,19.7702],[49.23,70.7692],[49.22,24.0994],[49.21,31.6065],[49.2,31.1273],[49.19,11.994],[49.17,54.1264],[49.15,66.56],[49.14,59],[49.13,13.563],[49.12,5.3555],[49.1,10],[49.09,5.092],[49.08,141.76],[49.05,47],[49.03,71],[49.02,293.84],[49,177.8083],[48.99,0.0255],[48.98,16.3463],[48.97,0.0448],[48.96,0.0058],[48.95,19.0256],[48.94,0.0118],[48.93,57.5391],[48.92,5.0292],[48.91,0.0892],[48.9,0.0573],[48.89,0.092],[48.88,0.0452],[48.87,0.0489],[48.86,3.9289],[48.85,5.7085],[48.84,0.5615],[48.83,0.0829],[48.82,0.0381],[48.81,0.0344],[48.8,26.5354],[48.79,0.0409],[48.77,0.0386],[48.76,0.067],[48.75,0.0426],[48.74,0.0338],[48.73,5.1438],[48.72,142.7612],[48.71,0.0089],[48.7,78.2136],[48.69,151.81],[48.64,3.0811],[48.62,0.2813],[48.6,2.1832],[48.58,9.1523],[48.56,22.0226],[48.55,2],[48.51,21.4274],[48.5,60.5805],[48.48,47.1415],[48.38,38],[48.33,234.7681],[48.32,0.0194],[48.3,686.5261],[48.24,369.3519],[48.2,162.39],[48.19,0.0114],[48.17,0.4646],[48.16,0.0166],[48.15,0.0119],[48.14,0.0198],[48.1,13.5269],[48.08,0.0286],[48.07,0.0164],[48.05,50],[48.04,0.2813],[48,398.6193],[47.96,7.3603],[47.94,217.6851],[47.92,10.1071],[47.9,7.2971],[47.85,6],[47.8,9.5085],[47.78,10],[47.76,0.1332],[47.75,15],[47.7,43.4326],[47.69,7.5355],[47.68,20],[47.65,5],[47.6,11.2908],[47.59,3],[47.55,191.3599],[47.52,149.31],[47.5,9],[47.45,0.2813],[47.35,31.5568],[47.32,26],[47.3,2.8198],[47.2,2],[47.16,183.4974],[47.13,0.13],[47.1,12.54],[47,55.1289],[46.94,0.1166],[46.87,0.2813],[46.85,37.5021],[46.83,2.78],[46.8,26.0524],[46.77,939.655],[46.6,3],[46.53,4.8103],[46.5,70.01],[46.38,0.2668],[46.35,1.2002],[46.3,0.54],[46.29,0.9601],[46.28,0.2813],[46.08,1.4095],[46,249.9955],[45.85,20],[45.8,5.5],[45.71,30.8998],[45.7,0.2813],[45.61,20],[45.6,3],[45.58,5],[45.55,2],[45.5,52],[45.45,703.5922],[45.28,0.1],[45.23,0.6654],[45.11,0.2813],[45.1,20],[45.08,0.6],[45.07,0.2397],[45.01,0.2],[45,332.5102],[44.67,0.2837],[44.52,0.2813],[44.12,5.7537],[44.1,0.0577],[44,24.1],[43.94,0.2813],[43.88,50],[43.84,10],[43.71,438.0529],[43.36,0.9816]],\"symbol\":\"btcusdt\"}";
         consumerMessage(msg);
         return "test";
     }
@@ -151,15 +148,12 @@ public class DealHandler {
         //获取key对应的value
         ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
         filterSet.stream().forEach((s)->{
-//            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
-            String redisStr = (String) redisTemplate.opsForValue().get(s);
-            JSONObject o = JSON.parseObject(redisStr);
+            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
             tradeMap.put(s,o);
         });
 
-        System.out.println("过滤后的KeySet---->"+filterSet);
-//
-        System.out.println("tradeMap----------->"+tradeMap);
+
+
 
 //        String str = "{\n" +
 //                "\t\"symbol\": \"btsusdt\",\n" +

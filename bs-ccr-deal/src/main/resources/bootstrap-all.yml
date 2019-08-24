@@ -2,9 +2,10 @@ spring:
   redis:
     database: 0
     host: inside-network.redis.rds.aliyuncs.com
+#    host: internal.redis.rds.aliyuncs.com
     port: 6379
     password: AYbosenkj19
-    timeout: 1000ms
+    timeout: 5000ms
     lettuce:
       pool:
         max-idle: 8
