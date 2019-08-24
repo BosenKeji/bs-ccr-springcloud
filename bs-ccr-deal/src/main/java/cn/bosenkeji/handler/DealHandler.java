@@ -143,19 +143,59 @@ public class DealHandler {
         String symbol = jsonObject.get("symbol").toString();
 
         //获取所有交易的key
-        Set<String> keys = redisTemplate.keys("trade_condition_*");
-//        //TODO Test数据
-//        Set<String> keys = new HashSet<>();
-//        keys.add("aaa");
+//        Set<String> keys = redisTemplate.keys("trade_condition_*");
+        //TODO Test数据
+        Set<String> keys = new HashSet<>();
+        keys.add("aaa");
         //TODO 过滤不是该货币对的key
-        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
-        //获取key对应的value
-        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
-        filterSet.stream().forEach((s)->{
-            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
-            tradeMap.put(s,o);
-        });
+//        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
+//        //获取key对应的value
+//        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
+//        filterSet.stream().forEach((s)->{
+//            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
+//            tradeMap.put(s,o);
+//        });
 
+        String str = "{\n" +
+                "\t\"symbol\": \"btsusdt\",\n" +
+                "\t\"accessKey\": \"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\n" +
+                "\t\"secretKey\": \"97d74615-f1e7bf4a-756a0261-c1f24\",\n" +
+                "\t\"account_id\": 8032430,\n" +
+                "\t\"max_trade_order\": 6,\n" +
+                "\t\"budget\": 10,\n" +
+                "\t\"finished_order\": 0,\n" +
+                "\t\"leverage\": 2,\n" +
+                "\t\"trade_times\": 101,\n" +
+                "\t\"policy_series\": [1, 2, 4, 8, 16, 32],\n" +
+                "\t\"buy_volume\": {\n" +
+                "\t\t\"0\": \"10.10\",\n" +
+                "\t\t\"1\": \"20.20\",\n" +
+                "\t\t\"2\": \"40.40\",\n" +
+                "\t\t\"3\": \"80.80\",\n" +
+                "\t\t\"4\": \"161.60\",\n" +
+                "\t\t\"5\": \"323.20\"\n" +
+                "\t},\n" +
+                "\t\"first_order_price\": 0.0457,\n" +
+                "\t\"isFollowBuild\": \"0\",\n" +
+                "\t\"isNeedRecordMaxRiskBenefitRatio\": \"0\",\n" +
+                "\t\"min_averagePrice\": 0,\n" +
+                "\t\"store_split\": \"0.0051765\",\n" +
+                "\t\"trade_status\": \"0\",\n" +
+                "\t\"history_max_riskBenefitRatio\": \"0\",\n" +
+                "\t\"position_average\": \"0\",\n" +
+                "\t\"position_cost\": \"0\",\n" +
+                "\t\"position_num\": \"0\",\n" +
+                "\t\"real_time_earning_ratio\": 0,\n" +
+                "\t\"emit_ratio\": \"0.2\",\n" +
+                "\t\"turn_down_ratio\": \"0.1\",\n" +
+                "\t\"follow_lower_ratio\": \"0.01\",\n" +
+                "\t\"follow_callback_ratio\": \"0.1\",\n" +
+                "\t\"is_use_follow_target_profit\": \"1\",\n" +
+                "\t\"target_profit_price\": \"50\"\n" +
+                "}";
+        JSONObject object = JSONObject.parseObject(str);
+        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
+        tradeMap.put("aaa",object);
 
 
         //获取 自选货币对信息
@@ -178,8 +218,8 @@ public class DealHandler {
 //        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
 
         //TODO 遍历所有的交易trade
-        filterSet.parallelStream().forEach((s)->{
-//        keys.parallelStream().forEach((s)->{
+//        filterSet.parallelStream().forEach((s)->{
+        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
             String redisKey = s;
@@ -256,8 +296,12 @@ public class DealHandler {
                 //获取交易量，计算拟买入均价
                 double buyVolume = Double.valueOf(trade.getJSONObject("buy_volume").get(orderNumber+"").toString());
                 double averagePrice = countAveragePrice(deep,buyVolume);
-                double followLowerRatio = Double.valueOf(trade.get("follow_lower_ratio").toString());
-                double followCallbackRatio = Double.valueOf(trade.get("follow_callback_ratio").toString());
+
+                Object follow_lower_ratio = trade.get("follow_lower_ratio");
+                Object follow_callback_ratio = trade.get("follow_callback_ratio");
+                double followLowerRatio = Double.valueOf(follow_lower_ratio == null ? "0.01" : follow_lower_ratio.toString());
+                double followCallbackRatio = Double.valueOf(follow_callback_ratio == null ? "0.1" : follow_callback_ratio.toString());
+
                 double minAveragePrice = Double.valueOf(trade.get("min_averagePrice").toString());
                 double firstOrderPrice = Double.valueOf(trade.get("first_order_price").toString());
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
