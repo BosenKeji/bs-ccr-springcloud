@@ -151,13 +151,16 @@ public class DealHandler {
         //获取key对应的value
         ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
         filterSet.stream().forEach((s)->{
-            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
+//            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
+            String redisStr = (String) redisTemplate.opsForValue().get(s);
+            JSONObject o = JSON.parseObject(redisStr);
             tradeMap.put(s,o);
         });
 
         System.out.println("过滤后的KeySet---->"+filterSet);
-
+//
         System.out.println("tradeMap----------->"+tradeMap);
+
 //        String str = "{\n" +
 //                "\t\"symbol\": \"btsusdt\",\n" +
 //                "\t\"accessKey\": \"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\n" +
@@ -228,7 +231,7 @@ public class DealHandler {
             JSONObject trade = tradeMap.get(s);
 
 
-            System.out.println("每个trade--------->"+trade);
+//            System.out.println("每个trade--------->"+trade);
 
             //String redisKey = "asdf";
 //            Object result = redisTemplate.opsForValue().get(redisKey);
@@ -254,7 +257,7 @@ public class DealHandler {
 
             if (realTimeEarningRatio >= 1) {
 
-                System.out.println("实时收益比大于1----------判断卖？");
+//                System.out.println("实时收益比大于1----------判断卖？");
             //if (true) {
             //判断是否卖
                 /*
@@ -274,14 +277,14 @@ public class DealHandler {
                 double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
-                System.out.println("卖？-------------"+isSell);
+//                System.out.println("卖？-------------"+isSell);
                 if (isSell) {
                     //mq发送卖的消息
                     boolean b = sendMessage(accessKey,secretKey,symbol,"sell");
                 }
 
             } else {
-                System.out.println("实时收益比大于1----------判断买？");
+//                System.out.println("实时收益比大于1----------判断买？");
                 //判断是否买
                 /*
                     获取判断买的参数
@@ -315,7 +318,7 @@ public class DealHandler {
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
                         buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
                         ,minAveragePrice,firstOrderPrice,redisKey);
-                System.out.println("买？---------"+isBuy);
+//                System.out.println("买？---------"+isBuy);
                 if (isBuy) {
                     //mq发送买的消息
                      boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
