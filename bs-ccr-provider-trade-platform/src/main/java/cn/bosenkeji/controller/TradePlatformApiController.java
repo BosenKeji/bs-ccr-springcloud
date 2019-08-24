@@ -68,6 +68,9 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId()).get() >= 1){
             return new Result<>(null,"交易平台API已存在");
         }
+        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0){
+            return new Result<>(null,"该用户的nickName已存在");
+        }
 
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -80,6 +83,10 @@ public class TradePlatformApiController {
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         if (this.tradePlatformApiService.get(tradePlatformApi.getId()) == null){
             return new Result<>(null,"交易平台API不存在");
+        }
+
+        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0){
+            return new Result<>(null,"该用户的nickName已存在");
         }
 
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

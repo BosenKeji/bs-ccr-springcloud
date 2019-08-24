@@ -1,10 +1,13 @@
 package cn.bosenkeji.config;
 
+import cn.bosenkeji.exception.AuthExceptionEntryPoint;
+import cn.bosenkeji.exception.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -14,6 +17,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.sql.DataSource;
 
@@ -26,9 +30,13 @@ import javax.sql.DataSource;
  **/
 @Configuration
 @EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private CustomAccessDeniedHandler accessDeniedHandler;
 
     @Override
     /**
@@ -50,6 +58,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/configuration/ui").permitAll()
                 .antMatchers("/configuration/security").permitAll()
 
+                //Admin  管理员用户、产品、用户套餐、交易平台等接口
+//                .antMatchers(
+//                        "/product**/**"
+//                        ,"/user_product_combo**/**"
+//                        ,"/admin/**"
+//                        ,"/trade_platform**/**"
+//                )
+//                .hasAuthority("ADMIN")
+
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
                 .and().csrf().disable();
@@ -59,6 +76,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(final ResourceServerSecurityConfigurer config) {
         config.tokenServices(tokenServices());
+        config.authenticationEntryPoint(new AuthExceptionEntryPoint())
+                .accessDeniedHandler(accessDeniedHandler);
     }
 
 

@@ -16,6 +16,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 
@@ -56,64 +57,64 @@ public class DealHandler {
         return "test";
     }
 
-    /**
-     * TODO 从redis中取数据填充自选币List
-     * @Author CAJR
-     * @return
-     */
-    private List<CoinPairChoice> fillCoinPairChoiceList(){
-        List<CoinPairChoice> coinPairChoices = new ArrayList<>();
+//    /**
+//     *  从redis中取数据填充自选币List
+//     * @Author CAJR
+//     * @return
+//     */
+//    private List<CoinPairChoice> fillCoinPairChoiceList(){
+//        List<CoinPairChoice> coinPairChoices = new ArrayList<>();
+//
+//        //获取redis中的所有交易情况的Key
+//        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
+//
+//        if (tradeConditionKeys != null){
+//            for (String tradeConditionKey : tradeConditionKeys){
+//                CoinPairChoice coinPairChoice = new CoinPairChoice();
+//                CoinPair coinPair = new CoinPair();
+//                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
+//
+//                String coinPairName = tradeConditionValueJson.getString("symbol");
+//                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
+//                coinPairChoice.setUserId(userId);
+//                coinPair.setName(coinPairName);
+//                coinPairChoice.setCoinPair(coinPair);
+//
+//                System.out.println(coinPairChoice.toString());
+//                coinPairChoices.add(coinPairChoice);
+//            }
+//        }
+//
+//        return coinPairChoices;
+//    }
 
-        //获取redis中的所有交易情况的Key
-        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
-
-        if (tradeConditionKeys != null){
-            for (String tradeConditionKey : tradeConditionKeys){
-                CoinPairChoice coinPairChoice = new CoinPairChoice();
-                CoinPair coinPair = new CoinPair();
-                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
-
-                String coinPairName = tradeConditionValueJson.getString("symbol");
-                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
-                coinPairChoice.setUserId(userId);
-                coinPair.setName(coinPairName);
-                coinPairChoice.setCoinPair(coinPair);
-
-                System.out.println(coinPairChoice.toString());
-                coinPairChoices.add(coinPairChoice);
-            }
-        }
-
-        return coinPairChoices;
-    }
-
-    /**
-     * TODO 从redis中取数据填充用户交易平台Api List
-     * @param
-     */
-    private List<TradePlatformApi> fillTradePlatformApiList(){
-        List<TradePlatformApi> tradePlatformApis = new ArrayList<>();
-
-        //获取redis中的所有交易情况的Key
-        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
-        if (tradeConditionKeys != null){
-            for (String tradeConditionKey : tradeConditionKeys){
-                TradePlatformApi tradePlatformApi = new TradePlatformApi();
-                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
-                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
-                String accessKey = tradeConditionValueJson.getString("accessKey");
-                String secretKey = tradeConditionValueJson.getString("secretKey");
-
-                tradePlatformApi.setUserId(userId);
-                tradePlatformApi.setAccessKey(accessKey);
-                tradePlatformApi.setSecretKey(secretKey);
-
-                tradePlatformApis.add(tradePlatformApi);
-            }
-        }
-
-        return tradePlatformApis;
-    }
+//    /**
+//     *  从redis中取数据填充用户交易平台Api List
+//     * @param
+//     */
+//    private List<TradePlatformApi> fillTradePlatformApiList(){
+//        List<TradePlatformApi> tradePlatformApis = new ArrayList<>();
+//
+//        //获取redis中的所有交易情况的Key
+//        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
+//        if (tradeConditionKeys != null){
+//            for (String tradeConditionKey : tradeConditionKeys){
+//                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+//                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
+//                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
+//                String accessKey = tradeConditionValueJson.getString("accessKey");
+//                String secretKey = tradeConditionValueJson.getString("secretKey");
+//
+//                tradePlatformApi.setUserId(userId);
+//                tradePlatformApi.setAccessKey(accessKey);
+//                tradePlatformApi.setSecretKey(secretKey);
+//
+//                tradePlatformApis.add(tradePlatformApi);
+//            }
+//        }
+//
+//        return tradePlatformApis;
+//    }
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
@@ -141,53 +142,70 @@ public class DealHandler {
         //获取货币对的值
         String symbol = jsonObject.get("symbol").toString();
 
+        //获取所有交易的key
+        Set<String> keys = redisTemplate.keys("trade_condition_*");
+//        //TODO Test数据
+//        Set<String> keys = new HashSet<>();
+//        keys.add("aaa");
+        //TODO 过滤不是该货币对的key
+        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
+        //获取key对应的value
+        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
+        filterSet.stream().forEach((s)->{
+            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
+            tradeMap.put(s,o);
+        });
+
+
+
         //获取 自选货币对信息
 //        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceClientService.findAll();
-        List<CoinPairChoice> coinPairChoiceList = fillCoinPairChoiceList();
+//        List<CoinPairChoice> coinPairChoiceList = fillCoinPairChoiceList();
 
 
         //过滤暂停和停止、不是该货币对的信息
 //        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
 //                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPair().getName())))
 //                .collect(Collectors.toList());
-        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
-                .filter((e) -> symbol.equals(e.getCoinPair().getName()))
-                .collect(Collectors.toList());
+//        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
+//                .filter((e) -> symbol.equals(e.getCoinPair().getName()))
+//                .collect(Collectors.toList());
 
         //获取所有用户API
 //        List<TradePlatformApi> allApi = tradePlatformApiClientService.findAll();
-        List<TradePlatformApi> allApi = fillTradePlatformApiList();
+//        List<TradePlatformApi> allApi = fillTradePlatformApiList();
 
-        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
+//        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
 
-        //遍历自选货币对 执行判断逻辑
-        filterList.parallelStream().forEach((e)->{
-            //通过userId获取平台对应的key
-            int userId = e.getUserId();
-            TradePlatformApi api = allApi.stream().filter((v)->v.getUserId()==userId).findFirst().get();
-            String accessKey = api.getAccessKey();
-            String secretKey = api.getSecretKey();
+        //TODO 遍历所有的交易trade
+        filterSet.parallelStream().forEach((s)->{
+//        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
-            String redisKey = accessKey+"_"+secretKey+"_"+symbol;
-            //String redisKey = "asdf";
-            Object result = redisTemplate.opsForValue().get(redisKey);
-            JSONObject resultJOSNObject = JSON.parseObject(result.toString());
+            String redisKey = s;
+            JSONObject trade = tradeMap.get(s);
 
-            if (resultJOSNObject == null) {
+            //String redisKey = "asdf";
+//            Object result = redisTemplate.opsForValue().get(redisKey);
+//            JSONObject resultJOSNObject = JSON.parseObject(result.toString());
+
+            if (trade == null) {
                 return;
             }
 
             //计算实时收益比   判断买卖
             //持仓费用
-            Double positionCost = Double.valueOf(resultJOSNObject.get("position_cost").toString());
+            Double positionCost = Double.valueOf(trade.get("position_cost").toString());
             //持仓数量
-            Double positionNum = Double.valueOf(resultJOSNObject.get("position_num").toString());
+            Double positionNum = Double.valueOf(trade.get("position_num").toString());
             //实时收益比
             double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
             //redis中添加实时收益比
-            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
+//            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
+
+            String accessKey = trade.getString("accessKey");
+            String secretKey = trade.getString("secretKey");
 
             if (realTimeEarningRatio >= 1) {
             //if (true) {
@@ -202,10 +220,11 @@ public class DealHandler {
                     double triggerRatio, 和上面的stopProfitRatio
                     double callBackRatio
                  */
-                int stopProfitType = Integer.valueOf(resultJOSNObject.get("is_use_follow_target_profit").toString());
-                double stopProfitPrice = Double.valueOf(resultJOSNObject.get("target_profit_price").toString());
-                double callBackRatio = Double.valueOf(resultJOSNObject.get("turn_down_ratio").toString());
-                double stopProfitRatio = Double.valueOf(resultJOSNObject.get("emit_ratio").toString());
+                Object targetProfitPrice = trade.get("target_profit_price");
+                int stopProfitType = Integer.valueOf(trade.get("is_use_follow_target_profit").toString());
+                double stopProfitPrice = Double.valueOf( targetProfitPrice==null ? "0" : targetProfitPrice.toString());
+                double callBackRatio = Double.valueOf(trade.get("turn_down_ratio").toString());
+                double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
 
@@ -230,17 +249,17 @@ public class DealHandler {
                     double firstOrderPrice
 
                  */
-                int orderNumber = Integer.valueOf(resultJOSNObject.get("finished_order").toString());
-                int maxOrderNumber = Integer.valueOf(resultJOSNObject.get("max_trade_order").toString());
+                int orderNumber = Integer.valueOf(trade.get("finished_order").toString());
+                int maxOrderNumber = Integer.valueOf(trade.get("max_trade_order").toString());
                 double averagePosition = positionCost/positionNum;
-                double buildPositionInterval = Double.valueOf(resultJOSNObject.get("store_split").toString());
+                double buildPositionInterval = Double.valueOf(trade.get("store_split").toString());
                 //获取交易量，计算拟买入均价
-                double buyVolume = Double.valueOf(resultJOSNObject.getJSONObject("buy_volume").get(orderNumber+"").toString());
+                double buyVolume = Double.valueOf(trade.getJSONObject("buy_volume").get(orderNumber+"").toString());
                 double averagePrice = countAveragePrice(deep,buyVolume);
-                double followLowerRatio = Double.valueOf(resultJOSNObject.get("follow_lower_ratio").toString());
-                double followCallbackRatio = Double.valueOf(resultJOSNObject.get("follow_callback_ratio").toString());
-                double minAveragePrice = Double.valueOf(resultJOSNObject.get("min_averagePrice").toString());
-                double firstOrderPrice = Double.valueOf(resultJOSNObject.get("first_order_price").toString());
+                double followLowerRatio = Double.valueOf(trade.get("follow_lower_ratio").toString());
+                double followCallbackRatio = Double.valueOf(trade.get("follow_callback_ratio").toString());
+                double minAveragePrice = Double.valueOf(trade.get("min_averagePrice").toString());
+                double firstOrderPrice = Double.valueOf(trade.get("first_order_price").toString());
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
                         buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
                         ,minAveragePrice,firstOrderPrice,redisKey);
