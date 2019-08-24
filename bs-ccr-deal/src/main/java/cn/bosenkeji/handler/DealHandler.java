@@ -30,7 +30,6 @@ public class DealHandler {
     private RedisTemplate redisTemplate;
 
 
-
     @GetMapping("/redis")
     public String setRedis() {
         String s = "{\"symbol\":\"btsusdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"max_trade_order\":6,\"budget\":10,\"finished_order\":0,\"leverage\":2,\"trade_times\":101,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"10.10\",\"1\":\"20.20\",\"2\":\"40.40\",\"3\":\"80.80\",\"4\":\"161.60\",\"5\":\"323.20\"},\"first_order_price\":0.0457,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0051765\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"emit_ratio\":\"0.2\",\"turn_down_ratio\":\"0.1\",\"follow_lower_ratio\":\"0.01\",\"follow_callback_ratio\":\"0.1\",\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":\"50\"}";
@@ -148,14 +147,17 @@ public class DealHandler {
 //        Set<String> keys = new HashSet<>();
 //        keys.add("aaa");
         //TODO 过滤不是该货币对的key
-//        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
+        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
         //获取key对应的value
         ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
-        keys.stream().forEach((s)->{
+        filterSet.stream().forEach((s)->{
             JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
             tradeMap.put(s,o);
         });
 
+        System.out.println("过滤后的KeySet---->"+filterSet);
+
+        System.out.println("tradeMap----------->"+tradeMap);
 //        String str = "{\n" +
 //                "\t\"symbol\": \"btsusdt\",\n" +
 //                "\t\"accessKey\": \"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\n" +
@@ -218,12 +220,15 @@ public class DealHandler {
 //        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
 
         //TODO 遍历所有的交易trade
-        keys.parallelStream().forEach((s)->{
+        filterSet.parallelStream().forEach((s)->{
 //        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
             String redisKey = s;
             JSONObject trade = tradeMap.get(s);
+
+
+            System.out.println("每个trade--------->"+trade);
 
             //String redisKey = "asdf";
 //            Object result = redisTemplate.opsForValue().get(redisKey);
@@ -248,6 +253,8 @@ public class DealHandler {
             String secretKey = trade.getString("secretKey");
 
             if (realTimeEarningRatio >= 1) {
+
+                System.out.println("实时收益比大于1----------判断卖？");
             //if (true) {
             //判断是否卖
                 /*
@@ -267,13 +274,14 @@ public class DealHandler {
                 double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
-
+                System.out.println("卖？-------------"+isSell);
                 if (isSell) {
                     //mq发送卖的消息
                     boolean b = sendMessage(accessKey,secretKey,symbol,"sell");
                 }
 
             } else {
+                System.out.println("实时收益比大于1----------判断买？");
                 //判断是否买
                 /*
                     获取判断买的参数
@@ -307,6 +315,7 @@ public class DealHandler {
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
                         buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
                         ,minAveragePrice,firstOrderPrice,redisKey);
+                System.out.println("买？---------"+isBuy);
                 if (isBuy) {
                     //mq发送买的消息
                      boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
