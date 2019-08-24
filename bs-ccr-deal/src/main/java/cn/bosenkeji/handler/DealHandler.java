@@ -142,7 +142,7 @@ public class DealHandler {
         String symbol = jsonObject.get("symbol").toString();
 
         //获取所有交易的key
-        Set<String> keys = redisTemplate.keys("trade_condition_*");
+        Set<String> keys = redisTemplate.keys("trade-condition_*");
 //        //TODO Test数据
 //        Set<String> keys = new HashSet<>();
 //        keys.add("aaa");
