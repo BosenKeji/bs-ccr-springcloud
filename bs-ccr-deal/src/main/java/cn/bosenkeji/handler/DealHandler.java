@@ -64,7 +64,7 @@ public class DealHandler {
 
 
 
-    @StreamListener("input1")
+//    @StreamListener("input1")
     private void consumerMessage(String msg) {
 
         //将json字符串转换为json对象
@@ -144,7 +144,7 @@ public class DealHandler {
             String secretKey = trade.getString("secretKey");
 
             if (realTimeEarningRatio >= 1) {
-            //if (true) {
+//            if (false) {
 
             //判断是否卖
                 /*
@@ -158,7 +158,9 @@ public class DealHandler {
                     double callBackRatio
                  */
                 Object targetProfitPrice = trade.get("target_profit_price");
-                int stopProfitType = Integer.valueOf(trade.get("is_use_follow_target_profit").toString());
+                Object is_use_follow_target_profit = trade.get("is_use_follow_target_profit");
+
+                int stopProfitType = Integer.valueOf(is_use_follow_target_profit==null ? "0" : is_use_follow_target_profit.toString());
                 double stopProfitPrice = Double.valueOf( targetProfitPrice==null ? "0" : targetProfitPrice.toString());
                 double callBackRatio = Double.valueOf(trade.get("turn_down_ratio").toString());
                 double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
