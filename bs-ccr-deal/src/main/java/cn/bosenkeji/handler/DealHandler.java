@@ -1,10 +1,8 @@
 package cn.bosenkeji.handler;
 
 import cn.bosenkeji.messaging.MySource;
+import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RocketMQResult;
-import cn.bosenkeji.vo.coin.CoinPair;
-import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
-import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -21,14 +19,13 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
 @RestController
 public class DealHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
+//    private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
     @Autowired
     private MySource source;
@@ -74,19 +71,15 @@ public class DealHandler {
         Double price = Double.valueOf(jsonObject.get("price").toString());
 
         //获取深度
-        Map<Double,Double> deep = new HashMap<>();
-
+        Map<Double,Double> deep;
 
         JSONArray deepArray = (JSONArray) jsonObject.get("deep");
+
         if (deepArray.get(0) != null) {
-            for (int i=0;i<deepArray.size();i++) {
-                JSONArray o = (JSONArray) deepArray.get(i);
-                deep.put(Double.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
-            }
+            deep = DealParameterParser.convertJsonArrayToMap(deepArray);
         } else {
             return;
         }
-
 
         //获取货币对的值
         String symbol = jsonObject.get("symbol").toString();
@@ -94,9 +87,6 @@ public class DealHandler {
         //获取所有交易的key
         Set<String> keys = redisTemplate.keys("trade-condition_*");
 
-//        //TODO Test数据
-//        Set<String> keys = new HashSet<>();
-//        keys.add("aaa");
 
         //过滤不是该货币对的key
         Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
@@ -110,41 +100,42 @@ public class DealHandler {
 
 
         //TODO 遍历所有的交易trade
-        filterSet.parallelStream().forEach((s)->{
+        filterSet.parallelStream().forEach((redisKey)->{
 //        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
-            String redisKey = s;
-            JSONObject trade = tradeMap.get(s);
+            JSONObject trade = tradeMap.get(redisKey);
 
             if (trade == null) {
                 return;
             }
 
-            //判断是否需要给node发消息
-            Integer canSendMsg2Node = Integer.valueOf(trade.get("canSendMsg2Node").toString());
+            DealParameter dealParameter = new DealParameterParser(trade,redisKey).getDealParameter();
 
-            if (canSendMsg2Node == -1 ) {
+            //判断是否需要给node发消息
+            Integer canSendMsg2Node = dealParameter.getCanSendMsgToNode();
+
+            if (canSendMsg2Node == 0 ) {
                 return;
             }
 
             //计算实时收益比   判断买卖
-            Double positionCost = Double.valueOf(trade.get("position_cost").toString());
+            Double positionCost = dealParameter.getPositionCost();
 //            Double positionCost = 0.0;
             //持仓数量
-            Double positionNum = Double.valueOf(trade.get("position_num").toString());
+            Double positionNum = dealParameter.getPositionNum();
 //            Double positionNum = 0.0;
             //实时收益比
             double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
-            //redis中添加实时收益比
+            //TODO redis中添加实时收益比
 //            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
 
-            String accessKey = trade.getString("accessKey");
-            String secretKey = trade.getString("secretKey");
+            String accessKey = dealParameter.getAccessKey();
+            String secretKey = dealParameter.getSecretKey();
 
             if (realTimeEarningRatio >= 1) {
-//            if (false) {
+//            if (true) {
 
             //判断是否卖
                 /*
@@ -157,13 +148,11 @@ public class DealHandler {
                     double triggerRatio, 和上面的stopProfitRatio
                     double callBackRatio
                  */
-                Object targetProfitPrice = trade.get("target_profit_price");
-                Object is_use_follow_target_profit = trade.get("is_use_follow_target_profit");
 
-                int stopProfitType = Integer.valueOf(is_use_follow_target_profit==null ? "0" : is_use_follow_target_profit.toString());
-                double stopProfitPrice = Double.valueOf( targetProfitPrice==null ? "0" : targetProfitPrice.toString());
-                double callBackRatio = Double.valueOf(trade.get("turn_down_ratio").toString());
-                double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
+                int stopProfitType = dealParameter.getIsUseFollowTargetProfit();
+                double stopProfitPrice = dealParameter.getTargetProfitPrice();
+                double callBackRatio = dealParameter.getTurnDownRatio();
+                double stopProfitRatio = dealParameter.getEmitRatio();
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
                 if (isSell) {
@@ -187,21 +176,20 @@ public class DealHandler {
                     double firstOrderPrice
 
                  */
-                int orderNumber = Integer.valueOf(trade.get("finished_order").toString());
-                int maxOrderNumber = Integer.valueOf(trade.get("max_trade_order").toString());
+                int orderNumber = dealParameter.getFinishedOrder();
+                int maxOrderNumber = dealParameter.getMaxTradeOrder();
                 double averagePosition = positionCost/positionNum;
-                double buildPositionInterval = Double.valueOf(trade.get("store_split").toString());
+                double buildPositionInterval = dealParameter.getStoreSplit();
                 //获取交易量，计算拟买入均价
-                double buyVolume = Double.valueOf(trade.getJSONObject("buy_volume").get(orderNumber+"").toString());
+                Map buyVolume = dealParameter.getBuyVolume();
                 double averagePrice = countAveragePrice(deep,buyVolume);
 
-                Object follow_lower_ratio = trade.get("follow_lower_ratio");
-                Object follow_callback_ratio = trade.get("follow_callback_ratio");
-                double followLowerRatio = Double.valueOf(follow_lower_ratio == null ? "0.01" : follow_lower_ratio.toString());
-                double followCallbackRatio = Double.valueOf(follow_callback_ratio == null ? "0.1" : follow_callback_ratio.toString());
 
-                double minAveragePrice = Double.valueOf(trade.get("min_averagePrice").toString());
-                double firstOrderPrice = Double.valueOf(trade.get("first_order_price").toString());
+                double followLowerRatio = dealParameter.getFollowLowerRatio() == 0.0 ? 0.01 : dealParameter.getFollowLowerRatio();
+                double followCallbackRatio = dealParameter.getFollowCallbackRatio() == 0.0 ? 0.1 : dealParameter.getFollowCallbackRatio();
+
+                double minAveragePrice = dealParameter.getMinAveragePrice();
+                double firstOrderPrice = dealParameter.getFirstOrderPrice();
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
                         buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
                         ,minAveragePrice,firstOrderPrice,redisKey);
@@ -234,25 +222,26 @@ public class DealHandler {
      * @param quantity 某交易量
      * @return 拟买入均价
      */
-    private double countAveragePrice(Map<Double,Double> deep,double quantity) {
-        double priceSum = 0;
-        double deepSum = 0;
-
-        for (Map.Entry<Double, Double> entry : deep.entrySet()) {
-            Double key = entry.getKey();
-            Double value = entry.getValue();
-            if ( quantity >= value) {
-                priceSum += key*value;
-                quantity -= value;
-                deepSum += value;
-            } else {
-                priceSum += key*quantity;
-                deepSum += quantity;
-                quantity = 0;
-                break;
-            }
-        }
-        return priceSum/deepSum;
+    //TODO
+    private double countAveragePrice(Map<Double,Double> deep,Map<Double, Double> quantity) {
+//        double priceSum = 0;
+//        double deepSum = 0;
+//
+//        for (Map.Entry<Double, Double> entry : deep.entrySet()) {
+//            Double key = entry.getKey();
+//            Double value = entry.getValue();
+//            if ( quantity >= value) {
+//                priceSum += key*value;
+//                quantity -= value;
+//                deepSum += value;
+//            } else {
+//                priceSum += key*quantity;
+//                deepSum += quantity;
+//                quantity = 0;
+//                break;
+//            }
+//        }
+        return 0.0;
     }
 
 

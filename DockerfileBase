@@ -1,16 +1,15 @@
-FROM openjdk:8-jdk-alpine
+FROM maven:3-jdk-8
 
 RUN mkdir /opt/app
-WORKDIR /opt/app
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom-docker.xml pom.xml
+
 COPY settings.xml /root/.m2/settings.xml
 
+WORKDIR /opt/app
 
+COPY pom-base.xml pom.xml
 
-RUN ./mvnw install
+RUN mvn dependency:copy-dependencies
 
 
 

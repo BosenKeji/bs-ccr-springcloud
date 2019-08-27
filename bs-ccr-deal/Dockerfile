@@ -1,10 +1,8 @@
-FROM openjdk:8-jdk
+FROM registry.us-east-1.aliyuncs.com/bs-ccr/spring-cloud-base:latest
 
-RUN mkdir /opt/app
-COPY . /opt/app
-WORKDIR /opt/app
+COPY . .
 
-RUN ./mvnw clean
+RUN  mvn package -nsu -Dmaven.test.skip=true
 
 #VOLUME /tmp
 ARG JAR_FILE
