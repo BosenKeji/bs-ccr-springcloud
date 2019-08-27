@@ -4,6 +4,7 @@ import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/trade_platform_api_bind_product_combo")
 @Api(tags = "tradePlatformApiBindProductCombo 交易平台api绑定用户套餐接口",value = "提供交易平台api绑定用户套餐相关功能 Rest接口")
+@PreAuthorize("hasAnyAuthority('USER')")
 public class ConsumerTradePlatformApiBindProductComboController {
 
     @Resource

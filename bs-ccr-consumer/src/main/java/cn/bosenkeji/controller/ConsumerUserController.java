@@ -29,29 +29,32 @@ public class ConsumerUserController {
     @Resource
     private IUserClientService iUserClientService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
-    public Object get(@PathVariable("id") @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
+    public User get(@PathVariable("id") @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
 
         return this.iUserClientService.getOneUser(id);
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get_by_username")
     @ApiOperation(value = "通过用户名获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByUsername")
-    public Object getByUsername(@RequestParam("username") @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") String username) {
+    public User getByUsername(@RequestParam("username") @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") String username) {
 
         return this.iUserClientService.getOneUserByUsername(username);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get_by_tel")
     @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
-    public Object getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
+    public User getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
 
         return this.iUserClientService.getOneUserByTel(tel);
     }
 
-        @PostMapping("/")
+    @PostMapping("/")
     @ApiOperation(value = "添加单个用户接口", httpMethod = "POST", nickname = "addOneUser")
     public Object add(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
@@ -59,6 +62,7 @@ public class ConsumerUserController {
     }
 
     //@PreAuthorize("principal.username.equals(#user.username)")
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口", httpMethod = "PUT", nickname = "updateUser")
     public Object update(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
@@ -66,6 +70,7 @@ public class ConsumerUserController {
         return this.iUserClientService.updateUser(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除单个用户接口", httpMethod = "DELETE", nickname = "deleteOneUser")
     public Object delete(@PathVariable("id") @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
@@ -73,6 +78,7 @@ public class ConsumerUserController {
         return this.iUserClientService.deleteOneUser(id);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_password/{id}")
     @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
     public Object updatePassword(@PathVariable("id") @Min(1)
@@ -82,6 +88,7 @@ public class ConsumerUserController {
         return this.iUserClientService.updateUserPassword(id,password);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_username/{id}")
     @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
     public Object updateUsername(@PathVariable("id") @Min(1)
@@ -91,6 +98,7 @@ public class ConsumerUserController {
         return this.iUserClientService.updateUserUsername(id,username);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_tel/{id}")
     @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
     public Object updateTel(@PathVariable("id") @Min(1)
@@ -100,6 +108,7 @@ public class ConsumerUserController {
         return this.iUserClientService.updateUserTel(id,tel);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @ApiOperation(value = "用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
     @PutMapping("/update_binding")
     public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
@@ -108,6 +117,7 @@ public class ConsumerUserController {
         return iUserClientService.updateBinding(id,isBinding);
 
     }
+
 
     @ApiOperation(value = "忘记密码接口",httpMethod = "PUT",nickname = "forgetPassword")
     @PutMapping("/forget_password")
