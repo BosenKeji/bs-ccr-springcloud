@@ -42,7 +42,6 @@
         <module>bs-ccr-security-jwt-auth-server</module>
         <module>bs-ccr-provider-combo</module>
         <module>bs-ccr-aws-deal</module>
-        <module>bs-ccr-docker</module>
         <module>bs-ccr-aws-sqs</module>
 
     </modules>
