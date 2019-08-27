@@ -65,4 +65,10 @@ public class ProductServiceImpl implements IProductService {
     public Map<Integer, Product> selectByPrimaryKeys(List ids) {
         return this.productMapper.selectByPrimaryKeys(ids);
     }
+
+    @Override
+    public PageInfo<Product> selectByStatus(int status,int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(productMapper.selectByStatus(status));
+    }
 }

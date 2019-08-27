@@ -146,4 +146,12 @@
             #{id}
         </foreach>
     </select>
+
+    <select id="selectByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from product
+        where
+        status=#{status}
+    </select>
 </mapper>

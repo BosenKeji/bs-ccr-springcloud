@@ -45,6 +45,15 @@ public class ProductController {
         return this.iProductService.list(pageNum,pageSize);
     }
 
+    @ApiOperation(value="通过状态获取产品列表api接口",httpMethod = "GET",nickname = "getProductListByStatusWithPage")
+    @RequestMapping(value="/list_by_status",method = RequestMethod.GET)
+    public PageInfo listByStatus(@RequestParam("status") @ApiParam(value = "状态",required = true,type = "integer",example = "1") int status,
+                                 @RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                         @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    {
+        return this.iProductService.selectByStatus(status,pageNum,pageSize);
+    }
+
     @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public Product get(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
@@ -86,6 +95,8 @@ public class ProductController {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(this.iProductService.updateStatus(product));
     }
+
+
 
     @GetMapping("/list_by_ids")
     public Map<Integer,Product> listByPrimaryKes(@RequestParam("ids") List<Integer> ids) {
