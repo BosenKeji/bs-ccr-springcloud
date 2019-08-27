@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.vo.product.Product;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -54,7 +55,28 @@ public class ConsumerProductController {
         return this.iProductClientService.updateProductStatus(id,status);
     }
 
-        @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
+    @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
     @DeleteMapping("/{id}")
     public Object deleteProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) { return  this.iProductClientService.deleteProduct(id);}
+
+    @ApiOperation(value="获取启用的产品列表",httpMethod = "GET",nickname = "getProductListByOpenWithPage")
+    @RequestMapping(value="/list_by_open",method = RequestMethod.GET)
+    public PageInfo listByOpen(
+                                 @RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                 @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    {
+        int status=1;
+        return this.iProductClientService.listByStatus(status,pageNum,pageSize);
+    }
+
+    @ApiOperation(value="获取关闭的产品列表",httpMethod = "GET",nickname = "getProductListByCloseWithPage")
+    @RequestMapping(value="/list_by_close",method = RequestMethod.GET)
+    public PageInfo listByClose(
+            @RequestParam(value="pageNum",defaultValue="1") int pageNum,
+            @RequestParam(value="pageSize",defaultValue="15") int pageSize)
+    {
+        int status=2;
+        return this.iProductClientService.listByStatus(status,pageNum,pageSize);
+    }
+
 }

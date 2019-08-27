@@ -8,6 +8,7 @@ import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -57,6 +58,7 @@ public class ConsumerUserController {
         return this.iUserClientService.addOneUser(user);
     }
 
+    //@PreAuthorize("principal.username.equals(#user.username)")
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口", httpMethod = "PUT", nickname = "updateUser")
     public Object update(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
@@ -105,6 +107,13 @@ public class ConsumerUserController {
         int isBinding=1;
         return iUserClientService.updateBinding(id,isBinding);
 
+    }
+
+    @ApiOperation(value = "忘记密码接口",httpMethod = "PUT",nickname = "forgetPassword")
+    @PutMapping("/forget_password")
+    public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
+                                      @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
+        return iUserClientService.updatePasswordByTel(tel,password);
     }
 
 }

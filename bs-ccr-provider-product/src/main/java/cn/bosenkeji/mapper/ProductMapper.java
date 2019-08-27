@@ -25,4 +25,6 @@ public interface ProductMapper {
 
     @MapKey("id")
     Map<Integer,Product> selectByPrimaryKeys(List ids);
+
+    List<Product> selectByStatus(Integer status);
 }

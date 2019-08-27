@@ -131,4 +131,11 @@ public class UserController {
         return new Result(userService.updateBinding(id,isBinding));
     }
 
+    @ApiOperation(value = "通过手机更新密码接口",httpMethod = "PUT",nickname = "updatePasswordByTel")
+    @PutMapping("/update_password_by_tel")
+    public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
+                                      @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
+        return new Result(userService.updatePasswordByTel(tel,new BCryptPasswordEncoder().encode(password)));
+    }
+
 }

@@ -26,5 +26,7 @@ public interface IProductService {
 
     Map<Integer,Product> selectByPrimaryKeys(List ids);
 
+    PageInfo<Product> selectByStatus(int status,int pageNum,int pageSize);
+
 
 }

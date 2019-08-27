@@ -34,17 +34,17 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
 
             @Override
             public Result addOneUser(User user) {
-                return new Result("0","fail hystrix");
+                return new Result(0,"fail hystrix");
             }
 
             @Override
             public Result updateUser(User user) {
-                return new Result("0","fail hystrix");
+                return new Result(0,"fail hystrix");
             }
 
             @Override
             public Result deleteOneUser(int id) {
-                return new Result("0","fail hystrix");
+                return new Result(0,"fail hystrix");
             }
 
             @Override
@@ -57,21 +57,26 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
 
             @Override
             public Result updateUserPassword(int id, String password) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result updateUserTel(int id, String tel) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result updateUserUsername(int id, String username) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result updateBinding(int id, int isBinding) {
+                return new Result(-1,"hystrix");
+            }
+
+            @Override
+            public Result updatePasswordByTel(String tel, String password) {
                 return new Result(-1,"hystrix");
             }
         };

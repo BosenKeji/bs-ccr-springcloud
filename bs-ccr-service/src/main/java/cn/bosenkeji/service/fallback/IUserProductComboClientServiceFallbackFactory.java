@@ -25,7 +25,7 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
         return new IUserProductComboClientService() {
             @Override
             public Result add(UserProductCombo userProductCombo) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override

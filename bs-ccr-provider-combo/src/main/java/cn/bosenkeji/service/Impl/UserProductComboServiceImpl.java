@@ -67,7 +67,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         userProductComboMapper.insert(userProductCombo);
 
         //添加缓存
-        userProductComboRedisTemplate.add(userProductCombo,time);
+        userProductComboRedisTemplate.add(userProductCombo,time+1);
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());

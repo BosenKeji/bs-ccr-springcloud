@@ -43,22 +43,22 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
 
             @Override
             public Result updateProductStatus(int id, int status) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result addProduct(Product product) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result updateProduct(Product product) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result deleteProduct(int id) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
@@ -70,6 +70,17 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
                 product.setVersionName("hystrix");
                 map.put(product.getId(),product);
                 return map;
+            }
+
+            @Override
+            public PageInfo listByStatus(int status, int pageNum, int pageSize) {
+                Product product=new Product();
+                product.setId(0);
+                product.setName("hystrix");
+                product.setVersionName("hystrix");
+                List list=new ArrayList();
+                list.add(product);
+                return new PageInfo(list);
             }
         };
 

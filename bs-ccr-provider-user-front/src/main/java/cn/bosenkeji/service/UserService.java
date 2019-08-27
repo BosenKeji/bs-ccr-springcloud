@@ -14,6 +14,7 @@ public interface UserService {
     Integer checkExistByUsrename(String username);
     Integer checkExistByTel(String tel);
     Integer updateBinding(int id,int isBinding);
+    Integer updatePasswordByTel(String tel,String password);
 
 
 

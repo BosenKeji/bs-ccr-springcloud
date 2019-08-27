@@ -1,10 +1,16 @@
 FROM registry.us-east-1.aliyuncs.com/bs-ccr/spring-cloud-base:latest
 
-COPY . .
 
-RUN  mvn package -nsu -Dmaven.test.skip=true
+COPY pom.xml /opt/app/pom.xml
+COPY bs-ccr-deal /opt/app/bs-ccr-deal
+COPY settings.xml /root/.m2/settings.xml
 
-#VOLUME /tmp
+
+
+WORKDIR /opt/app/bs-ccr-deal
+RUN mvn clean install && mvn clean package
+
+VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 EXPOSE 9100
