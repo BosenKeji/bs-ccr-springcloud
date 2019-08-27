@@ -34,8 +34,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Override
     public int add(UserProductComboDay userProductComboDay,int adminId) {
 
-        //新增用户套餐时长
-        userProductComboDayMapper.insert(userProductComboDay);
+
         //添加缓存
         int id = userProductComboDay.getUserProductComboId();
 
@@ -43,14 +42,17 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         Long expire = userProductComboRedisTemplate.getExpire(id);
         if(expire>0&&userProductComboDay.getNumber()>0) {
             userProductComboRedisTemplate.setExpire(id,expire+userProductComboDay.getNumber()+1);
+            //新增用户套餐时长
+            userProductComboDayMapper.insert(userProductComboDay);
+            //新增用户套餐时长操作
+            UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
+            userProductComboDayByAdmin.setAdminId(adminId);
+            userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
+
+            return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
         }
 
-        //新增用户套餐时长操作
-        UserProductComboDayByAdmin userProductComboDayByAdmin=new UserProductComboDayByAdmin();
-        userProductComboDayByAdmin.setAdminId(adminId);
-        userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
-
-        return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
+        return 0;
 
     }
 

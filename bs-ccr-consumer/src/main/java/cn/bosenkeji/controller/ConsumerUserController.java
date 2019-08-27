@@ -109,4 +109,11 @@ public class ConsumerUserController {
 
     }
 
+    @ApiOperation(value = "忘记密码接口",httpMethod = "PUT",nickname = "forgetPassword")
+    @PutMapping("/forget_password")
+    public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
+                                      @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
+        return iUserClientService.updatePasswordByTel(tel,password);
+    }
+
 }

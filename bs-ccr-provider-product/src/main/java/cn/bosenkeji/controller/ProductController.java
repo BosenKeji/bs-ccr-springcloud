@@ -55,7 +55,7 @@ public class ProductController {
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
        if(this.iProductService.checkExistByName(product.getName())==1)
-           return new Result("0","产品名称已存在");
+           return new Result(0,"产品名称已存在");
         product.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setStatus(1);

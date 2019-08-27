@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateBinding(id,isBinding);
     }
 
+    @Override
+    public Integer updatePasswordByTel(String tel, String password) {
+        return userMapper.updatePasswordByTel(tel,password);
+    }
+
 }
