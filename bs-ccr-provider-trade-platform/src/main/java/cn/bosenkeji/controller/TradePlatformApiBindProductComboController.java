@@ -72,11 +72,11 @@ public class TradePlatformApiBindProductComboController {
                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
         //判断该 api绑定是否为 该用户下的 否则不能操作
         if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0) {
-            return new Result("0", "权限不足，不能进行更新操作");
+            return new Result(0, "权限不足，不能进行更新操作");
         }
         //判断 是否为该用户 未绑定的 api
         if(tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)>=1)
-            return new Result("0","交易平台api已被绑定或不存在");
+            return new Result(0,"交易平台api已被绑定或不存在");
 
 
         /* }filter((value)->value==1)
@@ -107,7 +107,7 @@ public class TradePlatformApiBindProductComboController {
         //判断该 api绑定是否为 该用户下的 否则不能操作
 
         if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0)
-            return new Result("0","权限不足，不能执行删除操作");
+            return new Result(0,"权限不足，不能执行删除操作");
 
               /*  .filter((value)->value==1)
                 .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));*/

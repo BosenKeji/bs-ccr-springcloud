@@ -86,10 +86,10 @@ public class ProductComboController {
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         //判断套餐时长是否合法
         if(productCombo.getTime()<1)
-            return new Result("0","套餐时间必须大于等于1");
+            return new Result(0,"套餐时间必须大于等于1");
         //判断 产品套餐名称是否存在
         if(this.iProductComboService.checkExistByNameAndProductId(productCombo.getName(),productCombo.getProductId())>=1)
-            return new Result("0","产品套餐已存在");
+            return new Result(0,"产品套餐已存在");
                /* .filter((value)->value==0)
                 .orElseThrow(()->new AddException(ProductComboEnum.NAME));*/
 

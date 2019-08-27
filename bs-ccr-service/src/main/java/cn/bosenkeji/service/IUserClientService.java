@@ -45,4 +45,9 @@ public interface IUserClientService {
 
     @PutMapping("/user/update_binding")
     Result updateBinding(@RequestParam("id") int id,@RequestParam("isBinding") int isBinding);
+
+    @PutMapping("/user/update_password_by_tel")
+    Result updatePasswordByTel(@RequestParam("tel") String tel,@RequestParam("password") String password);
+
+
 }

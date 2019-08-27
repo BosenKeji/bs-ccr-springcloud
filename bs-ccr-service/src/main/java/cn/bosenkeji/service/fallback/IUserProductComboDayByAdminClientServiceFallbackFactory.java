@@ -24,7 +24,7 @@ public class IUserProductComboDayByAdminClientServiceFallbackFactory implements 
         return new IUserProductComboDayByAdminClientService() {
             @Override
             public Result add(UserProductComboDay userProductComboDay,int adminId) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override

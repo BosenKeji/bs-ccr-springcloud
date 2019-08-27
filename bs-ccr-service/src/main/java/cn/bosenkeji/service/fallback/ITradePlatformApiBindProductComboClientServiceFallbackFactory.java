@@ -35,7 +35,7 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             @Override
             public Result addTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
@@ -56,12 +56,12 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
 
             @Override
             public Result updateTradePlatformApiBindProductCombo(int id, int tradePlatformApiId, int userId) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result deleteTradePlatformApiBindProductCombo(int id, int userId) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
         };
     }

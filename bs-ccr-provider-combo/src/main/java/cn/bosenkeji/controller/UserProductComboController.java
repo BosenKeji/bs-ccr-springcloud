@@ -61,7 +61,7 @@ public class UserProductComboController {
 
         //判断用户是否没过该产品
         if(this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())>=1)
-            return new Result("0","该用户不能重复买该产品");
+            return new Result(0,"该用户不能重复买该产品");
                 /*.filter((value)->value==0)
                 .orElseThrow(()->new AddException(UserProductComboEnum.NAME));*/
         userProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));

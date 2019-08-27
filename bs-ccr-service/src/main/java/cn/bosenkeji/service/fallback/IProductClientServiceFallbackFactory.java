@@ -43,22 +43,22 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
 
             @Override
             public Result updateProductStatus(int id, int status) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result addProduct(Product product) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result updateProduct(Product product) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
             public Result deleteProduct(int id) {
-                return new Result("0","hystrix");
+                return new Result(0,"hystrix");
             }
 
             @Override
