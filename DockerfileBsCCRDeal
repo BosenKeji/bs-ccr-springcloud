@@ -1,0 +1,28 @@
+FROM openjdk:8-jdk-alpine
+
+RUN mkdir /opt/app
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+#COPY settings.xml /root/.m2/settings.xml
+
+COPY . /opt/app
+COPY mvnw /opt/app/bs-ccr-deal/mvnw
+COPY .mvn /opt/app/bs-ccr-deal/.mvn
+
+WORKDIR /opt/app
+
+
+RUN ./mvnw clean install
+
+
+WORKDIR /opt/app/bs-ccr-deal
+
+RUN ./mvnw clean package -DskipTests
+
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+EXPOSE 9100
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

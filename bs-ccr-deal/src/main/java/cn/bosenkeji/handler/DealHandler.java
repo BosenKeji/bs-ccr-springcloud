@@ -8,6 +8,8 @@ import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,12 +17,18 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
 @RestController
 public class DealHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
     @Autowired
     private MySource source;
@@ -29,95 +37,35 @@ public class DealHandler {
     private RedisTemplate redisTemplate;
 
 
-
     @GetMapping("/redis")
     public String setRedis() {
-        String s = "{\"symbol\":\"btsusdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"max_trade_order\":6,\"budget\":10,\"finished_order\":0,\"leverage\":2,\"trade_times\":101,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"10.10\",\"1\":\"20.20\",\"2\":\"40.40\",\"3\":\"80.80\",\"4\":\"161.60\",\"5\":\"323.20\"},\"first_order_price\":0.0457,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"0.0051765\",\"trade_status\":\"0\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"emit_ratio\":\"0.2\",\"turn_down_ratio\":\"0.1\",\"follow_lower_ratio\":\"0.01\",\"follow_callback_ratio\":\"0.1\",\"is_use_follow_target_profit\":\"1\",\"target_profit_price\":\"50\"}";
+        String s = "{\"symbol\":\"btcusdt\",\"quote_currency\":\"usdt\",\"accessKey\":\"90854b9e-mn8ikls4qg-d8a152e7-cd30e\",\"secretKey\":\"97d74615-f1e7bf4a-756a0261-c1f24\",\"account_id\":8032430,\"userId\":9,\"max_trade_order\":6,\"budget\":100,\"finished_order\":0,\"leverage\":2,\"trade_times\":4,\"policy_series\":[1,2,4,8,16,32],\"buy_volume\":{\"0\":\"0.000400\",\"1\":\"0.000800\",\"2\":\"0.001600\",\"3\":\"0.003200\",\"4\":\"0.006400\",\"5\":\"0.012800\"},\"first_order_price\":10023.94,\"isFollowBuild\":\"0\",\"isNeedRecordMaxRiskBenefitRatio\":\"0\",\"min_averagePrice\":0,\"store_split\":\"1309.2153560303\",\"trade_status\":\"3\",\"history_max_riskBenefitRatio\":\"0\",\"position_average\":\"0\",\"position_cost\":\"0\",\"position_num\":\"0\",\"real_time_earning_ratio\":0,\"stopProfitRatio\":0.05,\"emit_ratio\":0.05,\"turn_down_ratio\":0.02,\"is_rigger_trace_stop_profit\":\"0\",\"target_profit_price\":null}";
         JSONObject jsonObject = JSON.parseObject(s);
-        redisTemplate.opsForValue().set("90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btsusdt",s);
-        return "success";
+        redisTemplate.opsForValue().set("aaa",s);
+        return redisTemplate.opsForValue().get("aaa").toString();
+    }
+
+
+    @RequestMapping("/testRedis")
+    public String testRedis() {
+        Object o = redisTemplate.opsForValue().get("trade-condition_90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btcusdt");
+        return o.toString();
     }
 
 
     @RequestMapping("/handle")
     public String testHandle() {
-        String msg =    "{\n" +
-                        " \"price\": 2,\n" +
-                        " \"deep\": [\n" +
-                        "  [7964, 0.0678],\n" +
-                        "  [7963, 0.9162],\n" +
-                        "  [7961, 0.1],\n" +
-                        "  [7960, 12.8898],\n" +
-                        "  [7958, 1.2]\n" +
-                        " ],\n" +
-                        " \"symbol\": \"btsusdt\"\n" +
-                        "}";
+        String msg = "{\"price\":7.2704,\"deep\":[[7.2705,108.18],[7.2704,0.9558],[7.2683,172.0793],[7.264,9.0809],[7.2639,137.4759],[7.2624,47.77],[7.2623,82.4835],[7.2619,71.6472],[7.259,27.5517],[7.2589,109.57],[7.2585,71.6234],[7.2582,247.7028],[7.2574,79.98],[7.257,120],[7.2564,115.04],[7.2561,7.3516],[7.256,1346.0536],[7.2558,112],[7.2551,481.232],[7.2549,343.8175],[7.2538,143.3317],[7.2513,110.0009],[7.2511,33.02],[7.2506,60],[7.2502,68.1477],[7.2484,214.9941],[7.2466,800],[7.246,699.37],[7.2421,20.6272],[7.2414,33.06],[7.2394,2.6998],[7.2391,56.7629],[7.2381,20.6578],[7.2364,0.2489],[7.2363,0.1936],[7.236,0.25],[7.2359,0.1462],[7.2355,0.4425],[7.2354,0.1916],[7.2351,0.2291],[7.235,0.1956],[7.2348,0.1936],[7.2346,2.2495],[7.2342,174.12],[7.2335,0.5852],[7.2333,3.903],[7.2313,83.7222],[7.2311,20.6578],[7.23,786.0739],[7.2279,33.12],[7.2276,1.2694],[7.2274,0.7208],[7.2272,0.657],[7.2271,1.0079],[7.2269,0.6253],[7.2268,0.7208],[7.2258,0.7144],[7.2257,0.6634],[7.2251,13.8832],[7.2247,59.7],[7.2232,13.9071],[7.2231,20.6808],[7.2226,16.2412],[7.222,422.2618],[7.22,60],[7.2147,20.701],[7.2138,68.3486],[7.2123,0.1959],[7.2102,20.6558],[7.2092,10],[7.2091,2.2495],[7.2075,106.1742],[7.205,34.5124],[7.2027,0.5852],[7.2009,50],[7.2008,2.7526],[7.2,2816.4997],[7.1999,3.903],[7.1998,396.7761],[7.1988,515.096],[7.1955,13.1761],[7.1911,22.8592],[7.19,17.7571],[7.1897,16.2412],[7.1884,116.2011],[7.1853,42.5717],[7.1836,2.2495],[7.18,296.933],[7.1794,0.1959],[7.1772,127.4289],[7.1765,2971.3],[7.1753,48.4402],[7.1751,41.8112],[7.1726,50],[7.1718,0.5852],[7.1717,20.9237],[7.17,10],[7.1666,3.903],[7.1657,129.8686],[7.1652,102],[7.164,0.25],[7.1632,34.5124],[7.1581,2.2495],[7.1569,10.7571],[7.1568,14.6007],[7.1559,145.2639],[7.1517,13.8832],[7.15,130.9466],[7.1464,0.1959],[7.1463,20],[7.141,0.5852],[7.1359,51.4583],[7.1352,3.15],[7.1333,3.903],[7.1326,2.2495],[7.1271,1527.1],[7.1257,0.1858],[7.1255,0.1696],[7.1253,0.5221],[7.1249,0.1842],[7.1247,0.181],[7.1238,16.2412],[7.1237,10.7571],[7.1215,34.5124],[7.12,262.9019],[7.1151,0.1527],[7.115,13.8832],[7.1149,0.1556],[7.1146,0.1527],[7.1141,0.1411],[7.1135,0.3661],[7.1133,0.1847],[7.1111,686.3704],[7.1101,0.5852],[7.1071,2.2495],[7.1012,1376.9026],[7.1,4004.9836],[7.0999,3.903],[7.092,0.25],[7.0909,16.2412],[7.0906,10.7571],[7.0816,2.2495],[7.0805,0.1959],[7.0797,34.5124],[7.0796,20],[7.0793,0.5852],[7.0783,13.8832],[7.071,40],[7.07,151.5855],[7.0668,1524.6]],\"symbol\":\"btsusdt\"}";
+        long a = Timestamp.valueOf(LocalDateTime.now()).getTime();
         consumerMessage(msg);
-        return "test";
+        long b = Timestamp.valueOf(LocalDateTime.now()).getTime();
+        return String.valueOf(b-a)+"ms";
     }
 
-    /**
-     * TODO 从redis中取数据填充自选币List
-     * @Author CAJR
-     * @return
-     */
-    private List<CoinPairChoice> fillCoinPairChoiceList(){
-        List<CoinPairChoice> coinPairChoices = new ArrayList<>();
 
-        //获取redis中的所有交易情况的Key
-        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
-
-        if (tradeConditionKeys != null){
-            for (String tradeConditionKey : tradeConditionKeys){
-                CoinPairChoice coinPairChoice = new CoinPairChoice();
-                CoinPair coinPair = new CoinPair();
-                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
-
-                String coinPairName = tradeConditionValueJson.getString("symbol");
-                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
-                coinPairChoice.setUserId(userId);
-                coinPair.setName(coinPairName);
-                coinPairChoice.setCoinPair(coinPair);
-
-                System.out.println(coinPairChoice.toString());
-                coinPairChoices.add(coinPairChoice);
-            }
-        }
-
-        return coinPairChoices;
-    }
-
-    /**
-     * TODO 从redis中取数据填充用户交易平台Api List
-     * @param
-     */
-    private List<TradePlatformApi> fillTradePlatformApiList(){
-        List<TradePlatformApi> tradePlatformApis = new ArrayList<>();
-
-        //获取redis中的所有交易情况的Key
-        Set<String> tradeConditionKeys = redisTemplate.keys("trade_condition_*");
-        if (tradeConditionKeys != null){
-            for (String tradeConditionKey : tradeConditionKeys){
-                TradePlatformApi tradePlatformApi = new TradePlatformApi();
-                JSONObject tradeConditionValueJson = (JSONObject) redisTemplate.opsForValue().get(tradeConditionKey);
-                int userId = Integer.parseInt(tradeConditionValueJson.getString("userId"));
-                String accessKey = tradeConditionValueJson.getString("accessKey");
-                String secretKey = tradeConditionValueJson.getString("secretKey");
-
-                tradePlatformApi.setUserId(userId);
-                tradePlatformApi.setAccessKey(accessKey);
-                tradePlatformApi.setSecretKey(secretKey);
-
-                tradePlatformApis.add(tradePlatformApi);
-            }
-        }
-
-        return tradePlatformApis;
-    }
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
-//        System.out.println("consumerMessage--input1->"+msg);
 
         //将json字符串转换为json对象
         JSONObject jsonObject = JSON.parseObject(msg);
@@ -127,6 +75,7 @@ public class DealHandler {
 
         //获取深度
         Map<Double,Double> deep = new HashMap<>();
+
 
         JSONArray deepArray = (JSONArray) jsonObject.get("deep");
         if (deepArray.get(0) != null) {
@@ -138,59 +87,65 @@ public class DealHandler {
             return;
         }
 
+
         //获取货币对的值
         String symbol = jsonObject.get("symbol").toString();
 
-        //获取 自选货币对信息
-//        List<CoinPairChoice> coinPairChoiceList = coinPairChoiceClientService.findAll();
-        List<CoinPairChoice> coinPairChoiceList = fillCoinPairChoiceList();
+        //获取所有交易的key
+        Set<String> keys = redisTemplate.keys("trade-condition_*");
+
+//        //TODO Test数据
+//        Set<String> keys = new HashSet<>();
+//        keys.add("aaa");
+
+        //过滤不是该货币对的key
+        Set<String> filterSet = keys.stream().filter((s) -> s.indexOf(symbol) != -1).collect(Collectors.toSet());
+        //获取key对应的value
+        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
+        filterSet.stream().forEach((s)->{
+            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
+            tradeMap.put(s,o);
+        });
 
 
-        //过滤暂停和停止、不是该货币对的信息
-//        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
-//                .filter((e) -> (e.getIsStart() == 1) && (symbol.equals(e.getCoinPair().getName())))
-//                .collect(Collectors.toList());
-        List<CoinPairChoice> filterList = coinPairChoiceList.stream()
-                .filter((e) -> symbol.equals(e.getCoinPair().getName()))
-                .collect(Collectors.toList());
 
-        //获取所有用户API
-//        List<TradePlatformApi> allApi = tradePlatformApiClientService.findAll();
-        List<TradePlatformApi> allApi = fillTradePlatformApiList();
-
-        List<String> allApiOnCache = new ArrayList<>(redisTemplate.keys("*_"+symbol));
-
-        //遍历自选货币对 执行判断逻辑
-        filterList.parallelStream().forEach((e)->{
-            //通过userId获取平台对应的key
-            int userId = e.getUserId();
-            TradePlatformApi api = allApi.stream().filter((v)->v.getUserId()==userId).findFirst().get();
-            String accessKey = api.getAccessKey();
-            String secretKey = api.getSecretKey();
+        //TODO 遍历所有的交易trade
+        filterSet.parallelStream().forEach((s)->{
+//        keys.parallelStream().forEach((s)->{
 
             //获取该用户redis中的数据
-            String redisKey = accessKey+"_"+secretKey+"_"+symbol;
-            //String redisKey = "asdf";
-            Object result = redisTemplate.opsForValue().get(redisKey);
-            JSONObject resultJOSNObject = JSON.parseObject(result.toString());
+            String redisKey = s;
+            JSONObject trade = tradeMap.get(s);
 
-            if (resultJOSNObject == null) {
+            if (trade == null) {
+                return;
+            }
+
+            //判断是否需要给node发消息
+            Integer canSendMsg2Node = Integer.valueOf(trade.get("canSendMsg2Node").toString());
+
+            if (canSendMsg2Node == -1 ) {
                 return;
             }
 
             //计算实时收益比   判断买卖
-            //持仓费用
-            Double positionCost = Double.valueOf(resultJOSNObject.get("position_cost").toString());
+            Double positionCost = Double.valueOf(trade.get("position_cost").toString());
+//            Double positionCost = 0.0;
             //持仓数量
-            Double positionNum = Double.valueOf(resultJOSNObject.get("position_num").toString());
+            Double positionNum = Double.valueOf(trade.get("position_num").toString());
+//            Double positionNum = 0.0;
             //实时收益比
             double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
             //redis中添加实时收益比
-            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
+//            updateRedisString(redisKey,"real_time_earning_ratio",realTimeEarningRatio);
+
+            String accessKey = trade.getString("accessKey");
+            String secretKey = trade.getString("secretKey");
 
             if (realTimeEarningRatio >= 1) {
-            //if (true) {
+//            if (false) {
+
             //判断是否卖
                 /*
                     获取判断买的参数
@@ -202,16 +157,18 @@ public class DealHandler {
                     double triggerRatio, 和上面的stopProfitRatio
                     double callBackRatio
                  */
-                int stopProfitType = Integer.valueOf(resultJOSNObject.get("is_use_follow_target_profit").toString());
-                double stopProfitPrice = Double.valueOf(resultJOSNObject.get("target_profit_price").toString());
-                double callBackRatio = Double.valueOf(resultJOSNObject.get("turn_down_ratio").toString());
-                double stopProfitRatio = Double.valueOf(resultJOSNObject.get("emit_ratio").toString());
+                Object targetProfitPrice = trade.get("target_profit_price");
+                Object is_use_follow_target_profit = trade.get("is_use_follow_target_profit");
+
+                int stopProfitType = Integer.valueOf(is_use_follow_target_profit==null ? "0" : is_use_follow_target_profit.toString());
+                double stopProfitPrice = Double.valueOf( targetProfitPrice==null ? "0" : targetProfitPrice.toString());
+                double callBackRatio = Double.valueOf(trade.get("turn_down_ratio").toString());
+                double stopProfitRatio = Double.valueOf(trade.get("emit_ratio").toString());
                 boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
                         realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
-
                 if (isSell) {
                     //mq发送卖的消息
-                    boolean b = sendMessage(accessKey,secretKey,symbol,"sell");
+                    boolean sendSell = sendMessage(accessKey,secretKey,symbol,"sell");
                 }
 
             } else {
@@ -230,23 +187,28 @@ public class DealHandler {
                     double firstOrderPrice
 
                  */
-                int orderNumber = Integer.valueOf(resultJOSNObject.get("finished_order").toString());
-                int maxOrderNumber = Integer.valueOf(resultJOSNObject.get("max_trade_order").toString());
+                int orderNumber = Integer.valueOf(trade.get("finished_order").toString());
+                int maxOrderNumber = Integer.valueOf(trade.get("max_trade_order").toString());
                 double averagePosition = positionCost/positionNum;
-                double buildPositionInterval = Double.valueOf(resultJOSNObject.get("store_split").toString());
+                double buildPositionInterval = Double.valueOf(trade.get("store_split").toString());
                 //获取交易量，计算拟买入均价
-                double buyVolume = Double.valueOf(resultJOSNObject.getJSONObject("buy_volume").get(orderNumber+"").toString());
+                double buyVolume = Double.valueOf(trade.getJSONObject("buy_volume").get(orderNumber+"").toString());
                 double averagePrice = countAveragePrice(deep,buyVolume);
-                double followLowerRatio = Double.valueOf(resultJOSNObject.get("follow_lower_ratio").toString());
-                double followCallbackRatio = Double.valueOf(resultJOSNObject.get("follow_callback_ratio").toString());
-                double minAveragePrice = Double.valueOf(resultJOSNObject.get("min_averagePrice").toString());
-                double firstOrderPrice = Double.valueOf(resultJOSNObject.get("first_order_price").toString());
+
+                Object follow_lower_ratio = trade.get("follow_lower_ratio");
+                Object follow_callback_ratio = trade.get("follow_callback_ratio");
+                double followLowerRatio = Double.valueOf(follow_lower_ratio == null ? "0.01" : follow_lower_ratio.toString());
+                double followCallbackRatio = Double.valueOf(follow_callback_ratio == null ? "0.1" : follow_callback_ratio.toString());
+
+                double minAveragePrice = Double.valueOf(trade.get("min_averagePrice").toString());
+                double firstOrderPrice = Double.valueOf(trade.get("first_order_price").toString());
                 boolean isBuy = isBuy( orderNumber, maxOrderNumber, averagePosition,
                         buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
                         ,minAveragePrice,firstOrderPrice,redisKey);
+
                 if (isBuy) {
                     //mq发送买的消息
-                     boolean b = sendMessage(accessKey,secretKey,symbol,"buy");
+                     boolean sendBuy = sendMessage(accessKey,secretKey,symbol,"buy");
                 }
             }
         });

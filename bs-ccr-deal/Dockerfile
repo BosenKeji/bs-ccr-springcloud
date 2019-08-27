@@ -1,5 +1,12 @@
 FROM openjdk:8-jdk
-VOLUME /tmp
+
+RUN mkdir /opt/app
+COPY . /opt/app
+WORKDIR /opt/app
+
+RUN ./mvnw clean
+
+#VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 EXPOSE 9100

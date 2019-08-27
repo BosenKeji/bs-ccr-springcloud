@@ -35,6 +35,10 @@ public interface TradePlatformApiMapper {
     TradePlatformApi selectByUserId(int userId);
 
     int checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
+
+
     int checkExistByIdAndUserId(int id,int userId);
+
+    int checkExistByUserIdAndNickName(int userId,String nickName);
 
 }
