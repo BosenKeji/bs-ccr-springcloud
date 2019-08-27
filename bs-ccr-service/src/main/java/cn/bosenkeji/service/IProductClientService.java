@@ -42,4 +42,7 @@ public interface IProductClientService {
 
     @GetMapping("/product/list_by_ids")
     public Map<Integer,Product> listByPrimaryKeys(@RequestParam("ids") List<Integer> ids);
+
+    @GetMapping("/product/list_by_status")
+    public PageInfo listByStatus(@RequestParam("status") int status,@RequestParam("pageNum") int pageNum,@RequestParam("pageSize") int pageSize);
 }
