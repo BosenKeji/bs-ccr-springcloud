@@ -1,25 +1,14 @@
-FROM openjdk:8-jdk-alpine
-
-RUN mkdir /opt/app
-
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-#COPY settings.xml /root/.m2/settings.xml
-
-COPY . /opt/app
-COPY mvnw /opt/app/bs-ccr-deal/mvnw
-COPY .mvn /opt/app/bs-ccr-deal/.mvn
-
-WORKDIR /opt/app
+FROM registry.us-east-1.aliyuncs.com/bs-ccr/spring-cloud-base:latest
 
 
-RUN ./mvnw clean install
+COPY pom.xml /opt/app/pom.xml
+COPY bs-ccr-deal /opt/app/bs-ccr-deal
+COPY settings.xml /root/.m2/settings.xml
+
 
 
 WORKDIR /opt/app/bs-ccr-deal
-
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean install && mvn clean package
 
 VOLUME /tmp
 ARG JAR_FILE

@@ -328,4 +328,15 @@
 
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>rdc-releases</id>
+            <url>https://repo.rdc.aliyun.com/repository/77065-release-JW0WTb/</url>
+        </repository>
+        <snapshotRepository>
+            <id>rdc-snapshots</id>
+            <url>https://repo.rdc.aliyun.com/repository/77065-snapshot-kJOxOp/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
