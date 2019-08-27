@@ -1,0 +1,12 @@
+FROM registry.us-east-1.aliyuncs.com/bs-ccr/bs-ccr-deal-base:v1.1
+
+COPY . .
+
+
+RUN  mvn clean package -nsu
+
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+EXPOSE 9100
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]

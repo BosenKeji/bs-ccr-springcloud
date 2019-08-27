@@ -1,12 +1,5 @@
-FROM bs-ccr-deal-base:latest
-
-COPY . .
-
-COPY settings.xml /root/.m2/settings.xml
-
-RUN  mvn clean package
-
-#VOLUME /tmp
+FROM openjdk:8-jdk
+VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar
 EXPOSE 9100
