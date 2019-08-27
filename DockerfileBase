@@ -1,0 +1,17 @@
+FROM openjdk:8-jdk-alpine
+
+RUN mkdir /opt/app
+WORKDIR /opt/app
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom-docker.xml pom.xml
+COPY settings.xml /root/.m2/settings.xml
+
+
+
+RUN ./mvnw install
+
+
+
+
