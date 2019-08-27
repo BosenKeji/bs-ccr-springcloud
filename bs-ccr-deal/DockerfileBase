@@ -1,8 +1,7 @@
-FROM bs-ccr-deal-base:latest
+FROM registry.us-east-1.aliyuncs.com/bs-ccr/spring-cloud-base:latest
 
-COPY . .
+COPY pom.xml pom.xml
 
-COPY settings.xml /root/.m2/settings.xml
 
 RUN  mvn clean package
 
