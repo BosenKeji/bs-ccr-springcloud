@@ -1,8 +1,8 @@
 spring:
   redis:
     database: 0
-    host: inside-network.redis.rds.aliyuncs.com
-#    host: internal.redis.rds.aliyuncs.com
+#    host: inside-network.redis.rds.aliyuncs.com
+    host: internal.redis.rds.aliyuncs.com
     port: 6379
     password: AYbosenkj19
     timeout: 5000ms
@@ -19,7 +19,12 @@ spring:
           name-server: MQ_INST_1782728101358463_BbRT1x5s.us-east-1.mq-internal.aliyuncs.com:8080
           access-key: LTAISwQkitLFbG0t
           secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
-      bindings:
-        output1: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info, content-type: application/json}
 
-        input1: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-symbol-price, content-type: application/json, group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-symbol-price}
+      bindings:
+        output1:
+          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info
+          content-type: application/json
+        input1:
+          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-symbol-price
+          content-type: application/json
+          group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-symbol-price

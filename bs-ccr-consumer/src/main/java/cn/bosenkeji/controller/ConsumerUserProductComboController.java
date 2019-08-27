@@ -5,6 +5,7 @@ import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/user_product_combo")
 @Api(tags = "UserProductCombo 用户套餐api接口",value = "提供用户套餐相关的 rest API")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class ConsumerUserProductComboController {
 
     @Resource

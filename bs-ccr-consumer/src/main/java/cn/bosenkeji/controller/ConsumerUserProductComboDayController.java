@@ -4,6 +4,7 @@ import cn.bosenkeji.service.IUserProductComboDayClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/user_product_combo_day")
 @Api(tags="UserProductComboDay 用户时长接口",value = "用户套餐时长相关 rest API")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class ConsumerUserProductComboDayController {
 
     @Resource

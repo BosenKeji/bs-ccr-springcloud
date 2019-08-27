@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/product")
 @Api(tags = "Product 产品相关接口",value = "提供产品相关的 Rest API")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class ConsumerProductController {
 
     @Resource

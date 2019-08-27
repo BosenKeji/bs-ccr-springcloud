@@ -11,4 +11,5 @@ public interface MySink {
 
     @Input("input1")
     SubscribableChannel input1();
+
 }
