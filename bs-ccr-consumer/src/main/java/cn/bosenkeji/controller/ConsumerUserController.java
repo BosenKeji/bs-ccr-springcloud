@@ -3,12 +3,14 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.enums.exception.user.UserEnum;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.service.IUserClientService;
+import cn.bosenkeji.service.impl.CustomUserDetailsImpl;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -67,6 +69,7 @@ public class ConsumerUserController {
     @ApiOperation(value = "更新用户接口", httpMethod = "PUT", nickname = "updateUser")
     public Object update(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
+        user.setId(this.getCurrentUser().getId());
         return this.iUserClientService.updateUser(user);
     }
 
@@ -75,7 +78,8 @@ public class ConsumerUserController {
     @ApiOperation(value = "删除单个用户接口", httpMethod = "DELETE", nickname = "deleteOneUser")
     public Object delete(@PathVariable("id") @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
 
-        return this.iUserClientService.deleteOneUser(id);
+        int currentId=this.getCurrentUser().getId();
+        return this.iUserClientService.deleteOneUser(currentId);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -85,7 +89,8 @@ public class ConsumerUserController {
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                                  @RequestParam("password") @NotNull @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") String password) {
 
-        return this.iUserClientService.updateUserPassword(id,password);
+        int currentId=this.getCurrentUser().getId();
+        return this.iUserClientService.updateUserPassword(currentId,password);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -95,7 +100,8 @@ public class ConsumerUserController {
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                                  @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") String username) {
 
-        return this.iUserClientService.updateUserUsername(id,username);
+        int currentId=this.getCurrentUser().getId();
+        return this.iUserClientService.updateUserUsername(currentId,username);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -105,7 +111,8 @@ public class ConsumerUserController {
                             @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                             @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
 
-        return this.iUserClientService.updateUserTel(id,tel);
+        int currentId=this.getCurrentUser().getId();
+        return this.iUserClientService.updateUserTel(currentId,tel);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -113,8 +120,9 @@ public class ConsumerUserController {
     @PutMapping("/update_binding")
     public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
 
+        int currentId=this.getCurrentUser().getId();
         int isBinding=1;
-        return iUserClientService.updateBinding(id,isBinding);
+        return iUserClientService.updateBinding(currentId,isBinding);
 
     }
 
@@ -124,6 +132,13 @@ public class ConsumerUserController {
     public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
                                       @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
         return iUserClientService.updatePasswordByTel(tel,password);
+    }
+
+    @ApiOperation(value = "获取当前登录用户接口",httpMethod = "GET",nickname = "getCurrentUser")
+    @GetMapping("/current_user")
+    public CustomUserDetailsImpl getCurrentUser() {
+        CustomUserDetailsImpl principal = (CustomUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
     }
 
 }

@@ -16,7 +16,7 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("交易平台api id")
     private int id;
 
-    @ApiModelProperty("用户 id")
+    @ApiModelProperty(value = "用户 id",hidden = true)
     private int userId;
 
     @ApiModelProperty("交易平台id")

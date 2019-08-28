@@ -21,7 +21,7 @@ public class CoinPairChoice {
     @ApiModelProperty("货币对 id")
     private int coinPartnerId;
 
-    @ApiModelProperty("用户id")
+    @ApiModelProperty(value = "用户id",hidden = true)
     private int userId;
 
     @ApiModelProperty("是否开始策略")

@@ -7,6 +7,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,14 +21,18 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/trade_platform_coin_pair")
 @Api(tags = "tradePlatformCoinPair 交易平台货币对接口",value = "提供交易平台货币对相关功能 Rest接口")
+@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+@RefreshScope
 public class ConsumerTradePlatformCoinPairController {
     @Resource
     ITradePlatformCoinPairClientService iTradePlatformCoinPairClientService;
 
+    @Value("${pageSize.common}")
+    private int pageSizeCommon;
+
     @ApiOperation(value = "获取平台货币对列表接口",httpMethod = "GET",nickname = "getTradePlatformCoinPairWithPage")
     @GetMapping("/")
-    public PageInfo getListTradePlatformCoinPairWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                                                         @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
+    public PageInfo getListTradePlatformCoinPairWithPage(@RequestParam( value="pageNum",defaultValue="1") int pageNum){
         return this.iTradePlatformCoinPairClientService.listTradePlatformCoinPairs(pageNum, pageSizeCommon);
     }
 

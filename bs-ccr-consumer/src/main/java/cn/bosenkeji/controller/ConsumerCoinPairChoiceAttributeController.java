@@ -7,11 +7,10 @@ import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 /**
  * @Author CAJR
@@ -20,10 +19,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/coin_pair_choice_attribute")
 @Api(tags = "CoinPairChoiceAttribute 自选货币属性接口",value = "自选货币属性相关功能 Rest接口")
+@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 public class ConsumerCoinPairChoiceAttributeController {
     @Resource
     ICoinPairChoiceAttributeClientService iCoinPairChoiceAttributeClientService;
-
 
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET",nickname = "getOneCoinPairChoiceAttributeByCoinPartnerChoiceID")
     @GetMapping("/{coinPartnerChoiceId}")

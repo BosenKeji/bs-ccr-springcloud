@@ -27,19 +27,22 @@ public class DealParameter {
     private Integer maxTradeOrder; //最大交易单数
     private Double storeSplit; //建仓间隔
 
-    private Map<Double,Double> buyVolume; //买入量
+    private JSONObject buyVolume; //买入量
     private Double followLowerRatio; //追踪下调比
     private Double followCallbackRatio; //追踪回调比
 
     private Double minAveragePrice; //最小交易均价
     private Double firstOrderPrice; //首单现价
-
+    private Integer isFollowBuild; //是否触发追踪建仓
 
     //卖需要的参数
     private Double targetProfitPrice; //止盈金额
     private Integer isUseFollowTargetProfit;  //是否使用追踪止盈
     private Double turnDownRatio; //追踪止盈触发比例
+
     private Double emitRatio; //追踪止盈回调比例
+    private Double historyMaxRiskBenefitRatio; //历史最高收益比
+    private Integer isTriggerTraceStopProfit; //是否触发追踪止盈
 
 
     public DealParameter() { }
@@ -47,10 +50,11 @@ public class DealParameter {
     public DealParameter(String accessKey, String secretKey, String symbol,
                          Integer canSendMsgToNode, Double positionCost, Double positionNum,
                          Integer finishedOrder, Integer maxTradeOrder, Double storeSplit,
-                         Map<Double, Double> buyVolume, Double followLowerRatio, Double followCallbackRatio,
-                         Double minAveragePrice, Double firstOrderPrice, Double targetProfitPrice,
-                         Integer isUseFollowTargetProfit, Double turnDownRatio, Double emitRatio,
-                         String redisKey, JSONObject jsonObject) {
+                         JSONObject buyVolume, Double followLowerRatio, Double followCallbackRatio,
+                         Double minAveragePrice, Double firstOrderPrice, Integer isFollowBuild,
+                         Double targetProfitPrice, Integer isUseFollowTargetProfit, Double turnDownRatio,
+                         Double emitRatio, String redisKey, JSONObject jsonObject, Double historyMaxRiskBenefitRatio,
+                         Integer isTriggerTraceStopProfit) {
         this.accessKey = accessKey;
         SecretKey = secretKey;
         this.symbol = symbol;
@@ -65,12 +69,15 @@ public class DealParameter {
         this.followCallbackRatio = followCallbackRatio;
         this.minAveragePrice = minAveragePrice;
         this.firstOrderPrice = firstOrderPrice;
+        this.isFollowBuild = isFollowBuild;
         this.targetProfitPrice = targetProfitPrice;
         this.isUseFollowTargetProfit = isUseFollowTargetProfit;
         this.turnDownRatio = turnDownRatio;
         this.emitRatio = emitRatio;
         this.redisKey = redisKey;
         this.jsonObject = jsonObject;
+        this.historyMaxRiskBenefitRatio = historyMaxRiskBenefitRatio;
+        this.isTriggerTraceStopProfit = isTriggerTraceStopProfit;
     }
 
     public String getAccessKey() {
@@ -145,11 +152,11 @@ public class DealParameter {
         this.storeSplit = storeSplit;
     }
 
-    public Map<Double, Double> getBuyVolume() {
+    public JSONObject getBuyVolume() {
         return buyVolume;
     }
 
-    public void setBuyVolume(Map<Double, Double> buyVolume) {
+    public void setBuyVolume(JSONObject buyVolume) {
         this.buyVolume = buyVolume;
     }
 
@@ -183,6 +190,14 @@ public class DealParameter {
 
     public void setFirstOrderPrice(Double firstOrderPrice) {
         this.firstOrderPrice = firstOrderPrice;
+    }
+
+    public Integer getIsFollowBuild() {
+        return isFollowBuild;
+    }
+
+    public void setIsFollowBuild(Integer isFollowBuild) {
+        this.isFollowBuild = isFollowBuild;
     }
 
     public Double getTargetProfitPrice() {
@@ -231,5 +246,21 @@ public class DealParameter {
 
     public void setJsonObject(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
+    }
+
+    public Double getHistoryMaxRiskBenefitRatio() {
+        return historyMaxRiskBenefitRatio;
+    }
+
+    public void setHistoryMaxRiskBenefitRatio(Double historyMaxRiskBenefitRatio) {
+        this.historyMaxRiskBenefitRatio = historyMaxRiskBenefitRatio;
+    }
+
+    public Integer getIsTriggerTraceStopProfit() {
+        return isTriggerTraceStopProfit;
+    }
+
+    public void setIsTriggerTraceStopProfit(Integer isTriggerTraceStopProfit) {
+        this.isTriggerTraceStopProfit = isTriggerTraceStopProfit;
     }
 }
