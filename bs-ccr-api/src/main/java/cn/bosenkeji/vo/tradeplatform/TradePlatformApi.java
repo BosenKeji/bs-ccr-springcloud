@@ -34,9 +34,6 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("别名")
     private String nickname;
 
-    @ApiModelProperty("交易平台账号ID")
-    private int accountId;
-
     private int status;
 
     @ApiModelProperty(hidden = true)
@@ -142,14 +139,6 @@ public class TradePlatformApi implements Serializable {
 
     public void setTradePlatform(TradePlatform tradePlatform) {
         this.tradePlatform = tradePlatform;
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
     }
 
     @Override
