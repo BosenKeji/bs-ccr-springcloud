@@ -95,7 +95,7 @@ public class TradePlatformApiController {
 
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台 id", required = true, type = "integer",example = "1") int id){
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
 
         if (this.tradePlatformApiService.get(id) == null){
             return new Result<>(null,"交易平台API不存在");

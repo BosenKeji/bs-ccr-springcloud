@@ -19,23 +19,23 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, trade_platform_id, sign, access_key, secret_key, nickname, `status`, 
+    id, user_id, trade_platform_id, sign, access_key, secret_key, nickname, `status`,
     created_at, updated_at
   </sql>
   <select id="findAllByUserId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-   from trade_platform_api
-   where user_id = #{userId,jdbcType=INTEGER}
+    from trade_platform_api
+    where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <select id="findAll" resultMap="BaseResultMap">
     select
-     <include refid="Base_Column_List"/>
-     from trade_platform_api
+    <include refid="Base_Column_List"/>
+    from trade_platform_api
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
-    select 
+    select
     <include refid="Base_Column_List" />
     from trade_platform_api
     where id = #{id,jdbcType=INTEGER}
@@ -43,8 +43,8 @@
   <select id="selectByTradePlatformId" parameterType="int" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-   from trade_platform_api
-   where trade_platform_id = #{tradePlatformId,jdbcType=INTEGER}
+    from trade_platform_api
+    where trade_platform_id = #{tradePlatformId,jdbcType=INTEGER}
   </select>
   <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
     select
@@ -85,14 +85,14 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into trade_platform_api (user_id, trade_platform_id, sign, 
-      access_key, secret_key, nickname, 
-      `status`, created_at, updated_at
-      )
-    values (#{userId,jdbcType=INTEGER}, #{tradePlatformId,jdbcType=INTEGER}, #{sign,jdbcType=VARCHAR}, 
-      #{accessKey,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
-      )
+    insert into trade_platform_api (user_id, trade_platform_id, sign,
+    access_key, secret_key, nickname,
+    `status`, created_at, updated_at
+    )
+    values (#{userId,jdbcType=INTEGER}, #{tradePlatformId,jdbcType=INTEGER}, #{sign,jdbcType=VARCHAR},
+    #{accessKey,jdbcType=VARCHAR}, #{secretKey,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
+    #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -182,14 +182,14 @@
     <!--@mbg.generated-->
     update trade_platform_api
     set user_id = #{userId,jdbcType=INTEGER},
-      trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
-      sign = #{sign,jdbcType=VARCHAR},
-      access_key = #{accessKey,jdbcType=VARCHAR},
-      secret_key = #{secretKey,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=TINYINT},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
+    sign = #{sign,jdbcType=VARCHAR},
+    access_key = #{accessKey,jdbcType=VARCHAR},
+    secret_key = #{secretKey,jdbcType=VARCHAR},
+    nickname = #{nickname,jdbcType=VARCHAR},
+    `status` = #{status,jdbcType=TINYINT},
+    created_at = #{createdAt,jdbcType=TIMESTAMP},
+    updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -2,10 +2,9 @@ package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.StrategyAttributeMapper;
 import cn.bosenkeji.mapper.StrategyMapper;
+import cn.bosenkeji.service.StrategySequenceService;
 import cn.bosenkeji.service.StrategyService;
-import cn.bosenkeji.vo.strategy.Strategy;
-import cn.bosenkeji.vo.strategy.StrategyAttribute;
-import cn.bosenkeji.vo.strategy.StrategyOther;
+import cn.bosenkeji.vo.strategy.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,9 @@ public class StrategyServiceImpl implements StrategyService{
 
     @Autowired
     private StrategyAttributeMapper strategyAttributeMapper;
+
+    @Autowired
+    private StrategySequenceService strategySequenceService;
 
 
     @Override
@@ -47,7 +49,8 @@ public class StrategyServiceImpl implements StrategyService{
             return null;
         }
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        return convertStrategyOther(strategy, strategyAttribute);
+        StrategySequenceOther seuqenceOther = strategySequenceService.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId());
+        return convertStrategyOther(strategy, strategyAttribute,seuqenceOther);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class StrategyServiceImpl implements StrategyService{
         return Optional.of(strategyAttributeMapper.checkStrategyAttributeBySequenceId(sequenceId));
     }
 
-    private StrategyOther convertStrategyOther(Strategy strategy, StrategyAttribute strategyAttribute) {
+    private StrategyOther convertStrategyOther(Strategy strategy, StrategyAttribute strategyAttribute, StrategySequenceOther sequence) {
         StrategyOther other = new StrategyOther();
         other.setId(strategy.getId());
         other.setName(strategy.getName());
@@ -98,6 +101,12 @@ public class StrategyServiceImpl implements StrategyService{
         other.setIsStopProfitMoney(strategyAttribute.getIsStopProfitMoney());
         other.setIsStopProfitGrid(strategyAttribute.getIsStopProfitGrid());
         other.setBuildReference(strategyAttribute.getBuildReference());
+
+        other.setSequenceId(sequence.getId());
+        other.setSequenceName(sequence.getName());
+        other.setSequenceValue(sequence.getValue());
+        other.setSortNum(other.getSortNum());
+        other.setSequenceStatus(sequence.getStatus());
         return other;
     }
 }

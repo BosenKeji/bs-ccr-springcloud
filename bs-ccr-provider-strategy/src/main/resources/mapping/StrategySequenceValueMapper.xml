@@ -83,10 +83,6 @@
     where strategy_sequence_id = #{sequenceId}
   </select>
 
-  <select id="getSequenceValueByStrategyId" parameterType="java.lang.Integer" resultType="string">
-    select value from strategy_sequence_value
-    where strategy_sequence_id = (select strategy_sequence_id from strategy_attribute where strategy_id = #{strategyId})
-  </select>
 
   <select id="checkSequenceByIdOrValueOrSequenceId" resultType="java.lang.Integer">
     select EXISTS(

@@ -10,7 +10,6 @@ public interface StrategySequenceValueMapper {
 
     StrategySequenceValue findSequenceValueBySequenceId(Integer sequenceId);
 
-    String getSequenceValueByStrategyId(Integer strategyId);
 
     int checkSequenceByIdOrValueOrSequenceId(@Param("id") Integer id, @Param("value") String value, @Param("sequenceId") Integer sequenceId);
 }

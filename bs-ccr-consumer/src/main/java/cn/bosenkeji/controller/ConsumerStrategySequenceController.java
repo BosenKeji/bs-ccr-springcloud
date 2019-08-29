@@ -36,13 +36,6 @@ public class ConsumerStrategySequenceController {
         return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
     }
 
-    @GetMapping(value = "/value/{strategyId}")
-    @ApiOperation(value = "获取指定数列信息",notes = "通过策略Id获取对应的数列的值")
-    public String getSequenceValueByStrategyId(
-            @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
-    ) {
-        return strategySequenceService.getSequenceValueByStrategyId(strategyId);
-    }
 
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
