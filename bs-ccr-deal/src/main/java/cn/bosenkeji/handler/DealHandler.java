@@ -122,21 +122,7 @@ public class DealHandler {
 
             if (realTimeEarningRatio >= 1) {
 //            if (true) {
-
             //判断是否卖
-                /*
-                    获取判断买的参数
-                    double positionPrice, 上面的positionCost
-                    int stopProfitType,
-                    double stopProfitPrice,
-                    double stopProfitRatio, 和止盈触发比一致
-                    double realTimeEarningRatio, 上面
-                    double triggerRatio, 和上面的stopProfitRatio
-                    double callBackRatio
-                 */
-
-//                boolean isSell = isSell(positionCost, stopProfitType, stopProfitPrice, stopProfitRatio,
-//                        realTimeEarningRatio, stopProfitRatio, callBackRatio,redisKey);
                 boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisTemplate);
                 if (isSell) {
                     //mq发送卖的消息
@@ -144,47 +130,15 @@ public class DealHandler {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL+"  消息发送："+isSend);
                 }
 
-            } else {
-                //判断是否买
-                /*
-                    获取判断买的参数
-                    double realTimePrice, 上面的price
-                    int orderNumber,
-                    int maxOrderNumber,
-                    double averagePosition,
-                    double buildPositionInterval,
-                    double averagePrice,
-                    double followLowerRatio,
-                    double followCallbackRatio,
-                    double minAveragePrice
-                    double firstOrderPrice
+            }
 
-                 */
-//                int orderNumber = dealParameter.getFinishedOrder();
-//                int maxOrderNumber = dealParameter.getMaxTradeOrder();
-//                double averagePosition = positionCost/positionNum;
-//                double buildPositionInterval = dealParameter.getStoreSplit();
-//                //获取交易量，计算拟买入均价
-//                Map buyVolume = dealParameter.getBuyVolume();
-//                double averagePrice = DealCalculator.countAveragePrice(deep,buyVolume);
-//
-//
-//                double followLowerRatio = dealParameter.getFollowLowerRatio() == 0.0 ? 0.01 : dealParameter.getFollowLowerRatio();
-//                double followCallbackRatio = dealParameter.getFollowCallbackRatio() == 0.0 ? 0.1 : dealParameter.getFollowCallbackRatio();
-//
-//                double minAveragePrice = dealParameter.getMinAveragePrice();
-//                double firstOrderPrice = dealParameter.getFirstOrderPrice();
-//                boolean isBuy = DealCalculator.isBuy( orderNumber, maxOrderNumber, averagePosition,
-//                        buildPositionInterval, averagePrice,followLowerRatio,followCallbackRatio
-//                        ,minAveragePrice,firstOrderPrice,redisKey);
+            //判断买
+            boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisTemplate);
 
-                boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisTemplate);
-
-                if (isBuy) {
-                    //mq发送买的消息
-                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY+"  消息发送："+isSend);
-                }
+            if (isBuy) {
+                //mq发送买的消息
+                 boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
+                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY+"  消息发送："+isSend);
             }
         });
 
