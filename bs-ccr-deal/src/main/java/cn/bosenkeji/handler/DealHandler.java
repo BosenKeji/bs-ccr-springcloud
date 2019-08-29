@@ -57,7 +57,7 @@ public class DealHandler {
 
 
 
-//    @StreamListener("input1")
+    @StreamListener("input1")
     private void consumerMessage(String msg) {
 
         //将json字符串转换为json对象
@@ -83,8 +83,9 @@ public class DealHandler {
         //获取key对应的value
         ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
         filterSet.forEach((s)->{
-            JSONObject o = (JSONObject) redisTemplate.opsForValue().get(s);
-            if (o != null) tradeMap.put(s,o);
+            Object result = redisTemplate.opsForValue().get(s);
+            if (result instanceof String) tradeMap.put(s,JSONObject.parseObject((String) result));
+            if (result instanceof JSONObject) tradeMap.put(s,(JSONObject) result);
         });
 
 

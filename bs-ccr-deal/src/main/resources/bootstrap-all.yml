@@ -21,10 +21,12 @@ spring:
           secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
 
       bindings:
-        output1:
-          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info
-          content-type: application/json
         input1:
           destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-symbol-price
-          content-type: application/json
           group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-symbol-price
+          content-type: application/json
+
+        output1:
+          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info
+          group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-response-symbol-trade-info
+          content-type: application/json

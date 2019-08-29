@@ -3,6 +3,7 @@ package cn.bosenkeji.utils;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Map;
 
@@ -91,13 +92,13 @@ public class DealCalculator {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
-                    String s = updateJson(jsonObject, DealParameterParser.IS_TRIGGER_TRACE_STOP_PROFIT, 1);
+                    JSONObject s = updateJson(jsonObject, DealParameterParser.IS_TRIGGER_TRACE_STOP_PROFIT, 1);
                     updateRedisString(redisKey,s,redisTemplate);
                 }
 
                 //记录实时收益比的最高数值
                 if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio < realTimeEarningRatio) {
-                    String s = updateJson(jsonObject, DealParameterParser.HISTORY_MAX_RISK_BENEFIT_RATIO, realTimeEarningRatio);
+                    JSONObject s = updateJson(jsonObject, DealParameterParser.HISTORY_MAX_RISK_BENEFIT_RATIO, realTimeEarningRatio);
                     updateRedisString(redisKey,s,redisTemplate);
                 }
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
@@ -162,8 +163,8 @@ public class DealCalculator {
         if ( finishedOrder == 0 ) {
             return true;
         }
-        //设置策略时现价是否小于等于整体持仓均价-建仓间隔*最大建仓数减1？
-        if ( firstOrderPrice > (storeSplit*(maxTradeOrder-1)) ) {
+        //设置策略时现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
+        if ( firstOrderPrice - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
             return false;
         }
 
@@ -179,7 +180,7 @@ public class DealCalculator {
         if (averagePrice > lowerAveragePrice) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
-                String s = updateJson(jsonObject, DealParameterParser.IS_FOLLOW_BUILD, 1);
+                JSONObject s = updateJson(jsonObject, DealParameterParser.IS_FOLLOW_BUILD, 1);
                 updateRedisString(redisKey,s,redisTemplate);
             }
             return false;
@@ -190,7 +191,7 @@ public class DealCalculator {
 
         //记录最小拟买入均价
         if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
-            String s = updateJson(jsonObject,DealParameterParser.MIN_AVERAGE_PRICE,averagePrice);
+            JSONObject s = updateJson(jsonObject,DealParameterParser.MIN_AVERAGE_PRICE,averagePrice);
             updateRedisString(redisKey,s,redisTemplate);
         }
 
@@ -200,28 +201,27 @@ public class DealCalculator {
     }
 
 
-    private static String updateJson(JSONObject jsonObject, String key, Object o) {
+    private static JSONObject updateJson(JSONObject jsonObject, String key, Object o) {
 
-        JSONObject replace = null;
 
         if (o instanceof String) {
-            replace = (JSONObject) jsonObject.put(key,o.toString());
+            jsonObject.put(key,o.toString());
         }
 
         if (o instanceof Integer) {
-            replace = (JSONObject) jsonObject.put(key,Integer.valueOf(o.toString()));
+            jsonObject.put(key,Integer.valueOf(o.toString()));
         }
 
         if (o instanceof Double) {
-            replace = (JSONObject) jsonObject.put(key,Double.valueOf(o.toString()));
+            jsonObject.put(key,Double.valueOf(o.toString()));
         }
 
-        if (replace != null) return replace.toJSONString();
-        return null;
+        return jsonObject;
     }
 
 
-    private static void updateRedisString(String redisKey, String value, RedisTemplate redisTemplate) {
+    private static void updateRedisString(String redisKey, JSONObject value, RedisTemplate redisTemplate) {
+
         if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value);
     }
 
