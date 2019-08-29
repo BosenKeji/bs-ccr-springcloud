@@ -46,7 +46,7 @@ public class CoinPairCoinController {
 
     @ApiOperation(value = "根据货币ID获取货币对货币列表接口",httpMethod = "GET",nickname = "getCoinPairCoinListByCoinId")
     @GetMapping("/list_by_coinId")
-    public List<CoinPairCoin> listByCoinId(@RequestParam( value="coinId",defaultValue="1")  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinId){
+    public List<CoinPairCoin> listByCoinId(@RequestParam( value="coinId",defaultValue="1")  @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
         return this.coinPairCoinService.listByCoinId(coinId);
     }
 
@@ -75,7 +75,7 @@ public class CoinPairCoinController {
     @PutMapping("/")
     public Result update(@RequestBody @Valid @ApiParam(value = "货币对货币实体", required = true, type = "string") CoinPairCoin coinPairCoin){
 
-        if (this.coinPairCoinService.checkByCoinIdAndCoinPairId(coinPairCoin.getCoinId(),coinPairCoin.getCoinPairId()).get() < 1){
+        if (this.coinPairCoinService.get(coinPairCoin.getId()) == null){
             return new Result<>(null,"货币对货币id不存在");
         }
         coinPairCoin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
