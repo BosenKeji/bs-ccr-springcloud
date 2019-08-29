@@ -87,13 +87,6 @@ public class StrategySequenceController {
         return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
     }
 
-    @GetMapping(value = "/value/{strategyId}")
-    @ApiOperation(value = "获取指定数列信息",notes = "通过策略Id获取对应的数列的值")
-    public String getSequenceValueByStrategyId(
-            @PathVariable("strategyId") @Min(value = 1) @ApiParam(value = "数列ID",required = true,example = "1") Integer strategyId
-    ) {
-        return strategySequenceService.getSequenceValueByStrategyId(strategyId);
-    }
 
     @GetMapping(value = "/discover")
     @ApiOperation(value = "获取当前服务的API接口" , notes = "获取当前服务API接口")

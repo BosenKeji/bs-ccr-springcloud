@@ -61,10 +61,6 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
         return sequenceOther;
     }
 
-    @Override
-    public String getSequenceValueByStrategyId(Integer strategyId) {
-        return strategySequenceValueMapper.getSequenceValueByStrategyId(strategyId);
-    }
 
     @Override
     public Optional<Integer> checkSequenceByName(String name) {

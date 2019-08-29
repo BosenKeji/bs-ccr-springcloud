@@ -46,10 +46,6 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
                 return sequenceOther;
             }
 
-            @Override
-            public String getSequenceValueByStrategyId(Integer strategyId) {
-                return "Failed";
-            }
         };
     }
 }

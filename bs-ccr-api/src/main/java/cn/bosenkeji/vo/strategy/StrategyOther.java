@@ -22,9 +22,22 @@ public class StrategyOther {
     private int isStopProfitGrid;
     private int buildReference;
 
+    //数列字段
+    private int sequenceId;
+    private String sequenceName;
+    private String sequenceValue;
+    private int sortNum;
+    private int sequenceStatus;
+
     public StrategyOther() { }
 
-    public StrategyOther(int id, String name, int status, int isDefault, int isTip, int lever, int strategySequenceId, int rate, double stopProfitRatio, int isStopProfitTrace, double stopProfitTraceTriggerRate, double stopProfitTraceDropRate, double isStopProfitMoney, int isStopProfitGrid, int buildReference) {
+    public StrategyOther(int id, String name, int status, int isDefault,
+                         int isTip, int lever, int strategySequenceId,
+                         int rate, double stopProfitRatio, int isStopProfitTrace,
+                         double stopProfitTraceTriggerRate, double stopProfitTraceDropRate,
+                         double isStopProfitMoney, int isStopProfitGrid, int buildReference,
+                         int sequenceId, String sequenceName, String sequenceValue,
+                         int sortNum, int sequenceStatus) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -40,6 +53,11 @@ public class StrategyOther {
         this.isStopProfitMoney = isStopProfitMoney;
         this.isStopProfitGrid = isStopProfitGrid;
         this.buildReference = buildReference;
+        this.sequenceId = sequenceId;
+        this.sequenceName = sequenceName;
+        this.sequenceValue = sequenceValue;
+        this.sortNum = sortNum;
+        this.sequenceStatus = sequenceStatus;
     }
 
     public int getId() {
@@ -162,6 +180,46 @@ public class StrategyOther {
         this.buildReference = buildReference;
     }
 
+    public int getSequenceId() {
+        return sequenceId;
+    }
+
+    public void setSequenceId(int sequenceId) {
+        this.sequenceId = sequenceId;
+    }
+
+    public String getSequenceName() {
+        return sequenceName;
+    }
+
+    public void setSequenceName(String sequenceName) {
+        this.sequenceName = sequenceName;
+    }
+
+    public String getSequenceValue() {
+        return sequenceValue;
+    }
+
+    public void setSequenceValue(String sequenceValue) {
+        this.sequenceValue = sequenceValue;
+    }
+
+    public int getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(int sortNum) {
+        this.sortNum = sortNum;
+    }
+
+    public int getSequenceStatus() {
+        return sequenceStatus;
+    }
+
+    public void setSequenceStatus(int sequenceStatus) {
+        this.sequenceStatus = sequenceStatus;
+    }
+
     @Override
     public String toString() {
         return "StrategyOther{" +
@@ -180,6 +238,11 @@ public class StrategyOther {
                 ", isStopProfitMoney=" + isStopProfitMoney +
                 ", isStopProfitGrid=" + isStopProfitGrid +
                 ", buildReference=" + buildReference +
+                ", sequenceId=" + sequenceId +
+                ", sequenceName='" + sequenceName + '\'' +
+                ", sequenceValue='" + sequenceValue + '\'' +
+                ", sortNum=" + sortNum +
+                ", sequenceStatus=" + sequenceStatus +
                 '}';
     }
 }

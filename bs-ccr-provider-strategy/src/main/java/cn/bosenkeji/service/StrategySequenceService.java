@@ -18,8 +18,6 @@ public interface StrategySequenceService {
 
     StrategySequenceOther findSequenceByPrimaryKey(Integer id);
 
-    String getSequenceValueByStrategyId(Integer strategyId);
-
     Optional<Integer> checkSequenceByName(String name);
 
     Optional<Integer> checkSequenceById(Integer id);
