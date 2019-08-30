@@ -86,6 +86,7 @@ public class DealHandler {
             Object result = redisTemplate.opsForValue().get(s);
             if (result instanceof String) tradeMap.put(s,JSONObject.parseObject((String) result));
             if (result instanceof JSONObject) tradeMap.put(s,(JSONObject) result);
+            if (result instanceof HashMap) tradeMap.put(s,JSONObject.parseObject(JSON.toJSONString(result)));
         });
 
 

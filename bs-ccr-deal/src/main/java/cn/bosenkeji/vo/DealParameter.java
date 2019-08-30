@@ -37,7 +37,7 @@ public class DealParameter {
 
     //卖需要的参数
     private Double targetProfitPrice; //止盈金额
-    private Integer isUseFollowTargetProfit;  //是否使用追踪止盈
+    private Integer isStopProfitTrace;  //是否使用追踪止盈
     private Double turnDownRatio; //追踪止盈触发比例
 
     private Double emitRatio; //追踪止盈回调比例
@@ -52,7 +52,7 @@ public class DealParameter {
                          Integer finishedOrder, Integer maxTradeOrder, Double storeSplit,
                          JSONObject buyVolume, Double followLowerRatio, Double followCallbackRatio,
                          Double minAveragePrice, Double firstOrderPrice, Integer isFollowBuild,
-                         Double targetProfitPrice, Integer isUseFollowTargetProfit, Double turnDownRatio,
+                         Double targetProfitPrice, Integer isStopProfitTrace, Double turnDownRatio,
                          Double emitRatio, String redisKey, JSONObject jsonObject, Double historyMaxRiskBenefitRatio,
                          Integer isTriggerTraceStopProfit) {
         this.accessKey = accessKey;
@@ -71,7 +71,7 @@ public class DealParameter {
         this.firstOrderPrice = firstOrderPrice;
         this.isFollowBuild = isFollowBuild;
         this.targetProfitPrice = targetProfitPrice;
-        this.isUseFollowTargetProfit = isUseFollowTargetProfit;
+        this.isStopProfitTrace = isStopProfitTrace;
         this.turnDownRatio = turnDownRatio;
         this.emitRatio = emitRatio;
         this.redisKey = redisKey;
@@ -208,12 +208,12 @@ public class DealParameter {
         this.targetProfitPrice = targetProfitPrice;
     }
 
-    public Integer getIsUseFollowTargetProfit() {
-        return isUseFollowTargetProfit;
+    public Integer getIsStopProfitTrace() {
+        return isStopProfitTrace;
     }
 
-    public void setIsUseFollowTargetProfit(Integer isUseFollowTargetProfit) {
-        this.isUseFollowTargetProfit = isUseFollowTargetProfit;
+    public void setIsStopProfitTrace(Integer isStopProfitTrace) {
+        this.isStopProfitTrace = isStopProfitTrace;
     }
 
     public Double getTurnDownRatio() {

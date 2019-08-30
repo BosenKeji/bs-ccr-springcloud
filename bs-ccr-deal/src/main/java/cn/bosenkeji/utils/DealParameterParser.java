@@ -1,9 +1,7 @@
 package cn.bosenkeji.utils;
 
 import cn.bosenkeji.vo.DealParameter;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import java.util.HashMap;
 
 /**
  * deal模块JSON解析
@@ -45,16 +43,16 @@ public class DealParameterParser {
 
     static final String MIN_AVERAGE_PRICE = "min_averagePrice"; //最小交易均价
     private static final String FIRST_ORDER_PRICE = "first_order_price"; //首单现价
-    static final String IS_FOLLOW_BUILD = "isFollowBuild";
+    static final String IS_FOLLOW_BUILD = "isFollowBuild"; //是否触发追踪建仓
 
     //卖需要的参数
     private static final String TARGET_PROFIT_PRICE = "target_profit_price"; //止盈金额
-    private static final String IS_USE_FOLLOW_TARGET_PROFIT = "is_use_follow_target_profit"; //是否使用追踪止盈
+    private static final String IS_STOP_PROFIT_TRACE = "is_stop_profit_trace"; //是否使用追踪止盈
     private static final String TURN_DOWN_RATIO = "turn_down_ratio"; //追踪止盈触发比例
 
     private static final String EMIT_RATIO = "emit_ratio"; //追踪止盈回调比例
-    static final String HISTORY_MAX_RISK_BENEFIT_RATIO = "history_max_riskBenefitRatio";
-    static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";
+    static final String HISTORY_MAX_RISK_BENEFIT_RATIO = "history_max_riskBenefitRatio"; //历史最大收益比
+    static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit"; //是否触发追踪止盈
 
     /**
      *
@@ -92,7 +90,7 @@ public class DealParameterParser {
 
         parameter.setTargetProfitPrice(DealUtil.getDouble(jsonObject.get(TARGET_PROFIT_PRICE)));
 
-        parameter.setIsUseFollowTargetProfit(DealUtil.getInteger(jsonObject.get(IS_USE_FOLLOW_TARGET_PROFIT)));
+        parameter.setIsStopProfitTrace(DealUtil.getInteger(jsonObject.get(IS_STOP_PROFIT_TRACE)));
         parameter.setTurnDownRatio(DealUtil.getDouble(jsonObject.get(TURN_DOWN_RATIO)));
         parameter.setEmitRatio(DealUtil.getDouble(jsonObject.get(EMIT_RATIO)));
 
