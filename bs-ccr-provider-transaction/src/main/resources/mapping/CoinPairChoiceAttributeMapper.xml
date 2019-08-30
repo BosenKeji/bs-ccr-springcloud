@@ -17,7 +17,18 @@
     id, coin_partner_choice_id, expect_money, strategy_id, is_custom, `status`, created_at,
     updated_at
   </sql>
-
+<select id="findAllCoinPartnerChoiceId" resultType="integer">
+  select coin_partner_choice_id from coin_pair_choice_attribute
+</select>
+  <select id="findSectionCoinPairChoiceAttributeByCoinPartnerChoiceIds" parameterType="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+   from coin_pair_choice_attribute
+   where coin_partner_choice_id in
+   <foreach collection="list" index="index" item="item"  open="(" separator="," close=")">
+     #{item,jdbcType=INTEGER}
+   </foreach>
+  </select>
   <select id="checkByCoinPartnerChoiceId" resultType="integer">
     select exists (select 1 from coin_pair_choice_attribute where coin_partner_choice_id =#{coinPartnerChoiceId} limit 1)
   </select>
