@@ -57,7 +57,7 @@ public class CoinPairChoiceAttributeController {
                       @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
         if (coinPairChoiceIdStr.length() == 0){
-            return new Result<>(0,"fail");
+            return new Result<>(-1,"fail");
         }
         return new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
     }
@@ -77,7 +77,7 @@ public class CoinPairChoiceAttributeController {
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
         if (this.coinPairChoiceAttributeService.get(id) == null){
-            return new Result<>(null,"自选币属性不存在");
+            return new Result<>(-1,"自选币属性不存在");
         }
         return new Result<>(this.coinPairChoiceAttributeService.delete(id));
     }
