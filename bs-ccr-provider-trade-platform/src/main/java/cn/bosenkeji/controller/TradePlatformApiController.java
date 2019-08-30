@@ -65,11 +65,11 @@ public class TradePlatformApiController {
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
     public Result add(@RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
-        if (this.tradePlatformApiService.checkExistByTradePlatformIdAndUserId(tradePlatformApi.getTradePlatformId(),tradePlatformApi.getUserId()).get() >= 1){
-            return new Result<>(null,"交易平台API已存在");
-        }
-        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0){
+        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
+        }
+        if (this.tradePlatformApiService.checkExistByKey(tradePlatformApi.getAccessKey(),tradePlatformApi.getSecretKey()).get() >= 1){
+            return new Result<>(null,"key已存在");
         }
 
         tradePlatformApi.setStatus(1);

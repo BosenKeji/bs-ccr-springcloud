@@ -68,8 +68,7 @@ public class CoinPairChoiceController {
             result.setData(coinPair);
             return result;
         }else{
-            Result result = new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId));
-            return result;
+            return new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId));
         }
 
     }

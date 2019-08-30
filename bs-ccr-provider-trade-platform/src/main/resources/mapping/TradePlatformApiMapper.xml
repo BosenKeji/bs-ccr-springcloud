@@ -57,6 +57,11 @@
     select exists (select 1 from trade_platform_api where trade_platform_api.trade_platform_id=#{param1} and trade_platform_api.user_id=#{param2} limit 1)
   </select>
 
+  <select id="checkExistByKey" parameterType="string" resultType="integer">
+    select exists (select 1 from trade_platform_api where trade_platform_api.access_key=#{param1} and trade_platform_api.secret_key=#{param2} limit 1)
+  </select>
+
+
   <select id="checkExistByUserIdAndNickName"  resultType="integer">
     select exists (select 1 from trade_platform_api where trade_platform_api.user_id=#{param1} and trade_platform_api.nickname=#{param2} limit 1)
   </select>
