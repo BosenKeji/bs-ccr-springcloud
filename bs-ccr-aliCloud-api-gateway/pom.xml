@@ -59,14 +59,10 @@
                     <groupId>org.springframework.cloud</groupId>
                     <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>bosenCCR</groupId>
-                    <artifactId>bs-ccr-security-jwt-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                </exclusion>
+<!--                <exclusion>-->
+<!--                    <groupId>bosenCCR</groupId>-->
+<!--                    <artifactId>bs-ccr-security-jwt-client</artifactId>-->
+<!--                </exclusion>-->
             </exclusions>
         </dependency>
     </dependencies>
