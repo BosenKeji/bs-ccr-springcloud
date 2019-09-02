@@ -103,7 +103,7 @@ public class DealCalculator {
 
                 //记录实时收益比的最高数值
                 if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio < realTimeEarningRatio) {
-                    JSONObject s = updateJson(jsonObject, DealParameterParser.HISTORY_MAX_RISK_BENEFIT_RATIO, String.valueOf(realTimeEarningRatio));
+                    JSONObject s = updateJson(jsonObject, DealParameterParser.HISTORY_MAX_RISK_BENEFIT_RATIO, realTimeEarningRatio);
                     updateRedisString(redisKey,s,redisTemplate);
                 }
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
@@ -200,7 +200,7 @@ public class DealCalculator {
 
         //记录最小拟买入均价
         if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
-            JSONObject s = updateJson(jsonObject,DealParameterParser.MIN_AVERAGE_PRICE,String.valueOf(averagePrice));
+            JSONObject s = updateJson(jsonObject,DealParameterParser.MIN_AVERAGE_PRICE,averagePrice);
             updateRedisString(redisKey,s,redisTemplate);
         }
 
@@ -238,7 +238,7 @@ public class DealCalculator {
      *
      **/
     private static void updateRedisString(String redisKey, JSONObject value, RedisTemplate redisTemplate) {
-        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value);
+        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value.toJSONString());
     }
 
 }
