@@ -178,7 +178,10 @@ public class AliCloudApiManageController {
 
                     requestConfig.setPostBodyDescription(parameter.getDescription());
                     break;
+                } else if (parameter.getIn() == "header"){
 
+                    requestParameter.setLocation("HEAD");
+                    serviceParameter.setLocation("HEAD");
                 } else {
                     requestParameter.setLocation("QUERY");
                     serviceParameter.setLocation("QUERY");
