@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -43,9 +44,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private DataSource dataSource;
-
-    @Autowired
-    private CustomWebResponseExceptionTranslator customWebResponseExceptionTranslator;
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
@@ -80,7 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 1天
         endpoints.tokenServices(tokenServices);
-        endpoints.exceptionTranslator(customWebResponseExceptionTranslator);
+        endpoints.exceptionTranslator(webResponseExceptionTranslator());
 
     }
 
@@ -115,5 +113,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebResponseExceptionTranslator webResponseExceptionTranslator() {
+        return new CustomWebResponseExceptionTranslator();
     }
 }

@@ -57,9 +57,7 @@ public class DealUtil {
 
     static Double getDouble(Object o) {
         Double temp = 0.0;
-        if (o != null) {
-            temp = Double.valueOf(o instanceof Double || o instanceof BigDecimal || o instanceof String ? o.toString() : "0.0");
-        }
+        temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
         return temp;
     }
 

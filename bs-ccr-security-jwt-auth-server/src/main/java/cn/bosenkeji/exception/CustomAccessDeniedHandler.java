@@ -32,12 +32,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         List<String> errorList = new ArrayList<>();
         errorList.add(accessDeniedException.getMessage());
-        Map map = new HashMap();
-        map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
-        map.put("status", "400");
-        map.put("errors", errorList);
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(objectMapper.writeValueAsString(map));
+        Map map = ExceptionUtil.getExceptionMap(response.getStatus(),errorList);
+        ExceptionUtil.setResponseParameter(response,HttpServletResponse.SC_UNAUTHORIZED,map);
     }
 }

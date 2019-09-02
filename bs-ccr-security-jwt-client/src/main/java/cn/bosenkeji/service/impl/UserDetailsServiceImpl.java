@@ -1,9 +1,5 @@
 package cn.bosenkeji.service.impl;
 
-import cn.bosenkeji.enums.exception.user.UserEnum;
-import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.service.IAdminClientService;
-import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +19,21 @@ import java.util.Optional;
  * @Versio V1.0
  **/
 @Service
-@EnableFeignClients("cn.bosenkeji.service")
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private IUserClientService iUserClientService;
 
     @Autowired
-    private IAdminClientService iAdminClientService;
+    private CustomJdbcUserDetailsService userDetailsService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        final Optional<User> user = Optional.ofNullable(iUserClientService.getOneUserByTel(username));
+        final  Optional<User> user = userDetailsService.getOneUserByTel(username);
 
-        if (user.isPresent() == true){
+        if (user.isPresent()) {
             return new CustomUserDetailsImpl(user.get());
         } else {
-            final Admin admin = iAdminClientService.selectByAccount(username).orElseThrow(() -> new NotFoundException(UserEnum.NAME));
-
+            final Admin admin = userDetailsService.getOneAdminByAccount(username).orElseThrow(()-> new UsernameNotFoundException(username));
             return new CustomAdminDetailsImpl(admin);
         }
-
     }
 }
