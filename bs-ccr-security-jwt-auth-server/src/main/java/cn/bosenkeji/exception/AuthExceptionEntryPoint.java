@@ -1,6 +1,7 @@
 package cn.bosenkeji.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -18,20 +19,9 @@ public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException)
             throws ServletException {
-
-        Map map = new HashMap();
         List<String> errorList = new ArrayList<>();
         errorList.add(authException.getMessage());
-        map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
-        map.put("status", "401");
-        map.put("message", errorList);
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getOutputStream(), map);
-        } catch (Exception e) {
-            throw new ServletException();
-        }
+        Map map = ExceptionUtil.getExceptionMap(401,errorList);
+        ExceptionUtil.setResponseParameter(response, HttpServletResponse.SC_UNAUTHORIZED,map);
     }
 }

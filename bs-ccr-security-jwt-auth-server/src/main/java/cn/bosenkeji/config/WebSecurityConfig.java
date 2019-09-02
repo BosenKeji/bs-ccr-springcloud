@@ -1,5 +1,8 @@
 package cn.bosenkeji.config;
 
+import cn.bosenkeji.exception.AuthExceptionEntryPoint;
+import cn.bosenkeji.exception.CustomAccessDeniedHandler;
+import cn.bosenkeji.exception.CustomExceptionTranslationFilter;
 import cn.bosenkeji.service.impl.CustomAuthenticationProvider;
 import cn.bosenkeji.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 import javax.sql.DataSource;
 
@@ -46,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http
+            .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+            .authenticationEntryPoint(authenticationEntryPoint());
 //        http.authorizeRequests().antMatchers("/jwt/**").permitAll();
     }
 
@@ -63,4 +72,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
+//    @Bean
+//    public ExceptionTranslationFilter customExceptionTranslationFilter() {
+//        return new CustomExceptionTranslationFilter(new AuthExceptionEntryPoint());
+//    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthExceptionEntryPoint();
+    }
 }

@@ -43,10 +43,6 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>bosenCCR</groupId>
-            <artifactId>bs-ccr-service</artifactId>
-        </dependency>
 
         <!-- 用户模块 -->
 <!--        <dependency>-->
