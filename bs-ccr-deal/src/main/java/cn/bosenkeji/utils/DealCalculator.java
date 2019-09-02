@@ -97,7 +97,7 @@ public class DealCalculator {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
-                    JSONObject s = updateJson(jsonObject, DealParameterParser.IS_TRIGGER_TRACE_STOP_PROFIT, "1");
+                    JSONObject s = updateJson(jsonObject, DealParameterParser.IS_TRIGGER_TRACE_STOP_PROFIT, 1);
                     updateRedisString(redisKey,s,redisTemplate);
                 }
 
@@ -189,7 +189,7 @@ public class DealCalculator {
         if (averagePrice > lowerAveragePrice) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
-                JSONObject s = updateJson(jsonObject, DealParameterParser.IS_FOLLOW_BUILD, "1");
+                JSONObject s = updateJson(jsonObject, DealParameterParser.IS_FOLLOW_BUILD, 1);
                 updateRedisString(redisKey,s,redisTemplate);
                 return false;
             }
@@ -219,19 +219,11 @@ public class DealCalculator {
      **/
     private static JSONObject updateJson(JSONObject jsonObject, String key, Object o) {
 
-
-        if (o instanceof String) {
-            jsonObject.put(key,o.toString());
-        }
-
         if (o instanceof Integer) {
             jsonObject.put(key,Integer.valueOf(o.toString()));
+        } else {
+            jsonObject.put(key,o);
         }
-
-        if (o instanceof Double) {
-            jsonObject.put(key,Double.valueOf(o.toString()));
-        }
-
         return jsonObject;
     }
 

@@ -84,7 +84,7 @@ public class DealHandler {
                 "\t\"stopProfitRatio\": 0.05\n" +
                 "}";
         JSONObject jsonObject = JSON.parseObject(s);
-        jsonObject.put("min_averagePrice","0.12314");
+        jsonObject.put("min_averagePrice",String.valueOf(0.12314));
         redisTemplate.opsForValue().set("aaa",jsonObject);
         return redisTemplate.opsForValue().get("aaa").toString();
     }
