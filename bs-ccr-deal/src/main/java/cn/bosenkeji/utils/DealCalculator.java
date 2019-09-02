@@ -246,7 +246,7 @@ public class DealCalculator {
      *
      **/
     private static void updateRedisString(String redisKey, JSONObject value, RedisTemplate redisTemplate) {
-        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value);
+        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value.toJSONString());
     }
 
 }
