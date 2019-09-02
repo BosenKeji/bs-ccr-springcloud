@@ -90,7 +90,9 @@ public class DealParameterParser {
 
         parameter.setTargetProfitPrice(DealUtil.getDouble(jsonObject.get(TARGET_PROFIT_PRICE)));
 
-        parameter.setIsStopProfitTrace(DealUtil.getInteger(jsonObject.get(IS_STOP_PROFIT_TRACE)));
+        //是否开启追踪止盈
+        Object o = jsonObject.get(IS_STOP_PROFIT_TRACE);
+        parameter.setIsStopProfitTrace(o == null ? 1 : DealUtil.getInteger(o));
         parameter.setTurnDownRatio(DealUtil.getDouble(jsonObject.get(TURN_DOWN_RATIO)));
         parameter.setEmitRatio(DealUtil.getDouble(jsonObject.get(EMIT_RATIO)));
 
