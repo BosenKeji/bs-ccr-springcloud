@@ -30,7 +30,18 @@ public class RealTimeTradeParameterParser {
 
     public RealTimeTradeParameter getRealTimeTradeParameter() {
         RealTimeTradeParameter parameter = new RealTimeTradeParameter();
-        Double price = ((BigDecimal)jsonObject.get(PRICE)).doubleValue();
+
+        //price 可能出现double、BigDecimal、Double
+        Double price = 0.0;
+        Object priceObject = jsonObject.get(PRICE);
+
+        if (priceObject != null) {
+            if (priceObject instanceof Double) price = (Double) priceObject;
+            if (priceObject instanceof Integer) price = Double.valueOf(priceObject.toString());
+            if (priceObject instanceof BigDecimal) price = ((BigDecimal) priceObject).doubleValue();
+        } else {
+            return parameter;
+        }
         Object o = jsonObject.get(DEEP);
         JSONArray jsonArray;
         if (o == null) {
