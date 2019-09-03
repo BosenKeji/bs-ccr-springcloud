@@ -132,7 +132,7 @@ public class AliCloudApiManageController {
                             //begin for
                             settingParameter(parameters,requestConfig,requestParametersName,serviceParameters,serviceParameterMaps,requestParameters);
                             //end for
-                            settingParameter2(serviceParameters,serviceParameterMaps,requestParameters);
+//                            settingParameter2(serviceParameters,serviceParameterMaps,requestParameters);
                         }
 
                         System.out.println("parameters--->"+JSON.toJSONString(parameters));
@@ -178,7 +178,10 @@ public class AliCloudApiManageController {
 
                     requestConfig.setPostBodyDescription(parameter.getDescription());
                     break;
+                } else if (parameter.getIn() == "header"){
 
+                    requestParameter.setLocation("HEAD");
+                    serviceParameter.setLocation("HEAD");
                 } else {
                     requestParameter.setLocation("QUERY");
                     serviceParameter.setLocation("QUERY");
