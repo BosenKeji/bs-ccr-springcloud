@@ -1,11 +1,11 @@
 package cn.bosenkeji.vo;
 
 /**
- * @ClassName RocketMQResult
- * @Description 确定买卖的对象，返回给node端
- * @Author hjh
- * @Date 2019-07-30 10:10
- * @Version 1.0
+ *
+ *
+ *
+ * @author hjh
+ *
  */
 
 public class RocketMQResult {
@@ -14,14 +14,16 @@ public class RocketMQResult {
     private String secretKey;
     private String symbol;
     private String type;
+    private Integer finishedOrder;
 
     public RocketMQResult() { }
 
-    public RocketMQResult(String accessKey, String secretKey, String symbol, String type) {
+    public RocketMQResult(String accessKey, String secretKey, String symbol, String type,Integer finishedOrder) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
         this.symbol = symbol;
         this.type = type;
+        this.finishedOrder = finishedOrder;
     }
 
     @Override
@@ -31,38 +33,27 @@ public class RocketMQResult {
                 ", secretKey='" + secretKey + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", type='" + type + '\'' +
+                ", finishedOrder=" + finishedOrder +
                 '}';
-    }
-
-    public String getAccessKey() {
-        return accessKey;
     }
 
     public void setAccessKey(String accessKey) {
         this.accessKey = accessKey;
     }
 
-    public String getSecretKey() {
-        return secretKey;
-    }
-
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
-    }
-
-    public String getSymbol() {
-        return symbol;
     }
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setFinishedOrder(Integer finishedOrder) {
+        this.finishedOrder = finishedOrder;
     }
 }

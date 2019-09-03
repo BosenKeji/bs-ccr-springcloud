@@ -7,6 +7,7 @@ import cn.bosenkeji.utils.DealUtil;
 import cn.bosenkeji.utils.RealTimeTradeParameterParser;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
+import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -83,26 +84,10 @@ public class DealHandler {
                 "\t\"position_num\": 8,\n" +
                 "\t\"stopProfitRatio\": 0.05\n" +
                 "}";
-        JSONObject jsonObject = JSON.parseObject(s);
-        jsonObject.put("min_averagePrice",String.valueOf(0.12314));
-        redisTemplate.opsForValue().set("aaa",jsonObject);
-        return redisTemplate.opsForValue().get("aaa").toString();
+        Object aaa = redisTemplate.opsForList().leftPop("aaa");
+        JSONObject jsonObject1 = JSONObject.parseObject(aaa.toString());
+        return jsonObject1.toJSONString();
     }
-//
-//
-//    @RequestMapping("/testRedis")
-//    public String testRedis() {
-//        Object o = redisTemplate.opsForValue().get("trade-condition_90854b9e-mn8ikls4qg-d8a152e7-cd30e_97d74615-f1e7bf4a-756a0261-c1f24_btcusdt");
-//        return o.toString();
-//    }
-//
-//
-    @RequestMapping("/handle")
-    public void testHandle() {
-        String msg = "{\"price\":7.2704,\"deep\":[[7.2705,108.18],[7.2704,0.9558],[7.2683,172.0793],[7.264,9.0809],[7.2639,137.4759],[7.2624,47.77],[7.2623,82.4835],[7.2619,71.6472],[7.259,27.5517],[7.2589,109.57],[7.2585,71.6234],[7.2582,247.7028],[7.2574,79.98],[7.257,120],[7.2564,115.04],[7.2561,7.3516],[7.256,1346.0536],[7.2558,112],[7.2551,481.232],[7.2549,343.8175],[7.2538,143.3317],[7.2513,110.0009],[7.2511,33.02],[7.2506,60],[7.2502,68.1477],[7.2484,214.9941],[7.2466,800],[7.246,699.37],[7.2421,20.6272],[7.2414,33.06],[7.2394,2.6998],[7.2391,56.7629],[7.2381,20.6578],[7.2364,0.2489],[7.2363,0.1936],[7.236,0.25],[7.2359,0.1462],[7.2355,0.4425],[7.2354,0.1916],[7.2351,0.2291],[7.235,0.1956],[7.2348,0.1936],[7.2346,2.2495],[7.2342,174.12],[7.2335,0.5852],[7.2333,3.903],[7.2313,83.7222],[7.2311,20.6578],[7.23,786.0739],[7.2279,33.12],[7.2276,1.2694],[7.2274,0.7208],[7.2272,0.657],[7.2271,1.0079],[7.2269,0.6253],[7.2268,0.7208],[7.2258,0.7144],[7.2257,0.6634],[7.2251,13.8832],[7.2247,59.7],[7.2232,13.9071],[7.2231,20.6808],[7.2226,16.2412],[7.222,422.2618],[7.22,60],[7.2147,20.701],[7.2138,68.3486],[7.2123,0.1959],[7.2102,20.6558],[7.2092,10],[7.2091,2.2495],[7.2075,106.1742],[7.205,34.5124],[7.2027,0.5852],[7.2009,50],[7.2008,2.7526],[7.2,2816.4997],[7.1999,3.903],[7.1998,396.7761],[7.1988,515.096],[7.1955,13.1761],[7.1911,22.8592],[7.19,17.7571],[7.1897,16.2412],[7.1884,116.2011],[7.1853,42.5717],[7.1836,2.2495],[7.18,296.933],[7.1794,0.1959],[7.1772,127.4289],[7.1765,2971.3],[7.1753,48.4402],[7.1751,41.8112],[7.1726,50],[7.1718,0.5852],[7.1717,20.9237],[7.17,10],[7.1666,3.903],[7.1657,129.8686],[7.1652,102],[7.164,0.25],[7.1632,34.5124],[7.1581,2.2495],[7.1569,10.7571],[7.1568,14.6007],[7.1559,145.2639],[7.1517,13.8832],[7.15,130.9466],[7.1464,0.1959],[7.1463,20],[7.141,0.5852],[7.1359,51.4583],[7.1352,3.15],[7.1333,3.903],[7.1326,2.2495],[7.1271,1527.1],[7.1257,0.1858],[7.1255,0.1696],[7.1253,0.5221],[7.1249,0.1842],[7.1247,0.181],[7.1238,16.2412],[7.1237,10.7571],[7.1215,34.5124],[7.12,262.9019],[7.1151,0.1527],[7.115,13.8832],[7.1149,0.1556],[7.1146,0.1527],[7.1141,0.1411],[7.1135,0.3661],[7.1133,0.1847],[7.1111,686.3704],[7.1101,0.5852],[7.1071,2.2495],[7.1012,1376.9026],[7.1,4004.9836],[7.0999,3.903],[7.092,0.25],[7.0909,16.2412],[7.0906,10.7571],[7.0816,2.2495],[7.0805,0.1959],[7.0797,34.5124],[7.0796,20],[7.0793,0.5852],[7.0783,13.8832],[7.071,40],[7.07,151.5855],[7.0668,1524.6]],\"symbol\":\"btsusdt\"}";
-        consumerMessage(msg);
-    }
-
 
 
     @StreamListener("input1")
@@ -152,6 +137,9 @@ public class DealHandler {
 
             DealParameter dealParameter = new DealParameterParser(trade,redisKey).getDealParameter();
 
+            //初始化或获取 java要操作redis的key和value
+            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
+
             //判断是否需要给node发消息
             Integer canSendMsg2Node = dealParameter.getCanSendMsgToNode();
 
@@ -169,28 +157,33 @@ public class DealHandler {
             }
             double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(positionNum,positionCost,price);
 
+            //记录实时收益比
+            redisParameter.getJsonObject().put(DealUtil.REAL_TIME_EARNING_RATIO,realTimeEarningRatio);
+            redisTemplate.opsForValue().set(redisParameter.getRedisKey(),redisParameter.getJsonObject().toJSONString());
+
             if (realTimeEarningRatio >= 1) {
 //            if (true) {
             //判断是否卖
-                boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisTemplate);
+                boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isSell) {
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL+"  消息发送："+isSend);
+                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
+                            +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
                 }
 
             }
 
             //判断买
-            boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisTemplate);
+            boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
 
             if (isBuy) {
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY+"  消息发送："+isSend);
+                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
+                         +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
-
 
     }
 

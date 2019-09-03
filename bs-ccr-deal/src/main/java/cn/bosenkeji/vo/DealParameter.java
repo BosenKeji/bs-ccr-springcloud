@@ -2,8 +2,6 @@ package cn.bosenkeji.vo;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.Map;
-
 /**
  * deal所需参数
  * @author hjh
@@ -15,7 +13,7 @@ public class DealParameter {
     private JSONObject jsonObject;
 
     private String accessKey;
-    private String SecretKey;
+    private String secretKey;
     private String symbol;
 
     private Integer canSendMsgToNode; //是否给node端发送消息
@@ -30,33 +28,26 @@ public class DealParameter {
     private JSONObject buyVolume; //买入量
     private Double followLowerRatio; //追踪下调比
     private Double followCallbackRatio; //追踪回调比
-
-    private Double minAveragePrice; //最小交易均价
     private Double firstOrderPrice; //首单现价
-    private Integer isFollowBuild; //是否触发追踪建仓
 
     //卖需要的参数
     private Double targetProfitPrice; //止盈金额
     private Integer isStopProfitTrace;  //是否使用追踪止盈
     private Double turnDownRatio; //追踪止盈触发比例
-
     private Double emitRatio; //追踪止盈回调比例
-    private Double historyMaxRiskBenefitRatio; //历史最高收益比
-    private Integer isTriggerTraceStopProfit; //是否触发追踪止盈
-
 
     public DealParameter() { }
 
-    public DealParameter(String accessKey, String secretKey, String symbol,
-                         Integer canSendMsgToNode, Double positionCost, Double positionNum,
-                         Integer finishedOrder, Integer maxTradeOrder, Double storeSplit,
-                         JSONObject buyVolume, Double followLowerRatio, Double followCallbackRatio,
-                         Double minAveragePrice, Double firstOrderPrice, Integer isFollowBuild,
-                         Double targetProfitPrice, Integer isStopProfitTrace, Double turnDownRatio,
-                         Double emitRatio, String redisKey, JSONObject jsonObject, Double historyMaxRiskBenefitRatio,
-                         Integer isTriggerTraceStopProfit) {
+    public DealParameter(String redisKey, JSONObject jsonObject, String accessKey,
+                         String secretKey, String symbol, Integer canSendMsgToNode,
+                         Double positionCost, Double positionNum, Integer finishedOrder,
+                         Integer maxTradeOrder, Double storeSplit, JSONObject buyVolume,
+                         Double followLowerRatio, Double followCallbackRatio, Double firstOrderPrice,
+                         Double targetProfitPrice, Integer isStopProfitTrace, Double turnDownRatio, Double emitRatio) {
+        this.redisKey = redisKey;
+        this.jsonObject = jsonObject;
         this.accessKey = accessKey;
-        SecretKey = secretKey;
+        this.secretKey = secretKey;
         this.symbol = symbol;
         this.canSendMsgToNode = canSendMsgToNode;
         this.positionCost = positionCost;
@@ -67,17 +58,11 @@ public class DealParameter {
         this.buyVolume = buyVolume;
         this.followLowerRatio = followLowerRatio;
         this.followCallbackRatio = followCallbackRatio;
-        this.minAveragePrice = minAveragePrice;
         this.firstOrderPrice = firstOrderPrice;
-        this.isFollowBuild = isFollowBuild;
         this.targetProfitPrice = targetProfitPrice;
         this.isStopProfitTrace = isStopProfitTrace;
         this.turnDownRatio = turnDownRatio;
         this.emitRatio = emitRatio;
-        this.redisKey = redisKey;
-        this.jsonObject = jsonObject;
-        this.historyMaxRiskBenefitRatio = historyMaxRiskBenefitRatio;
-        this.isTriggerTraceStopProfit = isTriggerTraceStopProfit;
     }
 
     public String getAccessKey() {
@@ -89,11 +74,11 @@ public class DealParameter {
     }
 
     public String getSecretKey() {
-        return SecretKey;
+        return secretKey;
     }
 
     public void setSecretKey(String secretKey) {
-        SecretKey = secretKey;
+        this.secretKey = secretKey;
     }
 
     public String getSymbol() {
@@ -176,28 +161,12 @@ public class DealParameter {
         this.followCallbackRatio = followCallbackRatio;
     }
 
-    public Double getMinAveragePrice() {
-        return minAveragePrice;
-    }
-
-    public void setMinAveragePrice(Double minAveragePrice) {
-        this.minAveragePrice = minAveragePrice;
-    }
-
     public Double getFirstOrderPrice() {
         return firstOrderPrice;
     }
 
     public void setFirstOrderPrice(Double firstOrderPrice) {
         this.firstOrderPrice = firstOrderPrice;
-    }
-
-    public Integer getIsFollowBuild() {
-        return isFollowBuild;
-    }
-
-    public void setIsFollowBuild(Integer isFollowBuild) {
-        this.isFollowBuild = isFollowBuild;
     }
 
     public Double getTargetProfitPrice() {
@@ -248,19 +217,4 @@ public class DealParameter {
         this.jsonObject = jsonObject;
     }
 
-    public Double getHistoryMaxRiskBenefitRatio() {
-        return historyMaxRiskBenefitRatio;
-    }
-
-    public void setHistoryMaxRiskBenefitRatio(Double historyMaxRiskBenefitRatio) {
-        this.historyMaxRiskBenefitRatio = historyMaxRiskBenefitRatio;
-    }
-
-    public Integer getIsTriggerTraceStopProfit() {
-        return isTriggerTraceStopProfit;
-    }
-
-    public void setIsTriggerTraceStopProfit(Integer isTriggerTraceStopProfit) {
-        this.isTriggerTraceStopProfit = isTriggerTraceStopProfit;
-    }
 }
