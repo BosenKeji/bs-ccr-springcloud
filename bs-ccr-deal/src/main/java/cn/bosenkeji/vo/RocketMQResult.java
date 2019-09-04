@@ -18,14 +18,6 @@ public class RocketMQResult {
 
     public RocketMQResult() { }
 
-    public RocketMQResult(String accessKey, String secretKey, String symbol, String type,Integer finishedOrder) {
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
-        this.symbol = symbol;
-        this.type = type;
-        this.finishedOrder = finishedOrder;
-    }
-
     @Override
     public String toString() {
         return "RocketMQResult{" +

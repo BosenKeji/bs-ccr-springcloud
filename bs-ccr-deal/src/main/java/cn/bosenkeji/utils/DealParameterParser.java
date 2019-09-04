@@ -2,6 +2,10 @@ package cn.bosenkeji.utils;
 
 import cn.bosenkeji.vo.DealParameter;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Map;
 
 /**
  * deal模块JSON解析
@@ -14,12 +18,10 @@ import com.alibaba.fastjson.JSONObject;
 
 public class DealParameterParser {
 
-    private JSONObject jsonObject;
-    private String redisKey;
+    private Map trade;
 
-    public DealParameterParser(JSONObject jsonObject, String redisKey) {
-        this.jsonObject = jsonObject;
-        this.redisKey = redisKey;
+    public DealParameterParser(Map trade) {
+        this.trade = trade;
     }
 
     //通用参数
@@ -58,35 +60,36 @@ public class DealParameterParser {
 
     public DealParameter getDealParameter() {
         DealParameter parameter = new DealParameter();
-        parameter.setRedisKey(redisKey);
-        parameter.setJsonObject(jsonObject);
+        parameter.setTrade(trade);
 
-        parameter.setAccessKey(DealUtil.getString(jsonObject.get(ACCESS_KEY)));
-        parameter.setSecretKey(DealUtil.getString(jsonObject.get(SECRET_KEY)));
-        parameter.setSymbol(DealUtil.getString(jsonObject.get(SYMBOL)));
+        parameter.setAccessKey(DealUtil.getString(trade.get(ACCESS_KEY)));
+        parameter.setSecretKey(DealUtil.getString(trade.get(SECRET_KEY)));
+        parameter.setSymbol(DealUtil.getString(trade.get(SYMBOL)));
 
-        parameter.setCanSendMsgToNode(DealUtil.getInteger(jsonObject.get(CAN_SEND_MSG_2_NODE)));
-        parameter.setPositionCost(DealUtil.getDouble(jsonObject.get(POSITION_COST)));
-        parameter.setPositionNum(DealUtil.getDouble(jsonObject.get(POSITION_NUM)));
+        parameter.setCanSendMsgToNode(DealUtil.getInteger(trade.get(CAN_SEND_MSG_2_NODE)));
+        parameter.setPositionCost(DealUtil.getDouble(trade.get(POSITION_COST)));
+        parameter.setPositionNum(DealUtil.getDouble(trade.get(POSITION_NUM)));
 
-        parameter.setFinishedOrder(DealUtil.getInteger(jsonObject.get(FINISHED_ORDER)));
-        parameter.setMaxTradeOrder(DealUtil.getInteger(jsonObject.get(MAX_TRADE_ORDER)));
-        parameter.setStoreSplit(DealUtil.getDouble(jsonObject.get(STORE_SPLIT)));
+        parameter.setFinishedOrder(DealUtil.getInteger(trade.get(FINISHED_ORDER)));
+        parameter.setMaxTradeOrder(DealUtil.getInteger(trade.get(MAX_TRADE_ORDER)));
+        parameter.setStoreSplit(DealUtil.getDouble(trade.get(STORE_SPLIT)));
 
         // Map 特殊处理
-        JSONObject jsonBuyVolume = (JSONObject) jsonObject.get(BUY_VOLUME);
+        String s = trade.get(BUY_VOLUME).toString();
+        String unescape = StringEscapeUtils.unescapeJava(s);
+        JSONObject jsonBuyVolume = JSONObject.parseObject(unescape);
         parameter.setBuyVolume(jsonBuyVolume);
-        parameter.setFollowLowerRatio(DealUtil.getDouble(jsonObject.get(FOLLOW_LOWER_RATIO)));
+        parameter.setFollowLowerRatio(DealUtil.getDouble(trade.get(FOLLOW_LOWER_RATIO)));
 
-        parameter.setFollowCallbackRatio(DealUtil.getDouble(jsonObject.get(FOLLOW_CALLBACK_RATIO)));
-        parameter.setFirstOrderPrice(DealUtil.getDouble(jsonObject.get(FIRST_ORDER_PRICE)));
-        parameter.setTargetProfitPrice(DealUtil.getDouble(jsonObject.get(TARGET_PROFIT_PRICE)));
+        parameter.setFollowCallbackRatio(DealUtil.getDouble(trade.get(FOLLOW_CALLBACK_RATIO)));
+        parameter.setFirstOrderPrice(DealUtil.getDouble(trade.get(FIRST_ORDER_PRICE)));
+        parameter.setTargetProfitPrice(DealUtil.getDouble(trade.get(TARGET_PROFIT_PRICE)));
 
         //是否开启追踪止盈
-        Object o = jsonObject.get(IS_STOP_PROFIT_TRACE);
-        parameter.setIsStopProfitTrace(o == null ? 1 : DealUtil.getInteger(o));
-        parameter.setTurnDownRatio(DealUtil.getDouble(jsonObject.get(TURN_DOWN_RATIO)));
-        parameter.setEmitRatio(DealUtil.getDouble(jsonObject.get(EMIT_RATIO)));
+        Object o = trade.get(IS_STOP_PROFIT_TRACE);
+        parameter.setIsStopProfitTrace(StringUtils.isBlank(o.toString()) ? 1 : DealUtil.getInteger(o));
+        parameter.setTurnDownRatio(DealUtil.getDouble(trade.get(TURN_DOWN_RATIO)));
+        parameter.setEmitRatio(DealUtil.getDouble(trade.get(EMIT_RATIO)));
 
         return parameter;
     }

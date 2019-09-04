@@ -9,8 +9,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +24,6 @@ import java.util.Map;
 
 public class DealUtil {
 
-    public static final String TRADE_KEYS_PATTERN = "trade-condition_*";
     public static final String TRADE_TYPE_BUY = "buy";
     public static final String TRADE_TYPE_SELL = "sell";
 
@@ -57,7 +58,7 @@ public class DealUtil {
     static Integer getInteger(Object o) {
         Integer temp = 0;
         if (o != null) {
-            temp = Integer.valueOf(o instanceof Integer ? o.toString() : "0");
+            temp = Integer.valueOf(o.toString());
         }
         return temp;
     }
@@ -114,17 +115,19 @@ public class DealUtil {
         String javaRedisKey = "trade-java_" + dealParameter.getAccessKey() + "_" +
                 dealParameter.getSecretKey() + "_" + dealParameter.getSymbol();
 
-        Object o = redisTemplate.opsForValue().get(javaRedisKey);
-        if (o == null) {
+//        Object o = redisTemplate.opsForValue().get(javaRedisKey);
+        Map entries = redisTemplate.opsForHash().entries(javaRedisKey);
+        if (CollectionUtils.isEmpty(entries)) {
             //初始化数据
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(IS_FOLLOW_BUILD,0);
-            jsonObject.put(IS_TRIGGER_TRACE_STOP_PROFIT,0);
-            jsonObject.put(MIN_AVERAGE_PRICE,0.0);
-            jsonObject.put(HISTORY_MAX_BENEFIT_RATIO,0.0);
-            jsonObject.put(REAL_TIME_EARNING_RATIO,0.0);
+            Map<String,Object> map = new LinkedHashMap<>();
+            map.put(IS_FOLLOW_BUILD,"0");
+            map.put(IS_TRIGGER_TRACE_STOP_PROFIT,"0");
+            map.put(MIN_AVERAGE_PRICE,"0.0");
+            map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
+            map.put(REAL_TIME_EARNING_RATIO,"0.0");
 
-            parameter.setJsonObject(jsonObject);
+            redisTemplate.opsForHash().putAll(javaRedisKey,map);
+
             parameter.setRedisKey(javaRedisKey);
             parameter.setIsTriggerTraceStopProfit(0);
             parameter.setIsFollowBuild(0);
@@ -134,14 +137,12 @@ public class DealUtil {
 
         } else {
             //获取数据
-            JSONObject jsonObject = JSONObject.parseObject(o.toString());
             parameter.setRedisKey(javaRedisKey);
-            parameter.setJsonObject(jsonObject);
-            parameter.setIsTriggerTraceStopProfit(jsonObject.getInteger(IS_TRIGGER_TRACE_STOP_PROFIT));
-            parameter.setIsFollowBuild(jsonObject.getInteger(IS_FOLLOW_BUILD));
-            parameter.setMinAveragePrice(jsonObject.getDouble(MIN_AVERAGE_PRICE));
-            parameter.setHistoryMaxBenefitRatio(jsonObject.getDouble(HISTORY_MAX_BENEFIT_RATIO));
-            parameter.setRealTimeEarningRatio(jsonObject.getDouble(REAL_TIME_EARNING_RATIO));
+            parameter.setIsTriggerTraceStopProfit(DealUtil.getInteger(entries.get(IS_TRIGGER_TRACE_STOP_PROFIT)));
+            parameter.setIsFollowBuild(DealUtil.getInteger(entries.get(IS_FOLLOW_BUILD)));
+            parameter.setMinAveragePrice(DealUtil.getDouble(entries.get(MIN_AVERAGE_PRICE)));
+            parameter.setHistoryMaxBenefitRatio(DealUtil.getDouble(entries.get(HISTORY_MAX_BENEFIT_RATIO)));
+            parameter.setRealTimeEarningRatio(DealUtil.getDouble(entries.get(REAL_TIME_EARNING_RATIO)));
         }
         return parameter;
     }

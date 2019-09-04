@@ -80,7 +80,6 @@ public class DealCalculator {
         Double historyMaxRiskBenefitRatio = redisParameter.getHistoryMaxBenefitRatio();
         Integer isTriggerTraceStopProfit = redisParameter.getIsTriggerTraceStopProfit();
 
-        JSONObject jsonObject = redisParameter.getJsonObject();  //java操作redis的JSON对象
         String javaRedisKey = redisParameter.getRedisKey();
 
         //固定比例止盈和追踪止盈  二选一  //是否启动追踪止盈字段
@@ -89,6 +88,9 @@ public class DealCalculator {
         //在参数设置前  不存在金额止盈，只有比例止盈
 
         //计算实时收益比
+        if (positionCost == 0) {
+            positionCost = 1.0;
+        }
         Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
         if (isStopProfitTrace == 1) {
@@ -99,14 +101,12 @@ public class DealCalculator {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
-                    JSONObject s = updateJson(jsonObject, DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT, 1);
-                    updateRedisString(javaRedisKey,s,redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
                 }
 
                 //记录实时收益比的最高数值
                 if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio < realTimeEarningRatio) {
-                    JSONObject s = updateJson(jsonObject, DealUtil.HISTORY_MAX_BENEFIT_RATIO, realTimeEarningRatio);
-                    updateRedisString(javaRedisKey,s,redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                 }
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio <= (historyMaxRiskBenefitRatio-callBackRatio)) {
@@ -143,6 +143,7 @@ public class DealCalculator {
     public static boolean isBuy(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter,
                                 RedisParameter redisParameter,RedisTemplate redisTemplate) {
 
+        String javaRedisKey = redisParameter.getRedisKey();
         Integer finishedOrder = dealParameter.getFinishedOrder();
         Integer maxTradeOrder = dealParameter.getMaxTradeOrder();
 
@@ -184,14 +185,13 @@ public class DealCalculator {
 
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-        double lowerAveragePrice = (averagePosition - storeSplit) - (averagePosition*followLowerRatio);
+        Double lowerAveragePrice = (averagePosition - storeSplit) - (averagePosition*followLowerRatio);
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
         if (averagePrice <= lowerAveragePrice) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
-                JSONObject s = updateJson(redisParameter.getJsonObject(), DealUtil.IS_FOLLOW_BUILD, 1);
-                updateRedisString(redisParameter.getRedisKey(),s,redisTemplate);
+                updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
                 return false;
             }
         }
@@ -201,8 +201,7 @@ public class DealCalculator {
 
         //记录最小拟买入均价
         if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
-            JSONObject s = updateJson(redisParameter.getJsonObject(),DealUtil.MIN_AVERAGE_PRICE,averagePrice);
-            updateRedisString(redisParameter.getRedisKey(),s,redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
         }
 
         //拟买入均价是否大于等于回调均价？ 是则确定买入
@@ -234,11 +233,12 @@ public class DealCalculator {
      *
      * @param redisKey 需要修改redis的key
      * @param redisTemplate  redisTemplate
-     * @param value 值
+     * @param hashKey hash的key
+     * @param value hash中key对应的值
      *
      **/
-    private static void updateRedisString(String redisKey, JSONObject value, RedisTemplate redisTemplate) {
-        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value.toJSONString());
+    private static void updateRedisHashValue(String redisKey, String hashKey, Object value, RedisTemplate redisTemplate) {
+        if (redisKey != null && hashKey != null && value != null) redisTemplate.opsForHash().put(redisKey,hashKey,value);
     }
 
 }

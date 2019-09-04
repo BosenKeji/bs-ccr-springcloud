@@ -2,6 +2,8 @@ package cn.bosenkeji.vo;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Map;
+
 /**
  * deal所需参数
  * @author hjh
@@ -9,8 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class DealParameter {
 
-    private String redisKey;
-    private JSONObject jsonObject;
+    private Map<String,Object> trade;
 
     private String accessKey;
     private String secretKey;
@@ -37,33 +38,6 @@ public class DealParameter {
     private Double emitRatio; //追踪止盈回调比例
 
     public DealParameter() { }
-
-    public DealParameter(String redisKey, JSONObject jsonObject, String accessKey,
-                         String secretKey, String symbol, Integer canSendMsgToNode,
-                         Double positionCost, Double positionNum, Integer finishedOrder,
-                         Integer maxTradeOrder, Double storeSplit, JSONObject buyVolume,
-                         Double followLowerRatio, Double followCallbackRatio, Double firstOrderPrice,
-                         Double targetProfitPrice, Integer isStopProfitTrace, Double turnDownRatio, Double emitRatio) {
-        this.redisKey = redisKey;
-        this.jsonObject = jsonObject;
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
-        this.symbol = symbol;
-        this.canSendMsgToNode = canSendMsgToNode;
-        this.positionCost = positionCost;
-        this.positionNum = positionNum;
-        this.finishedOrder = finishedOrder;
-        this.maxTradeOrder = maxTradeOrder;
-        this.storeSplit = storeSplit;
-        this.buyVolume = buyVolume;
-        this.followLowerRatio = followLowerRatio;
-        this.followCallbackRatio = followCallbackRatio;
-        this.firstOrderPrice = firstOrderPrice;
-        this.targetProfitPrice = targetProfitPrice;
-        this.isStopProfitTrace = isStopProfitTrace;
-        this.turnDownRatio = turnDownRatio;
-        this.emitRatio = emitRatio;
-    }
 
     public String getAccessKey() {
         return accessKey;
@@ -201,20 +175,11 @@ public class DealParameter {
         this.emitRatio = emitRatio;
     }
 
-    public String getRedisKey() {
-        return redisKey;
+    public Map<String, Object> getTrade() {
+        return trade;
     }
 
-    public void setRedisKey(String redisKey) {
-        this.redisKey = redisKey;
+    public void setTrade(Map<String, Object> trade) {
+        this.trade = trade;
     }
-
-    public JSONObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-
 }

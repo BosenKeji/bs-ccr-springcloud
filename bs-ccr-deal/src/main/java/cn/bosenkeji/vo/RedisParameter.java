@@ -12,7 +12,6 @@ import com.alibaba.fastjson.JSONObject;
 public class RedisParameter {
 
     private String redisKey;
-    private JSONObject jsonObject;
 
     private Double historyMaxBenefitRatio; //历史最高收益比
     private Integer isTriggerTraceStopProfit; //是否触发追踪止盈
@@ -23,30 +22,12 @@ public class RedisParameter {
 
     public RedisParameter() { }
 
-    public RedisParameter(String redisKey, JSONObject jsonObject, Double historyMaxBenefitRatio,
-                         Integer isTriggerTraceStopProfit, Integer isFollowBuild, Double minAveragePrice) {
-        this.redisKey = redisKey;
-        this.jsonObject = jsonObject;
-        this.historyMaxBenefitRatio = historyMaxBenefitRatio;
-        this.isTriggerTraceStopProfit = isTriggerTraceStopProfit;
-        this.isFollowBuild = isFollowBuild;
-        this.minAveragePrice = minAveragePrice;
-    }
-
     public String getRedisKey() {
         return redisKey;
     }
 
-    public void setRedisKey(String rediskey) {
-        this.redisKey = rediskey;
-    }
-
-    public JSONObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public void setRedisKey(String redisKey) {
+        this.redisKey = redisKey;
     }
 
     public Double getHistoryMaxBenefitRatio() {
