@@ -31,7 +31,9 @@
 
 
   <select id="findAll" resultMap="BaseResultMap">
-    select * from coin
+    select
+     <include refid="Base_Column_List"/>
+     from coin
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
