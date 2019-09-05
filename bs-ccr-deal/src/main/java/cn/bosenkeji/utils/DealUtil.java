@@ -28,12 +28,15 @@ public class DealUtil {
     public static final String TRADE_TYPE_SELL = "sell";
 
 
-    static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";  //是否触发追踪止盈
-    static final String IS_FOLLOW_BUILD = "is_follow_build";  //是否触发追踪建仓
+    public static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";  //是否触发追踪止盈
+    public static final String IS_FOLLOW_BUILD = "is_follow_build";  //是否触发追踪建仓
 
     static final String MIN_AVERAGE_PRICE = "min_average_price"; //最小拟买入均价
     static final String HISTORY_MAX_BENEFIT_RATIO = "history_max_benefit_ratio"; //历史最高收益比
     public static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio";
+
+    public static final String TRIGGER_FOLLOW_BUILD_ORDER = "trigger_follow_build_order"; //触发追踪建仓的单数
+    public static final String TRIGGER_STOP_PROFIT_ORDER = "trigger_stop_profit_order"; //触发追踪止盈的单数
 
 
     /**
@@ -123,15 +126,19 @@ public class DealUtil {
             map.put(MIN_AVERAGE_PRICE,"0.0");
             map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
             map.put(REAL_TIME_EARNING_RATIO,"0.0");
+            map.put(TRIGGER_FOLLOW_BUILD_ORDER,0);
+            map.put(TRIGGER_STOP_PROFIT_ORDER,0);
 
             redisTemplate.opsForHash().putAll(javaRedisKey,map);
 
             parameter.setRedisKey(javaRedisKey);
             parameter.setIsTriggerTraceStopProfit(0);
             parameter.setIsFollowBuild(0);
-            parameter.setMinAveragePrice(0.0);
+            parameter.setMinAveragePrice(100000000.0);
             parameter.setHistoryMaxBenefitRatio(0.0);
             parameter.setRealTimeEarningRatio(0.0);
+            parameter.setTriggerFollowBuildOrder(0);
+            parameter.setTriggerStopProfitOrder(0);
 
         } else {
             //获取数据
@@ -141,6 +148,8 @@ public class DealUtil {
             parameter.setMinAveragePrice(DealUtil.getDouble(entries.get(MIN_AVERAGE_PRICE)));
             parameter.setHistoryMaxBenefitRatio(DealUtil.getDouble(entries.get(HISTORY_MAX_BENEFIT_RATIO)));
             parameter.setRealTimeEarningRatio(DealUtil.getDouble(entries.get(REAL_TIME_EARNING_RATIO)));
+            parameter.setTriggerFollowBuildOrder(DealUtil.getInteger(entries.get(TRIGGER_FOLLOW_BUILD_ORDER)));
+            parameter.setTriggerStopProfitOrder(DealUtil.getInteger(entries.get(TRIGGER_STOP_PROFIT_ORDER)));
         }
         return parameter;
     }

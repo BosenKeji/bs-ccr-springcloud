@@ -77,12 +77,7 @@ public class DealHandler {
             //初始化或获取 java要操作redis的key和value
             RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
-            //判断是否需要给node发消息
-            Integer canSendMsg2Node = dealParameter.getCanSendMsgToNode();
 
-            if (canSendMsg2Node == 0 ) {
-                return;
-            }
 
             //计算实时收益比   判断买卖
             Double positionCost = dealParameter.getPositionCost();
@@ -97,6 +92,46 @@ public class DealHandler {
             //记录实时收益比
             redisTemplate.opsForHash().put(redisParameter.getRedisKey(),DealUtil.REAL_TIME_EARNING_RATIO,realTimeEarningRatio.toString());
 
+            log.info("accessKey:"+ dealParameter.getAccessKey() + "symbol"+ dealParameter.getSymbol()
+                    +"  实时收益比："+realTimeEarningRatio);
+
+
+            //清除 触发追踪止盈标志
+            if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
+
+                //触发追踪止盈 但未卖出 实时收益比低于1 取消
+                if (
+                        (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder() == dealParameter.getFinishedOrder()) ||
+                        (redisParameter.getTriggerStopProfitOrder() != dealParameter.getFinishedOrder()) ||
+                        (dealParameter.getTradeStatus() == 3)
+                ) {
+                    DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
+                    return;
+                }
+            }
+
+            //清除 触发追踪建仓标志
+            if (redisParameter.getIsFollowBuild() == 1 || redisParameter.getIsFollowBuild() == 2) {
+                //计算实时拟买入均价
+                Double v = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
+
+                //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
+                Double lowerAveragePrice = (dealParameter.getPositionCost() - dealParameter.getStoreSplit()) - (dealParameter.getPositionCost()*dealParameter.getFollowLowerRatio());
+                if (
+                        (v > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder() == dealParameter.getFinishedOrder()) ||
+                        (redisParameter.getTriggerFollowBuildOrder() != dealParameter.getFinishedOrder()) ||
+                        (dealParameter.getTradeStatus() == 3)
+                ) {
+                    DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
+                }
+            }
+
+            //判断是否交易
+            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
+                return;
+            }
+
+
             if (realTimeEarningRatio >= 1) {
 //            if (true) {
             //判断是否卖
@@ -105,7 +140,7 @@ public class DealHandler {
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
-                            +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
+                            +"  消息发送："+isSend + "symbol"+ dealParameter.getSymbol() +"  finished_order:" + dealParameter.getFinishedOrder());
                 }
 
             }
@@ -117,7 +152,7 @@ public class DealHandler {
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
                  log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
-                         +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
+                         +"  消息发送："+isSend + "symbol"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
 

@@ -1,8 +1,5 @@
 package cn.bosenkeji.vo;
 
-
-import com.alibaba.fastjson.JSONObject;
-
 /**
  *
  * java需要修改redis 的数据
@@ -19,6 +16,10 @@ public class RedisParameter {
     private Integer isFollowBuild; //是否触发追踪建仓
     private Double minAveragePrice; //最小交易均价
     private Double realTimeEarningRatio;  //实时收益比
+
+
+    private Integer triggerStopProfitOrder; //触发追踪止盈的单数
+    private Integer triggerFollowBuildOrder; //触发追踪建仓的单数
 
     public RedisParameter() { }
 
@@ -68,5 +69,21 @@ public class RedisParameter {
 
     public void setRealTimeEarningRatio(Double realTimeEarningRatio) {
         this.realTimeEarningRatio = realTimeEarningRatio;
+    }
+
+    public Integer getTriggerStopProfitOrder() {
+        return triggerStopProfitOrder;
+    }
+
+    public void setTriggerStopProfitOrder(Integer triggerStopProfitOrder) {
+        this.triggerStopProfitOrder = triggerStopProfitOrder;
+    }
+
+    public Integer getTriggerFollowBuildOrder() {
+        return triggerFollowBuildOrder;
+    }
+
+    public void setTriggerFollowBuildOrder(Integer triggerFollowBuildOrder) {
+        this.triggerFollowBuildOrder = triggerFollowBuildOrder;
     }
 }

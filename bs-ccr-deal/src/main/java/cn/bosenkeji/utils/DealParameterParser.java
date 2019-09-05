@@ -4,6 +4,8 @@ import cn.bosenkeji.vo.DealParameter;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 
 public class DealParameterParser {
 
+    private static final Logger log = LoggerFactory.getLogger(DealParameterParser.class);
+
     private Map trade;
 
     public DealParameterParser(Map trade) {
@@ -29,7 +33,7 @@ public class DealParameterParser {
     private static final String SECRET_KEY = "secretKey";
     private static final String SYMBOL = "symbol";
 
-    private static final String CAN_SEND_MSG_2_NODE = "canSendMsg2Node";  //是否给node端发送消息
+    private static final String TRADE_STATUS = "trade_status";  //是否给node端发送消息
 
     private static final String POSITION_COST = "position_cost";  //持仓费用
     private static final String POSITION_NUM = "position_num";   //持仓数量
@@ -66,7 +70,7 @@ public class DealParameterParser {
         parameter.setSecretKey(DealUtil.getString(trade.get(SECRET_KEY)));
         parameter.setSymbol(DealUtil.getString(trade.get(SYMBOL)));
 
-        parameter.setCanSendMsgToNode(DealUtil.getInteger(trade.get(CAN_SEND_MSG_2_NODE)));
+        parameter.setTradeStatus(DealUtil.getInteger(trade.get(TRADE_STATUS)));
         parameter.setPositionCost(DealUtil.getDouble(trade.get(POSITION_COST)));
         parameter.setPositionNum(DealUtil.getDouble(trade.get(POSITION_NUM)));
 
@@ -75,10 +79,15 @@ public class DealParameterParser {
         parameter.setStoreSplit(DealUtil.getDouble(trade.get(STORE_SPLIT)));
 
         // Map 特殊处理
-        String s = trade.get(BUY_VOLUME).toString();
-        String unescape = StringEscapeUtils.unescapeJava(s);
-        JSONObject jsonBuyVolume = JSONObject.parseObject(unescape);
-        parameter.setBuyVolume(jsonBuyVolume);
+        Object s = trade.get(BUY_VOLUME);
+        if (s == null) {
+            log.info("accessKey:"+ parameter.getAccessKey()
+                    +"  buy_volume为空");
+        } else {
+            String unescape = StringEscapeUtils.unescapeJava(s.toString());
+            JSONObject jsonBuyVolume = JSONObject.parseObject(unescape);
+            parameter.setBuyVolume(jsonBuyVolume);
+        }
         parameter.setFollowLowerRatio(DealUtil.getDouble(trade.get(FOLLOW_LOWER_RATIO)));
 
         parameter.setFollowCallbackRatio(DealUtil.getDouble(trade.get(FOLLOW_CALLBACK_RATIO)));
