@@ -2,6 +2,7 @@ package cn.bosenkeji.utils;
 
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
+import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Map;
@@ -15,7 +16,6 @@ import java.util.Map;
  */
 
 public class DealCalculator {
-
 
     /**
      * 计算实时收益比  买价*持仓数量/持仓费用  精确小数点后4位
@@ -64,8 +64,8 @@ public class DealCalculator {
      * @param redisTemplate 操作redis
      * @return 是否卖
      */
-    public static boolean isSell(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
-        String redisKey = dealParameter.getRedisKey();
+    public static boolean isSell(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter,
+                                 RedisParameter redisParameter, RedisTemplate redisTemplate) {
 
         Integer isStopProfitTrace = dealParameter.getIsStopProfitTrace(); //是否启用追踪止盈
         Double stopProfitPrice = dealParameter.getTargetProfitPrice();
@@ -76,10 +76,11 @@ public class DealCalculator {
         Double positionNum = dealParameter.getPositionNum();
 
         Double price = realTimeTradeParameter.getPrice();
-        JSONObject jsonObject = dealParameter.getJsonObject();
-        Double historyMaxRiskBenefitRatio = dealParameter.getHistoryMaxRiskBenefitRatio();
 
-        Integer isTriggerTraceStopProfit = dealParameter.getIsTriggerTraceStopProfit();
+        Double historyMaxRiskBenefitRatio = redisParameter.getHistoryMaxBenefitRatio();
+        Integer isTriggerTraceStopProfit = redisParameter.getIsTriggerTraceStopProfit();
+
+        String javaRedisKey = redisParameter.getRedisKey();
 
         //固定比例止盈和追踪止盈  二选一  //是否启动追踪止盈字段
         //固定金额止盈和比例止盈同时存在  //金额止盈或比例止盈达到一个就止盈
@@ -87,24 +88,25 @@ public class DealCalculator {
         //在参数设置前  不存在金额止盈，只有比例止盈
 
         //计算实时收益比
+        if (positionCost == 0) {
+            positionCost = 1.0;
+        }
         Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
         if (isStopProfitTrace == 1) {
             //追踪止盈逻辑
             //收益比≥1+触发比例？ 追踪止盈
-            if (realTimeEarningRatio >= (1 + stopProfitPrice)) {
+            if (realTimeEarningRatio >= (1 + stopProfitRatio)) {
                 //if (true) {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
-                    JSONObject s = updateJson(jsonObject, DealParameterParser.IS_TRIGGER_TRACE_STOP_PROFIT, 1);
-                    updateRedisString(redisKey,s,redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
                 }
 
                 //记录实时收益比的最高数值
                 if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio < realTimeEarningRatio) {
-                    JSONObject s = updateJson(jsonObject, DealParameterParser.HISTORY_MAX_RISK_BENEFIT_RATIO, realTimeEarningRatio);
-                    updateRedisString(redisKey,s,redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                 }
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio <= (historyMaxRiskBenefitRatio-callBackRatio)) {
@@ -138,26 +140,26 @@ public class DealCalculator {
      * @return 是否买
      */
 
-    public static boolean isBuy(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
+    public static boolean isBuy(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter,
+                                RedisParameter redisParameter,RedisTemplate redisTemplate) {
 
-        String redisKey = dealParameter.getRedisKey();
-
+        String javaRedisKey = redisParameter.getRedisKey();
         Integer finishedOrder = dealParameter.getFinishedOrder();
         Integer maxTradeOrder = dealParameter.getMaxTradeOrder();
-        Double firstOrderPrice = dealParameter.getFirstOrderPrice();
 
+        Double firstOrderPrice = dealParameter.getFirstOrderPrice();
         Double storeSplit = dealParameter.getStoreSplit();
         Double followLowerRatio = dealParameter.getFollowLowerRatio();
-        Double followCallbackRatio = dealParameter.getFollowCallbackRatio();
 
-        Double minAveragePrice = dealParameter.getMinAveragePrice();
+        Double followCallbackRatio = dealParameter.getFollowCallbackRatio();
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
         Map<Double, Double> deep = realTimeTradeParameter.getDeep();
         JSONObject buyVolume = dealParameter.getBuyVolume();
-        JSONObject jsonObject = dealParameter.getJsonObject();
-        Integer isFollowBuild = dealParameter.getIsFollowBuild();
+
+        Integer isFollowBuild = redisParameter.getIsFollowBuild();
+        Double minAveragePrice = redisParameter.getMinAveragePrice();
 
         if (positionNum == 0) {
             positionNum = 1.0;
@@ -183,14 +185,13 @@ public class DealCalculator {
 
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-        double lowerAveragePrice = (averagePosition - storeSplit) - (averagePosition*followLowerRatio);
+        Double lowerAveragePrice = (averagePosition - storeSplit) - (averagePosition*followLowerRatio);
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
-        if (averagePrice > lowerAveragePrice) {
+        if (averagePrice <= lowerAveragePrice) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
-                JSONObject s = updateJson(jsonObject, DealParameterParser.IS_FOLLOW_BUILD, 1);
-                updateRedisString(redisKey,s,redisTemplate);
+                updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
                 return false;
             }
         }
@@ -200,8 +201,7 @@ public class DealCalculator {
 
         //记录最小拟买入均价
         if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
-            JSONObject s = updateJson(jsonObject,DealParameterParser.MIN_AVERAGE_PRICE,averagePrice);
-            updateRedisString(redisKey,s,redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
         }
 
         //拟买入均价是否大于等于回调均价？ 是则确定买入
@@ -227,18 +227,18 @@ public class DealCalculator {
         return jsonObject;
     }
 
-
     /**
      *
      * 更新redis的值
      *
      * @param redisKey 需要修改redis的key
      * @param redisTemplate  redisTemplate
-     * @param value 值
+     * @param hashKey hash的key
+     * @param value hash中key对应的值
      *
      **/
-    private static void updateRedisString(String redisKey, JSONObject value, RedisTemplate redisTemplate) {
-        if (redisKey != null && value != null) redisTemplate.opsForValue().set(redisKey, value.toJSONString());
+    private static void updateRedisHashValue(String redisKey, String hashKey, Object value, RedisTemplate redisTemplate) {
+        if (redisKey != null && hashKey != null && value != null) redisTemplate.opsForHash().put(redisKey,hashKey,value);
     }
 
 }

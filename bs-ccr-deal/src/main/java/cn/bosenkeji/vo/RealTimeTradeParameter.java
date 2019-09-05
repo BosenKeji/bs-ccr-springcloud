@@ -16,12 +16,6 @@ public class RealTimeTradeParameter {
 
     public RealTimeTradeParameter() { }
 
-    public RealTimeTradeParameter(Double price, Map<Double, Double> deep, String symbol) {
-        this.price = price;
-        this.deep = deep;
-        this.symbol = symbol;
-    }
-
     public Double getPrice() {
         return price;
     }

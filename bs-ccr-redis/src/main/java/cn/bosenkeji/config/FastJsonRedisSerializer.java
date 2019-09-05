@@ -1,18 +1,20 @@
 package cn.bosenkeji.config;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 
 import java.nio.charset.Charset;
 
 /**
- * @ClassName FastJsonRedisSerializer
- * @Description TODO
- * @Author hjh
- * @Date 2019-08-24 22:24
- * @Version 1.0
+ *
+ * Redis 存储数据 FastJson 序列化
+ *
+ * @author hjh
+ *
  */
 
 public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
@@ -30,7 +32,7 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
         if (null == t) {
             return new byte[0];
         }
-        return JSON.toJSONString(t, SerializerFeature.BeanToArray.WriteClassName).getBytes(DEFAULT_CHARSET);
+        return JSONObject.parseObject(t.toString()).toJSONString().getBytes();
     }
 
     @Override
