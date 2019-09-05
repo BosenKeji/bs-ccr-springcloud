@@ -1,20 +1,25 @@
 package cn.bosenkeji.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Admin implements Serializable {
-    private Integer id;
+    private int id;
 
     private String account;
 
     private String password;
 
-    private Byte status;
+    private int status;
 
-    private Date createdAt;
+    @ApiModelProperty(hidden = true)
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    @ApiModelProperty(hidden = true)
+    private Timestamp updatedAt;
 
     @Override
     public String toString() {
@@ -28,7 +33,7 @@ public class Admin implements Serializable {
                 '}';
     }
 
-    public Admin(Integer id, String account, String password, Byte status, Date createdAt, Date updatedAt) {
+    public Admin(int id, String account, String password, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.account = account;
         this.password = password;
@@ -37,15 +42,16 @@ public class Admin implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+
     public Admin() {
         super();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -54,7 +60,7 @@ public class Admin implements Serializable {
     }
 
     public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
+        this.account = account;
     }
 
     public String getPassword() {
@@ -62,30 +68,30 @@ public class Admin implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
-    public Byte getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

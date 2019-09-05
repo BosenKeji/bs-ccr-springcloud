@@ -1,6 +1,8 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IAdminClientService;
+import cn.bosenkeji.service.impl.CustomAdminDetailsImpl;
+import cn.bosenkeji.service.impl.CustomUserDetailsImpl;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.Admin;
 import com.github.pagehelper.PageInfo;
@@ -75,5 +77,13 @@ public class ConsumerAdminController {
     @PutMapping("/reset_password")
     public Result resetPassword(@RequestParam("id") int id,@RequestParam(value = "password",required = false,defaultValue = "888888") String password) {
         return adminClientService.resetPassword(id,password);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @ApiOperation(value = "获取当前登录管理员接口",httpMethod = "GET",nickname = "getCurrentAdmin")
+    @GetMapping("/current_admin")
+    public CustomAdminDetailsImpl getCurrentAdmin() {
+        CustomAdminDetailsImpl principal = (CustomAdminDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
     }
 }
