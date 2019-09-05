@@ -16,11 +16,11 @@ public class CustomJdbcUserDetailsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String USER_BASIC_COLUMN_LIST = " username, tel, password, status, is_binding ";
-    private static final String ADMIN_BASIC_COLUMN_LIST = " account, password, status ";
+    private static final String USER_BASIC_COLUMN_LIST = " id, username, tel, password, status, is_binding ";
+    private static final String ADMIN_BASIC_COLUMN_LIST = " id, account, password, status ";
 
-    private static final String GET_ONE_USER_BY_TEL_SQL = "select" + USER_BASIC_COLUMN_LIST + "from user where tel = ?";
-    private static final String GET_ONE_ADMIN_BY_ACCOUNT_SQL = "select"+ ADMIN_BASIC_COLUMN_LIST + "from admin where account = ?";
+    private static final String GET_ONE_USER_BY_TEL_SQL = "select " + USER_BASIC_COLUMN_LIST + "from user where tel = ?";
+    private static final String GET_ONE_ADMIN_BY_ACCOUNT_SQL = "select "+ ADMIN_BASIC_COLUMN_LIST + "from admin where account = ?";
 
     Optional<User> getOneUserByTel(String tel) {
 

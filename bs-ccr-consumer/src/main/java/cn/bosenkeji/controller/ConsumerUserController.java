@@ -134,6 +134,7 @@ public class ConsumerUserController {
         return iUserClientService.updatePasswordByTel(tel,password);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @ApiOperation(value = "获取当前登录用户接口",httpMethod = "GET",nickname = "getCurrentUser")
     @GetMapping("/current_user")
     public CustomUserDetailsImpl getCurrentUser() {

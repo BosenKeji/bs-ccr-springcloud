@@ -1,11 +1,13 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboDayByAdminClientService;
+import cn.bosenkeji.service.impl.CustomAdminDetailsImpl;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,7 +33,13 @@ public class ConsumerUserProductComboDayByAdminController {
     public Object add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay userProductComboDay,
                       @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId)
     {
-        return this.iUserProductComboDayByAdminClientService.add(userProductComboDay,adminId);
+        int currentAdminId=this.getCurrentAdmin().getId();
+        return this.iUserProductComboDayByAdminClientService.add(userProductComboDay,currentAdminId);
+    }
+
+    public CustomAdminDetailsImpl getCurrentAdmin() {
+        CustomAdminDetailsImpl principal = (CustomAdminDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
     }
 
     /*@ApiOperation(value="获取用户套餐时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListWithPage")
