@@ -87,7 +87,11 @@ public class DealParameterParser {
 
         //是否开启追踪止盈
         Object o = trade.get(IS_STOP_PROFIT_TRACE);
-        parameter.setIsStopProfitTrace(StringUtils.isBlank(o.toString()) ? 1 : DealUtil.getInteger(o));
+        Integer temp = 1;
+        if ( o != null && StringUtils.isNotBlank(o.toString())) {
+            temp = DealUtil.getInteger(o.toString());
+        }
+        parameter.setIsStopProfitTrace(temp);
         parameter.setTurnDownRatio(DealUtil.getDouble(trade.get(TURN_DOWN_RATIO)));
         parameter.setEmitRatio(DealUtil.getDouble(trade.get(EMIT_RATIO)));
 
