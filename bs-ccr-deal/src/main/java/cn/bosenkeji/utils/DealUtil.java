@@ -7,6 +7,8 @@ import cn.bosenkeji.vo.RedisParameter;
 import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -24,6 +26,8 @@ import java.util.Map;
  */
 
 public class DealUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(DealUtil.class);
 
     public static final String TRADE_TYPE_BUY = "buy";
     public static final String TRADE_TYPE_SELL = "sell";
@@ -56,6 +60,7 @@ public class DealUtil {
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
+            log.info("清除建仓标志");
             return true;
         }
         return false;
@@ -72,6 +77,7 @@ public class DealUtil {
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
+            log.info("清除止盈标志");
             return true;
         }
         return false;

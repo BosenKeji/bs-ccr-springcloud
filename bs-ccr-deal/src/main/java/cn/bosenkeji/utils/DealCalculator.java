@@ -39,7 +39,7 @@ public class DealCalculator {
      * @param followLowerRatio  追踪下调比
      * @return 下调均价 =(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
      */
-    public static Double countLowerAveragePrice(Double averagePosition, Double storeSplit, Double followLowerRatio) {
+    static Double countLowerAveragePrice(Double averagePosition, Double storeSplit, Double followLowerRatio) {
         return (averagePosition - storeSplit) - (averagePosition * followLowerRatio);
     }
 
@@ -74,7 +74,7 @@ public class DealCalculator {
      * @param quantity 某单交易量
      * @return 拟买入均价
      */
-    public static Double countAveragePrice(Map<Double,Double> deep, Double quantity) {
+    static Double countAveragePrice(Map<Double,Double> deep, Double quantity) {
         double priceSum = 0;
         double deepSum = 0;
 
@@ -135,17 +135,17 @@ public class DealCalculator {
 
             //追踪止盈逻辑
             //收益比≥1+触发比例？ 追踪止盈
-            if (realTimeEarningRatio >= (1 + stopProfitRatio)) {
+            if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
                 //if (true) {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
                     updateRedisHashValue(javaRedisKey,DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
                     updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
-                            +"触发追踪建仓");
+                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
+                            +"触发追踪止盈");
                     //记录实时收益比的最高数值
-                    if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio < realTimeEarningRatio) {
+                    if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio - realTimeEarningRatio < 0) {
                         updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                     }
 
@@ -153,7 +153,7 @@ public class DealCalculator {
                 }
 
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
-                if (realTimeEarningRatio <= (historyMaxRiskBenefitRatio-callBackRatio)) {
+                if (realTimeEarningRatio - (historyMaxRiskBenefitRatio-callBackRatio) >= 0) {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
                             +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比："+realTimeEarningRatio +
                             "  历史最高收益比：" + historyMaxRiskBenefitRatio + "  回调比例：" + callBackRatio);
@@ -163,7 +163,7 @@ public class DealCalculator {
         } else {
             //固定止盈
             //收益比≥1+止盈比例？ //确定卖出
-            if (realTimeEarningRatio > (1 + stopProfitRatio)) {
+            if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
                         +"  卖，固定止盈模式：收益比≥1+止盈比例，发送卖出消息"+"  实时收益比："+realTimeEarningRatio + "  止盈比例："+ stopProfitRatio);
                 return true;
@@ -242,7 +242,7 @@ public class DealCalculator {
         boolean isBuy = false;
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
-        if (averagePrice <= lowerAveragePrice) {
+        if (averagePrice - lowerAveragePrice <= 0) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
                 updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
@@ -260,11 +260,11 @@ public class DealCalculator {
             Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
-            if ((averagePrice >= callbackAveragePrice)) {
+            if ((averagePrice - callbackAveragePrice >= 0)) {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价："+averagePrice+"  回调均价："+callbackAveragePrice);
             }
-            isBuy = (averagePrice >= callbackAveragePrice);
+            isBuy = (averagePrice - callbackAveragePrice >= 0);
         } else {
             //不在追踪建仓范围，取消追踪建仓标志
             updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);

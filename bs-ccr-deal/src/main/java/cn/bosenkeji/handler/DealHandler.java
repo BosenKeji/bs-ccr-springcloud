@@ -32,6 +32,11 @@ public class DealHandler {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @RequestMapping("/redis")
+    public void redis() {
+
+    }
+
     @StreamListener("input1")
     private void consumerMessage(String msg) {
 
