@@ -110,6 +110,7 @@ public class DealUtil {
         rocketMQResult.setSecretKey(secretKey);
         rocketMQResult.setSymbol(symbol);
         rocketMQResult.setType(type);
+        rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
 
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();

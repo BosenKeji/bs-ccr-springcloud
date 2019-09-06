@@ -14,18 +14,9 @@ public class RocketMQResult {
     private String secretKey;
     private String symbol;
     private String type;
+    private Integer finished_order;
 
     public RocketMQResult() { }
-
-    @Override
-    public String toString() {
-        return "RocketMQResult{" +
-                "accessKey='" + accessKey + '\'' +
-                ", secretKey='" + secretKey + '\'' +
-                ", symbol='" + symbol + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
 
     public void setAccessKey(String accessKey) {
         this.accessKey = accessKey;
@@ -57,5 +48,13 @@ public class RocketMQResult {
 
     public String getType() {
         return type;
+    }
+
+    public Integer getFinished_order() {
+        return finished_order;
+    }
+
+    public void setFinished_order(Integer finished_order) {
+        this.finished_order = finished_order;
     }
 }
