@@ -55,12 +55,18 @@ public class DealUtil {
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePrice,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
         if (
-                (averagePrice > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
+                (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
             log.info("清除建仓标志");
+            log.info(""  + (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
+                        + "   averagePrice:" + averagePrice + "  lowerAveragePrice:" + lowerAveragePrice + " currentOrder:" + dealParameter.getFinishedOrder()
+                        + "triggerOrder:" + redisParameter.getTriggerStopProfitOrder());
+            log.info((averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info(!(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
         }
         return false;
@@ -78,6 +84,9 @@ public class DealUtil {
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
             log.info("清除止盈标志");
+            log.info((redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info(!(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
         }
         return false;
