@@ -51,8 +51,8 @@ public class DealUtil {
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePrice,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
         if (
-                (averagePrice > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder() == dealParameter.getFinishedOrder()) ||
-                        (redisParameter.getTriggerFollowBuildOrder() != dealParameter.getFinishedOrder()) ||
+                (averagePrice > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
+                        !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
@@ -67,8 +67,8 @@ public class DealUtil {
      */
     public static Boolean isClearTriggerStopProfit(DealParameter dealParameter, RedisParameter redisParameter, RedisTemplate redisTemplate) {
         if (
-                (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder() == dealParameter.getFinishedOrder()) ||
-                        (redisParameter.getTriggerStopProfitOrder() != dealParameter.getFinishedOrder()) ||
+                (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
+                        !(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
