@@ -79,8 +79,8 @@ public class DealHandler {
 
             //计算实时收益比   判断买卖
             //实时收益比
-            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(dealParameter.getPositionCost(),
-                                                                                    dealParameter.getPositionNum(),price);
+            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(dealParameter.getPositionNum(),
+                                                                                    dealParameter.getPositionCost(),price);
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
 

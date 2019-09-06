@@ -128,9 +128,6 @@ public class DealCalculator {
 
 
         //计算实时收益比
-        if (positionCost == 0) {
-            positionCost = 1.0;
-        }
         Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
         if (isStopProfitTrace == 1) {
