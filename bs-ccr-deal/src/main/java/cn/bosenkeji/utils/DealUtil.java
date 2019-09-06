@@ -141,7 +141,7 @@ public class DealUtil {
             Map<String,Object> map = new LinkedHashMap<>();
             map.put(IS_FOLLOW_BUILD,"0");
             map.put(IS_TRIGGER_TRACE_STOP_PROFIT,"0");
-            map.put(MIN_AVERAGE_PRICE,"0.0");
+            map.put(MIN_AVERAGE_PRICE,"100000000.0");
             map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
             map.put(REAL_TIME_EARNING_RATIO,"0.0");
             map.put(TRIGGER_FOLLOW_BUILD_ORDER,"0");
