@@ -2,6 +2,7 @@ package cn.bosenkeji.utils;
 
 import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.vo.DealParameter;
+import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSONArray;
@@ -28,49 +29,65 @@ public class DealUtil {
     public static final String TRADE_TYPE_SELL = "sell";
 
 
-    public static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";  //是否触发追踪止盈
-    public static final String IS_FOLLOW_BUILD = "is_follow_build";  //是否触发追踪建仓
+    static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";  //是否触发追踪止盈
+    static final String IS_FOLLOW_BUILD = "is_follow_build";  //是否触发追踪建仓
 
     static final String MIN_AVERAGE_PRICE = "min_average_price"; //最小拟买入均价
     static final String HISTORY_MAX_BENEFIT_RATIO = "history_max_benefit_ratio"; //历史最高收益比
-    public static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio";
+    private static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio";
 
-    public static final String TRIGGER_FOLLOW_BUILD_ORDER = "trigger_follow_build_order"; //触发追踪建仓的单数
-    public static final String TRIGGER_STOP_PROFIT_ORDER = "trigger_stop_profit_order"; //触发追踪止盈的单数
-
+    static final String TRIGGER_FOLLOW_BUILD_ORDER = "trigger_follow_build_order"; //触发追踪建仓的单数
+    static final String TRIGGER_STOP_PROFIT_ORDER = "trigger_stop_profit_order"; //触发追踪止盈的单数
 
     /**
      *
-     * 将一个JSONArray对象转换为一个Map
+     * 清除触发追踪建仓标志
      *
-     **/
-    static Map<Double, Double> convertJsonArrayToMap(JSONArray jsonArray) {
-        Map<Double, Double> map = new HashMap<>();
-        for (Object obj : jsonArray){
-            JSONArray o = (JSONArray) obj;
-            map.put(Double.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
+     */
+    public static Boolean isClearTriggerFollowBuild(DealParameter dealParameter, RedisParameter redisParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
+        //计算实时拟买入均价
+        Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
+
+        //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
+        Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePrice,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
+        if (
+                (averagePrice > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder() == dealParameter.getFinishedOrder()) ||
+                        (redisParameter.getTriggerFollowBuildOrder() != dealParameter.getFinishedOrder()) ||
+                        (dealParameter.getTradeStatus() == 3)
+        ) {
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
+            return true;
         }
-        return map;
+        return false;
     }
 
-
-    static String getString(Object o) {
-        return o == null ? "" : o.toString();
-    }
-
-    static Integer getInteger(Object o) {
-        Integer temp = 0;
-        if (o != null) {
-            temp = Integer.valueOf(o.toString());
+    /**
+     * 清除触发追踪止盈标志
+     *
+     */
+    public static Boolean isClearTriggerStopProfit(DealParameter dealParameter, RedisParameter redisParameter, RedisTemplate redisTemplate) {
+        if (
+                (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder() == dealParameter.getFinishedOrder()) ||
+                        (redisParameter.getTriggerStopProfitOrder() != dealParameter.getFinishedOrder()) ||
+                        (dealParameter.getTradeStatus() == 3)
+        ) {
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
+            return true;
         }
-        return temp;
+        return false;
     }
 
-    static Double getDouble(Object o) {
-        Double temp;
-        temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
-        return temp;
+    /**
+     * 记录实时收益比  REAL_TIME_EARNING_RATIO = "real_time_earning_ratio"
+     *
+     * @param redisKey redis中hash的key
+     * @param hashValue redis中hashKey=REAL_TIME_EARNING_RATIO 对应的hashValue
+     * @param redisTemplate redisTemplate
+     */
+    public static void recordRealTimeEarningRatio(String redisKey, String hashValue, RedisTemplate redisTemplate) {
+        redisTemplate.opsForHash().put(redisKey,DealUtil.REAL_TIME_EARNING_RATIO,hashValue);
     }
+
 
     /**
      *
@@ -100,6 +117,7 @@ public class DealUtil {
         return source.output1().send(jsonMessage);
     }
 
+
     /**
      *
      * java 操作redis的数据  初始化或获取
@@ -126,8 +144,8 @@ public class DealUtil {
             map.put(MIN_AVERAGE_PRICE,"0.0");
             map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
             map.put(REAL_TIME_EARNING_RATIO,"0.0");
-            map.put(TRIGGER_FOLLOW_BUILD_ORDER,0);
-            map.put(TRIGGER_STOP_PROFIT_ORDER,0);
+            map.put(TRIGGER_FOLLOW_BUILD_ORDER,"0");
+            map.put(TRIGGER_STOP_PROFIT_ORDER,"0");
 
             redisTemplate.opsForHash().putAll(javaRedisKey,map);
 
@@ -152,5 +170,40 @@ public class DealUtil {
             parameter.setTriggerStopProfitOrder(DealUtil.getInteger(entries.get(TRIGGER_STOP_PROFIT_ORDER)));
         }
         return parameter;
+    }
+
+    /**
+     *
+     * 将一个JSONArray对象转换为一个Map
+     *
+     * @param jsonArray map结构的JSONArray对象
+     * @return map
+     **/
+    static Map<Double, Double> convertJsonArrayToMap(JSONArray jsonArray) {
+        Map<Double, Double> map = new HashMap<>();
+        for (Object obj : jsonArray){
+            JSONArray o = (JSONArray) obj;
+            map.put(Double.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
+        }
+        return map;
+    }
+
+
+    static String getString(Object o) {
+        return o == null ? "" : o.toString();
+    }
+
+    static Integer getInteger(Object o) {
+        Integer temp = 0;
+        if (o != null) {
+            temp = Integer.valueOf(o.toString());
+        }
+        return temp;
+    }
+
+    static Double getDouble(Object o) {
+        Double temp;
+        temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
+        return temp;
     }
 }

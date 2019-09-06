@@ -22,14 +22,49 @@ public class DealCalculator {
     private static final Logger log = LoggerFactory.getLogger(DealCalculator.class);
 
     /**
-     * 计算实时收益比  买价*持仓数量/持仓费用  精确小数点后4位
+     * 计算持仓均价
+     * @param positionCost 持仓费用
+     * @param positionNum 持仓数量
+     * @return 持仓均价=持仓费用/持仓数量   （持仓数量不能为0）
+     */
+    private static Double countAveragePosition(Double positionCost, Double positionNum) {
+        return positionCost/( positionNum == 0 ? 1.0 : positionNum);
+    }
+
+
+    /**
+     * 计算下调均价
+     * @param averagePosition 整体持仓均价
+     * @param storeSplit 建仓间隔
+     * @param followLowerRatio  追踪下调比
+     * @return 下调均价 =(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
+     */
+    public static Double countLowerAveragePrice(Double averagePosition, Double storeSplit, Double followLowerRatio) {
+        return (averagePosition - storeSplit) - (averagePosition * followLowerRatio);
+    }
+
+    /**
+     *
+     * 计算回调均价
+     * @param minAveragePrice 最小拟买入均价
+     * @param averagePosition 持仓均价
+     * @param followCallbackRatio 追踪回调比
+     * @return 回调均价=最小拟买入均价 + 持仓均价 * 追踪回调比
+     */
+    private static Double countCallbackAveragePrice(Double minAveragePrice, Double averagePosition ,Double followCallbackRatio) {
+        return minAveragePrice + averagePosition * followCallbackRatio;
+    }
+
+
+    /**
+     * 计算实时收益比
      * @param number 持仓数量
      * @param cost 持仓费用
      * @param realTimePrice 实时买价
-     * @return 实时收益比
+     * @return 实时收益比 = 买价 * 持仓数量 / 持仓费用  精确小数点后4位
      */
-    public static double countRealTimeEarningRatio(double number, double cost, double realTimePrice) {
-        return realTimePrice*number/cost;
+    public static Double countRealTimeEarningRatio(Double number, Double cost, Double realTimePrice) {
+        return realTimePrice*number/(cost == 0 ? 1.0 : cost);
     }
 
 
@@ -39,7 +74,7 @@ public class DealCalculator {
      * @param quantity 某单交易量
      * @return 拟买入均价
      */
-    public static double countAveragePrice(Map<Double,Double> deep, double quantity) {
+    public static Double countAveragePrice(Map<Double,Double> deep, Double quantity) {
         double priceSum = 0;
         double deepSum = 0;
 
@@ -182,10 +217,7 @@ public class DealCalculator {
         Integer isFollowBuild = redisParameter.getIsFollowBuild();
         Double minAveragePrice = redisParameter.getMinAveragePrice();
 
-        if (positionNum == 0) {
-            positionNum = 1.0;
-        }
-        Double averagePosition = positionCost/positionNum;
+        Double averagePosition = countAveragePosition(positionCost,positionNum);
 
         //是否需要判断？ 达到最大交易单数？
         if ( finishedOrder.equals(maxTradeOrder) ) {
@@ -212,7 +244,7 @@ public class DealCalculator {
 
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-        Double lowerAveragePrice = (averagePosition - storeSplit) - (averagePosition*followLowerRatio);
+        Double lowerAveragePrice = countLowerAveragePrice(averagePosition,storeSplit,followLowerRatio);
 
         boolean isBuy = false;
 
@@ -233,7 +265,7 @@ public class DealCalculator {
             }
 
             //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
-            double callbackAveragePrice = minAveragePrice + averagePosition*followCallbackRatio;
+            Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
             if ((averagePrice >= callbackAveragePrice)) {

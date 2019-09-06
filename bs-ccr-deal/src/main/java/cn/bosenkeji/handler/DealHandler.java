@@ -77,53 +77,24 @@ public class DealHandler {
             //初始化或获取 java要操作redis的key和value
             RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
-
-
             //计算实时收益比   判断买卖
-            Double positionCost = dealParameter.getPositionCost();
-            //持仓数量
-            Double positionNum = dealParameter.getPositionNum();
             //实时收益比
-            if (positionCost == 0.0) {
-                positionCost = 1.0;
-            }
-            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(positionNum,positionCost,price);
-
+            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(dealParameter.getPositionCost(),
+                                                                                    dealParameter.getPositionNum(),price);
             //记录实时收益比
-            redisTemplate.opsForHash().put(redisParameter.getRedisKey(),DealUtil.REAL_TIME_EARNING_RATIO,realTimeEarningRatio.toString());
+            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
 
             log.info("accessKey:"+ dealParameter.getAccessKey() + "symbol"+ dealParameter.getSymbol()
                     +"  实时收益比："+realTimeEarningRatio);
 
-
             //清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
-
-                //触发追踪止盈 但未卖出 实时收益比低于1 取消
-                if (
-                        (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder() == dealParameter.getFinishedOrder()) ||
-                        (redisParameter.getTriggerStopProfitOrder() != dealParameter.getFinishedOrder()) ||
-                        (dealParameter.getTradeStatus() == 3)
-                ) {
-                    DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
-                    return;
-                }
+                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
             }
 
             //清除 触发追踪建仓标志
-            if (redisParameter.getIsFollowBuild() == 1 || redisParameter.getIsFollowBuild() == 2) {
-                //计算实时拟买入均价
-                Double v = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
-
-                //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-                Double lowerAveragePrice = (dealParameter.getPositionCost() - dealParameter.getStoreSplit()) - (dealParameter.getPositionCost()*dealParameter.getFollowLowerRatio());
-                if (
-                        (v > lowerAveragePrice && redisParameter.getTriggerFollowBuildOrder() == dealParameter.getFinishedOrder()) ||
-                        (redisParameter.getTriggerFollowBuildOrder() != dealParameter.getFinishedOrder()) ||
-                        (dealParameter.getTradeStatus() == 3)
-                ) {
-                    DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
-                }
+            if (redisParameter.getIsFollowBuild() == 1) {
+                if (DealUtil.isClearTriggerFollowBuild(dealParameter,redisParameter,realTimeTradeParameter,redisTemplate)) return;
             }
 
             //判断是否交易
