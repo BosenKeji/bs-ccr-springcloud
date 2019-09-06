@@ -92,15 +92,9 @@ public class DealHandler {
             log.info("accessKey:"+ dealParameter.getAccessKey() + "symbol"+ dealParameter.getSymbol()
                     +"  实时收益比："+realTimeEarningRatio);
 
-            //清除 触发追踪止盈标志
-            if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
-                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
-            }
 
-            //清除 触发追踪建仓标志
-            if (redisParameter.getIsFollowBuild() == 1) {
-                if (DealUtil.isClearTriggerFollowBuild(dealParameter,redisParameter,realTimeTradeParameter,redisTemplate)) return;
-            }
+
+
 
             //判断是否交易
             if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {

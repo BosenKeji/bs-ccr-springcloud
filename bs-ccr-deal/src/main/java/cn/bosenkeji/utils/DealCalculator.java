@@ -157,6 +157,8 @@ public class DealCalculator {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
                             +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比："+realTimeEarningRatio +
                             "  历史最高收益比：" + historyMaxRiskBenefitRatio + "  回调比例：" + callBackRatio);
+                    //清除 触发追踪止盈标志
+                    DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate);
                     return true;
                 }
             }
@@ -264,6 +266,11 @@ public class DealCalculator {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价："+averagePrice+"  回调均价："+callbackAveragePrice);
             }
+
+            //清除 触发追踪建仓标志
+            DealUtil.isClearTriggerFollowBuild(dealParameter,redisParameter,realTimeTradeParameter,redisTemplate);
+
+
             isBuy = (averagePrice - callbackAveragePrice >= 0);
         } else {
             //不在追踪建仓范围，取消追踪建仓标志
