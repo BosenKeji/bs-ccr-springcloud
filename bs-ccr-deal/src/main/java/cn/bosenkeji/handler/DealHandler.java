@@ -91,7 +91,7 @@ public class DealHandler {
                     +"  实时收益比:"+realTimeEarningRatio);
 
             //是否清除 触发追踪止盈标志
-            if (redisParameter.getIsFollowBuild() == 1) {
+            if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
                 if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
             }
 
