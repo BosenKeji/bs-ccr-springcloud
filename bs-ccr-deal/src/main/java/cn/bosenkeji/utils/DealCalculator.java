@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -27,7 +29,7 @@ public class DealCalculator {
      * @param positionNum 持仓数量
      * @return 持仓均价=持仓费用/持仓数量   （持仓数量不能为0）
      */
-    private static Double countAveragePosition(Double positionCost, Double positionNum) {
+    static Double countAveragePosition(Double positionCost, Double positionNum) {
         return positionCost/( positionNum == 0 ? 1.0 : positionNum);
     }
 
@@ -55,7 +57,6 @@ public class DealCalculator {
         return minAveragePrice + averagePosition * followCallbackRatio;
     }
 
-
     /**
      * 计算实时收益比
      * @param number 持仓数量
@@ -64,7 +65,9 @@ public class DealCalculator {
      * @return 实时收益比 = 买价 * 持仓数量 / 持仓费用  精确小数点后4位
      */
     public static Double countRealTimeEarningRatio(Double number, Double cost, Double realTimePrice) {
-        return realTimePrice*number/(cost == 0 ? 1.0 : cost);
+        double d = realTimePrice * number / (cost == 0 ? 1.0 : cost);
+        BigDecimal bg = new BigDecimal(d);
+        return bg.setScale(4,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
 
@@ -116,7 +119,7 @@ public class DealCalculator {
 
         Double price = realTimeTradeParameter.getPrice();
 
-        Double historyMaxRiskBenefitRatio = redisParameter.getHistoryMaxBenefitRatio();
+        Double historyMaxBenefitRatio = redisParameter.getHistoryMaxBenefitRatio();
         Integer isTriggerTraceStopProfit = redisParameter.getIsTriggerTraceStopProfit();
 
         String javaRedisKey = redisParameter.getRedisKey();
@@ -126,17 +129,14 @@ public class DealCalculator {
 
         //在参数设置前  不存在金额止盈，只有比例止盈
 
-
         //计算实时收益比
         Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
 
         if (isStopProfitTrace == 1) {
 
-
             //追踪止盈逻辑
             //收益比≥1+触发比例？ 追踪止盈
             if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
-                //if (true) {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
@@ -145,20 +145,17 @@ public class DealCalculator {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
                             +"触发追踪止盈");
                     //记录实时收益比的最高数值
-                    if (historyMaxRiskBenefitRatio == 0 || historyMaxRiskBenefitRatio - realTimeEarningRatio < 0) {
+                    if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
                         updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                     }
-
                     return false;
                 }
 
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
-                if (realTimeEarningRatio - (historyMaxRiskBenefitRatio-callBackRatio) >= 0) {
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
-                            +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比："+realTimeEarningRatio +
-                            "  历史最高收益比：" + historyMaxRiskBenefitRatio + "  回调比例：" + callBackRatio);
-                    //清除 触发追踪止盈标志
-                    DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate);
+                if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) >= 0) {
+                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
+                            +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比:"+realTimeEarningRatio +
+                            "  历史最高收益比：" + historyMaxBenefitRatio + "  回调比例：" + callBackRatio);
                     return true;
                 }
             }
@@ -166,8 +163,8 @@ public class DealCalculator {
             //固定止盈
             //收益比≥1+止盈比例？ //确定卖出
             if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
-                        +"  卖，固定止盈模式：收益比≥1+止盈比例，发送卖出消息"+"  实时收益比："+realTimeEarningRatio + "  止盈比例："+ stopProfitRatio);
+                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
+                        +"  卖，固定止盈模式：收益比≥1+止盈比例，发送卖出消息"+"  实时收益比:"+realTimeEarningRatio + "  止盈比例:"+ stopProfitRatio);
                 return true;
             }
         }
@@ -176,11 +173,11 @@ public class DealCalculator {
             return false;
         } else {
             // 金额止盈
-            if ((positionCost * (realTimeEarningRatio-1)) >= stopProfitPrice) {
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol"+ dealParameter.getSymbol()
+            if ((positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0) {
+                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
                         +"  卖，金额止盈，发送卖出消息");
             }
-            return (positionCost * (realTimeEarningRatio-1)) >= stopProfitPrice;
+            return (positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0;
         }
 
     }
@@ -224,7 +221,7 @@ public class DealCalculator {
         }
         //是否为第一单？ 第一单直接购买
         if ( finishedOrder == 0 ) {
-            log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol"+ dealParameter.getSymbol()
+            log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                     +"  买，首单直接买入，发送买消息");
             return true;
         }
@@ -264,12 +261,8 @@ public class DealCalculator {
             //拟买入均价是否大于等于回调均价？ 是则确定买入
             if ((averagePrice - callbackAveragePrice >= 0)) {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
-                        +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价："+averagePrice+"  回调均价："+callbackAveragePrice);
+                        +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价:"+averagePrice+"  回调均价:"+callbackAveragePrice);
             }
-
-            //清除 触发追踪建仓标志
-            DealUtil.isClearTriggerFollowBuild(dealParameter,redisParameter,realTimeTradeParameter,redisTemplate);
-
 
             isBuy = (averagePrice - callbackAveragePrice >= 0);
         } else {
@@ -278,25 +271,6 @@ public class DealCalculator {
         }
 
         return isBuy;
-    }
-
-
-    /**
-     *
-     *  更新Json对象的值
-     * @param jsonObject 需要更新的jsonObject
-     * @param key json中的key
-     * @param o 值
-     * @return JSONObject
-     **/
-    private static JSONObject updateJson(JSONObject jsonObject, String key, Object o) {
-
-        if (o instanceof Integer) {
-            jsonObject.put(key,Integer.valueOf(o.toString()));
-        } else {
-            jsonObject.put(key,o);
-        }
-        return jsonObject;
     }
 
     /**
@@ -309,7 +283,7 @@ public class DealCalculator {
      * @param value hash中key对应的值
      *
      **/
-    public static void updateRedisHashValue(String redisKey, String hashKey, Object value, RedisTemplate redisTemplate) {
+    static void updateRedisHashValue(String redisKey, String hashKey, Object value, RedisTemplate redisTemplate) {
         if (redisKey != null && hashKey != null && value != null) redisTemplate.opsForHash().put(redisKey,hashKey,value);
     }
 

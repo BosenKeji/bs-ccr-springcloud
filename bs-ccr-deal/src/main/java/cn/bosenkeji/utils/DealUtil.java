@@ -38,7 +38,7 @@ public class DealUtil {
 
     static final String MIN_AVERAGE_PRICE = "min_average_price"; //最小拟买入均价
     static final String HISTORY_MAX_BENEFIT_RATIO = "history_max_benefit_ratio"; //历史最高收益比
-    private static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio";
+    private static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio"; //实时收益比
 
     static final String TRIGGER_FOLLOW_BUILD_ORDER = "trigger_follow_build_order"; //触发追踪建仓的单数
     static final String TRIGGER_STOP_PROFIT_ORDER = "trigger_stop_profit_order"; //触发追踪止盈的单数
@@ -47,13 +47,21 @@ public class DealUtil {
      *
      * 清除触发追踪建仓标志
      *
+     * @param dealParameter  买卖需要的参数
+     * @param redisParameter  java管理redis的数据
+     * @param realTimeTradeParameter  实时交易信息
+     * @param redisTemplate  操作redis
+     *
      */
     public static Boolean isClearTriggerFollowBuild(DealParameter dealParameter, RedisParameter redisParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
         //计算实时拟买入均价
         Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
 
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-        Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePrice,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
+        Double averagePosition = DealCalculator.countAveragePosition(dealParameter.getPositionCost(),dealParameter.getPositionNum());
+        Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
+
+
         if (
                 (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
@@ -75,16 +83,19 @@ public class DealUtil {
     /**
      * 清除触发追踪止盈标志
      *
+     * @param dealParameter  判断买卖需要的参数
+     * @param redisParameter  java管理redis的数据
+     * @param redisTemplate  操作redis
      */
     public static Boolean isClearTriggerStopProfit(DealParameter dealParameter, RedisParameter redisParameter, RedisTemplate redisTemplate) {
         if (
-                (redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
+                (redisParameter.getRealTimeEarningRatio() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
                         !(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
             log.info("清除止盈标志");
-            log.info((redisParameter.getTriggerStopProfitOrder() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info((redisParameter.getRealTimeEarningRatio() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info(!(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
