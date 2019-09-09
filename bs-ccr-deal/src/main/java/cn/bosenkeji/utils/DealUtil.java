@@ -69,6 +69,7 @@ public class DealUtil {
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"100000000.0",redisTemplate);
             log.info("清除建仓标志,symbol:"+dealParameter.getSymbol());
             log.info(""  + (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
                         + "   averagePrice:" + averagePrice + "  lowerAveragePrice:" + lowerAveragePrice + " currentOrder:" + dealParameter.getFinishedOrder()
@@ -96,6 +97,7 @@ public class DealUtil {
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_STOP_PROFIT_ORDER,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.HISTORY_MAX_BENEFIT_RATIO,"0",redisTemplate);
             log.info("清除止盈标志,symbol:" + dealParameter.getSymbol());
             log.info((redisParameter.getRealTimeEarningRatio() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info(!(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");

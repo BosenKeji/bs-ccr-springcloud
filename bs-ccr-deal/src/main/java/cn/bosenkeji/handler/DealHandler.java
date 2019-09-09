@@ -88,7 +88,7 @@ public class DealHandler {
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
 
             log.info("accessKey:"+ dealParameter.getAccessKey() + "  symbol:"+ dealParameter.getSymbol()
-                    +"  实时收益比:"+realTimeEarningRatio);
+                    +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
