@@ -1,7 +1,7 @@
 FROM registry.us-east-1.aliyuncs.com/bs-ccr/spring-cloud-base:latest
 
-COPY pom-base.xml pom.xml
+COPY pom.xml pom.xml
 
 
-RUN  mvn clean install
+RUN mvn dependency:copy-dependencies
 
