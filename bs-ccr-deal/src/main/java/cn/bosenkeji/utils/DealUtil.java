@@ -56,26 +56,26 @@ public class DealUtil {
      */
     public static Boolean isClearTriggerFollowBuild(DealParameter dealParameter, RedisParameter redisParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
         //计算实时拟买入均价
-        Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
+        BigDecimal averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), new BigDecimal(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
 
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double averagePosition = DealCalculator.countAveragePosition(dealParameter.getPositionCost(),dealParameter.getPositionNum());
-        Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
+        BigDecimal lowerAveragePrice = new BigDecimal(DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio()));
 
 
         if (
-                (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
+                (averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"100000000.0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
             log.info("清除建仓标志,symbol:"+dealParameter.getSymbol());
-            log.info(""  + (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
+            log.info(""  + (averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
                         + "   averagePrice:" + averagePrice + "  lowerAveragePrice:" + lowerAveragePrice + " currentOrder:" + dealParameter.getFinishedOrder()
                         + "triggerOrder:" + redisParameter.getTriggerStopProfitOrder());
-            log.info((averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info((averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info(!(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
@@ -173,7 +173,7 @@ public class DealUtil {
             Map<String,Object> map = new LinkedHashMap<>();
             map.put(IS_FOLLOW_BUILD,"0");
             map.put(IS_TRIGGER_TRACE_STOP_PROFIT,"0");
-            map.put(MIN_AVERAGE_PRICE,"100000000.0");
+            map.put(MIN_AVERAGE_PRICE,"1000000.0");
             map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
             map.put(REAL_TIME_EARNING_RATIO,"0.0");
             map.put(TRIGGER_FOLLOW_BUILD_ORDER,"0");
@@ -184,7 +184,7 @@ public class DealUtil {
             parameter.setRedisKey(javaRedisKey);
             parameter.setIsTriggerTraceStopProfit(0);
             parameter.setIsFollowBuild(0);
-            parameter.setMinAveragePrice(100000000.0);
+            parameter.setMinAveragePrice(1000000.0);
             parameter.setHistoryMaxBenefitRatio(0.0);
             parameter.setRealTimeEarningRatio(0.0);
             parameter.setTriggerFollowBuildOrder(0);
