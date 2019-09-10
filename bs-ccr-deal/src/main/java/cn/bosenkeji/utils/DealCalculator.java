@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -79,7 +77,7 @@ public class DealCalculator {
      * @param quantity 某单交易量
      * @return 拟买入均价
      */
-    static Double countAveragePrice(JSONArray deep, Double quantity) {
+    static BigDecimal countAveragePrice(JSONArray deep, BigDecimal quantity) {
         BigDecimal priceSum = new BigDecimal("0.0");
         BigDecimal deepSum = new BigDecimal("0.0");
 
@@ -89,19 +87,17 @@ public class DealCalculator {
         //            BigDecimal bd1 = new BigDecimal(o.get(1).toString());
         //            map.put(bd0,bd1);
         //        }
-        BigDecimal quantityBigDecimal = new BigDecimal(quantity);
         for ( Object obj : deep) {
             JSONArray o = (JSONArray) obj;
             BigDecimal d = new BigDecimal(o.get(0).toString());
             BigDecimal value = new BigDecimal(o.get(1).toString());
-            int b = quantityBigDecimal.compareTo(value);
-            if (b >= 0) {
+            if (quantity.compareTo(value) >= 0) {
                 priceSum = priceSum.add(d.multiply(value));
-                quantityBigDecimal = quantityBigDecimal.subtract(value);
+                quantity = quantity.subtract(value);
                 deepSum = deepSum.add(value);
             } else {
-                priceSum = priceSum.add(d.multiply(quantityBigDecimal));
-                deepSum = deepSum.add(quantityBigDecimal);
+                priceSum = priceSum.add(d.multiply(quantity));
+                deepSum = deepSum.add(quantity);
                 break;
             }
         }
@@ -120,7 +116,7 @@ public class DealCalculator {
 //                break;
 //            }
 //        }
-        return priceSum.doubleValue()/deepSum.doubleValue();
+        return priceSum.divide(deepSum,8,BigDecimal.ROUND_HALF_UP);
     }
 
     /**
@@ -258,20 +254,20 @@ public class DealCalculator {
         }
 
         //计算拟买入均价
-        Double quantity = Double.valueOf(buyVolume.get(finishedOrder.toString()).toString());
-        Double averagePrice = countAveragePrice(deep,quantity);
+        BigDecimal quantity = new BigDecimal(buyVolume.get(finishedOrder.toString()).toString());
+        BigDecimal averagePrice = countAveragePrice(deep,quantity);
 
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
-        Double lowerAveragePrice = countLowerAveragePrice(averagePosition,storeSplit,followLowerRatio);
+        BigDecimal lowerAveragePrice = new BigDecimal(countLowerAveragePrice(averagePosition,storeSplit,followLowerRatio));
 
         //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
-        Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
+        BigDecimal callbackAveragePrice = new BigDecimal(countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio));
 
         boolean isBuy = false;
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
-        if (averagePrice - lowerAveragePrice <= 0) {
+        if (averagePrice.compareTo(lowerAveragePrice) <= 0 ) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
                 updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
@@ -279,19 +275,19 @@ public class DealCalculator {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"触发追踪建仓");
                 //记录最小拟买入均价
-                if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
+                if (minAveragePrice == 0 || minAveragePrice > averagePrice.doubleValue()) {
                     updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
                 }
                 return false;
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
-            if ((averagePrice - callbackAveragePrice >= 0)) {
+            if ((averagePrice.compareTo(callbackAveragePrice)) >= 0) {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价:"+averagePrice+"  回调均价:"+callbackAveragePrice);
             }
 
-            isBuy = (averagePrice - callbackAveragePrice >= 0);
+            isBuy = (averagePrice.compareTo(callbackAveragePrice) >= 0);
         } else {
             //不在追踪建仓范围，取消追踪建仓标志
             updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
