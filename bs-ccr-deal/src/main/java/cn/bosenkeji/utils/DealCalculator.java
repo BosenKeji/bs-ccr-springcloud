@@ -207,6 +207,7 @@ public class DealCalculator {
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
+        Double price = realTimeTradeParameter.getPrice();
         Map<Double, Double> deep = realTimeTradeParameter.getDeep();
         JSONObject buyVolume = dealParameter.getBuyVolume();
 
@@ -225,8 +226,8 @@ public class DealCalculator {
                     +"  买，首单直接买入，发送买消息");
             return true;
         }
-        //设置策略时现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
-        if ( firstOrderPrice - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
+        //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
+        if ( price - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
             return false;
         }
 
@@ -237,6 +238,9 @@ public class DealCalculator {
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double lowerAveragePrice = countLowerAveragePrice(averagePosition,storeSplit,followLowerRatio);
+
+        //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
+        Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
 
         boolean isBuy = false;
 
@@ -255,9 +259,6 @@ public class DealCalculator {
                 return false;
             }
 
-            //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
-            Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
-
             //拟买入均价是否大于等于回调均价？ 是则确定买入
             if ((averagePrice - callbackAveragePrice >= 0)) {
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
@@ -269,7 +270,7 @@ public class DealCalculator {
             //不在追踪建仓范围，取消追踪建仓标志
             updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
         }
-
+        log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "最小拟买入均价:" + minAveragePrice);
         return isBuy;
     }
 
