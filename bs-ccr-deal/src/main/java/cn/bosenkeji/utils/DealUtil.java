@@ -5,7 +5,6 @@ import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import cn.bosenkeji.vo.RocketMQResult;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,15 +52,15 @@ public class DealUtil {
      */
     public static Boolean isClearTriggerFollowBuild(DealParameter dealParameter, RedisParameter redisParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
         //计算实时拟买入均价
-        BigDecimal averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), new BigDecimal(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
+        Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
 
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double averagePosition = DealCalculator.countAveragePosition(dealParameter.getPositionCost(),dealParameter.getPositionNum());
-        BigDecimal lowerAveragePrice = new BigDecimal(DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio()));
+        Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
 
 
         if (
-                (averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
+                (averagePrice - lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()) ||
                         !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
                         (dealParameter.getTradeStatus() == 3)
         ) {
@@ -72,10 +68,10 @@ public class DealUtil {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
             log.info("清除建仓标志,symbol:"+dealParameter.getSymbol());
-            log.info(""  + (averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
+            log.info(""  + (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
                         + "   averagePrice:" + averagePrice + "  lowerAveragePrice:" + lowerAveragePrice + " currentOrder:" + dealParameter.getFinishedOrder()
                         + "triggerOrder:" + redisParameter.getTriggerStopProfitOrder());
-            log.info((averagePrice.compareTo(lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
+            log.info((averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info(!(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
             log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
