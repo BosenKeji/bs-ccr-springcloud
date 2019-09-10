@@ -4,4 +4,3 @@ COPY pom.xml pom.xml
 
 
 RUN mvn dependency:copy-dependencies
-
