@@ -14,6 +14,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -203,21 +204,7 @@ public class DealUtil {
         return parameter;
     }
 
-    /**
-     *
-     * 将一个JSONArray对象转换为一个Map
-     *
-     * @param jsonArray map结构的JSONArray对象
-     * @return map
-     **/
-    static Map<Double, Double> convertJsonArrayToMap(JSONArray jsonArray) {
-        Map<Double, Double> map = new HashMap<>();
-        for (Object obj : jsonArray){
-            JSONArray o = (JSONArray) obj;
-            map.put(Double.valueOf(o.get(0).toString()),Double.valueOf(o.get(1).toString()));
-        }
-        return map;
-    }
+
 
 
     static String getString(Object o) {
