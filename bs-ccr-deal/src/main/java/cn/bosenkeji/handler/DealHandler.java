@@ -9,6 +9,7 @@ import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,7 +44,7 @@ public class DealHandler {
         //获取实时价格
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
         Double price = realTimeTradeParameter.getPrice();
-        Map<Double, Double> deep = realTimeTradeParameter.getDeep();
+        JSONArray deep = realTimeTradeParameter.getDeep();
         String symbol = realTimeTradeParameter.getSymbol();
 
         //mq参数不正确

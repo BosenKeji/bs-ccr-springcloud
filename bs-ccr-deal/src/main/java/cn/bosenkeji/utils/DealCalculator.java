@@ -3,6 +3,7 @@ package cn.bosenkeji.utils;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -77,24 +79,48 @@ public class DealCalculator {
      * @param quantity 某单交易量
      * @return 拟买入均价
      */
-    static Double countAveragePrice(Map<Double,Double> deep, Double quantity) {
-        double priceSum = 0;
-        double deepSum = 0;
+    static Double countAveragePrice(JSONArray deep, Double quantity) {
+        BigDecimal priceSum = new BigDecimal("0.0");
+        BigDecimal deepSum = new BigDecimal("0.0");
 
-        for (Map.Entry<Double, Double> entry : deep.entrySet()) {
-            Double key = entry.getKey();
-            Double value = entry.getValue();
-            if ( quantity >= value) {
-                priceSum += key*value;
-                quantity -= value;
-                deepSum += value;
+        //for (Object obj : jsonArray){
+        //            JSONArray o = (JSONArray) obj;
+        //            BigDecimal bd0 = new BigDecimal(o.get(0).toString());
+        //            BigDecimal bd1 = new BigDecimal(o.get(1).toString());
+        //            map.put(bd0,bd1);
+        //        }
+        BigDecimal quantityBigDecimal = new BigDecimal(quantity);
+        for ( Object obj : deep) {
+            JSONArray o = (JSONArray) obj;
+            BigDecimal d = new BigDecimal(o.get(0).toString());
+            BigDecimal value = new BigDecimal(o.get(1).toString());
+            int b = quantityBigDecimal.compareTo(value);
+            if (b >= 0) {
+                priceSum = priceSum.add(d.multiply(value));
+                quantityBigDecimal = quantityBigDecimal.subtract(value);
+                deepSum = deepSum.add(value);
             } else {
-                priceSum += key*quantity;
-                deepSum += quantity;
+                priceSum = priceSum.add(d.multiply(quantityBigDecimal));
+                deepSum = deepSum.add(quantityBigDecimal);
                 break;
             }
         }
-        return priceSum/deepSum;
+
+//        for ( BigDecimal d : doubles) {
+//            BigDecimal value = deep.get(d);
+//
+//            int b = quantityBigDecimal.compareTo(value);
+//            if (b >= 0) {
+//                priceSum = priceSum.add(d.multiply(value));
+//                quantityBigDecimal = quantityBigDecimal.subtract(value);
+//                deepSum = deepSum.add(value);
+//            } else {
+//                priceSum = priceSum.add(d.multiply(quantityBigDecimal));
+//                deepSum = deepSum.add(quantityBigDecimal);
+//                break;
+//            }
+//        }
+        return priceSum.doubleValue()/deepSum.doubleValue();
     }
 
     /**
@@ -208,7 +234,7 @@ public class DealCalculator {
         Double positionNum = dealParameter.getPositionNum();
 
         Double price = realTimeTradeParameter.getPrice();
-        Map<Double, Double> deep = realTimeTradeParameter.getDeep();
+        JSONArray deep = realTimeTradeParameter.getDeep();
         JSONObject buyVolume = dealParameter.getBuyVolume();
 
         Integer isFollowBuild = redisParameter.getIsFollowBuild();
@@ -270,7 +296,7 @@ public class DealCalculator {
             //不在追踪建仓范围，取消追踪建仓标志
             updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
         }
-        log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "最小拟买入均价:" + minAveragePrice);
+        log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "  最小拟买入均价:" + minAveragePrice);
         return isBuy;
     }
 

@@ -1,5 +1,8 @@
 package cn.bosenkeji.vo;
 
+import com.alibaba.fastjson.JSONArray;
+
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -11,7 +14,7 @@ import java.util.Map;
 public class RealTimeTradeParameter {
 
     private Double price;
-    private Map<Double, Double> deep;
+    private JSONArray deep;
     private String symbol;
 
     public RealTimeTradeParameter() { }
@@ -24,11 +27,11 @@ public class RealTimeTradeParameter {
         this.price = price;
     }
 
-    public Map<Double, Double> getDeep() {
+    public JSONArray getDeep() {
         return deep;
     }
 
-    public void setDeep(Map<Double, Double> deep) {
+    public void setDeep(JSONArray deep) {
         this.deep = deep;
     }
 
