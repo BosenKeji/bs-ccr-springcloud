@@ -32,4 +32,9 @@ public interface TradePlatformApiBindProductComboMapper {
     List<Integer> selectComboIdsByUserId(Integer userId);
 
     int updateApiIdByPrimaryKey(Integer id,Integer tradePlatformApiId);
+
+    TradePlatformApiBindProductCombo getByUserIdAndComboId(Integer userId,Integer userProductComboId);
+
+    int deleteByComboId(Integer userProductComboId);
+
 }

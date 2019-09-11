@@ -63,6 +63,16 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             public Result deleteTradePlatformApiBindProductCombo(int id, int userId) {
                 return new Result(0,"hystrix");
             }
+
+            @Override
+            public Result realDelete(int id) {
+                return new Result(-1,"hystrix");
+            }
+
+            @Override
+            public Result deleteByComboId(int userProductComboId) {
+                return new Result(-1,"hystrix");
+            }
         };
     }
 }

@@ -41,6 +41,10 @@ public class TradePlatformApiBindProductComboController {
         return tradePlatformApiBindProductComboService.findByUserIdWithPage(userId,pageNum,pageSize);
     }
 
+    public TradePlatformApiBindProductCombo getByUserIdAndComboId(@RequestParam("userId") int userId,@RequestParam("userProductComboId") int userProductComboId) {
+        return this.tradePlatformApiBindProductComboService.getByUserIdAndComboId(userId,userProductComboId);
+    }
+
     @PostMapping("/")
     @ApiOperation(value = "添加 交易平台api绑定用户套餐 api接口"
             ,httpMethod = "POST",nickname = "addTradePlatformApiBindProductComboList")
@@ -133,6 +137,20 @@ public class TradePlatformApiBindProductComboController {
                                     @RequestParam("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
 
         return tradePlatformApiBindProductComboService.findNoBindUserProductComboListByUserId(userId,pageNum,pageSize);
+    }
+
+    @ApiOperation(value = "删除 绑定记录 接口",httpMethod = "DELETE",nickname = "realDeleteBind")
+    @DeleteMapping("/real/{id}")
+    public Result realDelete(@PathVariable("id") @ApiParam(value = "绑定ID",required = true,type = "integer",example = "1") int id) {
+        return new Result(this.tradePlatformApiBindProductComboService.delete(id));
+    }
+
+    @ApiOperation(value = "通过套餐ID 删除 绑定记录 接口",httpMethod = "DELETE",nickname = "deleteByComboId")
+    @DeleteMapping("/by_combo/{userProductComboId}")
+    public Result deleteByComboId(@PathVariable("userProductComboId")
+                                      @ApiParam(value = "绑定ID",required = true,type = "integer",example = "1")
+                                              int userProductComboId) {
+        return new Result(this.tradePlatformApiBindProductComboService.deleteByComboId(userProductComboId));
     }
 
 }
