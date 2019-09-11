@@ -7,6 +7,7 @@ import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayService;
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
+import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -121,7 +122,11 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserProductComboId(userProductComboId);
 
-        Integer userId=userProductComboMapper.selectByPrimaryKey(userProductComboId).getUserId();
+        //Integer userId=userProductComboMapper.selectByPrimaryKey(userProductComboId).getUserId();
+        UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(userProductComboId);
+        if(userProductCombo==null)
+            return new PageInfo<>();
+        Integer userId = userProductCombo.getUserId();
         User user=null;
         if(userId!=null&&userId>0) {
             user = iUserClientService.getOneUser(userId);
