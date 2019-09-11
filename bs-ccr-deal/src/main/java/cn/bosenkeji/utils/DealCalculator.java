@@ -7,9 +7,16 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -308,6 +315,55 @@ public class DealCalculator {
      **/
     static void updateRedisHashValue(String redisKey, String hashKey, Object value, RedisTemplate redisTemplate) {
         if (redisKey != null && hashKey != null && value != null) redisTemplate.opsForHash().put(redisKey,hashKey,value);
+    }
+
+    /**
+     * 修改redis ZSet中某个value的score
+     * @param redisKey ZSet的key
+     * @param setValue ZSet中的value
+     * @param score 分数
+     * @param redisTemplate 操作redis
+     */
+    public static void updateRedisSortedSetScore(String redisKey, String setValue, Double score, RedisTemplate redisTemplate) {
+        redisTemplate.opsForZSet().add(redisKey,setValue,score);
+    }
+
+    /**
+     * 处理redis中交易失败置为2的ZSet中的value值
+     * @param redisTemplate 操作redis
+     */
+
+    public static void handleExceptionTrade(RedisTemplate redisTemplate) {
+        Set<String> keys = redisTemplate.keys("*_zset");
+        Set<String> exceptionTradeValue;
+        Map<String,Set<String>> map = new HashMap<>();
+        if (!CollectionUtils.isEmpty(keys)) {
+            for (String k : keys) {
+                exceptionTradeValue = redisTemplate.opsForZSet().rangeByScore(k, 2, 2);
+                if (CollectionUtils.isEmpty(exceptionTradeValue)) {
+                    continue;
+                }
+                map.put(k,exceptionTradeValue);
+            }
+        } else {
+            return;
+        }
+        if (!CollectionUtils.isEmpty(map)) {
+            for (String s : map.keySet()) {
+                Set<String> values = map.get(s);
+                if (!CollectionUtils.isEmpty(values)) {
+                    Set<ZSetOperations.TypedTuple<Object>> tuples = new HashSet<>();
+                    for (String v : values) {
+                        ZSetOperations.TypedTuple<Object> typedTuple = new DefaultTypedTuple<>(v,1.0);
+                        tuples.add(typedTuple);
+                    }
+                    redisTemplate.opsForZSet().add(s,tuples);
+                    log.info("处理交易异常trade，redisKey:" + s + "  value:" + tuples.toString());
+                }
+            }
+        }
+
+
     }
 
 }

@@ -18,8 +18,6 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,13 +55,14 @@ public class DealHandler {
         //获取redis中对应货币对的zset
         Set<String> keySet = redisTemplate.opsForZSet().rangeByScore(setKey, 1, 1);
 
+        //处理异常买卖的trade
+        DealCalculator.handleExceptionTrade(redisTemplate);
+
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
         //过滤不是该货币对的key
         Set<String> filterSet = keySet.stream().filter((s) -> s.contains(symbol)).collect(Collectors.toSet());
 
-        //获取key对应的value
-//        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
         filterSet.parallelStream().forEach((s)->{
 
             Map trade = redisTemplate.opsForHash().entries(s);
@@ -94,21 +93,26 @@ public class DealHandler {
                     +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
 
             //是否清除 触发追踪止盈标志
-            if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {
-                if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
-                    if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
-                }
+
+            if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
+                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
             }
 
+
             //是否清除 触发追踪建仓标志
-            if (redisParameter.getIsFollowBuild() == 1) {
-                if (DealUtil.isClearTriggerFollowBuild(dealParameter,redisParameter,realTimeTradeParameter,redisTemplate)) return;
+            if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {
+                if (redisParameter.getIsFollowBuild() == 1) {
+                    if (DealUtil.isClearTriggerFollowBuild(dealParameter, redisParameter, realTimeTradeParameter, redisTemplate))
+                        return;
+                }
             }
 
             if (realTimeEarningRatio >= 1) {
             //判断是否卖
                 boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isSell) {
+                    //redis分数置为0
+                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
@@ -121,6 +125,8 @@ public class DealHandler {
             boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
 
             if (isBuy) {
+                //redis分数置为0
+                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
                  log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
