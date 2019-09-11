@@ -5,6 +5,7 @@ import cn.bosenkeji.service.fallback.ITradePlatformApiBindProductComboClientServ
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,13 @@ public interface ITradePlatformApiBindProductComboClientService {
     @DeleteMapping("/trade_platform_api_bind_product_combo/{id}")
     Result deleteTradePlatformApiBindProductCombo(@PathVariable("id") int id
             ,@RequestParam("userId") int userId);
+
+    @DeleteMapping("/trade_platform_api_bind_product_combo/real/{id}")
+    public Result realDelete(@PathVariable("id") int id);
+
+    @DeleteMapping("/trade_platform_api_bind_product_combo/by_combo/{userProductComboId}")
+    public Result deleteByComboId(@PathVariable("userProductComboId") int userProductComboId);
+
+
 
 }

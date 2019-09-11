@@ -27,4 +27,7 @@ public interface IUserProductComboService {
 
     Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
 
+    int delete(int id);
+    int deleteByIds(List<Integer> ids);
+
 }

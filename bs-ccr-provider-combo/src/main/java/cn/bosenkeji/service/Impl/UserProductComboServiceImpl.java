@@ -7,6 +7,7 @@ import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -91,6 +92,32 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return new PageInfo<UserProductCombo>(userProductComboMapper.findAll());
     }
 
+    /**
+     * 删除用户套餐功能，同时删除绑定记录，还有 redis的剩余时长
+     * @param id
+     * @return
+     */
+    @Override
+    public int delete(int id) {
+        //UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
+        Result result = iTradePlatformApiBindProductComboClientService.deleteByComboId(id);
+        int result1=(int) result.getData();
+        int result2 = userProductComboMapper.deleteByPrimaryKey(id);
+        userProductComboRedisTemplate.setExpire(id,0);
+        System.out.println("result1:"+result1);
+        System.out.println("result2:"+result2);
+        if(result1==result2)
+            return result1;
+        else
+            return result2;
+
+    }
+
+    @Override
+    public int deleteByIds(List<Integer> ids) {
+        return 0;
+    }
+
     //多表查询
     @Override
     public UserProductCombo get(int id) {
@@ -108,62 +135,10 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         return userProductCombo;
 
-        //以下单表查询，目前用处不大
-        /*try {
-
-            //从缓存中读取
-            UserProductCombo userProductCombo = userProductComboRedisTemplate.get(id);
-            final long time = userProductComboRedisTemplate.getExpire(id);
-
-
-
-            userProductCombo.setRemainTime((int) time);
-            if(userProductCombo==null||("").equals(userProductCombo))
-                return Optional.ofNullable(userProductComboMapper.selectByPrimaryKey(id));
-            return Optional.ofNullable(userProductCombo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.ofNullable(userProductComboMapper.selectByPrimaryKey(id));
-            //return null;
-        }*/
 
     }
 
-    /**
-     * 单表查询，不满足需求
-     * @param userId
-     * @return
-     */
-    /*@Override
-    public List<UserProductCombo> getByUserId(int userId) {
 
-        //查询用户id列表
-        List<Integer> ids=userProductComboMapper.selectPrimaryKeyByUserId(userId);
-
-        //循环获取键值、有效时间 （同样区分是否在缓存中）
-        List<UserProductCombo> list=new ArrayList<>();
-        for (Integer id : ids) {
-
-            UserProductCombo userProductCombo = userProductComboRedisTemplate.get(id);
-
-            if(userProductCombo==null||("").equals(userProductCombo)) {
-                //没有时从数据库拿
-                userProductCombo=userProductComboMapper.selectByPrimaryKey(id);
-            }
-            else {
-                //如果是从缓存取出的则取出有效时间，否则有效时间为0
-                long time = userProductComboRedisTemplate.getExpire(id);
-
-                userProductCombo.setRemainTime((int) time);
-
-            }
-            list.add(userProductCombo);
-        }
-
-
-        return list;
-
-    }*/
 
 
     /**
