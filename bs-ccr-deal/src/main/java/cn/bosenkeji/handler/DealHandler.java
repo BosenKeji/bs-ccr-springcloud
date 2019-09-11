@@ -9,6 +9,7 @@ import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,28 +42,27 @@ public class DealHandler {
         //获取实时价格
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
         Double price = realTimeTradeParameter.getPrice();
-        Map<Double, Double> deep = realTimeTradeParameter.getDeep();
+        JSONArray deep = realTimeTradeParameter.getDeep();
         String symbol = realTimeTradeParameter.getSymbol();
 
         //mq参数不正确
         if (price == null || CollectionUtils.isEmpty(deep) || symbol == null) {
             return;
         }
-        //获取所有交易的key
-//        Set<String> keys = redisTemplate.keys(DealUtil.TRADE_KEYS_PATTERN);
 
         String setKey = symbol+"_zset";
 
         //获取redis中对应货币对的zset
         Set<String> keySet = redisTemplate.opsForZSet().rangeByScore(setKey, 1, 1);
 
+        //处理异常买卖的trade
+        DealCalculator.handleExceptionTrade(redisTemplate);
+
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
         //过滤不是该货币对的key
         Set<String> filterSet = keySet.stream().filter((s) -> s.contains(symbol)).collect(Collectors.toSet());
 
-        //获取key对应的value
-//        ConcurrentHashMap<String,JSONObject> tradeMap = new ConcurrentHashMap<>();
         filterSet.parallelStream().forEach((s)->{
 
             Map trade = redisTemplate.opsForHash().entries(s);
@@ -77,35 +77,46 @@ public class DealHandler {
             //初始化或获取 java要操作redis的key和value
             RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
-            //判断是否需要给node发消息
-            Integer canSendMsg2Node = dealParameter.getCanSendMsgToNode();
-
-            if (canSendMsg2Node == 0 ) {
+            //判断是否交易
+            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
                 return;
             }
 
             //计算实时收益比   判断买卖
-            Double positionCost = dealParameter.getPositionCost();
-            //持仓数量
-            Double positionNum = dealParameter.getPositionNum();
             //实时收益比
-            if (positionCost == 0.0) {
-                positionCost = 1.0;
-            }
-            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(positionNum,positionCost,price);
-
+            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(dealParameter.getPositionNum(),
+                    dealParameter.getPositionCost(),price);
             //记录实时收益比
-            redisTemplate.opsForHash().put(redisParameter.getRedisKey(),DealUtil.REAL_TIME_EARNING_RATIO,realTimeEarningRatio.toString());
+            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
+
+            log.info("accessKey:"+ dealParameter.getAccessKey() + "  symbol:"+ dealParameter.getSymbol()
+                    +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
+
+            //是否清除 触发追踪止盈标志
+
+            if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
+                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
+            }
+
+
+            //是否清除 触发追踪建仓标志
+            if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {
+                if (redisParameter.getIsFollowBuild() == 1) {
+                    if (DealUtil.isClearTriggerFollowBuild(dealParameter, redisParameter, realTimeTradeParameter, redisTemplate))
+                        return;
+                }
+            }
 
             if (realTimeEarningRatio >= 1) {
-//            if (true) {
             //判断是否卖
                 boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isSell) {
+                    //redis分数置为0
+                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
-                            +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
+                            +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() +"  finished_order:" + dealParameter.getFinishedOrder());
                 }
 
             }
@@ -114,10 +125,12 @@ public class DealHandler {
             boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
 
             if (isBuy) {
+                //redis分数置为0
+                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
                  log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
-                         +"  消息发送："+isSend + "  finished_order:" + dealParameter.getFinishedOrder());
+                         +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
 

@@ -49,12 +49,10 @@ public class RealTimeTradeParameterParser {
         } else {
             jsonArray = (JSONArray) o;
         }
-        Map<Double, Double> deep = DealUtil.convertJsonArrayToMap(jsonArray);
-
         String symbol = DealUtil.getString(jsonObject.get(SYMBOL));
 
         parameter.setPrice(price);
-        parameter.setDeep(deep);
+        parameter.setDeep(jsonArray);
         parameter.setSymbol(symbol);
 
         return parameter;

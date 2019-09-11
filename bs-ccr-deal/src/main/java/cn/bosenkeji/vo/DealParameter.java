@@ -17,7 +17,7 @@ public class DealParameter {
     private String secretKey;
     private String symbol;
 
-    private Integer canSendMsgToNode; //是否给node端发送消息
+    private Integer tradeStatus; //是否给node端发送消息
     private Double positionCost; //持仓费用
     private Double positionNum; //持仓数量
 
@@ -63,12 +63,12 @@ public class DealParameter {
         this.symbol = symbol;
     }
 
-    public Integer getCanSendMsgToNode() {
-        return canSendMsgToNode;
+    public Integer getTradeStatus() {
+        return tradeStatus;
     }
 
-    public void setCanSendMsgToNode(Integer canSendMsgToNode) {
-        this.canSendMsgToNode = canSendMsgToNode;
+    public void setTradeStatus(Integer tradeStatus) {
+        this.tradeStatus = tradeStatus;
     }
 
     public Double getPositionCost() {
