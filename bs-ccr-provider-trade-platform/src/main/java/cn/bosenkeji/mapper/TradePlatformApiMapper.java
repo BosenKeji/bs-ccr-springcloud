@@ -20,7 +20,6 @@ public interface TradePlatformApiMapper {
 
     TradePlatformApi selectByPrimaryKey(int id);
 
-    TradePlatformApi selectByTradePlatformIdAndUserId(int tradePlatformId, int userId);
 
     int updateByPrimaryKeySelective(TradePlatformApi record);
 
@@ -36,6 +35,7 @@ public interface TradePlatformApiMapper {
 
     int checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
 
+    int checkExistByKeyAndStatus (String accessKey, String secretKey,int status);
 
     int checkExistByIdAndUserId(int id,int userId);
 

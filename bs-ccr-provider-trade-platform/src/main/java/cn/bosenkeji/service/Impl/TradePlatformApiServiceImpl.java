@@ -38,11 +38,6 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public TradePlatformApi getByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
-        return tradePlatformApiMapper.selectByTradePlatformIdAndUserId(tradePlatformId, userId);
-    }
-
-    @Override
     public Optional<Integer> update(TradePlatformApi tradePlatformApi) {
         return Optional.ofNullable(tradePlatformApiMapper.updateByPrimaryKeySelective(tradePlatformApi));
     }
@@ -63,8 +58,8 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public Optional<Integer> checkExistByTradePlatformIdAndUserId(int tradePlatformId, int userId) {
-        return Optional.ofNullable(tradePlatformApiMapper.checkExistByTradePlatformIdAndUserId(tradePlatformId, userId));
+    public Optional<Integer> checkExistByKeyAndStatus(String accessKey, String secretKey,int status) {
+        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(accessKey, secretKey, status));
     }
 
     @Override
