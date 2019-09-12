@@ -46,12 +46,6 @@ public class ConsumerTradePlatformApiController {
         return this.iTradePlatformApiClientService.getOneTradePlatformApi(id);
     }
 
-    @ApiOperation(value = "根据tradePlatformId和userId获取交易平台api信息接口",notes = "根据tradePlatformId和userId获取交易平台api信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
-    @GetMapping("/edit_trade_platform")
-    public TradePlatformApi getByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int tradePlatformId,
-                                                          @ApiIgnore @TokenUser int userId){
-        return this.iTradePlatformApiClientService.getOneTradePlatformApiByTradePlatformIdAndUserId(tradePlatformId, userId);
-    }
 
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")

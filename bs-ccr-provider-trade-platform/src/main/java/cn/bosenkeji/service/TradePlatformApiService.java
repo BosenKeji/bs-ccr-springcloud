@@ -16,7 +16,6 @@ public interface TradePlatformApiService {
 
     TradePlatformApi get(int id);
 
-    TradePlatformApi getByTradePlatformIdAndUserId(int tradePlatformId, int userId);
 
     Optional<Integer> update(TradePlatformApi tradePlatformApi);
 
@@ -26,7 +25,7 @@ public interface TradePlatformApiService {
 
     TradePlatformApi getByUserId(int userId);
 
-    Optional<Integer> checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
+    Optional<Integer> checkExistByKeyAndStatus (String accessKey, String secretKey,int status);
 
     Optional<Integer> checkExistByKey(String accessKey, String secretKey);
 

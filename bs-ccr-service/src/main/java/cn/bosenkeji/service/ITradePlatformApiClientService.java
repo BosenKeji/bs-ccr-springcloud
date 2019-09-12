@@ -21,9 +21,6 @@ public interface ITradePlatformApiClientService {
     @GetMapping("/trade_platform_apis/{id}")
     public TradePlatformApi getOneTradePlatformApi(@PathVariable("id") int id);
 
-    @GetMapping("/trade_platform_apis/edit_trade_platform")
-    public TradePlatformApi getOneTradePlatformApiByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") int tradePlatformId,
-                                                                             @RequestParam("userId") int userId);
 
     @GetMapping("/trade_platform_apis/")
     public PageInfo listTradePlatformApi(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
