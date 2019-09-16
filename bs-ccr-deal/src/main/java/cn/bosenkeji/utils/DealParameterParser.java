@@ -80,14 +80,12 @@ public class DealParameterParser {
 
         // Map 特殊处理
         Object s = trade.get(BUY_VOLUME);
-        if (s == null) {
-            log.info("accessKey:"+ parameter.getAccessKey()
-                    +"  buy_volume为空");
-        } else {
+        if (s != null) {
             String unescape = StringEscapeUtils.unescapeJava(s.toString());
             JSONObject jsonBuyVolume = JSONObject.parseObject(unescape);
             parameter.setBuyVolume(jsonBuyVolume);
         }
+
         parameter.setFollowLowerRatio(DealUtil.getDouble(trade.get(FOLLOW_LOWER_RATIO)));
 
         parameter.setFollowCallbackRatio(DealUtil.getDouble(trade.get(FOLLOW_CALLBACK_RATIO)));

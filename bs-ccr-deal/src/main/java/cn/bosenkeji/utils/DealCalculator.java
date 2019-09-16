@@ -88,12 +88,6 @@ public class DealCalculator {
         Double priceSum = 0.0;
         Double deepSum = 0.0;
 
-        //for (Object obj : jsonArray){
-        //            JSONArray o = (JSONArray) obj;
-        //            BigDecimal bd0 = new BigDecimal(o.get(0).toString());
-        //            BigDecimal bd1 = new BigDecimal(o.get(1).toString());
-        //            map.put(bd0,bd1);
-        //        }
         for ( Object obj : deep) {
             JSONArray o = (JSONArray) obj;
             Double d = Double.valueOf(o.get(0).toString());
@@ -109,20 +103,6 @@ public class DealCalculator {
             }
         }
 
-//        for ( BigDecimal d : doubles) {
-//            BigDecimal value = deep.get(d);
-//
-//            int b = quantityBigDecimal.compareTo(value);
-//            if (b >= 0) {
-//                priceSum = priceSum.add(d.multiply(value));
-//                quantityBigDecimal = quantityBigDecimal.subtract(value);
-//                deepSum = deepSum.add(value);
-//            } else {
-//                priceSum = priceSum.add(d.multiply(quantityBigDecimal));
-//                deepSum = deepSum.add(quantityBigDecimal);
-//                break;
-//            }
-//        }
         return priceSum/deepSum;
     }
 
@@ -181,7 +161,7 @@ public class DealCalculator {
                 }
 
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
-                if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) >= 0) {
+                if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) <= 0) {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
                             +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比:"+realTimeEarningRatio +
                             "  历史最高收益比：" + historyMaxBenefitRatio + "  回调比例：" + callBackRatio);
