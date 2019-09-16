@@ -197,4 +197,14 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
         return tradePlatformApiBindProductComboMapper.updateApiIdByPrimaryKey(id,0);
     }
+
+    @Override
+    public TradePlatformApiBindProductCombo getByUserIdAndComboId(int userId, int userProductComboId) {
+        return tradePlatformApiBindProductComboMapper.getByUserIdAndComboId(userId,userProductComboId);
+    }
+
+    @Override
+    public int deleteByComboId(int userProductComboId) {
+        return tradePlatformApiBindProductComboMapper.deleteByComboId(userProductComboId);
+    }
 }

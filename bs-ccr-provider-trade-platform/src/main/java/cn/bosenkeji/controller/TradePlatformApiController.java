@@ -55,20 +55,13 @@ public class TradePlatformApiController {
     }
 
 
-    @ApiOperation(value = "根据tradePlatformId和userId获取交易平台api信息接口",notes = "根据tradePlatformId和userId获取交易平台api信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
-    @GetMapping("/edit_trade_platform")
-    public TradePlatformApi getByTradePlatformIdAndUserId(@RequestParam("tradePlatformId") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int tradePlatformId,
-                                                          @RequestParam("userId") @Min(1) @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
-        return this.tradePlatformApiService.getByTradePlatformIdAndUserId(tradePlatformId, userId);
-    }
-
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
     public Result add(@RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKey(tradePlatformApi.getAccessKey(),tradePlatformApi.getSecretKey()).get() >= 1){
+        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getAccessKey(),tradePlatformApi.getSecretKey(),1).get() >= 1){
             return new Result<>(null,"key已存在");
         }
 

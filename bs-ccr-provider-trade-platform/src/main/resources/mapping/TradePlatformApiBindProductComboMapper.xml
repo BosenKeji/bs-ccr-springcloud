@@ -40,6 +40,10 @@
     delete from trade_platform_api_bind_product_combo
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByComboId" parameterType="java.lang.Integer">
+    delete from trade_platform_api_bind_product_combo
+    where user_product_combo_id=#{userProductComboId}
+  </delete>
   <insert id="insert" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -210,6 +214,14 @@
     where id=#{param2}
     and user_id=#{param1}
     );
+  </select>
+
+  <select id="getByUserIdAndComboId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"></include>
+    from trade_platform_api_bind_product_combo
+    where user_id=#{param1}
+    and user_product_combo_id=#{param2}
   </select>
 
 </mapper>

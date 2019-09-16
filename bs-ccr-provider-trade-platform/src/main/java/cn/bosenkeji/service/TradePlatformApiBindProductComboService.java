@@ -35,4 +35,8 @@ public interface TradePlatformApiBindProductComboService {
     int delete(int id);
     int removeBinding(int id);
 
+    TradePlatformApiBindProductCombo getByUserIdAndComboId(int userId,int userProductComboId);
+
+    int deleteByComboId(int userProductComboId);
+
 }

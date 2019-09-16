@@ -91,6 +91,12 @@ public class UserProductComboController {
         return iUserProductComboService.selectByPrimaryKeys(ids);
     }
 
+    @ApiOperation(value = "删除用户套餐",httpMethod = "DELETE",nickname = "deleteUserProductCombo")
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable("id") int id) {
+        return new Result(this.iUserProductComboService.delete(id));
+    }
+
     //获取单个用户套餐交易平台api接口
 
 

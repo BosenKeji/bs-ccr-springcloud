@@ -22,7 +22,7 @@ public class UserProductComboRedisTemplate {
     private RedisTemplate redisTemplate;
 
     public void add(UserProductCombo userProductCombo,long time) {
-         redisTemplate.opsForValue().set(PRE_KEY+userProductCombo.getId(),userProductCombo,time,TimeUnit.DAYS);
+         redisTemplate.opsForValue().set(PRE_KEY+userProductCombo.getId(),userProductCombo.getId()+"",time,TimeUnit.DAYS);
     }
 
     public UserProductCombo get(int id) {

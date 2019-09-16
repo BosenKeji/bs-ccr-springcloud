@@ -53,6 +53,10 @@
     where user_id = #{userId}
   </select>
 
+  <select id="checkExistByKeyAndStatus"  resultType="integer">
+    select exists (select 1 from trade_platform_api where trade_platform_api.access_key=#{param1,jdbcType=VARCHAR} and trade_platform_api.secret_key=#{param2,jdbcType=VARCHAR} and trade_platform_api.status = #{param3,jdbcType=INTEGER} limit 1)
+  </select>
+
   <select id="checkExistByTradePlatformIdAndUserId" parameterType="int" resultType="integer">
     select exists (select 1 from trade_platform_api where trade_platform_api.trade_platform_id=#{param1} and trade_platform_api.user_id=#{param2} limit 1)
   </select>
@@ -68,13 +72,6 @@
 
   <select id="checkExistByIdAndUserId" parameterType="int" resultType="integer">
     select exists (select 1 from trade_platform_api where id=#{param1} and user_id=#{param2} limit 1)
-  </select>
-
-  <select id="selectByTradePlatformIdAndUserId" parameterType="int" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from trade_platform_api
-    where trade_platform_id=#{param1} and user_id = #{param2}
   </select>
 
   <delete id="deleteByTradePlatformKey" parameterType="int">
