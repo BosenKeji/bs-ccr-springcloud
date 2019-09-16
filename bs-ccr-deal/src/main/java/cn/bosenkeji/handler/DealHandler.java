@@ -19,13 +19,24 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 
 @RestController
 public class DealHandler {
 
+    private static final int threadNum = Runtime.getRuntime().availableProcessors();
+    private ThreadPoolExecutor threadPoolExecutor;
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
+
+    DealHandler() {
+        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
+                3, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(10),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.DiscardOldestPolicy());
+    }
 
     @Autowired
     private MySource source;
@@ -35,6 +46,12 @@ public class DealHandler {
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
+        threadPoolExecutor.execute(() -> {
+            handle(msg);
+        });
+    }
+
+    private void handle(String msg) {
 
         //将json字符串转换为json对象
         JSONObject jsonObject = JSON.parseObject(msg);
@@ -133,7 +150,6 @@ public class DealHandler {
                          +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
-
     }
 
 }
