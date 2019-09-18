@@ -153,11 +153,12 @@ public class DealCalculator {
                     updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
                             +"触发追踪止盈");
-                    //记录实时收益比的最高数值
-                    if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
-                        updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
-                    }
                     return false;
+                }
+
+                //记录实时收益比的最高数值
+                if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
+                    updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                 }
 
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
