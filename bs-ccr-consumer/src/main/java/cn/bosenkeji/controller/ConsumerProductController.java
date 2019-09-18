@@ -57,6 +57,22 @@ public class ConsumerProductController {
         return this.iProductClientService.updateProductStatus(id,status);
     }
 
+    @ApiOperation(value="启用产品接口",httpMethod = "PUT",nickname = "openProductStatus")
+    @RequestMapping(value="/open/{id}",method = RequestMethod.PUT)
+    public Object openProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+
+        int status=1;
+        return this.iProductClientService.updateProductStatus(id,status);
+    }
+
+    @ApiOperation(value="关闭产品接口",httpMethod = "PUT",nickname = "closeProductStatus")
+    @RequestMapping(value="/close/{id}",method = RequestMethod.PUT)
+    public Object closeProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+
+        int status=2;
+        return this.iProductClientService.updateProductStatus(id,status);
+    }
+
     @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
     @DeleteMapping("/{id}")
     public Object deleteProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) { return  this.iProductClientService.deleteProduct(id);}
