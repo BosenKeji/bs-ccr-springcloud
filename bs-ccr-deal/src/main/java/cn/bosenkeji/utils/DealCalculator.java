@@ -160,7 +160,9 @@ public class DealCalculator {
                 if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
                     updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                 }
-
+            }
+            //
+            if (isTriggerTraceStopProfit == 1) {
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) <= 0) {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
