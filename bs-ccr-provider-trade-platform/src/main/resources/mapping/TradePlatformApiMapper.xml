@@ -54,7 +54,7 @@
   </select>
 
   <select id="checkExistByKeyAndStatus"  resultType="integer">
-    select exists (select 1 from trade_platform_api where trade_platform_api.access_key=#{param1,jdbcType=VARCHAR} and trade_platform_api.secret_key=#{param2,jdbcType=VARCHAR} and trade_platform_api.status = #{param3,jdbcType=INTEGER} limit 1)
+    select exists (select 1 from trade_platform_api where trade_platform_api.user_id = #{param1,jdbcType=INTEGER} and trade_platform_api.access_key=#{param2,jdbcType=VARCHAR} and trade_platform_api.secret_key=#{param3,jdbcType=VARCHAR} and trade_platform_api.status = #{param4,jdbcType=INTEGER} limit 1)
   </select>
 
   <select id="checkExistByTradePlatformIdAndUserId" parameterType="int" resultType="integer">
