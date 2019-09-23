@@ -2,8 +2,10 @@ package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
 import cn.bosenkeji.service.CoinPairChoiceService;
+import cn.bosenkeji.service.ICoinClientService;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.ICoinPairCoinClientService;
+import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
@@ -32,6 +34,9 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Autowired
     ICoinPairClientService iCoinPairClientService;
+
+    @Autowired
+    ICoinClientService iCoinClientService;
 
     @Autowired
     ICoinPairClientService coinPairClientService;
@@ -91,10 +96,29 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
            }
         }
 
-        return resultCoinPairChoiceList;
+        return filter(coinId,resultCoinPairChoiceList);
     }
 
+    /**
+     * 过滤掉不是该计价货币的货币对
+     * @param coinId 货币id
+     * @param coinPairChoices 填充好的自选币列表
+     * @return 过滤好的自选币的列表
+     */
+    private List<CoinPairChoice> filter(int coinId,List<CoinPairChoice> coinPairChoices){
+        Coin coin = iCoinClientService.get(coinId);
+        List<CoinPairChoice> result = new ArrayList<>();
+        String coinName = coin.getName().toUpperCase();
+        for (CoinPairChoice c : coinPairChoices) {
+            CoinPair coinPair = c.getCoinPair();
+            String coinPairName = coinPair.getName().toUpperCase();
+            if (coinPairName.lastIndexOf(coinName) > 1){
+                result.add(c);
+            }
+        }
 
+        return result;
+    }
 
     @Override
     public CoinPairChoice get(int id) {

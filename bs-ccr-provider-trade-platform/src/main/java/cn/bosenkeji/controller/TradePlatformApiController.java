@@ -113,4 +113,9 @@ public class TradePlatformApiController {
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
     }
+
+//    @GetMapping("/public_key")
+//    public String getPublicKey(){
+//
+//    }
 }

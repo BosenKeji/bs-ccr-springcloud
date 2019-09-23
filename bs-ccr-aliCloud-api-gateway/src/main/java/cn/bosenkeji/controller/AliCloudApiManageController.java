@@ -279,30 +279,29 @@ public class AliCloudApiManageController {
         long start = System.currentTimeMillis();
 
         //建议10个线程以下
-        int nThreads =5;
+        int nThreads =4;
 
         CountDownLatch countDownLatch = new CountDownLatch(nThreads);
 
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
         int size = describeApisId.size();
+        ConcurrentLinkedQueue<String> describeApisIdQueue = new ConcurrentLinkedQueue<>(describeApisId);
 
-
-        if (!describeApisId.isEmpty()){
+        if (!describeApisIdQueue.isEmpty()){
 
             //需要改造成多线程操作
             ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(nThreads,nThreads+5,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
             for (int i=0;i<nThreads;i++) {
-                final List<String> suList ;
-                if (size-size/nThreads*(i+1) < size/nThreads){
-                    suList= describeApisId.subList(size/nThreads*i,size);
-                }else {
-                    suList = describeApisId.subList(size/nThreads*i,size/nThreads*(i+1));
-                }
-
+//                final List<String> suList ;
+//                if (size-size/nThreads*(i+1) < size/nThreads){
+//                    suList= describeApisId.subList(size/nThreads*i,size);
+//                }else {
+//                    suList = describeApisId.subList(size/nThreads*i,size/nThreads*(i+1));
+//                }
                 threadPoolExecutor.execute(()->{
                     try {
-                        System.out.println(suList.size());
-                        for (String apiId : suList){
+                        while (!describeApisIdQueue.isEmpty()){
+                            String apiId = describeApisIdQueue.poll();
                             this.aliCloudApiManageUtil.deployApi(apiId, "RELEASE", "上线");
                             System.out.println(Thread.currentThread().getName()+"-->"+apiId);
                         }
@@ -375,19 +374,47 @@ public class AliCloudApiManageController {
     public Result deleteAllApi() throws ClientException {
         long start = System.currentTimeMillis();
 
+        //建议10个线程以下
+        int nThreads =4;
+
+        CountDownLatch countDownLatch = new CountDownLatch(nThreads);
+
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
-
-        if (!describeApisId.isEmpty()){
-
-            //需要改造成多线程操作
-            for (String api : describeApisId) {
-                aliCloudApiManageUtil.deleteApi(api);
-            }
-        }
-
         long end = System.currentTimeMillis();
         System.out.println("消耗的时间为：");
         System.out.println(end-start);
+
+        int size = describeApisId.size();
+        ConcurrentLinkedQueue<String> describeApisIdQueue = new ConcurrentLinkedQueue<>(describeApisId);
+
+        if (!describeApisIdQueue.isEmpty()){
+
+            //需要改造成多线程操作
+            ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(nThreads,nThreads+5,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
+            for (int i=0;i<nThreads;i++) {
+                threadPoolExecutor.execute(()->{
+                    try {
+                        while(!describeApisIdQueue.isEmpty()){
+                            String id = describeApisIdQueue.poll();
+                            aliCloudApiManageUtil.deleteApi(id);
+                            System.out.println(Thread.currentThread().getName()+"-->"+id);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }finally {
+                        countDownLatch.countDown();
+                    }
+                });
+            }
+//            //需要改造成多线程操作
+//            for (String api : describeApisId) {
+//                aliCloudApiManageUtil.deleteApi(api);
+//            }
+        }
+
+        long end1 = System.currentTimeMillis();
+        System.out.println("消耗的时间为：");
+        System.out.println(end1-start);
         return new Result();
     }
 
@@ -397,6 +424,5 @@ public class AliCloudApiManageController {
 
         return this.aliCloudApiManageUtil.describeModels();
     }
-
 
 }
