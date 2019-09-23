@@ -254,7 +254,7 @@ public class DealCalculator {
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
-        JSONArray deep = realTimeTradeParameter.getSellDeep();
+        JSONArray sellDeep = realTimeTradeParameter.getSellDeep();
         JSONObject buyVolume = dealParameter.getBuyVolume();
 
         Integer isFollowBuild = redisParameter.getIsFollowBuild();
@@ -279,7 +279,7 @@ public class DealCalculator {
 
         //计算拟买入均价
         Double quantity = Double.valueOf(buyVolume.get(finishedOrder.toString()).toString());
-        Double averagePrice = countAveragePrice(deep,quantity);
+        Double averagePrice = countAveragePrice(sellDeep,quantity);
 
         //追踪下调比
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)

@@ -52,7 +52,7 @@ public class DealUtil {
      */
     public static Boolean isClearTriggerFollowBuild(DealParameter dealParameter, RedisParameter redisParameter, RealTimeTradeParameter realTimeTradeParameter, RedisTemplate redisTemplate) {
         //计算实时拟买入均价
-        Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
+        Double averagePrice = DealCalculator.countAveragePrice(realTimeTradeParameter.getSellDeep(), Double.valueOf(dealParameter.getBuyVolume().get(dealParameter.getFinishedOrder().toString()).toString()));
 
         //获取下调均价 下调均价=(整体持仓均价-建仓间隔)-(整体持仓均价*追踪下调比)
         Double averagePosition = DealCalculator.countAveragePosition(dealParameter.getPositionCost(),dealParameter.getPositionNum());
