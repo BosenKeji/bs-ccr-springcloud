@@ -13,26 +13,35 @@ import java.util.Map;
 
 public class RealTimeTradeParameter {
 
-    private Double price;
-    private JSONArray deep;
+    private Double sellPrice;
+    private JSONArray buyDeep;
+    private JSONArray sellDeep;
     private String symbol;
 
     public RealTimeTradeParameter() { }
 
-    public Double getPrice() {
-        return price;
+    public Double getSellPrice() {
+        return sellPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
     }
 
-    public JSONArray getDeep() {
-        return deep;
+    public JSONArray getBuyDeep() {
+        return buyDeep;
     }
 
-    public void setDeep(JSONArray deep) {
-        this.deep = deep;
+    public void setBuyDeep(JSONArray buyDeep) {
+        this.buyDeep = buyDeep;
+    }
+
+    public JSONArray getSellDeep() {
+        return sellDeep;
+    }
+
+    public void setSellDeep(JSONArray sellDeep) {
+        this.sellDeep = sellDeep;
     }
 
     public String getSymbol() {

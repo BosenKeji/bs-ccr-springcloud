@@ -65,30 +65,16 @@ public class DealCalculator {
     }
 
     /**
-     * 计算实时收益比
-     * @param number 持仓数量
-     * @param cost 持仓费用
-     * @param realTimePrice 实时买价
-     * @return 实时收益比 = 买价 * 持仓数量 / 持仓费用  精确小数点后4位
-     */
-    public static Double countRealTimeEarningRatio(Double number, Double cost, Double realTimePrice) {
-        double d = realTimePrice * number / (cost == 0 ? 1.0 : cost);
-        BigDecimal bg = new BigDecimal(d);
-        return bg.setScale(4,BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
-
-
-    /**
      * 计算拟买入均价
-     * @param deep 实时深度
+     * @param sellDeep 卖深度
      * @param quantity 某单交易量
      * @return 拟买入均价
      */
-    static Double countAveragePrice(JSONArray deep, Double quantity) {
+    static Double countAveragePrice(JSONArray sellDeep, Double quantity) {
         Double priceSum = 0.0;
         Double deepSum = 0.0;
 
-        for ( Object obj : deep) {
+        for ( Object obj : sellDeep) {
             JSONArray o = (JSONArray) obj;
             Double d = Double.valueOf(o.get(0).toString());
             Double value = Double.valueOf(o.get(1).toString());
@@ -105,6 +91,59 @@ public class DealCalculator {
 
         return priceSum/deepSum;
     }
+
+    /**
+     *
+     * 计算实时收益比
+     *
+     * （深度1×买1价+深度2×买2价+...+深度N补差额数量×买N价）÷持仓费用
+     * @param buyDeep 买入的深度报价
+     * @param positionNum 持仓数量
+     * @param positionCost 持仓费用
+     */
+    public static Double countRealTimeEarningRatio(JSONArray buyDeep, Double positionNum ,Double positionCost) {
+        Double priceSum = 0.0;
+
+        for ( Object obj : buyDeep) {
+            JSONArray o = (JSONArray) obj;
+            Double price = Double.valueOf(o.get(0).toString());
+            Double num = Double.valueOf(o.get(1).toString());
+            if (positionNum >= num) {
+                priceSum = priceSum + price * num;
+                positionNum = positionNum - num;
+            } else {
+                priceSum = priceSum + price * positionNum;
+                break;
+            }
+        }
+        return priceSum/positionCost;
+
+    }
+
+    public static void main(String[] args) {
+        JSONArray jsonArray = new JSONArray();
+        JSONArray p1 = new JSONArray();
+        JSONArray p2 = new JSONArray();
+        JSONArray p3 = new JSONArray();
+
+        p1.set(0,"100");
+        p1.set(1,"50");
+
+        p2.set(0,"99");
+        p2.set(1,"60");
+
+        p3.set(0,"98");
+        p3.set(1,"40");
+
+        jsonArray.add(0,p1);
+        jsonArray.add(1,p2);
+        jsonArray.add(2,p3);
+
+        System.out.println(countRealTimeEarningRatio(jsonArray,123.0,12000.0));
+
+    }
+
+
 
     /**
      *
@@ -126,8 +165,6 @@ public class DealCalculator {
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
-        Double price = realTimeTradeParameter.getPrice();
-
         Double historyMaxBenefitRatio = redisParameter.getHistoryMaxBenefitRatio();
         Integer isTriggerTraceStopProfit = redisParameter.getIsTriggerTraceStopProfit();
 
@@ -135,11 +172,9 @@ public class DealCalculator {
 
         //固定比例止盈和追踪止盈  二选一  //是否启动追踪止盈字段
         //固定金额止盈和比例止盈同时存在  //金额止盈或比例止盈达到一个就止盈
-
         //在参数设置前  不存在金额止盈，只有比例止盈
-
         //计算实时收益比
-        Double realTimeEarningRatio = countRealTimeEarningRatio(positionNum,positionCost,price);
+        Double realTimeEarningRatio = countRealTimeEarningRatio(realTimeTradeParameter.getBuyDeep(),positionNum,positionCost);
 
         if (isStopProfitTrace == 1) {
 
@@ -219,8 +254,7 @@ public class DealCalculator {
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
-        Double price = realTimeTradeParameter.getPrice();
-        JSONArray deep = realTimeTradeParameter.getDeep();
+        JSONArray deep = realTimeTradeParameter.getSellDeep();
         JSONObject buyVolume = dealParameter.getBuyVolume();
 
         Integer isFollowBuild = redisParameter.getIsFollowBuild();
@@ -239,7 +273,7 @@ public class DealCalculator {
             return true;
         }
         //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
-        if ( price - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
+        if ( realTimeTradeParameter.getSellPrice() - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
             return false;
         }
 
@@ -267,11 +301,9 @@ public class DealCalculator {
                 return false;
             }
 
-            if (isFollowBuild == 1) {
-                //记录最小拟买入均价
-                if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
-                    updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
-                }
+            //记录最小拟买入均价
+            if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
+                updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入

@@ -58,12 +58,12 @@ public class DealHandler {
 
         //获取实时价格
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
-        Double price = realTimeTradeParameter.getPrice();
-        JSONArray deep = realTimeTradeParameter.getDeep();
+        JSONArray buyDeep = realTimeTradeParameter.getBuyDeep();
+        JSONArray sellDeep = realTimeTradeParameter.getSellDeep();
         String symbol = realTimeTradeParameter.getSymbol();
 
         //mq参数不正确
-        if (price == null || CollectionUtils.isEmpty(deep) || symbol == null) {
+        if (CollectionUtils.isEmpty(buyDeep) || CollectionUtils.isEmpty(sellDeep) || symbol == null) {
             return;
         }
 
@@ -101,8 +101,8 @@ public class DealHandler {
 
             //计算实时收益比   判断买卖
             //实时收益比
-            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(dealParameter.getPositionNum(),
-                    dealParameter.getPositionCost(),price);
+            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(buyDeep,
+                    dealParameter.getPositionNum(),dealParameter.getPositionCost());
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
 
@@ -110,11 +110,9 @@ public class DealHandler {
                     +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
 
             //是否清除 触发追踪止盈标志
-
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
                 if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
             }
-
 
             //是否清除 触发追踪建仓标志
             if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {

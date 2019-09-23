@@ -18,8 +18,9 @@ public class RealTimeTradeParameterParser {
 
     private JSONObject jsonObject;
 
-    private static final String PRICE = "price";
-    private static final String DEEP = "deep";
+    private static final String SELL_PRICE = "sell";
+    private static final String BUY_DEEP = "bids";
+    private static final String SELL_DEEP = "asks";
     private static final String SYMBOL = "symbol";
 
     public RealTimeTradeParameterParser() { }
@@ -31,30 +32,28 @@ public class RealTimeTradeParameterParser {
     public RealTimeTradeParameter getRealTimeTradeParameter() {
         RealTimeTradeParameter parameter = new RealTimeTradeParameter();
 
-        //price 可能出现double、BigDecimal、Double
-        Double price = 0.0;
-        Object priceObject = jsonObject.get(PRICE);
-
-        if (priceObject != null) {
-            if (priceObject instanceof Double) price = (Double) priceObject;
-            if (priceObject instanceof Integer) price = Double.valueOf(priceObject.toString());
-            if (priceObject instanceof BigDecimal) price = ((BigDecimal) priceObject).doubleValue();
-        } else {
-            return parameter;
-        }
-        Object o = jsonObject.get(DEEP);
-        JSONArray jsonArray;
-        if (o == null) {
-            jsonArray = new JSONArray();
-        } else {
-            jsonArray = (JSONArray) o;
-        }
         String symbol = DealUtil.getString(jsonObject.get(SYMBOL));
+        Double sellPrice = DealUtil.getDouble(((JSONObject)jsonObject.get("price")).get(SELL_PRICE));
 
-        parameter.setPrice(price);
-        parameter.setDeep(jsonArray);
+        JSONObject deep = (JSONObject)jsonObject.get("deep");
+        JSONArray buyDeep = transformDeep(deep.get(BUY_DEEP));
+        JSONArray sellDeep = transformDeep(deep.get(SELL_DEEP));
+
+        parameter.setSellPrice(sellPrice);
+        parameter.setBuyDeep(buyDeep);
+        parameter.setSellDeep(sellDeep);
         parameter.setSymbol(symbol);
 
         return parameter;
+    }
+
+    private JSONArray transformDeep(Object o) {
+        JSONArray deep;
+        if (o == null) {
+            deep = new JSONArray();
+        } else {
+            deep = (JSONArray) o;
+        }
+        return deep;
     }
 }
