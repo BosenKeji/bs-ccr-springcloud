@@ -186,6 +186,13 @@
                 <version>23.0</version>
             </dependency>
 
+            <!-- 加密包 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15</artifactId>
+                <version>1.45</version>
+            </dependency>
+
             <!-- 模块依赖 -->
             <dependency>
                 <groupId>bosenCCR</groupId>
