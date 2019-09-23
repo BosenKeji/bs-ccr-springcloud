@@ -264,11 +264,14 @@ public class DealCalculator {
                 updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"触发追踪建仓");
+                return false;
+            }
+
+            if (isFollowBuild == 1) {
                 //记录最小拟买入均价
                 if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
                     updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
                 }
-                return false;
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
