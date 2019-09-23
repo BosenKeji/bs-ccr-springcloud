@@ -23,4 +23,8 @@ public interface IUserProductComboDayClientService {
     PageInfo listByUserProductComboId(@RequestParam("userProductComboId") int userProductComboId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize);
 
 
-    }
+    @GetMapping("/user_product_combo_day/")
+    PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize);
+
+
+}

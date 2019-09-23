@@ -36,6 +36,14 @@ public class IUserProductComboDayClientServiceFallbackFactory implements Fallbac
                 list.add(userProductComboDay);
                 return new PageInfo(list);
             }
+
+            @Override
+            public PageInfo list(int pageNum, int pageSize) {
+                UserProductComboDay userProductComboDay=new UserProductComboDay();
+                List list=new ArrayList();
+                list.add(userProductComboDay);
+                return new PageInfo(list);
+            }
         };
     }
 }

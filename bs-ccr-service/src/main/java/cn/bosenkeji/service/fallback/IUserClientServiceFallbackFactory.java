@@ -3,8 +3,14 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -17,6 +23,25 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
     @Override
     public IUserClientService create(Throwable throwable) {
         return new IUserClientService() {
+
+            @Override
+            public PageInfo listByPage(Integer pageNum, Integer pageSize) {
+                User user=new User();
+                user.setUsername("hystrix");
+                List list=new ArrayList();
+                list.add(user);
+                return new PageInfo(list);
+            }
+
+            @Override
+            public Map<Integer, User> listByIds(List<Integer> ids) {
+                Map<Integer,User> map=new HashMap<>();
+                User user=new User();
+                user.setUsername("hystrix");
+                user.setTel("hystrix");
+                (map).put(-1,user);
+                return map;
+            }
 
             @Override
             public User getOneUser(int id) {

@@ -65,6 +65,11 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
                 map.put(0,userProductCombo);
                 return map;
             }
+
+            @Override
+            public Result delete(int id) {
+                return new Result(-1,"hystrix");
+            }
         };
     }
 }

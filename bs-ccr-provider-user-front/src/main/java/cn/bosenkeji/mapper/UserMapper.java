@@ -1,6 +1,11 @@
 package cn.bosenkeji.mapper;
 
+
 import cn.bosenkeji.vo.User;
+import org.apache.ibatis.annotations.MapKey;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author CAJR
@@ -28,4 +33,9 @@ public interface UserMapper {
 
     int updateBinding(Integer id,Integer isBinding);
     int updatePasswordByTel(String tel,String password);
+
+    @MapKey("id")
+    Map<Integer, User> getByIds(List<Integer> ids);
+
+    List<User> list();
 }

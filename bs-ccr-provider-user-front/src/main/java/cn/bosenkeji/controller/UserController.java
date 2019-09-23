@@ -2,7 +2,9 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -24,6 +28,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @ApiOperation(value = "获取用户列表接口 ",httpMethod = "GET",nickname = "getUserListWithPage")
+    @GetMapping("/")
+    public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) Integer pageNum,
+                               @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1)  Integer pageSize)
+    {
+        return this.userService.listByPage(pageNum,pageSize);
+    }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
@@ -136,6 +148,13 @@ public class UserController {
     public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
                                       @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
         return new Result(userService.updatePasswordByTel(tel,new BCryptPasswordEncoder().encode(password)));
+    }
+
+    @ApiOperation(value = "获取多个用户信息接口",httpMethod = "GET",nickname = "getUserByIds")
+    @GetMapping("/list_by_ids")
+    public Map<Integer, User> listByIds(@RequestParam("ids") List<Integer> ids){
+
+        return userService.getByIds(ids);
     }
 
 }

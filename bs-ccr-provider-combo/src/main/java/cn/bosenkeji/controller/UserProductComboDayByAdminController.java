@@ -7,13 +7,17 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
+import cn.bosenkeji.job.MySchedule;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.quartz.ObjectAlreadyExistsException;
+import org.quartz.SchedulerException;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +41,9 @@ public class UserProductComboDayByAdminController {
     @Resource
     private DiscoveryClient discoveryClient;
 
+    @Resource
+    private MySchedule mySchedule;
+
 
     @ApiOperation(value="获取用户套餐时长操作详情api接口",httpMethod = "GET")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
@@ -44,14 +51,40 @@ public class UserProductComboDayByAdminController {
         return this.iUserProductComboDayByAdminService.get(id);
     }
 
+    //@NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string")
+    //@NotNull @ApiParam(value = "管理员实体",required = true,type = "string")
     @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Result add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay UserProductComboDay,
-                      @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId) {
-        UserProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        UserProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        UserProductComboDay.setStatus(1);
-        return new Result(this.iUserProductComboDayByAdminService.add(UserProductComboDay,adminId));
+    public Result add(
+            @RequestBody @NotNull @ApiParam(value = "管理员实体",required = true,type = "string") UserProductComboDayByAdmin userProductComboDayByAdmin) {
+        UserProductComboDay userProductComboDay = userProductComboDayByAdmin.getUserProductComboDay();
+        userProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        userProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        userProductComboDayByAdmin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        userProductComboDayByAdmin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        userProductComboDayByAdmin.setStatus(1);
+        userProductComboDay.setStatus(1);
+        return new Result(this.iUserProductComboDayByAdminService.add(userProductComboDay,userProductComboDayByAdmin));
+    }
+
+    @DeleteMapping("/job")
+    public Result deleteJob(int id) {
+        return new Result(mySchedule.deleteJob(id));
+    }
+
+    @PostMapping("/job")
+    public Result addJob(int comboId){
+        try {
+            this.mySchedule.scheduleJob(String.valueOf(comboId), String.valueOf(comboId));
+            return new Result(1,"添加任务成功");
+        }catch (ObjectAlreadyExistsException o) {
+            o.printStackTrace();
+            return new Result(0,"任务已存在！！！");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return new Result(0,"添加任务发生异常");
+        }
     }
 
 

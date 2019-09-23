@@ -4,6 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IUserProductComboDayByAdminClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IUserProductComboDayByAdminClientService {
 
     @PostMapping("/user_product_combo_day_by_admin/")
-    Result add(@RequestBody UserProductComboDay userProductComboDay, @RequestParam("adminId") int adminId);
+    Result add(@RequestBody UserProductComboDayByAdmin userProductComboDayByAdmin);
 
     @GetMapping("/user_product_combo_day_by_admin/list_by_user_product_combo_id")
     PageInfo listByUserProductComboId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,

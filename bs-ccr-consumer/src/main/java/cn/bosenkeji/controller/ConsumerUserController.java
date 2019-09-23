@@ -6,6 +6,7 @@ import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.impl.CustomUserDetailsImpl;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -38,6 +39,14 @@ public class ConsumerUserController {
 
         return this.iUserClientService.getOneUser(id);
 
+    }
+
+    @ApiOperation(value = "获取用户列表接口 ",httpMethod = "GET",nickname = "getUserListWithPage")
+    @GetMapping("/")
+    public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) Integer pageNum,
+                               @RequestParam(value = "pageSize",required = false,defaultValue = "10") @Min(1)  Integer pageSize)
+    {
+        return this.iUserClientService.listByPage(pageNum,pageSize);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")

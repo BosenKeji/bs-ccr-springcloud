@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,4 +49,12 @@ public class ConsumerUserProductComboController {
         return this.iUserProductComboClientService.listByUserId(userId,pageNum,pageSize);
     }
 
+    @ApiOperation(value = "删除用户套餐",httpMethod = "DELETE",nickname = "deleteUserProductCombo")
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable("id") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int id) {
+
+        return this.iUserProductComboClientService.delete(id);
     }
+
+
+}
