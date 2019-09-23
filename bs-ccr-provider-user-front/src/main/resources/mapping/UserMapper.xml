@@ -162,4 +162,21 @@
     set password = #{param2}
     where tel= #{param1}
   </update>
+
+  <select id="getByIds" parameterType="List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from user
+    where id in
+    <foreach collection="list" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+
+  </select>
+
+  <select id="list" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+  </select>
 </mapper>

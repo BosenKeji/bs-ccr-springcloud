@@ -3,13 +3,19 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.UserMapper;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
     @Override
     public User get(int id) {
@@ -61,4 +67,19 @@ public class UserServiceImpl implements UserService {
         return userMapper.updatePasswordByTel(tel,password);
     }
 
+    @Override
+    public Map<Integer, User> getByIds(List<Integer> ids) {
+        return userMapper.getByIds(ids);
+    }
+
+    @Override
+    public List<User> list() {
+        return userMapper.list();
+    }
+
+    @Override
+    public PageInfo<User> listByPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(this.list());
+    }
 }

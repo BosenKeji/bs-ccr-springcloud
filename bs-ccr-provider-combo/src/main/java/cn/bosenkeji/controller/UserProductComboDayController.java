@@ -62,6 +62,15 @@ public class UserProductComboDayController {
 
     }
 
+    @GetMapping("/")
+    @ApiOperation(value = "获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListWithPage")
+    public Object list(
+            @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
+
+        return this.iUserProductComboDayService.list(pageNum,pageSize);
+
+    }
+
     @GetMapping("/list_by_user_product_combo_id")
     @ApiOperation(value = "通过用户套餐ID 获取用户套餐时长列表 接口",httpMethod = "GET")
     public PageInfo listByUserProductComboId(@RequestParam("userProductComboId") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {

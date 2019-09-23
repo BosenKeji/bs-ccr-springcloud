@@ -3,9 +3,15 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IUserClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Min;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xivin
@@ -48,6 +54,13 @@ public interface IUserClientService {
 
     @PutMapping("/user/update_password_by_tel")
     Result updatePasswordByTel(@RequestParam("tel") String tel,@RequestParam("password") String password);
+
+    @GetMapping("/user/list_by_ids")
+    public Map<Integer, User> listByIds(@RequestParam("ids") List<Integer> ids);
+
+    @GetMapping("/user/")
+    public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+                               @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize);
 
 
 }

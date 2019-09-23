@@ -23,7 +23,7 @@ public class IUserProductComboDayByAdminClientServiceFallbackFactory implements 
     public IUserProductComboDayByAdminClientService create(Throwable throwable) {
         return new IUserProductComboDayByAdminClientService() {
             @Override
-            public Result add(UserProductComboDay userProductComboDay,int adminId) {
+            public Result add(UserProductComboDayByAdmin userProductComboDayByAdmin) {
                 return new Result(0,"hystrix");
             }
 

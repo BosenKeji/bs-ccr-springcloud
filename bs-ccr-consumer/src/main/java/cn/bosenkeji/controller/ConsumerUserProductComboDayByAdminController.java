@@ -2,7 +2,9 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboDayByAdminClientService;
 import cn.bosenkeji.service.impl.CustomAdminDetailsImpl;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,17 +32,22 @@ public class ConsumerUserProductComboDayByAdminController {
 
     @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @PostMapping("/")
-    public Object add(@RequestBody @NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string") UserProductComboDay userProductComboDay,
-                      @RequestParam("adminId") @NotNull @ApiParam(value = "管理员ID",required = true,type = "integer",example = "1") int adminId)
+    public Result add(@RequestBody @NotNull
+                          @ApiParam(value = "用户套餐时长操作实体",required = true,type = "string")
+                                  UserProductComboDayByAdmin userProductComboDayByAdmin)
     {
+        if(userProductComboDayByAdmin.getUserProductComboDay().getNumber()<=0)
+            return new Result(0,"时长必须大于0，请输入合法的时长！！！");
         int currentAdminId=this.getCurrentAdmin().getId();
-        return this.iUserProductComboDayByAdminClientService.add(userProductComboDay,currentAdminId);
+        userProductComboDayByAdmin.setAdminId(currentAdminId);
+        return this.iUserProductComboDayByAdminClientService.add(userProductComboDayByAdmin);
     }
 
     public CustomAdminDetailsImpl getCurrentAdmin() {
         CustomAdminDetailsImpl principal = (CustomAdminDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return principal;
     }
+
 
     /*@ApiOperation(value="获取用户套餐时长操作列表api接口 多表联合查询",httpMethod = "GET",nickname = "getUserProductComboDayByAdminListWithPage")
     @GetMapping(value = "/")

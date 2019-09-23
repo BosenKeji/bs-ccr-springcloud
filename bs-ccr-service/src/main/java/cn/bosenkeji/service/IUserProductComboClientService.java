@@ -5,6 +5,7 @@ import cn.bosenkeji.service.fallback.IUserProductComboClientServiceFallbackFacto
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,9 @@ public interface IUserProductComboClientService {
 
     @GetMapping("/user_product_combo/list_by_ids")
     Map<Integer,UserProductCombo> getByPrimaryKeys(@RequestParam("ids") List<Integer> ids);
+
+    @DeleteMapping("/user_product_combo/{id}")
+    Result delete(@PathVariable("id") int id);
 
 
 }

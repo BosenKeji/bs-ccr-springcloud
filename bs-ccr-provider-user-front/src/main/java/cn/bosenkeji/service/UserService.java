@@ -2,6 +2,10 @@ package cn.bosenkeji.service;
 
 
 import cn.bosenkeji.vo.User;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -15,6 +19,10 @@ public interface UserService {
     Integer checkExistByTel(String tel);
     Integer updateBinding(int id,int isBinding);
     Integer updatePasswordByTel(String tel,String password);
+    Map<Integer,User> getByIds(List<Integer> ids);
+
+    List<User> list();
+    PageInfo<User> listByPage(int pageNum,int pageSize);
 
 
 

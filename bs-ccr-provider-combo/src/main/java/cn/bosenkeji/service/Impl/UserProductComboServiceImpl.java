@@ -1,5 +1,8 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.job.MySchedule;
+import cn.bosenkeji.job.UserComboJob;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
@@ -7,6 +10,7 @@ import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
+import cn.bosenkeji.util.DateUtils;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.ProductCombo;
@@ -16,12 +20,20 @@ import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.oracle.tools.packager.Log;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,30 +57,47 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     private UserProductComboRedisTemplate userProductComboRedisTemplate;
 
     @Resource
+    private RedisTemplate redisTemplate;
+
+
+    @Resource
     private IUserClientService iUserClientService;
 
     @Resource
     private IProductClientService iProductClientService;
 
     @Resource
+    private MySchedule mySchedule;
+
+
+
+    @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
-   // @Cacheable(key = "'userProductCombo'+#p0.id")
     @Override
     public int add(UserProductCombo userProductCombo) {
 
-        //判断用户是否已买过该产品  如果该用户已买过该产品，则不能部署机器人
-        /*if(userProductComboMapper.selectCountByProductId(userProductCombo.getProductCombo().getProductId(),userProductCombo.getUserId())>0)
-            return Optional.ofNullable(0);*/
+
 
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
 
         //保存到数据库
         userProductComboMapper.insert(userProductCombo);
+        String idStr=String.valueOf(userProductCombo.getId());
 
         //添加缓存
-        userProductComboRedisTemplate.add(userProductCombo,time+1);
+        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime,idStr,time);
+
+        //添加定时任务
+        try {
+            mySchedule.scheduleJob(idStr, idStr);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        //addQuartz(userProductCombo.getId());
+        //userProductComboRedisTemplate.add(userProductCombo,time+1);
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
@@ -80,6 +109,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return 1;
 
     }
+
 
     @Override
     public int update(UserProductCombo userProductCombo) {
@@ -151,7 +181,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum,int pageSize,String userTel) {
 
-        PageHelper.startPage(pageNum,pageSize);
+        //PageHelper.startPage(pageNum,pageSize);
         User user=null;
 
         try{
@@ -168,7 +198,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         }
         //从数据库查询
 
-        List<Integer> pids=new ArrayList<>();
+        return selectUserProductComboByUserId(user.getId(),pageSize,pageNum);
+
+        /*List<Integer> pids=new ArrayList<>();
 
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(user.getId());
 
@@ -176,7 +208,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            long time=userProductComboRedisTemplate.getExpire(id);
+            double time=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
+            //long time=userProductComboRedisTemplate.getExpire(id);
 
             userProductCombo.setRemainTime(time>0?(int)time:0);
 
@@ -196,7 +229,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                 }
             }
         }
-        return new PageInfo<>(userProductCombos);
+        return new PageInfo<>(userProductCombos);*/
     }
 
     /**
@@ -212,13 +245,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
-        List<Integer> pids=new ArrayList<>();
+
+        getProductByPids(userProductCombos);
+        /*List<Integer> pids=new ArrayList<>();
 
         for (UserProductCombo userProductCombo : userProductCombos) {
 
             //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            long time=userProductComboRedisTemplate.getExpire(id);
+            double time=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
+            //long time=userProductComboRedisTemplate.getExpire(id);
 
 
             userProductCombo.setRemainTime(time>0?(int) time:0);
@@ -238,7 +274,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                     userProductCombo.getProductCombo().setProduct(productMap.get(id));
                 }
             }
-        }
+        }*/
 
         return new PageInfo<>(userProductCombos);
     }
@@ -263,9 +299,13 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            long time=userProductComboRedisTemplate.getExpire(id);
+            Double score = redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime, String.valueOf(id));
+            int time=0;
+            if(score!=null)
+                time=score.intValue();
+            //long time=userProductComboRedisTemplate.getExpire(id);
 
-            userProductCombo.setRemainTime(time>0?(int)time:0);
+            userProductCombo.setRemainTime(time>0?time:0);
 
             //循环收集产品ID
             pids.add(userProductCombo.getProductCombo().getProductId());

@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 
@@ -11,7 +12,7 @@ import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
  */
 public interface IUserProductComboDayByAdminService {
 
-    int add(UserProductComboDay userProductComboDay, int adminId);
+    int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin);
     int update(UserProductComboDayByAdmin userProductComboDayByAdmin);
     UserProductComboDayByAdmin get(int id);
 

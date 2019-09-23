@@ -6,14 +6,19 @@
     <result column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="user_product_combo_day_id" jdbcType="INTEGER" property="userProductComboDayId" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="combo_day_reason_id" jdbcType="INTEGER" property="comboDayReasonId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <association property="comboDayReason" column="combo_day_reason_id" javaType="cn.bosenkeji.vo.combo.ComboDayReason"
+                 select="cn.bosenkeji.mapper.ComboDayReasonMapper.selectByPrimaryKey" />
 
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    id, admin_id, user_product_combo_day_id, status, created_at, updated_at
+    id, admin_id, user_product_combo_day_id, status,order_number,remark,combo_day_reason_id, created_at, updated_at
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -30,10 +35,11 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user_product_combo_day_by_admin (admin_id, user_product_combo_day_id, status, 
+    insert into user_product_combo_day_by_admin (admin_id, user_product_combo_day_id, status,
+     order_number,remark,combo_day_reason_id,
       created_at, updated_at)
-    values (#{adminId,jdbcType=INTEGER}, #{userProductComboDayId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+    values (#{adminId,jdbcType=INTEGER}, #{userProductComboDayId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+    #{orderNumber,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{comboDayReasonId,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.UserProductComboDayByAdmin">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -49,6 +55,15 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="orderNum !=null">
+        order_number,
+      </if>
+      <if test="remark !=null">
+        remark,
+      </if>
+      <if test="ComboDayReason!=null">
+        combo_day_reason_id,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -66,6 +81,15 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="orderNum !=null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark !=null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comboDayReasonId !=null">
+        #{comboDayReasonId,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -87,6 +111,15 @@
       <if test="status != 0">
         status = #{status,jdbcType=TINYINT},
       </if>
+      <if test="orderNum !=null">
+        order_number=#{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark !=null">
+        remark=#{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comboDayReasonId !=null">
+        combo_day_reason_id=#{comboDayReasonId,jdbcType=VARCHAR},
+      </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -101,6 +134,9 @@
     set admin_id = #{adminId,jdbcType=INTEGER},
       user_product_combo_day_id = #{userProductComboDayId,jdbcType=INTEGER},
       status = #{status,jdbcType=TINYINT},
+      order_number=#{orderNumber,jdbcType=VARCHAR},
+      remark=#{remark,jdbcType=VARCHAR},
+      comboDayReasonId=#{comboDayReasonId,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
