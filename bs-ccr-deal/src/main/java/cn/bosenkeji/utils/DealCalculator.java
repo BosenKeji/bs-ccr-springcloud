@@ -153,13 +153,16 @@ public class DealCalculator {
                     updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
                             +"触发追踪止盈");
-                    //记录实时收益比的最高数值
-                    if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
-                        updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
-                    }
                     return false;
                 }
 
+                //记录实时收益比的最高数值
+                if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
+                    updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
+                }
+            }
+            //
+            if (isTriggerTraceStopProfit == 1) {
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) <= 0) {
                     log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
@@ -261,11 +264,14 @@ public class DealCalculator {
                 updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
                         +"触发追踪建仓");
+                return false;
+            }
+
+            if (isFollowBuild == 1) {
                 //记录最小拟买入均价
                 if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
                     updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
                 }
-                return false;
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入

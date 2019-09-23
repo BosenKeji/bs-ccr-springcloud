@@ -61,7 +61,7 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getAccessKey(),tradePlatformApi.getSecretKey(),1).get() >= 1){
+        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getAccessKey(),tradePlatformApi.getSecretKey(),1).get() >= 1){
             return new Result<>(null,"key已存在");
         }
 
@@ -113,4 +113,9 @@ public class TradePlatformApiController {
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
     }
+
+//    @GetMapping("/public_key")
+//    public String getPublicKey(){
+//
+//    }
 }
