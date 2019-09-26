@@ -56,13 +56,13 @@
       <if test="status != null">
         status,
       </if>
-      <if test="orderNum !=null">
+      <if test="orderNumber !=null">
         order_number,
       </if>
       <if test="remark !=null">
         remark,
       </if>
-      <if test="ComboDayReason!=null">
+      <if test="comboDayReasonId!=null">
         combo_day_reason_id,
       </if>
       <if test="createdAt != null">
@@ -82,7 +82,7 @@
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
-      <if test="orderNum !=null">
+      <if test="orderNumber !=null">
         #{orderNumber,jdbcType=VARCHAR},
       </if>
       <if test="remark !=null">

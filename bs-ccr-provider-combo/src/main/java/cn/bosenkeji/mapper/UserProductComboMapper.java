@@ -24,7 +24,7 @@ public interface UserProductComboMapper {
     List<Integer> selectPrimaryKeyByUserId(int userId);
 
 
-    List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
+    //List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
 
     List<UserProductCombo> selectUserProductComboByUserId(Integer userId);
 

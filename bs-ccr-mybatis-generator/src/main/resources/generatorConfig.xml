@@ -64,7 +64,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="admin"
+        <table tableName="job"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
