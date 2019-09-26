@@ -41,4 +41,10 @@ public interface ITradePlatformApiClientService {
 
     @GetMapping("/trade_platform_apis/all")
     List<TradePlatformApi> findAll();
+
+    @GetMapping("/trade_platform_apis/public_key")
+    String getPubKey();
+
+    @GetMapping("/trade_platform_apis/public_key")
+    String getPriKey();
 }

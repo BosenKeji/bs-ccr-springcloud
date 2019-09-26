@@ -66,4 +66,16 @@ public class ConsumerTradePlatformApiController {
     public Result deleteOneTradePlatformApi(@PathVariable("id")  @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
         return this.iTradePlatformApiClientService.deleteOneTradePlatformApi(id);
     }
+
+    @ApiOperation(value = "获取公钥",notes = "获取公钥",httpMethod = "GET",nickname = "getPublicKey")
+    @GetMapping("/public_key")
+    public String getPublicKey(){
+        return this.iTradePlatformApiClientService.getPubKey();
+    }
+
+    @ApiOperation(value = "获取私钥",notes = "获取私钥",httpMethod = "GET",nickname = "getPriKey")
+    @GetMapping("/private_key")
+    public String getPriKey(){
+        return this.iTradePlatformApiClientService.getPriKey();
+    }
 }

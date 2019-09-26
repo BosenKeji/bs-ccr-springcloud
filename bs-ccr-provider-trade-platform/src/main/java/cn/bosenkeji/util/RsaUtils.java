@@ -7,9 +7,10 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Cipher;
-import java.io.StringWriter;
+import java.io.*;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -58,7 +59,13 @@ public class RsaUtils {
     /**
      * RSA 位数 如果采用2048 上面最大加密和最大解密则须填写:  245 256
      */
-    private static final int INITIALIZE_LENGTH = 512;
+    private static final int INITIALIZE_LENGTH = 1024;
+
+
+    private static String publicKeyFileName = "publicKey.keystore";
+
+    private static String privateKeyFileName = "privateKey.keystore";
+
 
 
     /**
@@ -86,7 +93,7 @@ public class RsaUtils {
                 pemWriter.flush();
                 privateKey = stringWriter.toString();
             }
-        }
+    }
 
         encoded = keyPair.getPublic().getEncoded();
         SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(encoded);
@@ -157,8 +164,8 @@ public class RsaUtils {
      * 校验数据签名
      * @param data 已加密数据
      * @param publicKey 公钥（Base64 编码）
-     * @param sign
-     * @return
+     * @param sign 私钥对数据生成的数字签名
+     * @return boolean
      * @throws Exception
      */
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
@@ -250,32 +257,126 @@ public class RsaUtils {
         return key.getEncoded();
     }
 
-    public static void main(String[] args) throws Exception {
-        //初始化密钥
-        //生成密钥对
-        Map<String,Object> keyMap=RsaUtils.initKey();
+    /**
+     *  把密钥保存到本地文件
+     * @param publicKey 公钥
+     * @param privateKey 私钥
+     */
+    public static void loadKeyPairToFile(String publicKey,String privateKey){
+        try(
+                FileWriter pubFw = new FileWriter(publicKeyFileName);
+                FileWriter priFw = new FileWriter(privateKeyFileName);
+                BufferedWriter pubBw = new BufferedWriter(pubFw);
+                BufferedWriter priBw = new BufferedWriter(priFw)
+        ) {
+            pubBw.write(publicKey);
+            priBw.write(privateKey);
+            pubBw.flush();
+            priBw.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        //公钥
-        byte[] publicKey = RsaUtils.getPublicKey(keyMap);
-        //私钥
-        byte[] privateKey = RsaUtils.getPrivateKey(keyMap);
-        System.out.println("公钥："+ Base64.toBase64String(publicKey));
-        System.out.println("私钥："+ Base64.toBase64String(privateKey));
+    /**
+     * 检查文件是否为空
+     * @param fileName 文件名
+     * @return 空 false  不空 true
+     */
+    public static boolean checkFile(String fileName){
+        boolean notNull = true;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))){
+            if (bufferedReader.readLine() == null){
+                notNull = false;
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return notNull;
+    }
+
+    /**
+     * 从文件中输入流中加载公钥
+     * @return 公钥
+     * @throws Exception
+     */
+    public static String loadPublicKeyByFile() throws Exception {
+        try (BufferedReader br = new BufferedReader(new FileReader(publicKeyFileName))) {
+
+            String readLine = null;
+            StringBuilder sb = new StringBuilder();
+            while ((readLine = br.readLine()) != null) {
+                sb.append(readLine);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            throw new Exception("公钥数据流读取错误");
+        } catch (NullPointerException e) {
+            throw new Exception("公钥输入流为空");
+        }
+    }
+    /**
+     * 从文件中输入流中加载私钥
+     * @return 私钥
+     * @throws Exception
+     */
+    public static String loadPrivateKeyByFile() throws Exception {
+        try (BufferedReader br = new BufferedReader(new FileReader(privateKeyFileName))) {
+
+                String readLine = null;
+            StringBuilder sb = new StringBuilder();
+            while ((readLine = br.readLine()) != null) {
+                sb.append(readLine);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            throw new Exception("私钥数据流读取错误");
+        } catch (NullPointerException e) {
+            throw new Exception("私钥输入流为空");
+        }
+    }
+    public static void main(String[] args) throws Exception {
+
+        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
+        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+//        //初始化密钥
+//        //生成密钥对
+//        Map<String,Object> keyMap=RsaUtils.initKey();
+//
+//        //公钥
+//        byte[] publicKey = RsaUtils.getPublicKey(keyMap);
+//        //私钥
+//        byte[] privateKey = RsaUtils.getPrivateKey(keyMap);
+//        System.out.println("公钥："+ Base64.toBase64String(publicKey));
+//        System.out.println("私钥："+ Base64.toBase64String(privateKey));
 
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str="CAJRCAJRCAJRCAJR";
+        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3";
         System.out.println("===========甲方向乙方发送加密数据==============");
         System.out.println("原文:"+str);
         //公钥加密
-        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(),publicKey);
+        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(),Base64.decode(publicKeyStr));
         System.out.println("甲方 使用乙方公钥加密后的数据："+ Base64.toBase64String(code));
         System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
         //私钥解密
-        byte[] decode = RsaUtils.decryptByPrivateKey(code,privateKey);
+        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(privateKeyStr));
         System.out.println("乙方解密后的数据："+new String(decode)+"");
 
-
-        System.out.println(genKeyPair().get(PUBLIC_KEY));
-        System.out.println(genKeyPair().get(PRIVATE_KEY));
+//        //私钥签名
+//        String sign = RsaUtils.sign(code,Base64.toBase64String(privateKey));
+//        System.out.println("sign ==> "+sign);
+//
+//        //公钥验证签名
+//        System.out.println(RsaUtils.verify(code,Base64.toBase64String(publicKey),sign));
+//
+//        System.out.println(genKeyPair().get(PUBLIC_KEY));
+//        System.out.println(genKeyPair().get(PRIVATE_KEY));
+//        System.out.println("公钥为："+RsaUtils.loadPublicKeyByFile());
+//        System.out.println(RsaUtils.checkFile("publicKey.keystore"));
+//        System.out.println(RsaUtils.checkFile("privateKey.keystore"));
+//        System.out.println("私钥为："+RsaUtils.loadPrivateKeyByFile());
     }
 }
