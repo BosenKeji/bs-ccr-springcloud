@@ -114,8 +114,16 @@ public class TradePlatformApiController {
         return this.client ;
     }
 
-//    @GetMapping("/public_key")
-//    public String getPublicKey(){
-//
-//    }
+    @ApiOperation(value = "获取公钥",notes = "获取公钥",httpMethod = "GET",nickname = "getPublicKey")
+    @GetMapping("/public_key")
+    public String getPublicKey(){
+        return this.tradePlatformApiService.getPublicKey();
+    }
+
+    @ApiOperation(value = "获取私钥",notes = "获取私钥",httpMethod = "GET",nickname = "getPriKey")
+    @GetMapping("/private_key")
+    public String getPriKey(){
+        return this.tradePlatformApiService.getPrivateKey();
+    }
+
 }

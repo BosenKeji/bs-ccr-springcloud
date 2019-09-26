@@ -32,4 +32,8 @@ public interface TradePlatformApiService {
     Optional<Integer> checkExistByUserIdAndNickName (int userId, String nickName);
 
     List<TradePlatformApi> findAll();
+
+    String getPublicKey();
+
+    String getPrivateKey();
 }

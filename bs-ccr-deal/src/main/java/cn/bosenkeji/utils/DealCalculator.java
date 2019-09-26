@@ -307,15 +307,13 @@ public class DealCalculator {
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
-            if (averagePrice - callbackAveragePrice >= 0) {
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
-                        +"  买，拟买入均价是否大于等于回调均价， 发送买消息" + "  拟买入均价:"+averagePrice+"  回调均价:"+callbackAveragePrice);
-            }
-
             isBuy = averagePrice - callbackAveragePrice >= 0;
+
         } else {
             //不在追踪建仓范围，取消追踪建仓标志
             updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
         }
         log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "  最小拟买入均价:" + minAveragePrice);
         return isBuy;
