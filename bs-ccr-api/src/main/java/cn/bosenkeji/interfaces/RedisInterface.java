@@ -49,15 +49,28 @@ package cn.bosenkeji.interfaces;
         //货币对
         String COIN_PAIR_ID_KEY="ccr:coinPair:id";
         String COIN_PAIR_LIST_KEY="ccr:coinPair:list";
+        String COIN_PAIR_LIST_IDS_KEY="ccr:coinPair:listByIds";
         String COIN_PAIR_LIST_NAME_KEY="ccr:coinPair:listByName";
 
         // 货币排序
         String COIN_SORT_ID_KEY="ccr:coinSort:id";
         String COIN_SORT_LIST_KEY="ccr:coinSort:list";
+        String COIN_SORT_LIST_TPID_KEY="ccr:coinSort:listByTpId";
 
         //货币对货币
         String COIN_PAIR_COIN_ID_KEY="ccr:coinPairCoin:id";
         String COIN_PAIR_COIN_LIST_KEY="ccr:coinPairCoin:list";
+        String COIN_PAIR_COIN_LIST_CID_KEY="ccr:coinPairCoin:listByCid";
+
+        //交易平台
+        String TRADE_PLATFORM_ID_KEY="ccr:tradePlatform:id";
+        String TRADE_PLATFORM_LIST_KEY="ccr:tradePlatform:list";
+
+        String TRADE_PLATFORM_API_ID_KEY="ccr:tradePlatformApi:id";
+        String TRADE_PLATFORM_API_LIST_KEY="ccr:tradePlatformApi:list";
+
+        String TRADE_PLATFORM_COIN_ID_KEY="ccr:tradePlatformCoinPair:id";
+        String TRADE_PLATFORM_COIN_LIST_KEY="ccr:tradePlatformCoinPair:list";
 
 
 

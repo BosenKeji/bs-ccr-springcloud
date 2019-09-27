@@ -30,6 +30,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
+ * add cache by xivin
+ * 单表
+ */
+
+/**
  * @ClassName CoinController
  * @Description 货币
  * @Author Yu XueWen
