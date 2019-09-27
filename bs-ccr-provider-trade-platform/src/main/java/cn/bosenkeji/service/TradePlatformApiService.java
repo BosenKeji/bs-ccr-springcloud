@@ -33,7 +33,4 @@ public interface TradePlatformApiService {
 
     List<TradePlatformApi> findAll();
 
-    String getPublicKey();
-
-    String getPrivateKey();
 }
