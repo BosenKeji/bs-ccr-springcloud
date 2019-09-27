@@ -15,6 +15,8 @@ package cn.bosenkeji.interfaces;
         //产品
         String PRODUCT_ID_KEY="ccr:product:id";
         String PRODUCT_LIST_KEY="ccr:product:list";
+        String PRODUCT_LIST_STATUS_KEY="ccr:product:listByStatus";
+        String PRODUCT_LIST_IDS="ccr:product:listByIds";
 
         //产品套餐
         String PRODUCT_COMBO_ID_KEY="ccr:productCombo:id";
@@ -28,6 +30,35 @@ package cn.bosenkeji.interfaces;
         String COMBO_DAY_ID_KEY="ccr:comboDay:id";
         String COMBO_DAY_LIST_UPC_ID_KEY="ccr:comboDay:listByUpcId";
         String COMBO_DAY_LIST_TEL_KEY="ccr:comboDay:listByTel";
+
+        //策略相关
+        String STRATEGY_ID_KEY="ccr:strategy:id";
+        String STRATEGY_LIST_KEY="ccr:strategy:list";
+
+        String STRATEGY_SEQUENCE_ID_KEY="ccr:strategySequence:id";
+        String STRATEGY_SEQUENCE_LIST_KEY="ccr:strategySequence:list";
+
+        //管理员相关
+        String ADMIN_LIST_IDS_KEY="ccr:admin:listByIds";
+        String ADMIN_ID_KEY="ccr:admin:id";
+
+        //货币
+        String COIN_ID_KEY="ccr:coin:id";
+        String COIN_LIST_KEY="ccr:coin:list";
+
+        //货币对
+        String COIN_PAIR_ID_KEY="ccr:coinPair:id";
+        String COIN_PAIR_LIST_KEY="ccr:coinPair:list";
+        String COIN_PAIR_LIST_NAME_KEY="ccr:coinPair:listByName";
+
+        // 货币排序
+        String COIN_SORT_ID_KEY="ccr:coinSort:id";
+        String COIN_SORT_LIST_KEY="ccr:coinSort:list";
+
+        //货币对货币
+        String COIN_PAIR_COIN_ID_KEY="ccr:coinPairCoin:id";
+        String COIN_PAIR_COIN_LIST_KEY="ccr:coinPairCoin:list";
+
 
 
 }
