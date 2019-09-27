@@ -86,7 +86,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime,idStr,time+1);
 
         //添加定时任务
-        try {
+        /*try {
             CreateJobResponse response = jobService.createJob(idStr);
             Long jobId = response.getData().getJobId();
             GetJobInfoResponse jobInfo = jobService.getJobInfo(jobId);
@@ -104,7 +104,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();

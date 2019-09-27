@@ -4,11 +4,8 @@ import cn.bosenkeji.UserComboRedisEnum;
 import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
-import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
-import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.service.JobService;
-import cn.bosenkeji.vo.Job;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import org.slf4j.Logger;
@@ -58,7 +55,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         Double remainTime=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
 
         //如果剩余时长小于0，则要重新开始定时任务
-        if(remainTime==null||remainTime<=0) {
+        /*if(remainTime==null||remainTime<=0) {
             try {
                 Job job = jobMapper.selectByJobName(String.valueOf(id));
                 if(job!=null) {
@@ -71,7 +68,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
                 e.printStackTrace();
             }
 
-        }
+        }*/
 
         int time=userProductComboDay.getNumber()+1;
             redisTemplate.opsForZSet().incrementScore(UserComboRedisEnum.UserComboTime,String.valueOf(id),+time);
