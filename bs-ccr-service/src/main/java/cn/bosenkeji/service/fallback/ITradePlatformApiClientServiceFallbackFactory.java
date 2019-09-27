@@ -63,16 +63,6 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
                 tradePlatformApiList.add(tradePlatformApi);
                 return tradePlatformApiList;
             }
-
-            @Override
-            public String getPubKey() {
-                return null;
-            }
-
-            @Override
-            public String getPriKey() {
-                return null;
-            }
         };
     }
 }
