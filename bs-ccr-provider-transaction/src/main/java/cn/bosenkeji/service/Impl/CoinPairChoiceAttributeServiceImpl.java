@@ -1,10 +1,11 @@
-package cn.bosenkeji.service.impl;
+package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeEnum;
 import cn.bosenkeji.mapper.CoinPairChoiceAttributeMapper;
 import cn.bosenkeji.service.CoinPairChoiceAttributeService;
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.IStrategyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -28,6 +29,9 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Resource
     CoinPairChoiceAttributeMapper coinPairChoiceAttributeMapper;
+
+    @Resource
+    CoinPairChoiceService coinPairChoiceService;
 
     @Resource
     IStrategyService iStrategyService;
@@ -78,6 +82,17 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         int expectMoney=(money*lever)/coinPairChoiceIds.length;
 
         /*查询所有自选币id*/
+        List<Integer> dbAllCoinPairChoiceIds = this.coinPairChoiceService.findAllCoinPartnerChoiceId();
+        /*验证数据库是否有自选币id*/
+        if (!dbAllCoinPairChoiceIds.isEmpty()){
+            for (int coinPairChoiceId : coinPairChoiceIds) {
+                if (!dbAllCoinPairChoiceIds.contains(coinPairChoiceId)){
+                    return Optional.of(FAIL);
+                }
+            }
+        }
+
+        /*查询数据库属性所有自选币id*/
         List<Integer> allCoinPairChoiceIds = this.coinPairChoiceAttributeMapper.findAllCoinPartnerChoiceId();
         /*数据库已存在的自选币id List*/
         List<Integer> existedCoinPairChoiceIds = new ArrayList<>();

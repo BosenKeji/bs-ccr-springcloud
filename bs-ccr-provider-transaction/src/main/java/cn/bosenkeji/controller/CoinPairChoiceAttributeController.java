@@ -8,6 +8,7 @@ import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeCustomEnum;
 import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeEnum;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.service.CoinPairChoiceAttributeService;
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.IStrategyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -39,6 +40,9 @@ public class CoinPairChoiceAttributeController {
 
     @Resource
     CoinPairChoiceAttributeService coinPairChoiceAttributeService;
+
+    @Resource
+    CoinPairChoiceService coinPairChoiceService;
 
     @Resource
     DiscoveryClient client;

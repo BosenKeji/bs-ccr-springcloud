@@ -354,7 +354,7 @@ public class RsaUtils {
 //        System.out.println("私钥："+ Base64.toBase64String(privateKey));
 
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3";
+        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3+967b59f5-c10d9f96-63126899-a0cc0";
         System.out.println("===========甲方向乙方发送加密数据==============");
         System.out.println("原文:"+str);
         //公钥加密

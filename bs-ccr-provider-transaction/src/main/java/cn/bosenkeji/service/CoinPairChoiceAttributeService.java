@@ -24,6 +24,4 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<Integer> setting(String coinPairChoiceIdStr,int strategyId,int money ,int isCustom);
 
-
-
 }

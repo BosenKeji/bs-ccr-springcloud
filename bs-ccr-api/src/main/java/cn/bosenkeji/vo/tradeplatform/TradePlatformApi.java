@@ -25,11 +25,14 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("标识")
     private String sign;
 
-    @ApiModelProperty("访问密钥")
-    private String accessKey;
-
+//    @ApiModelProperty("访问密钥")
+//    private String accessKey;
+//
+//    @ApiModelProperty("加密后密钥")
+//    private String secretKey;
+//
     @ApiModelProperty("加密后密钥")
-    private String secretKey;
+    private String robotId;
 
     @ApiModelProperty("别名")
     private String nickname;
@@ -48,6 +51,9 @@ public class TradePlatformApi implements Serializable {
      */
     @ApiModelProperty(hidden = true)
     private TradePlatform tradePlatform;
+
+    public TradePlatformApi() {
+    }
 
     public int getId() {
         return id;
@@ -81,20 +87,12 @@ public class TradePlatformApi implements Serializable {
         this.sign = sign;
     }
 
-    public String getAccessKey() {
-        return accessKey;
+    public String getRobotId() {
+        return robotId;
     }
 
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
+    public void setRobotId(String robotId) {
+        this.robotId = robotId;
     }
 
     public String getNickname() {
@@ -141,20 +139,4 @@ public class TradePlatformApi implements Serializable {
         this.tradePlatform = tradePlatform;
     }
 
-    @Override
-    public String toString() {
-        return "TradePlatformApi{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", tradePlatformId=" + tradePlatformId +
-                ", sign='" + sign + '\'' +
-                ", accessKey='" + accessKey + '\'' +
-                ", secretKey='" + secretKey + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", tradePlatform=" + tradePlatform +
-                '}';
-    }
 }

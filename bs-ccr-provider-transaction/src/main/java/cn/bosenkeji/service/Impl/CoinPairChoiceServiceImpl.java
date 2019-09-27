@@ -1,4 +1,4 @@
-package cn.bosenkeji.service.impl;
+package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
 import cn.bosenkeji.service.CoinPairChoiceService;
@@ -191,5 +191,10 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         }
 
         return Optional.of(this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds));
+    }
+
+    @Override
+    public List<Integer> findAllCoinPartnerChoiceId() {
+        return this.coinPairChoiceMapper.findAllCoinPairChoiceId();
     }
 }
