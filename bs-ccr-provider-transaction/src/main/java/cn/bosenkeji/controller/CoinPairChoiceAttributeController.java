@@ -9,6 +9,7 @@ import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeEnum;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.service.CoinPairChoiceAttributeService;
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.IStrategyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategyOther;
@@ -49,6 +50,9 @@ public class CoinPairChoiceAttributeController {
     CoinPairChoiceAttributeService coinPairChoiceAttributeService;
 
     @Resource
+    CoinPairChoiceService coinPairChoiceService;
+
+    @Resource
     DiscoveryClient client;
 
 
@@ -68,7 +72,13 @@ public class CoinPairChoiceAttributeController {
         if (coinPairChoiceIdStr.length() == 0){
             return new Result<>(-1,"fail");
         }
-        return new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
+        Result result = new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
+
+        if (result.getData().equals(0)){
+            return new Result<>(-1,"添加自选币接口失败");
+        }
+
+        return result;
     }
 
 

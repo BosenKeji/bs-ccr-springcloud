@@ -1,4 +1,4 @@
-package cn.bosenkeji.service.impl;
+package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairDealMapper;
 import cn.bosenkeji.service.CoinPairDealService;

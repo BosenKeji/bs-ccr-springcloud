@@ -340,8 +340,7 @@ public class RsaUtils {
     }
     public static void main(String[] args) throws Exception {
 
-        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
-        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+
 //        //初始化密钥
 //        //生成密钥对
 //        Map<String,Object> keyMap=RsaUtils.initKey();
@@ -352,9 +351,14 @@ public class RsaUtils {
 //        byte[] privateKey = RsaUtils.getPrivateKey(keyMap);
 //        System.out.println("公钥："+ Base64.toBase64String(publicKey));
 //        System.out.println("私钥："+ Base64.toBase64String(privateKey));
+//
+//        RsaUtils.loadKeyPairToFile(Base64.toBase64String(publicKey),Base64.toBase64String(privateKey));
+
+        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
+        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
 
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3";
+        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3+967b59f5-c10d9f96-63126899-a0cc0";
         System.out.println("===========甲方向乙方发送加密数据==============");
         System.out.println("原文:"+str);
         //公钥加密
