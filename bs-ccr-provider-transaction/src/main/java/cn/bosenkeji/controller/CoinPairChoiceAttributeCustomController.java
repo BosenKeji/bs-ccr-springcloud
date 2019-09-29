@@ -24,6 +24,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
+ * add cache by xivin
+ * 单表
+ */
+
+/**
  * @Author CAJR
  * @create 2019/7/18 17:35
  */

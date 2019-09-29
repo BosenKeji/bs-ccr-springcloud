@@ -98,7 +98,10 @@ public class CoinPairController {
             evict = {
                     @CacheEvict(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#coinPair.id"),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }
     )
     @ApiOperation(value = "更新单个货币对接口",httpMethod = "PUT",nickname = "updateOneCoinPair")
@@ -115,7 +118,11 @@ public class CoinPairController {
             evict = {
                     @CacheEvict(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#id"),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,allEntries = true),
+
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }
     )
     @ApiOperation(value = "删除单个货币对接口",httpMethod = "DELETE",nickname = "deleteOneCoinPair")

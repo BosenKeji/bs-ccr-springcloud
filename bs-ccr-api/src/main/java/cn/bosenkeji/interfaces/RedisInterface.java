@@ -62,6 +62,19 @@ package cn.bosenkeji.interfaces;
         String COIN_PAIR_COIN_LIST_KEY="ccr:coinPairCoin:list";
         String COIN_PAIR_COIN_LIST_CID_KEY="ccr:coinPairCoin:listByCid";
 
+        //自选币
+        String COIN_PAIR_CHOICE_ID_KEY="ccr:coinPairChoice:id";
+        String COIN_PAIR_CHOICE_LIST_KEY="ccr:coinPairChoice:list";
+
+        String COIN_PAIR_CHOICE_ATTRIBUTE_ID_KEY="ccr:coinPairChoiceAttribute:id";
+        String COIN_PAIR_CHOICE_ATTRIBUTE_LIST_KEY="ccr:coinPairChoiceAttribute:list";
+
+        String COIN_PAIR_CHOICE_ATTRIBUTE_CUSTOM_ID_KEY="ccr:coinPairChoiceAttributeCustom:id";
+        String COIN_PAIR_CHOICE_ATTRIBUTE_CUSTOM_LIST_KEY="ccr:coinPairChoiceAttributeCustom:list";
+
+        String COIN_PAIR_DEAL_ID_KEY="ccr:coinPairDeal:id";
+        String COIN_PAIR_DEAL_LIST_KEY="ccr:coinPairDeal:list";
+
         //交易平台
         String TRADE_PLATFORM_ID_KEY="ccr:tradePlatform:id";
         String TRADE_PLATFORM_LIST_KEY="ccr:tradePlatform:list";
@@ -71,6 +84,8 @@ package cn.bosenkeji.interfaces;
 
         String TRADE_PLATFORM_COIN_ID_KEY="ccr:tradePlatformCoinPair:id";
         String TRADE_PLATFORM_COIN_LIST_KEY="ccr:tradePlatformCoinPair:list";
+
+
 
 
 
