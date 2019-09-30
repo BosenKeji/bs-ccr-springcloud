@@ -39,12 +39,12 @@ public class RsaUtils {
     /**
      * 获取公钥的key
      */
-    private static final String PUBLIC_KEY = "RSAPublicKey";
+    public static final String PUBLIC_KEY = "RSAPublicKey";
 
     /**
      * 获取私钥的key
      */
-    private static final String PRIVATE_KEY = "RSAPrivateKey";
+    public static final String PRIVATE_KEY = "RSAPrivateKey";
 
     /**
      * RSA最大加密明文大小
@@ -86,7 +86,7 @@ public class RsaUtils {
         ASN1Encodable encodable = privateKeyInfo.parsePrivateKey();
         ASN1Primitive primitive = privateKeyInfo.toASN1Primitive();
         byte[] privateKeyPKCS1 = primitive.getEncoded();
-        PemObject pemObject = new PemObject("RSA PRIVATE KEY",privateKeyPKCS1);
+        PemObject pemObject = new PemObject("PRIVATE KEY",privateKeyPKCS1);
         try(StringWriter stringWriter = new StringWriter()){
             try (PemWriter pemWriter = new PemWriter(stringWriter)) {
                 pemWriter.writeObject(pemObject);
@@ -99,7 +99,7 @@ public class RsaUtils {
         SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(encoded);
         primitive = publicKeyInfo.toASN1Primitive();
         byte[] publicPKCS1 = primitive.getEncoded();
-        pemObject = new PemObject("RSA PUBLIC KEY",publicPKCS1);
+        pemObject = new PemObject("PUBLIC KEY",publicPKCS1);
 
         try(StringWriter stringWriter = new StringWriter()){
             try (PemWriter pemWriter = new PemWriter(stringWriter)) {
@@ -120,9 +120,14 @@ public class RsaUtils {
      * @return
      * @throws Exception
      */
-    public static Map<String,Object> initKey() throws Exception{
+    public static Map<String,Object> initKey() {
         //实例化密钥生成器
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        KeyPairGenerator keyPairGenerator = null;
+        try {
+            keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         //初始化密钥生成器
         keyPairGenerator.initialize(INITIALIZE_LENGTH);
         //生成密钥对
@@ -252,7 +257,7 @@ public class RsaUtils {
      * @param keyMap 密钥map
      * @return byte[] 公钥
      * */
-    public static byte[] getPublicKey(Map<String,Object> keyMap) throws Exception{
+    public static byte[] getPublicKey(Map<String,Object> keyMap) {
         Key key=(Key) keyMap.get(PUBLIC_KEY);
         return key.getEncoded();
     }
@@ -340,6 +345,9 @@ public class RsaUtils {
     }
     public static void main(String[] args) throws Exception {
 
+        Map<String,String> keyMaps = RsaUtils.genKeyPair();
+        System.out.println(keyMaps.get(PUBLIC_KEY));
+        System.out.println(keyMaps.get(PRIVATE_KEY));
 
 //        //初始化密钥
 //        //生成密钥对
