@@ -37,3 +37,4 @@ jobType: java
 className: cn.bosenkeji.job.SimpleTask  # 任务类
 executeMode: standalone  #执行
 timeType: 4  # 以 second_depay方式执行
+redisScriptPath: script/incrementScore.lua
