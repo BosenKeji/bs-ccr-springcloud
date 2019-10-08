@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bosenkeji.mapper.PermissionGroupPermissionMapper" >
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.permission.PermissionGroupPermission" >
+    <constructor >
+      <arg column="id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="permission_group_id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="permission_id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="status" jdbcType="TINYINT" javaType="_int" />
+      <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+      <arg column="updated_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List">id, permission_group_id, permission_id, status, created_id, updated_at</sql>
+
+  <insert id="insert" parameterType="cn.bosenkeji.vo.permission.PermissionGroupPermission" >
+    <selectKey resultType="int" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into permission_group_permission (permission_group_id, permission_id, 
+      status, created_at, updated_at
+      )
+    values (#{permissionGroupId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.permission.PermissionGroupPermission" >
+    <selectKey resultType="int" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into permission_group_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionGroupId != null" >
+        permission_group_id,
+      </if>
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionGroupId != null" >
+        #{permissionGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="savePermissionGroupPermissionBatch" parameterType="map" useGeneratedKeys="true">
+    <selectKey resultType="int" order="AFTER" keyProperty="id">
+      select last_insert_id()
+    </selectKey>
+    insert into permission_group_permission(permission_group_id, permission_id, created_at, updated_at)
+    values
+    <foreach collection="list" index="index" item="item" separator=",">
+      #{groupId},
+      #{item.permissionId},
+      now(),
+      now()
+    </foreach>
+  </insert>
+  <update id="updateBySelective" parameterType="cn.bosenkeji.vo.permission.PermissionGroupPermission" >
+    update permission_group_permission
+    <set >
+      <if test="permissionGroupPermission.id != null" >
+        id = #{permissionGroupPermission.id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionGroupPermission.permissionGroupId != null" >
+        permission_group_id = #{permissionGroupPermission.permissionGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionGroupPermission.permissionId != null" >
+        permission_id = #{permissionGroupPermission.permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionGroupPermission.status != null" >
+        status = #{permissionGroupPermission.status,jdbcType=TINYINT},
+      </if>
+      <if test="permissionGroupPermission.updatedAt != null" >
+        updated_at = #{permissionGroupPermission.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="update" parameterType="cn.bosenkeji.vo.permission.PermissionGroupPermission" >
+    update permission_group_permission
+    set id = #{permissionGroupPermission.id,jdbcType=INTEGER},
+      permission_group_id = #{permissionGroupPermission.permissionGroupId,jdbcType=INTEGER},
+      permission_id = #{permissionGroupPermission.permissionId,jdbcType=INTEGER},
+      status = #{permissionGroupPermission.status,jdbcType=TINYINT},
+      updated_at = #{permissionGroupPermission.updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id}
+  </update>
+
+  <select id="getPermissionGroupPermissionById" parameterType="int" resultType="cn.bosenkeji.vo.permission.PermissionGroupPermission">
+    select
+    <include refid="Base_Column_List" />
+    from permission_group_permission
+    where id = #{id}
+  </select>
+
+  <select id="listPermissionGroupPermission" resultType="cn.bosenkeji.vo.permission.PermissionGroupPermission">
+    select
+    <include refid="Base_Column_List" />
+    from permission_group_permission
+  </select>
+
+  <select id="listPermissionGroupPermissionByGroupId" resultType="cn.bosenkeji.vo.permission.PermissionGroupPermission">
+    select
+    <include refid="Base_Column_List" />
+    from permission_group_permission
+    where permission_group_id = #{groupId}
+  </select>
+</mapper>
