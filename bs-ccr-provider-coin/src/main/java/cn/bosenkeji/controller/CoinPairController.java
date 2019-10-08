@@ -136,7 +136,7 @@ public class CoinPairController {
         return new Result <>(this.coinPairService.delete(id));
     }
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,key = "#ids")
+    //@Cacheable(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,key = "#ids")
     @GetMapping("/section")
     @ApiIgnore
     public List<CoinPair> findSection(@RequestParam("ids") List<Integer> ids){

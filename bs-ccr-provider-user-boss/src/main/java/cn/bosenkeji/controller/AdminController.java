@@ -102,7 +102,7 @@ public class AdminController {
         return adminService.selectByAccount(account);
     }
 
-    @Cacheable(value = RedisInterface.ADMIN_LIST_IDS_KEY,key = "#ids")
+    //@Cacheable(value = RedisInterface.ADMIN_LIST_IDS_KEY,key = "#ids")
     @GetMapping("/list_by_ids")
     @ApiOperation(value = "获取多个ID的管理员列表",httpMethod = "GET",nickname = "getAdminListByIds")
     public Map<Integer,Admin> listByIds(@RequestParam("ids") @ApiParam(value = "管理员ID列表",required = true,type = "list",example = "1,2") List<Integer> ids) {

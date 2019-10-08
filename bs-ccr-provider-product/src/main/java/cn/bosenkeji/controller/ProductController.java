@@ -137,12 +137,16 @@ public class ProductController {
 
 
 
-    @Cacheable(value = RedisInterface.PRODUCT_LIST_IDS,key = "#ids")
+    //@Cacheable(value = RedisInterface.PRODUCT_LIST_IDS,key = "#root.target.listToString(#ids)")
     @GetMapping("/list_by_ids")
     public Map<Integer,Product> listByPrimaryKes(@RequestParam("ids") List<Integer> ids) {
         return this.iProductService.selectByPrimaryKeys(ids);
     }
 
+    public String listToString(List list) {
+        String s = list.toString();
+        return s;
+    }
 
     @ApiOperation(value="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")
     @RequestMapping(value="/discover")
