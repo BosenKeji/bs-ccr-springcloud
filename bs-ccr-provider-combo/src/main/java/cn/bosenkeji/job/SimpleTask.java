@@ -60,8 +60,12 @@ public class SimpleTask extends JavaProcessor {
 
         //默认最大值为1000
         long maxScore=1000;
+
+        //获取要操作的键
+        String jobParameters = jobContext.getJobParameters();
+
         //从 redis查询最大值
-        Set<ZSetOperations.TypedTuple> set = redisTemplate.opsForZSet().reverseRangeWithScores(UserComboRedisEnum.UserComboTime, 0, 0);
+        Set<ZSetOperations.TypedTuple> set = redisTemplate.opsForZSet().reverseRangeWithScores(jobParameters, 0, 0);
         Iterator<ZSetOperations.TypedTuple> iterator = set.iterator();
         if(iterator.hasNext()) {
             Double score = iterator.next().getScore();
@@ -70,18 +74,17 @@ public class SimpleTask extends JavaProcessor {
             }
         }
         //获取大于2的
-        Set  gt2Set= redisTemplate.opsForZSet().rangeByScore(UserComboRedisEnum.UserComboTime, 2, maxScore);
+        Set  gt2Set= redisTemplate.opsForZSet().rangeByScore(jobParameters, 2, maxScore);
         List<String> list=new ArrayList<>();
 
         //获取剩余1天的
-        Set eq1Set = redisTemplate.opsForZSet().rangeByScore(UserComboRedisEnum.UserComboTime, 1, 1);
+        Set eq1Set = redisTemplate.opsForZSet().rangeByScore(jobParameters, 1, 1);
 
         //处理剩余时长大于2的用户套餐
         Iterator gt2Iterator = gt2Set.iterator();
         while (gt2Iterator.hasNext()) {
             String next = String.valueOf(gt2Iterator.next());
             list.add(next);
-            //redisTemplate.opsForZSet().incrementScore(UserComboRedisEnum.UserComboTime,next,-1);
         }
 
         Log.info("剩余时长大于2的套餐以完成-1 操作");
@@ -90,11 +93,12 @@ public class SimpleTask extends JavaProcessor {
         while (eq1Iterator.hasNext()) {
             String next = String.valueOf(eq1Iterator.next());
             list.add(next);
-            //redisTemplate.opsForZSet().incrementScore(UserComboRedisEnum.UserComboTime,next,-1);
         }
-        Log.info("时长剩余1的套餐以完成-1 操作");
-        Boolean execute = (Boolean) redisTemplate.execute(redisScript, list, "-1");
+
+
+        Boolean execute = (Boolean) redisTemplate.execute(redisScript, list, "-1",jobParameters);
         assert execute!=null;
+        Log.info(jobParameters+"时长剩余1的套餐以完成-1 操作");
         if(execute)
             System.out.println(execute);
         return new ProcessResult(execute);

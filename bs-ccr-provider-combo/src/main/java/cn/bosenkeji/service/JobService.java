@@ -6,7 +6,7 @@ import com.aliyuncs.schedulerx2.model.v20190430.*;
 
 public interface JobService {
 
-    CreateJobResponse createJob(String jobName) throws ClientException;
+    CreateJobResponse createJob(String jobName,String timeExpression,String parameters) throws ClientException ;
     DeleteJobResponse deleteJob(long jobId) throws ClientException;
 
     EnableJobResponse enableJob(long jobId) throws ClientException;

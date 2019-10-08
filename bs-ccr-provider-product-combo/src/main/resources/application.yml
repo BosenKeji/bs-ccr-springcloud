@@ -32,9 +32,9 @@ domain: schedulerx.cn-hangzhou.aliyuncs.com
 namespace: 0055acd5-2ffd-4196-ae2a-b3f52f8e604c
 groupId: alibaba-springboot-demo-group
 
-timeExpression: 86400  #延迟一天执行
+#timeExpression:   #延迟一天执行
 jobType: java
 className: cn.bosenkeji.job.SimpleTask  # 任务类
 executeMode: standalone  #执行
-timeType: 4  # 以 second_depay方式执行
+timeType: 1  # 以 cron 表达式方式执行
 redisScriptPath: script/incrementScore.lua

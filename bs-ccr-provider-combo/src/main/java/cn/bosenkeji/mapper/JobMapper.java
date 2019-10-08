@@ -9,7 +9,6 @@ public interface JobMapper {
 
     int insert(Job record);
 
-
     Job selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Job record);

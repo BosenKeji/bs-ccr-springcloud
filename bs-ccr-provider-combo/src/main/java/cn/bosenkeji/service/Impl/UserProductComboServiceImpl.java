@@ -7,11 +7,14 @@ import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.utils.CalculateUtil;
+import cn.bosenkeji.utils.UserComboTimeUtil;
 import cn.bosenkeji.vo.Job;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
 import com.aliyuncs.schedulerx2.model.v20190430.GetJobInfoResponse;
 import com.github.pagehelper.PageHelper;
@@ -43,8 +46,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Resource
     private ProductComboMapper productComboMapper;
 
-    @Autowired
-    private JobMapper jobMapper;
 
     @Resource
     private UserProductComboRedisTemplate userProductComboRedisTemplate;
@@ -82,29 +83,28 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         userProductComboMapper.insert(userProductCombo);
         String idStr=String.valueOf(userProductCombo.getId());
 
-        //用户时长添加到redis
-        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime,idStr,time+1);
-
-        //添加定时任务
-        /*try {
-            CreateJobResponse response = jobService.createJob(idStr);
-            Long jobId = response.getData().getJobId();
-            GetJobInfoResponse jobInfo = jobService.getJobInfo(jobId);
-
-            //保存job记录
-            jobInfo.getData().getJobConfigInfo();
-            Job job=new Job();
-            job.setJobId(jobId);
-            job.setJobName(idStr);
-            job.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            job.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-            job.setStatus(1);
-            jobMapper.insert(job);
-            //mySchedule.scheduleJob(idStr, idStr);
+        /**
+         *  1 .通过ID除以5000取整得到保存到第几个集合，如 userComboTime_0 userComboTime_1等等
+         *  2 .通过ID除以5000 取余判断是否需要新建任务调度，当等于0时要创建任务调度，
+         */
+        int dividedBy5000 = CalculateUtil.dividedBy5000(userProductCombo.getId());
+        int by5000ForRemainder = CalculateUtil.dividedBy5000ForRemainder(userProductCombo.getId());
+        String userComboTimeKey=UserComboRedisEnum.UserComboTime+"_"+dividedBy5000;
+        if(by5000ForRemainder==0) {
+            try{
+                //这里简单处理任务调度的时间表达式
+                if(dividedBy5000*5<60) {
+                    String timeExpression = "0 " + dividedBy5000 * 5 + " 0 * * ?";
+                    jobService.createJob(userComboTimeKey, timeExpression, userComboTimeKey);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        //用户时长添加到redis
+        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,idStr,time+1);
+
 
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
@@ -307,7 +307,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            Double score = redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime, String.valueOf(id));
+            Double score = redisTemplate.opsForZSet().score(UserComboTimeUtil.getRedisKeyById(id), String.valueOf(id));
             int time=0;
             if(score!=null)
                 time=score.intValue();

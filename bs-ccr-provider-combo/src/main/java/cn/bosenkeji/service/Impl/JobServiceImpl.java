@@ -45,11 +45,11 @@ public class JobServiceImpl implements JobService {
     @Value("${timeType}")
     private int timeType;
 
-    @Value("${timeExpression}")
-    private String timeExpression;
+    /*@Value("${timeExpression}")
+    private String timeExpression;*/
 
     @Override
-    public CreateJobResponse createJob(String jobName) throws ClientException {
+    public CreateJobResponse createJob(String jobName,String timeExpression,String parameters) throws ClientException {
 
         DefaultAcsClient defaultAcsClient = getDefaultAcsClient();
         CreateJobRequest request=new CreateJobRequest();
@@ -63,7 +63,7 @@ public class JobServiceImpl implements JobService {
         request.setExecuteMode(executeMode);
         request.setTimeType(timeType);
         request.setTimeExpression(timeExpression);
-        request.setParameters(jobName);
+        request.setParameters(parameters);
 
 
 
