@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bosenkeji.mapper.PermissionGroupMapper" >
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.permission.PermissionGroup" >
+    <constructor >
+      <arg column="id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="TINYINT" javaType="_int" />
+      <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+      <arg column="updated_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List">id, name, description, status, created_at, updated_at</sql>
+
+  <insert id="insert" parameterType="cn.bosenkeji.vo.permission.PermissionGroup" >
+    <selectKey resultType="int" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into permission_group (name, description, status, 
+      created_at, updated_at)
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.permission.PermissionGroup" >
+    <selectKey resultType="int" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into permission_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateBySelective" parameterType="cn.bosenkeji.vo.permission.PermissionGroup" >
+    update permission_group
+    <set >
+      <if test="permissionGroup.id != null" >
+        id = #{permissionGroup.id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionGroup.name != null" >
+        name = #{permissionGroup.name,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionGroup.description != null" >
+        description = #{permissionGroup.description,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionGroup.status != null" >
+        status = #{permissionGroup.status,jdbcType=TINYINT},
+      </if>
+      <if test="permissionGroup.updatedAt != null" >
+        updated_at = #{permissionGroup.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="update" parameterType="cn.bosenkeji.vo.permission.PermissionGroup" >
+    update permission_group
+    set id = #{permissionGroup.id,jdbcType=INTEGER},
+      name = #{permissionGroup.name,jdbcType=VARCHAR},
+      description = #{permissionGroup.description,jdbcType=VARCHAR},
+      status = #{permissionGroup.status,jdbcType=TINYINT},
+      updated_at = #{permissionGroup.updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id}
+  </update>
+
+  <select id="getPermissionGroupById" parameterType="int" resultType="cn.bosenkeji.vo.permission.PermissionGroup">
+    select
+    <include refid="Base_Column_List" />
+    from permission_group
+    where id = #{id}
+  </select>
+
+  <select id="listPermissionGroup" resultType="cn.bosenkeji.vo.permission.PermissionGroup">
+    select
+    <include refid="Base_Column_List" />
+    from permission_group
+  </select>
+</mapper>
