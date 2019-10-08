@@ -1,11 +1,14 @@
 package cn.bosenkeji.service.impl;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.UserMapper;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.vo.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -81,5 +84,18 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(this.list());
+    }
+
+    //同步缓存
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
+    @Override
+    public void evictUser(int id) {
+        System.out.println("update caceh userId"+id);
     }
 }

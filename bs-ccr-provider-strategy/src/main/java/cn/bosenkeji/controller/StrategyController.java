@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.StrategyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.Strategy;
@@ -10,6 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,7 @@ import javax.validation.constraints.Min;
 @RequestMapping("/strategy")
 @Validated
 @Api(tags = "strategy 策略相关接口" , value = "提供策略相关的接口 Rest API")
+@CacheConfig(cacheNames = "ccr:strategy")
 public class StrategyController {
 
     @Autowired
@@ -31,6 +37,11 @@ public class StrategyController {
     @Resource
     private DiscoveryClient client;
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.STRATEGY_LIST_KEY,allEntries = true)
+            }
+    )
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略信息",notes = "对策略基本属性的添加",
             nickname = "addStrategyBySelective",httpMethod = "POST"
@@ -46,6 +57,11 @@ public class StrategyController {
         return new Result<>(strategyService.addStrategyBySelective(strategy));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.STRATEGY_LIST_KEY,allEntries = true)
+            }
+    )
     @PostMapping(value = "/attribute/")
     @ApiOperation(value = "添加策略的详细信息",notes = "对策略的详细属性的添加",
             nickname = "addStrategyAttributeBySelective",httpMethod = "POST"
@@ -70,6 +86,7 @@ public class StrategyController {
         return new Result<>(strategyService.insertStrategyAttributeBySelective(strategyAttribute));
     }
 
+    @Cacheable(value = RedisInterface.STRATEGY_ID_KEY,key = "#id")
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "获取指定策略" , notes = "通过策略Id获取策略的详细信息",
             nickname = "getStrategyById",httpMethod = "GET"
@@ -84,6 +101,7 @@ public class StrategyController {
         return strategyOther;
     }
 
+    @Cacheable(value = RedisInterface.STRATEGY_LIST_KEY,key = "#pageNum+'-'+#pageSize")
     @GetMapping(value="/")
     @ApiOperation(value = "获取策略列表", notes = "带分页，默认从第一页开始，每页10条记录",
             nickname = "findStrategyByPage",httpMethod = "GET"

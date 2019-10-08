@@ -1,39 +1,29 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
-import cn.bosenkeji.job.MySchedule;
-import cn.bosenkeji.job.UserComboJob;
+import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
-import cn.bosenkeji.service.IProductClientService;
-import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
-import cn.bosenkeji.service.IUserClientService;
-import cn.bosenkeji.service.IUserProductComboService;
-import cn.bosenkeji.util.DateUtils;
+import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.Job;
 import cn.bosenkeji.vo.User;
-import cn.bosenkeji.vo.combo.ProductCombo;
 import cn.bosenkeji.vo.combo.UserProductCombo;
-import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
+import com.aliyuncs.schedulerx2.model.v20190430.GetJobInfoResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.oracle.tools.packager.Log;
-import org.quartz.*;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +43,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Resource
     private ProductComboMapper productComboMapper;
 
+    @Autowired
+    private JobMapper jobMapper;
+
     @Resource
     private UserProductComboRedisTemplate userProductComboRedisTemplate;
 
@@ -66,8 +59,11 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Resource
     private IProductClientService iProductClientService;
 
-    @Resource
-    private MySchedule mySchedule;
+    @Autowired
+    private JobService jobService;
+
+
+
 
 
 
@@ -86,18 +82,30 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         userProductComboMapper.insert(userProductCombo);
         String idStr=String.valueOf(userProductCombo.getId());
 
-        //添加缓存
-        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime,idStr,time);
+        //用户时长添加到redis
+        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime,idStr,time+1);
 
         //添加定时任务
-        try {
-            mySchedule.scheduleJob(idStr, idStr);
+        /*try {
+            CreateJobResponse response = jobService.createJob(idStr);
+            Long jobId = response.getData().getJobId();
+            GetJobInfoResponse jobInfo = jobService.getJobInfo(jobId);
+
+            //保存job记录
+            jobInfo.getData().getJobConfigInfo();
+            Job job=new Job();
+            job.setJobId(jobId);
+            job.setJobName(idStr);
+            job.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            job.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            job.setStatus(1);
+            jobMapper.insert(job);
+            //mySchedule.scheduleJob(idStr, idStr);
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
-        //addQuartz(userProductCombo.getId());
-        //userProductComboRedisTemplate.add(userProductCombo,time+1);
+        }*/
+
 
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());

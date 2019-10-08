@@ -1,14 +1,19 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +29,14 @@ import java.util.Map;
 @RequestMapping("/user")
 @Api(tags = "User 用户相关接口",value = "提供用户相关的 Rest API接口")
 @Validated
+@CacheConfig(cacheNames = "ccr:user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @ApiOperation(value = "获取用户列表接口 ",httpMethod = "GET",nickname = "getUserListWithPage")
     @GetMapping("/")
@@ -37,6 +46,7 @@ public class UserController {
         return this.userService.listByPage(pageNum,pageSize);
     }
 
+    @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
     public User get(@PathVariable("id") @Min(1) @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
@@ -75,6 +85,13 @@ public class UserController {
         return new Result(userService.add(user));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#user.id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口",httpMethod = "PUT",nickname = "updateUser")
     public Result update(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user) {
@@ -88,6 +105,13 @@ public class UserController {
 
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @PutMapping("/update_password/{id}")
     @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
     public Result updatePassword(@PathVariable("id") @Min(1)
@@ -100,6 +124,13 @@ public class UserController {
         return new Result(userService.updateByPrimaryKeySelective(user));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @PutMapping("/update_username/{id}")
     @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
     public Result updateUsername(@PathVariable("id") @Min(1)
@@ -114,6 +145,13 @@ public class UserController {
         return new Result(userService.updateByPrimaryKeySelective(user));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @PutMapping("/update_tel/{id}")
     @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
     public Result updateTel(@PathVariable("id") @Min(1)
@@ -128,6 +166,13 @@ public class UserController {
         return new Result(userService.updateByPrimaryKeySelective(user));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除单个用户接口",httpMethod = "DELETE",nickname = "deleteOneUser")
     public Result delete(@PathVariable("id") @Min(1)
@@ -136,6 +181,13 @@ public class UserController {
         return new Result(userService.delete(id));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "更新用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
     @PutMapping("/update_binding")
     public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
@@ -147,7 +199,16 @@ public class UserController {
     @PutMapping("/update_password_by_tel")
     public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
                                       @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
-        return new Result(userService.updatePasswordByTel(tel,new BCryptPasswordEncoder().encode(password)));
+        User byTel = userService.getByTel(tel);
+        if (byTel!=null) {
+
+            Result result = new Result(userService.updatePasswordByTel(tel, new BCryptPasswordEncoder().encode(password)));
+            userService.evictUser(byTel.getId());
+            return result;
+        }
+        else
+            return new Result(0,"用户不存在");
+
     }
 
     @ApiOperation(value = "获取多个用户信息接口",httpMethod = "GET",nickname = "getUserByIds")

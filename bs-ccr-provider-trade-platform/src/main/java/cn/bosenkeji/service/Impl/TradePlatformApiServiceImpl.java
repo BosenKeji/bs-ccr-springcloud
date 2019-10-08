@@ -3,15 +3,22 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.service.TradePlatformService;
+import cn.bosenkeji.util.RsaUtils;
 import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.bouncycastle.util.encoders.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author CAJR
@@ -58,14 +65,10 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public Optional<Integer> checkExistByKeyAndStatus(int userId,String accessKey, String secretKey,int status) {
-        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,accessKey, secretKey, status));
+    public Optional<Integer> checkExistByKeyAndStatus(int userId,String robotId,int status) {
+        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,robotId, status));
     }
 
-    @Override
-    public Optional<Integer> checkExistByKey(String accessKey, String secretKey) {
-        return Optional.ofNullable(this.tradePlatformApiMapper.checkExistByKey(accessKey, secretKey));
-    }
 
     @Override
     public Optional<Integer> checkExistByUserIdAndNickName(int userId, String nickName) {

@@ -5,6 +5,7 @@ import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairEnum;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPair;
@@ -12,6 +13,10 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +31,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * add cache by xivin
+ * 纯单表操作
+ */
+
+/**
  * @Author CAJR
  * @create 2019/7/11 11:45
  */
@@ -33,6 +43,7 @@ import java.util.Optional;
 @RequestMapping("/coin_pair")
 @Validated
 @Api(tags = "CoinPair 货币对相关接口", value = "提供货币对相关接口的 Rest API")
+@CacheConfig(cacheNames = "ccr:coinPair")
 public class CoinPairController {
 
     @Resource
@@ -41,6 +52,8 @@ public class CoinPairController {
     @Resource
     DiscoveryClient discoveryClient;
 
+
+    @Cacheable(value = RedisInterface.COIN_PAIR_LIST_KEY,key = "#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取货币对列表接口",httpMethod = "GET",nickname = "getCoinPairByPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
@@ -48,18 +61,25 @@ public class CoinPairController {
         return this.coinPairService.listByPage(pageNum,pageSizeCommon);
     }
 
+    @Cacheable(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#id")
     @ApiOperation(value = "获取单个货币对接口",httpMethod = "GET",nickname = "getOneCoinPair")
     @GetMapping("/{id}")
     public CoinPair get(@PathVariable("id") @Min(1)  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
         return this.coinPairService.get(id);
     }
 
+    //@Cacheable(value = RedisInterface.COIN_PAIR_LIST_NAME_KEY,key = "#name")  缓存同步存在问题
     @ApiOperation(value = "根据货币对name获取货币对信息接口",httpMethod = "GET",nickname = "getOneCoinPairByName")
     @GetMapping("/by_name/{name}")
     public CoinPair getOneCoinPairByName(@PathVariable("name")   @ApiParam(value = "货币对name", required = true, type = "string") String name){
         return this.coinPairService.getByName(name);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "添加单个货币对接口",httpMethod = "POST",nickname = "addOneCoinPair")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
@@ -74,6 +94,16 @@ public class CoinPairController {
         return new Result<>(this.coinPairService.add(coinPair));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#coinPair.id"),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "更新单个货币对接口",httpMethod = "PUT",nickname = "updateOneCoinPair")
     @PutMapping("/")
     public Result update(@RequestBody @Valid  @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
@@ -84,6 +114,17 @@ public class CoinPairController {
         return new Result<>(this.coinPairService.update(coinPair));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,allEntries = true),
+
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "删除单个货币对接口",httpMethod = "DELETE",nickname = "deleteOneCoinPair")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){
@@ -95,6 +136,7 @@ public class CoinPairController {
         return new Result <>(this.coinPairService.delete(id));
     }
 
+    @Cacheable(value = RedisInterface.COIN_PAIR_LIST_IDS_KEY,key = "#ids")
     @GetMapping("/section")
     @ApiIgnore
     public List<CoinPair> findSection(@RequestParam("ids") List<Integer> ids){

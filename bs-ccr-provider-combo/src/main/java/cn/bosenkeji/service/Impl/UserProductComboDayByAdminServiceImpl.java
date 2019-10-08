@@ -1,18 +1,16 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
-import cn.bosenkeji.job.MySchedule;
+import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
-import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
-import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
-import cn.bosenkeji.vo.Admin;
+import cn.bosenkeji.service.JobService;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
-import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,18 +31,16 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Resource
     private UserProductComboDayMapper userProductComboDayMapper;
 
-    @Resource
-    private UserProductComboRedisTemplate userProductComboRedisTemplate;
+    @Autowired
+    private JobMapper jobMapper;
+
 
     @Resource
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private JobService jobService;
 
-    @Resource
-    private MySchedule mySchedule;
-
-    @Resource
-    private IUserClientService iUserClientService;
 
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
@@ -56,28 +52,30 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         //添加缓存
         int id = userProductComboDay.getUserProductComboId();
 
-        //JobDetail jobDetail = scheduler.getJobDetail(JobKey.jobKey(userProductComboDay.getUserProductComboId() + ""));
-        //设置增加的有效时间
-        //Long expire = userProductComboRedisTemplate.getExpire(id);
         Double remainTime=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
 
         //如果剩余时长小于0，则要重新开始定时任务
-        if(remainTime==null||remainTime<=0) {
+        /*if(remainTime==null||remainTime<=0) {
             try {
+                Job job = jobMapper.selectByJobName(String.valueOf(id));
+                if(job!=null) {
+                    jobService.enableJob(job.getJobId());
+                    Log.info("定时任务"+id+"重新执行！！！");
+                    //mySchedule.rescheduleJob(String.valueOf(id));
+                }
 
-                mySchedule.rescheduleJob(String.valueOf(id));
-
-                Log.info("定时任务"+id+"重新执行！！！");
             }catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }
+        }*/
 
-            redisTemplate.opsForZSet().incrementScore(UserComboRedisEnum.UserComboTime,String.valueOf(id),+userProductComboDay.getNumber());
+        int time=userProductComboDay.getNumber()+1;
+            redisTemplate.opsForZSet().incrementScore(UserComboRedisEnum.UserComboTime,String.valueOf(id),+time);
 
             //新增用户套餐时长
             userProductComboDayMapper.insert(userProductComboDay);
+
             //新增用户套餐时长操作
             userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
 

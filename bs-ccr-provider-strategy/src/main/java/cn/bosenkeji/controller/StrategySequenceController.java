@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.StrategySequenceService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
@@ -10,6 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +28,8 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/strategy_sequence")
 @Validated
-@Api(tags = "策略数列相关接口", value = "提供策略数列的相关接口 Rest API")
+@Api(tags = "strategySequence 策略数列相关接口", value = "提供策略数列的相关接口 Rest API")
+@CacheConfig(cacheNames = "ccr:strategySequence")
 public class StrategySequenceController {
 
     @Autowired
@@ -34,6 +40,12 @@ public class StrategySequenceController {
     private DiscoveryClient client;
 
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.STRATEGY_SEQUENCE_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.STRATEGY_LIST_KEY,allEntries = true)
+            }
+    )
     @PostMapping(value = "/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的基本信息进行添加",nickname = "insertStrategySequence",httpMethod = "POST")
     public Result insertStrategySequence(
@@ -47,6 +59,12 @@ public class StrategySequenceController {
         return new Result<>(strategySequenceService.insertStrategySequenceBySelective(sequence));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.STRATEGY_SEQUENCE_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.STRATEGY_LIST_KEY,allEntries = true)
+            }
+    )
     @PostMapping(value = "/value/")
     @ApiOperation(value = "添加策略数列信息", notes = " 对数列的值信息进行添加",nickname = "insertStrategySequenceValue",httpMethod = "POST")
     public Result insertStrategySequenceValue(
@@ -64,6 +82,7 @@ public class StrategySequenceController {
         return new Result<>(strategySequenceService.insertStrategySequenceValueBySelective(sequenceValue));
     }
 
+    @Cacheable(value = RedisInterface.STRATEGY_SEQUENCE_LIST_KEY,key = "#pageNum+'-'+#pageSize")
     @GetMapping(value = "/")
     @ApiOperation(value = "获取数列列表",notes = "带分页")
     public PageInfo<StrategySequence> findAll(
@@ -74,6 +93,7 @@ public class StrategySequenceController {
         return pageInfo;
     }
 
+    @Cacheable(value = RedisInterface.STRATEGY_SEQUENCE_ID_KEY,key = "#id")
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "获取指定数列信息",notes = "通过数列Id获取指定数列的信息")
     public Result findSequenceByPrimaryKey(

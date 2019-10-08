@@ -16,7 +16,6 @@ public interface TradePlatformApiService {
 
     TradePlatformApi get(int id);
 
-
     Optional<Integer> update(TradePlatformApi tradePlatformApi);
 
     Optional<Integer> add(TradePlatformApi tradePlatformApi);
@@ -25,11 +24,10 @@ public interface TradePlatformApiService {
 
     TradePlatformApi getByUserId(int userId);
 
-    Optional<Integer> checkExistByKeyAndStatus (int userId,String accessKey, String secretKey,int status);
-
-    Optional<Integer> checkExistByKey(String accessKey, String secretKey);
+    Optional<Integer> checkExistByKeyAndStatus (int userId,String robotId,int status);
 
     Optional<Integer> checkExistByUserIdAndNickName (int userId, String nickName);
 
     List<TradePlatformApi> findAll();
+
 }

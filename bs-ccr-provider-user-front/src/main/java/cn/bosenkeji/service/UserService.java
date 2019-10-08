@@ -24,6 +24,8 @@ public interface UserService {
     List<User> list();
     PageInfo<User> listByPage(int pageNum,int pageSize);
 
+    void evictUser(int id);
+
 
 
 }

@@ -6,34 +6,35 @@ mybatis:
 spring:
   application:
     name: bs-ccr-provider-product-combo
-  quartz:
-    #数据库方式
-    job-store-type: jdbc
-    #初始化表结构
-    #jdbc:
-    #initialize-schema: ALWAYS
-    #相关属性配置
-    properties:
-      org:
-        quartz:
-          scheduler:
-            instanceName: DefaultQuartzScheduler
-            instanceId: AUTO
-          threadPool:
-            class: org.quartz.simpl.SimpleThreadPool
-            threadCount: 5
-            threadPriority: 5
-            threadsInheritContextClassLoaderOfInitializingThread: true
-          jobStore:
-            class: org.quartz.impl.jdbcjobstore.JobStoreTX
-            #            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            tablePrefix: QRTZ_
-            isClustered: true
-    #            clusterCheckinInterval: 10000
-    #            useProperties: false
+  schedulerx2:
+    # 测试环境需要配 endpoint namespace group-id  edas下只需要配group-id
+    endpoint: acm.aliyun.com
+    namespace: 22c16fb2-faa1-4c49-9645-38ae59c76c6d
+    group-id: ec569d2f-265b-4797-9de3-026ba38bb740 #测试组id
+    #group-id: alibaba-springboot-demo-group # edas环境只需要配置groupId
   main:
     allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+
+regionId: cn-hangzhou
+
+accessKeyId: LTAIEBWhTbhsWByO
+#鉴权使用的 Access Key Secret
+accessKeySecret: FXqHcqjJMPftFuMjH1HOZeGpAGZ7Ko
+#产品名称
+productName: schedulerx2
+#参见支持地域列表，选择 Domain
+domain: schedulerx.cn-hangzhou.aliyuncs.com
+
+namespace: 0055acd5-2ffd-4196-ae2a-b3f52f8e604c
+groupId: alibaba-springboot-demo-group
+
+timeExpression: 86400  #延迟一天执行
+jobType: java
+className: cn.bosenkeji.job.SimpleTask  # 任务类
+executeMode: standalone  #执行
+timeType: 4  # 以 second_depay方式执行
+redisScriptPath: script/incrementScore.lua
