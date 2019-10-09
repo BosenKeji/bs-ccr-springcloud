@@ -34,7 +34,7 @@ groupId: alibaba-springboot-demo-group
 
 #timeExpression:   #延迟一天执行
 jobType: java
-className: cn.bosenkeji.job.SimpleTask  # 任务类
+className: cn.bosenkeji.job.UserComboTask  # 任务类
 executeMode: standalone  #执行
 timeType: 1  # 以 cron 表达式方式执行
 redisScriptPath: script/incrementScore.lua

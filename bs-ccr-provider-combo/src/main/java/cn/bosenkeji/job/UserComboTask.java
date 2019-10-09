@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class SimpleTask extends JavaProcessor {
+public class UserComboTask extends JavaProcessor {
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
