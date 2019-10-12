@@ -7,6 +7,7 @@ import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.permission.Role;
 import cn.bosenkeji.vo.permission.RolePermissionGroup;
 import cn.bosenkeji.vo.permission.UserRole;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

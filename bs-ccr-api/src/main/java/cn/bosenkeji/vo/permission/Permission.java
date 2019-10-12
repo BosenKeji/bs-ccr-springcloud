@@ -21,6 +21,13 @@ public class Permission {
 
     private Timestamp updatedAt;
 
+    public Permission(int id, String name, String url, int httpMethod) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+        this.httpMethod = httpMethod;
+    }
+
     public Permission(int id, String name, String url, int httpMethod, int type, String description, int status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.name = name;

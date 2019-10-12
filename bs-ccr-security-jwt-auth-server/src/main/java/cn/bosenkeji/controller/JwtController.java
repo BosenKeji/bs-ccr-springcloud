@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -28,6 +29,9 @@ public class JwtController {
     @Autowired
     private JwtAccessTokenConverter tokenConverter;
 
+    @Autowired
+    private RoleService roleService;
+
     @GetMapping("/jwt/user")
     public Object getUser(@RequestParam("token") String token) {
 
@@ -35,5 +39,11 @@ public class JwtController {
         OAuth2Authentication authentication = tokenServices.loadAuthentication(accessToken.getValue());
         Map<String, ?> stringMap = tokenConverter.convertAccessToken(accessToken, authentication);
         return stringMap;
+    }
+
+
+    @GetMapping("/test")
+    public void test() {
+        System.out.println(roleService);
     }
 }

@@ -1,6 +1,5 @@
 server:
   port: 8100
-
 spring:
   application:
     name: bs-ccr-security-jwt-auth-server
@@ -10,4 +9,5 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-
+mybatis:
+  mapper-locations: classpath*:mapping/*.xml

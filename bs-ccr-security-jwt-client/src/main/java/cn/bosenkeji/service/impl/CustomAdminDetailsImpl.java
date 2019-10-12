@@ -1,5 +1,7 @@
 package cn.bosenkeji.service.impl;
 
+import cn.bosenkeji.service.PermissionGroupService;
+import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.Admin;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +20,20 @@ import java.util.List;
  **/
 public class CustomAdminDetailsImpl implements UserDetails {
 
+    private transient RoleService roleService;
+
+    private transient PermissionGroupService permissionGroupService;
+
     private Admin admin;
 
-    public CustomAdminDetailsImpl(Admin admin) {
+    CustomAdminDetailsImpl(Admin admin) {
         this.admin = admin;
+    }
+
+    CustomAdminDetailsImpl(Admin admin, RoleService roleService, PermissionGroupService permissionGroupService) {
+        this.admin = admin;
+        this.roleService = roleService;
+        this.permissionGroupService = permissionGroupService;
     }
 
     @Override
