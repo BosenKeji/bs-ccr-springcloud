@@ -6,6 +6,7 @@ import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
+import org.dromara.hmily.annotation.Hmily;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public interface IUserProductComboClientService {
 
 
 
+    @Hmily
     @PostMapping("/user_product_combo/")
     Result add(@RequestBody UserProductCombo userProductCombo);
 

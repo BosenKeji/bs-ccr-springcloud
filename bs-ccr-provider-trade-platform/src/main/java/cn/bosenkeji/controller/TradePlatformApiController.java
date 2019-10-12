@@ -50,7 +50,13 @@ public class TradePlatformApiController {
     @Resource
     private DiscoveryClient client ;
 
-
+    /**
+     * 与  tradePlatform 关联查询
+     * @param pageNum
+     * @param pageSizeCommon
+     * @param userId
+     * @return
+     */
     @Cacheable(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,key = "#userId+'-'+#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取交易平台api列表接口",notes = "交易平台api列表",httpMethod = "GET",nickname = "getListTradePlatformApiByPage")
     @GetMapping("/")
@@ -60,6 +66,11 @@ public class TradePlatformApiController {
         return this.tradePlatformApiService.listByPage(pageNum,pageSizeCommon,userId);
     }
 
+    /**
+     * 与 tradePlatform 关联查询
+     * @param id
+     * @return
+     */
     @Cacheable(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id")
     @ApiOperation(value = "根据tradePlatformApiId获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
     @GetMapping("/{id}")
@@ -112,7 +123,7 @@ public class TradePlatformApiController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#tradePlatformApi.id"),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id"),
                     @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true)
             }
     )
@@ -127,6 +138,11 @@ public class TradePlatformApiController {
         return new Result<>(this.tradePlatformApiService.delete(id));
     }
 
+    /**
+     * 与 tradePlatform 关联查询
+     * @param userId
+     * @return
+     */
     @GetMapping("/user/{userId}")
     public TradePlatformApi selectByUserId(@PathVariable("userId") int userId) {
         return tradePlatformApiService.getByUserId(userId);

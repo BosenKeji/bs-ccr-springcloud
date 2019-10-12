@@ -11,3 +11,19 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+
+org:
+  dromara:
+    hmily:
+      serializer: kryo
+      recover-delay-time: 1  # 定时任务延迟时间
+      retry-max: 3
+      scheduled-delay: 120
+      scheduled-thread-max: 4
+      repository-support: db
+      hmily-db-config:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/duoduo?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+        username: root
+        password: 123zxc

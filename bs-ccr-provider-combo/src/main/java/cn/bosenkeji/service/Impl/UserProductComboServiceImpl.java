@@ -19,9 +19,13 @@ import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
 import com.aliyuncs.schedulerx2.model.v20190430.GetJobInfoResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.dromara.hmily.annotation.Hmily;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -64,13 +68,20 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     private JobService jobService;
 
 
-
+    private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
 
 
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
+    /**
+     * 涉及分布式事务，要注意各个操作的顺序
+     * @param userProductCombo
+     * @return
+     */
+    @Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+    //@Transactional
     @Override
     public int add(UserProductCombo userProductCombo) {
 
@@ -78,12 +89,15 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
-
-        //保存到数据库
-        userProductComboMapper.insert(userProductCombo);
-        String idStr=String.valueOf(userProductCombo.getId());
+//int i=1/0;
+        //保存到数据库 管理端部署机器人
+        int aresult=userProductComboMapper.insert(userProductCombo);
+        //部署失败直接返回
+        if(aresult!=1)
+            return 0;
 
         /**
+         *  这步该如何放置？？？
          *  1 .通过ID除以5000取整得到保存到第几个集合，如 userComboTime_0 userComboTime_1等等
          *  2 .通过ID除以5000 取余判断是否需要新建任务调度，当等于0时要创建任务调度，
          */
@@ -102,21 +116,42 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                 e.printStackTrace();
             }
         }
-        //用户时长添加到redis
-        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,idStr,time+1);
 
-
-
+//int i=1/0;
+        //用户端机器人
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
         tradePlatformApiBindProductCombo.setUserId(userProductCombo.getUserId());
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        int uresult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();
 
-        iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo);
+        System.out.println(uresult+"uresult");
+        String idStr=String.valueOf(userProductCombo.getId());
+
+        //用户时长添加到redis
+        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,idStr,time+1);
+        //int i=1/0;
         return 1;
 
     }
+
+    public int addConfirm(UserProductCombo userProductCombo) {
+
+        Log.info(userProductCombo.getId()+"机器人部署确认成功");
+        return 3;
+    }
+
+    public int addCancel(UserProductCombo userProductCombo) {
+        Log.error(userProductCombo.getId()+"机器人部署失败，进入cancel");
+
+        //删除机器人
+        userProductComboMapper.deleteByPrimaryKey(userProductCombo.getId());
+        int dividedBy5000 = CalculateUtil.dividedBy5000(userProductCombo.getId());
+        redisTemplate.opsForZSet().remove(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,String.valueOf(userProductCombo.getId()));
+        return -3;
+    }
+
 
 
     @Override

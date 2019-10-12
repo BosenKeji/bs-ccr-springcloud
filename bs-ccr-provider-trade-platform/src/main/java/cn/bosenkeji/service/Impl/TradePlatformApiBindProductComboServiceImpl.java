@@ -9,8 +9,13 @@ import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.dromara.hmily.annotation.Hmily;
+import org.dromara.hmily.common.exception.HmilyRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -35,6 +40,8 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     //注入用户套餐生产者
     @Resource
     private IUserProductComboClientService iUserProductComboClientService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId, int pageNum, int pageSize) {
@@ -80,10 +87,28 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     }
 
 
+    @Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+    @Transactional
     @Override
     public int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
-        return tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo);
+        //int i=1/0;
+        int result=tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo);
+        //int i=1/0;
+        return result;
+    }
+
+    public int addConfirm(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+
+        logger.info(tradePlatformApiBindProductCombo.getUserProductComboId()+"部署绑定机器人成功");
+        return 2;
+    }
+
+    public int addCancel(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+
+        logger.error(tradePlatformApiBindProductCombo.getUserProductComboId()+"部署绑定机器人失败，进行cancel操作");
+        tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(tradePlatformApiBindProductCombo.getId());
+        return -2;
     }
 
 

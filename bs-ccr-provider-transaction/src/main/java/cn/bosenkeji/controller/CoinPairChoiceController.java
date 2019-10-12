@@ -34,7 +34,7 @@ import java.util.Optional;
 
 /**
  * add cache by xivin
- * 与coinPair有关联
+ * 与coinPair coinPairChoiceAttribute coinPairChoiceAttributeCustom 有关联
  */
 
 /**

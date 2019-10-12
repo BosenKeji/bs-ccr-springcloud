@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
 import sun.util.locale.provider.LocaleServiceProviderPool;
 
 import java.util.Map;
@@ -19,7 +22,7 @@ import java.util.Map;
  * @Email 8586826@qq.com
  * @Versio V1.0
 **/
-@SpringBootApplication
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, EurekaClientAutoConfiguration.class})
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 public class TradeBasicDataApp {

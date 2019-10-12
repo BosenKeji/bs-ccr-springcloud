@@ -17,6 +17,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
+ *  暂时未加缓存
+ *  PS : 用户套餐每天0-1点 会更新 剩余时长
+ */
+
+/**
  * @author xivin
  * @ClassName cn.bosenkeji.controller
  * @Version V1.0
