@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.aliyuncs.schedulerx2.model.v20190430.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class JobServiceImpl implements JobService {
 
@@ -45,6 +48,15 @@ public class JobServiceImpl implements JobService {
     @Value("${timeType}")
     private int timeType;
 
+    @Value("${sendChannel}")
+    private String sendChannel;
+
+    @Value("${channelUsername}")
+    private String channelUsername;
+
+    @Value("${channelUserPhone}")
+    private String channelUserPhone;
+
     /*@Value("${timeExpression}")
     private String timeExpression;*/
 
@@ -65,7 +77,14 @@ public class JobServiceImpl implements JobService {
         request.setTimeExpression(timeExpression);
         request.setParameters(parameters);
 
-
+        request.setFailEnable(true);
+        request.setSendChannel(sendChannel);
+        List<CreateJobRequest.ContactInfo> list=new ArrayList<>();
+        CreateJobRequest.ContactInfo info=new CreateJobRequest.ContactInfo();
+        info.setUserName(channelUsername);
+        info.setUserPhone(channelUserPhone);
+        list.add(info);
+        request.setContactInfos(list);
 
         CreateJobResponse response=defaultAcsClient.getAcsResponse(request);
         return response;

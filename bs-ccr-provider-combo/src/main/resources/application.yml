@@ -26,5 +26,44 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+# 分布式事务 hmily相关配置
+org:
+  dromara:
+    hmily:
+      serializer: kryo
+      recover-delay-time: 1
+      retry-max: 3
+      scheduled-delay: 120
+      scheduled-thread-max: 4
+      repository-support: db
+      hmily-db-config:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/duoduo?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+        username: root
+        password: 123zxc
+
+regionId: cn-hangzhou
+
+accessKeyId: LTAIEBWhTbhsWByO
+#鉴权使用的 Access Key Secret
+accessKeySecret: FXqHcqjJMPftFuMjH1HOZeGpAGZ7Ko
+#产品名称
+productName: schedulerx2
+#参见支持地域列表，选择 Domain
+domain: schedulerx.cn-hangzhou.aliyuncs.com
+
+namespace: 0055acd5-2ffd-4196-ae2a-b3f52f8e604c
+groupId: alibaba-springboot-demo-group
+
+#timeExpression:   #延迟一天执行
+jobType: java
+className: cn.bosenkeji.job.UserComboTask  # 任务类
+executeMode: standalone  #执行
+timeType: 1  # 以 cron 表达式方式执行
+sendChannel: sms  # 执行失败时以短信方式通知，目前只支持短信方式
+channelUsername: xivin  #联系人
+channelUserPhone: 15814516363  #联系电话
+
 redisScriptPath: script/incrementScore.lua
 

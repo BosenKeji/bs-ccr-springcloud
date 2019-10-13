@@ -9,4 +9,6 @@ package cn.bosenkeji;
 public interface UserComboRedisEnum {
 
     String UserComboTime="userComboTime";
+
+    int maxSize=5000;
 }

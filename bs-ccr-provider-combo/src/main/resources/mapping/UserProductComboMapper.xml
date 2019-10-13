@@ -10,11 +10,12 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="redis_key" jdbcType="VARCHAR" property="redisKey" />
     <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at
+    id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at, redis_key
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -34,10 +35,10 @@
     </selectKey>
     insert into user_product_combo (user_id, order_number, product_combo_id, 
       remark, status, created_at, 
-      updated_at)
+      updated_at,redis_key)
     values (#{userId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{productComboId,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{updatedAt,jdbcType=TIMESTAMP}, #{redisKey,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -66,6 +67,9 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
+      <if test="redis_key != null">
+        redis_key,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -88,6 +92,9 @@
       </if>
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="redis_key != null">
+        #{redisKey,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -115,6 +122,9 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="redis_key != null">
+        redis_key = #{redisKey,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -126,7 +136,8 @@
       remark = #{remark,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      redis_key = #{redisKey,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -174,5 +185,13 @@
       #{id}
     </foreach>
   </select>
+
+  <update id="updateRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+    where
+    id = #{id,jdbcType=INTEGER}
+  </update>
 
 </mapper>

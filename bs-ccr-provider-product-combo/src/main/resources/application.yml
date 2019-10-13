@@ -54,4 +54,8 @@ jobType: java
 className: cn.bosenkeji.job.UserComboTask  # 任务类
 executeMode: standalone  #执行
 timeType: 1  # 以 cron 表达式方式执行
+sendChannel: sms  # 执行失败时以短信方式通知，目前只支持短信方式
+channelUsername: xivin  #联系人
+channelUserPhone: 15814516363  #联系电话
+
 redisScriptPath: script/incrementScore.lua

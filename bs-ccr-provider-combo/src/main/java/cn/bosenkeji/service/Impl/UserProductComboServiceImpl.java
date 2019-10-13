@@ -1,22 +1,15 @@
 package cn.bosenkeji.service.Impl;
 
-import cn.bosenkeji.UserComboRedisEnum;
-import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.utils.CalculateUtil;
 import cn.bosenkeji.utils.UserComboTimeUtil;
-import cn.bosenkeji.vo.Job;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
-import com.aliyuncs.schedulerx2.model.v20190430.GetJobInfoResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.dromara.hmily.annotation.Hmily;
@@ -25,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -41,7 +33,6 @@ import java.util.Map;
  * @create 2019-07-15 11:17
  */
 @Service
-//@CacheConfig(cacheNames = "userproductcombo")
 public class UserProductComboServiceImpl implements IUserProductComboService {
 
     @Resource
@@ -69,8 +60,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
-
-
+    
 
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
@@ -85,39 +75,23 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public int add(UserProductCombo userProductCombo) {
 
-
-
         //查询套餐时长
         int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
-//int i=1/0;
+        //int i=1/0;
         //保存到数据库 管理端部署机器人
         int aresult=userProductComboMapper.insert(userProductCombo);
         //部署失败直接返回
         if(aresult!=1)
             return 0;
 
-        /**
-         *  这步该如何放置？？？
-         *  1 .通过ID除以5000取整得到保存到第几个集合，如 userComboTime_0 userComboTime_1等等
-         *  2 .通过ID除以5000 取余判断是否需要新建任务调度，当等于0时要创建任务调度，
-         */
-        int dividedBy5000 = CalculateUtil.dividedBy5000(userProductCombo.getId());
-        int by5000ForRemainder = CalculateUtil.dividedBy5000ForRemainder(userProductCombo.getId());
-        String userComboTimeKey=UserComboRedisEnum.UserComboTime+"_"+dividedBy5000;
-        if(by5000ForRemainder==0) {
-            try{
-                //这里简单处理任务调度的时间表达式
-                if(dividedBy5000*5<60) {
-                    String timeExpression = "0 " + dividedBy5000 * 5 + " 0 * * ?";
-                    jobService.createJob(userComboTimeKey, timeExpression, userComboTimeKey);
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        String idStr=String.valueOf(userProductCombo.getId());
+        int key=0;
+        String currentKey="";
 
-//int i=1/0;
+        UserComboTimeUtil.addTime(currentKey,time,key,jobService,redisTemplate,userProductCombo,userProductComboMapper);
+
+
+        //int i=1/0;
         //用户端机器人
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
@@ -127,10 +101,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         int uresult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();
 
         System.out.println(uresult+"uresult");
-        String idStr=String.valueOf(userProductCombo.getId());
-
-        //用户时长添加到redis
-        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,idStr,time+1);
         //int i=1/0;
         return 1;
 
@@ -142,13 +112,14 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         return 3;
     }
 
+
     public int addCancel(UserProductCombo userProductCombo) {
         Log.error(userProductCombo.getId()+"机器人部署失败，进入cancel");
 
         //删除机器人
         userProductComboMapper.deleteByPrimaryKey(userProductCombo.getId());
-        int dividedBy5000 = CalculateUtil.dividedBy5000(userProductCombo.getId());
-        redisTemplate.opsForZSet().remove(UserComboRedisEnum.UserComboTime+"_"+dividedBy5000,String.valueOf(userProductCombo.getId()));
+
+        redisTemplate.opsForZSet().remove(userProductCombo.getRedisKey(),String.valueOf(userProductCombo.getId()));
         return -3;
     }
 
@@ -243,36 +214,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         return selectUserProductComboByUserId(user.getId(),pageSize,pageNum);
 
-        /*List<Integer> pids=new ArrayList<>();
-
-        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(user.getId());
-
-        for (UserProductCombo userProductCombo : userProductCombos) {
-
-            //从缓存拿去剩余时间
-            int id = userProductCombo.getId();
-            double time=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
-            //long time=userProductComboRedisTemplate.getExpire(id);
-
-            userProductCombo.setRemainTime(time>0?(int)time:0);
-
-            //循环收集产品ID
-            pids.add(userProductCombo.getProductCombo().getProductId());
-        }
-
-        if(pids!=null&&pids.size()>0) {
-
-            //通过多个id获取产品的 map
-            Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
-            //循环把产品 映射到套餐中
-            for (UserProductCombo userProductCombo:userProductCombos) {
-                Integer id=userProductCombo.getProductCombo().getProductId();
-                if(id!=null&&id>0&productMap.containsKey(id)) {
-                    userProductCombo.getProductCombo().setProduct(productMap.get(id));
-                }
-            }
-        }
-        return new PageInfo<>(userProductCombos);*/
     }
 
     /**
@@ -290,34 +231,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
 
         getProductByPids(userProductCombos);
-        /*List<Integer> pids=new ArrayList<>();
-
-        for (UserProductCombo userProductCombo : userProductCombos) {
-
-            //从缓存拿去剩余时间
-            int id = userProductCombo.getId();
-            double time=redisTemplate.opsForZSet().score(UserComboRedisEnum.UserComboTime,String.valueOf(id));
-            //long time=userProductComboRedisTemplate.getExpire(id);
-
-
-            userProductCombo.setRemainTime(time>0?(int) time:0);
-
-            //收集多个产品 ID
-            pids.add(userProductCombo.getProductCombo().getProductId());
-        }
-
-        if(pids!=null&&pids.size()>0) {
-
-            //通过多个产品ID查询产品列表
-            Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
-            //逐一映射
-            for (UserProductCombo userProductCombo:userProductCombos) {
-                Integer id=userProductCombo.getProductCombo().getProductId();
-                if(id!=null&&id>0&productMap.containsKey(id)) {
-                    userProductCombo.getProductCombo().setProduct(productMap.get(id));
-                }
-            }
-        }*/
 
         return new PageInfo<>(userProductCombos);
     }
@@ -342,7 +255,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             //从缓存拿去剩余时间
             int id = userProductCombo.getId();
-            Double score = redisTemplate.opsForZSet().score(UserComboTimeUtil.getRedisKeyById(id), String.valueOf(id));
+            String redisKey=userProductCombo.getRedisKey();
+            Double score = redisTemplate.opsForZSet().score(redisKey, String.valueOf(id));
             int time=0;
             if(score!=null)
                 time=score.intValue();

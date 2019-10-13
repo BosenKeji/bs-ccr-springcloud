@@ -20,6 +20,8 @@ public interface UserProductComboMapper {
 
     int updateByPrimaryKey(UserProductCombo record);
 
+    int updateRedisKey(UserProductCombo record);
+
     List<UserProductCombo> findAll();
     List<Integer> selectPrimaryKeyByUserId(int userId);
 
