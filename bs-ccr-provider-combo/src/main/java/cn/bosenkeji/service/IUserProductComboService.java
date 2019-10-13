@@ -30,4 +30,6 @@ public interface IUserProductComboService {
     int delete(int id);
     int deleteByIds(List<Integer> ids);
 
+    int moveComboTime();
+
 }
