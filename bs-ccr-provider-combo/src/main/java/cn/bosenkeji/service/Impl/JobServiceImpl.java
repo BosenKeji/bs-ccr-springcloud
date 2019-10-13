@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import com.aliyuncs.schedulerx2.model.v20190430.*;
 
 import java.util.ArrayList;
@@ -94,6 +93,7 @@ public class JobServiceImpl implements JobService {
         Log.info("定时任务信息"+request);
         Log.info(toString());
         CreateJobResponse response=defaultAcsClient.getAcsResponse(request);
+        Log.info(response.getMessage()+"------data:"+response.getData()+"------success:"+response.getSuccess()+"------code:"+response.getCode());
         return response;
     }
 
