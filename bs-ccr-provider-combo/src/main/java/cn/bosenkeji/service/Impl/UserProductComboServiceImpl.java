@@ -11,6 +11,7 @@ import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.dromara.hmily.annotation.Hmily;
@@ -301,7 +302,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                 try{
 
                     System.out.println("尝试创建任务调度");
-                    jobService.createJob(UserComboRedisEnum.UserComboTime+"_0","0 0 0 * * ?",UserComboRedisEnum.UserComboTime+"_0");
+                    /*String timeExpression = "0 " + key * 5 + " 0 * * ?";
+                    jobService.createJob(currentKey, timeExpression, currentKey);*/
+                    CreateJobResponse job = jobService.createJob(UserComboRedisEnum.UserComboTime + "_0", "0 0 0 * * ?", UserComboRedisEnum.UserComboTime + "_0");
+                    if(!job.getSuccess()) {
+                        Log.error("schedulex create fail");
+                        return -1;
+                    }
+                    else {
+                        Log.info("schedulex create success！！！");
+                    }
                 }catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("初始化 任务调度失败");
