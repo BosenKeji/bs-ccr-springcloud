@@ -4,6 +4,8 @@ import cn.bosenkeji.service.JobService;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Component
 public class JobServiceImpl implements JobService {
+
+    private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${regionId}")
     private String regionId;
@@ -63,6 +67,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public CreateJobResponse createJob(String jobName,String timeExpression,String parameters) throws ClientException {
 
+        Log.info("进入创建调度任务");
         DefaultAcsClient defaultAcsClient = getDefaultAcsClient();
         CreateJobRequest request=new CreateJobRequest();
         request.setNamespace(namespace);
@@ -86,6 +91,7 @@ public class JobServiceImpl implements JobService {
         list.add(info);
         request.setContactInfos(list);
 
+        Log.info("定时任务信息"+request);
         CreateJobResponse response=defaultAcsClient.getAcsResponse(request);
         return response;
     }
