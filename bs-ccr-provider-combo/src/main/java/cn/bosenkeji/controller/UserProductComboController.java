@@ -97,6 +97,11 @@ public class UserProductComboController {
         return new Result(this.iUserProductComboService.delete(id));
     }
 
+    @GetMapping("/moveData")
+    public Result moveData() {
+        return new Result(this.iUserProductComboService.moveComboTime());
+    }
+
     //获取单个用户套餐交易平台api接口
 
 

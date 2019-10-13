@@ -1,5 +1,6 @@
 package cn.bosenkeji;
 
+import cn.bosenkeji.service.IUserProductComboService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +28,7 @@ public class ProductComboApp
     public static void main( String[] args )
     {
         SpringApplication.run(ProductComboApp.class,args);
+        //initComboData();
     }
 
     /*@Bean
@@ -42,6 +44,16 @@ public class ProductComboApp
             }
 
         };
+    }*/
+
+    /*@Bean
+    public static CommandLineRunner initComboData(ApplicationContext ctx) {
+        return args -> {
+            IUserProductComboService bean = ctx.getBean(IUserProductComboService.class);
+            bean.moveComboTime();
+            System.out.println("初始化数据完成");
+        };
+
     }*/
 
 }

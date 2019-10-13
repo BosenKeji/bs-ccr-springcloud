@@ -1,5 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.UserComboRedisEnum;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
@@ -12,6 +13,7 @@ import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.tools.javac.util.Convert;
 import org.dromara.hmily.annotation.Hmily;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -281,5 +284,46 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             }
         }
         return userProductCombos;
+    }
+
+    @Override
+    public int moveComboTime() {
+
+        int result=0;
+        if(!redisTemplate.hasKey(UserComboRedisEnum.UserComboTime+"_0")) {
+            System.out.println("用户时长 数据恢复中");
+            List<UserProductCombo> all = userProductComboMapper.findAll();
+            long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
+
+            //List<UserProductCombo> hasTimeCombo = getProductByPids(all);
+
+
+            if(all!=null&&all.size()>0) {
+
+                for (UserProductCombo userProductCombo : all) {
+                    Timestamp createdAt = userProductCombo.getCreatedAt();
+                    long createTime = createdAt.getTime();
+                    long remain= (currentTime-createTime)/(1000*60*60*24);
+                    long remainTime= userProductCombo.getProductCombo().getTime() - remain;
+                    if(remainTime>0) {
+                        redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_0",String.valueOf(userProductCombo.getId()),remainTime);
+                        result++;
+                    }
+                }
+
+                try{
+
+                    jobService.createJob(UserComboRedisEnum.UserComboTime+"_0","0 0 0 * * ?",UserComboRedisEnum.UserComboTime+"_0");
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("初始化 任务调度失败");
+                }
+
+            }
+            System.out.println("用户时长 数据恢复完成");
+
+        }
+
+        return result;
     }
 }
