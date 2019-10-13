@@ -311,6 +311,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                     }
                 }
 
+                userProductComboMapper.updateRedisKeyAll(UserComboRedisEnum.UserComboTime+"_0");
                 try{
 
                     jobService.createJob(UserComboRedisEnum.UserComboTime+"_0","0 0 0 * * ?",UserComboRedisEnum.UserComboTime+"_0");
