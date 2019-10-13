@@ -298,6 +298,15 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             if(all!=null&&all.size()>0) {
 
+                try{
+
+                    System.out.println("尝试创建任务调度");
+                    jobService.createJob(UserComboRedisEnum.UserComboTime+"_0","0 0 0 * * ?",UserComboRedisEnum.UserComboTime+"_0");
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("初始化 任务调度失败");
+                    return -1;
+                }
                 for (UserProductCombo userProductCombo : all) {
                     Timestamp createdAt = userProductCombo.getCreatedAt();
                     long createTime = createdAt.getTime();
@@ -310,13 +319,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
                 }
 
                 userProductComboMapper.updateRedisKeyAll(UserComboRedisEnum.UserComboTime+"_0");
-                try{
 
-                    jobService.createJob(UserComboRedisEnum.UserComboTime+"_0","0 0 0 * * ?",UserComboRedisEnum.UserComboTime+"_0");
-                }catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("初始化 任务调度失败");
-                }
 
             }
             System.out.println("用户时长 数据恢复完成");
