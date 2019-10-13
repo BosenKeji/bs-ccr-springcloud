@@ -9,8 +9,8 @@ spring:
   schedulerx2:
     # 测试环境需要配 endpoint namespace group-id  edas下只需要配group-id
     endpoint: acm.aliyun.com
-    namespace: 22c16fb2-faa1-4c49-9645-38ae59c76c6d
-    group-id: ec569d2f-265b-4797-9de3-026ba38bb740 #测试组id
+    namespace: 04e8e05c-4b97-493b-bfd0-39eb66a9b98d
+    group-id: bs-ccr-test-schedulerx #测试组id
     #group-id: alibaba-springboot-demo-group # edas环境只需要配置groupId
   main:
     allow-bean-definition-overriding: true
@@ -19,22 +19,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
-# 分布式事务 hmily相关配置
-org:
-  dromara:
-    hmily:
-      serializer: kryo
-      recover-delay-time: 1
-      retry-max: 3
-      scheduled-delay: 120
-      scheduled-thread-max: 4
-      repository-support: db
-      hmily-db-config:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-        username: root
-        password: 123zxc
+
 
 regionId: cn-hangzhou
 
