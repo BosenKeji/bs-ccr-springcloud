@@ -194,4 +194,11 @@
     id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="updateRedisKeyAll" parameterType="java.lang.String">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+
+  </update>
+
 </mapper>
