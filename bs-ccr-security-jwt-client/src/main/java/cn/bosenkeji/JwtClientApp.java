@@ -4,7 +4,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @ClassName App
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 **/
 @SpringBootApplication
 @MapperScan("cn.bosenkeji.mapper")
-@EnableTransactionManagement
 public class JwtClientApp {
     public static void main(String[] args) {
         SpringApplication.run(JwtClientApp.class, args);
