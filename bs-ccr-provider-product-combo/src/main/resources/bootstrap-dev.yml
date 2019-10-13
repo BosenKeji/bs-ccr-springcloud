@@ -19,4 +19,4 @@ spring:
         ext-config[4]:
           data-id: bs-ccr-transaction-config.yml
         ext-config[5]:
-          data-id: bs-crr-schedulerx-config.yml
+          data-id: bs-ccr-schedulerx-config.yml
