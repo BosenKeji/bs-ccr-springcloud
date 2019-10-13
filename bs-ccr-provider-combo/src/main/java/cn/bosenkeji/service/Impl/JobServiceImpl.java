@@ -92,6 +92,7 @@ public class JobServiceImpl implements JobService {
         request.setContactInfos(list);
 
         Log.info("定时任务信息"+request);
+        Log.info(toString());
         CreateJobResponse response=defaultAcsClient.getAcsResponse(request);
         return response;
     }
@@ -171,4 +172,23 @@ public class JobServiceImpl implements JobService {
         return defaultAcsClient;
     }
 
+    @Override
+    public String toString() {
+        return "JobServiceImpl{" +
+                "regionId='" + regionId + '\'' +
+                ", accessKeyId='" + accessKeyId + '\'' +
+                ", accessKeySecret='" + accessKeySecret + '\'' +
+                ", productName='" + productName + '\'' +
+                ", domain='" + domain + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", groupId='" + groupId + '\'' +
+                ", jobType='" + jobType + '\'' +
+                ", className='" + className + '\'' +
+                ", executeMode='" + executeMode + '\'' +
+                ", timeType=" + timeType +
+                ", sendChannel='" + sendChannel + '\'' +
+                ", channelUsername='" + channelUsername + '\'' +
+                ", channelUserPhone='" + channelUserPhone + '\'' +
+                '}';
+    }
 }
