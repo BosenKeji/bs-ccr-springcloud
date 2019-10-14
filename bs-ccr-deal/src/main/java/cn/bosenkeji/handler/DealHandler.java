@@ -20,6 +20,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -78,8 +80,14 @@ public class DealHandler {
 
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
-        //过滤不是该货币对的key
-        Set<String> filterSet = keySet.stream().filter((s) -> s.contains(symbol)).collect(Collectors.toSet());
+        //过滤不是该货币对的key 和旧的key
+        Set<String> filterSet = keySet.stream().filter((s) -> {
+            String regExg = "^trade-condition_\\S+_\\S+_\\S+";
+            Pattern p = Pattern.compile(regExg);
+            Matcher m = p.matcher(s);
+            return s.contains(symbol) && !m.matches();
+        }).collect(Collectors.toSet());
+
 
         filterSet.parallelStream().forEach((s)->{
 
