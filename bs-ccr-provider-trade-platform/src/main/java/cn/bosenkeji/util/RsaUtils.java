@@ -360,22 +360,22 @@ public class RsaUtils {
 //        System.out.println("公钥："+ Base64.toBase64String(publicKey));
 //        System.out.println("私钥："+ Base64.toBase64String(privateKey));
 //
-//        RsaUtils.loadKeyPairToFile(Base64.toBase64String(publicKey),Base64.toBase64String(privateKey));
+        RsaUtils.loadKeyPairToFile(keyMaps.get(PUBLIC_KEY),keyMaps.get(PRIVATE_KEY));
 
-        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
-        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
-
-        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3+967b59f5-c10d9f96-63126899-a0cc0";
-        System.out.println("===========甲方向乙方发送加密数据==============");
-        System.out.println("原文:"+str);
-        //公钥加密
-        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(),Base64.decode(publicKeyStr));
-        System.out.println("甲方 使用乙方公钥加密后的数据："+ Base64.toBase64String(code));
-        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
-        //私钥解密
-        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(privateKeyStr));
-        System.out.println("乙方解密后的数据："+new String(decode)+"");
+//        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
+//        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+//
+//        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
+//        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3%+%967b59f5-c10d9f96-63126899-a0cc0";
+//        System.out.println("===========甲方向乙方发送加密数据==============");
+//        System.out.println("原文:"+str);
+//        //公钥加密
+//        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(),Base64.decode(publicKeyStr));
+//        System.out.println("甲方 使用乙方公钥加密后的数据："+ Base64.toBase64String(code));
+//        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
+//        //私钥解密
+//        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(privateKeyStr));
+//        System.out.println("乙方解密后的数据："+new String(decode)+"");
 
 //        //私钥签名
 //        String sign = RsaUtils.sign(code,Base64.toBase64String(privateKey));
