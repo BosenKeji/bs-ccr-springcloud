@@ -29,4 +29,6 @@ public interface TradePlatformCoinPairMapper {
     int deleteByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);
 
     int checkExistByTradePlatformIdAndCoinPairId (int tradePlatformId, int coinPairId);
+    
+    int checkExistById (int id);
 }

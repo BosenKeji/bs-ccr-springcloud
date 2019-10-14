@@ -44,7 +44,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      *      http.authorizeRequests().antMatchers("/employee").hasRole("ADMIN");
      */
     public void configure(final HttpSecurity http) throws Exception {
-
         http.authorizeRequests().antMatchers("/login/**").permitAll()
                 .antMatchers("/oauth/token/**").permitAll()
                 .antMatchers("/tokens/**").permitAll()
