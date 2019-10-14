@@ -30,14 +30,12 @@ public interface TradePlatformCoinPairService {
 
     Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair);
 
-    /**
-     *
-     * @param tradePlatformId
-     * @param coinPairId
-     * @return
-     */
-    Optional<Integer> delete(int tradePlatformId, int coinPairId);
 
+    Optional<Integer> delete(int id);
+
+    Optional<Integer> deleteByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId);
 
     Optional<Integer> checkByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId);
+
+    Optional<Integer> checkById(int id);
 }

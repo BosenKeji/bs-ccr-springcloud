@@ -52,13 +52,23 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public Optional<Integer> delete(int tradePlatformId, int coinPairId) {
+    public Optional<Integer> delete(int id) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public Optional<Integer> deleteByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId) {
         return Optional.ofNullable(tradePlatformCoinPairMapper.deleteByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
     }
 
     @Override
     public Optional<Integer> checkByTradePlatformIdAndCoinPairId(int tradePlatformId, int coinPairId) {
         return Optional.ofNullable(tradePlatformCoinPairMapper.checkExistByTradePlatformIdAndCoinPairId(tradePlatformId, coinPairId));
+    }
+
+    @Override
+    public Optional<Integer> checkById(int id) {
+        return Optional.ofNullable(tradePlatformCoinPairMapper.checkExistById(id));
     }
 
 
