@@ -1,13 +1,11 @@
 package cn.bosenkeji.service.impl;
 
-import cn.bosenkeji.enums.security.GroupEnum;
 import cn.bosenkeji.service.PermissionGroupService;
 import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.permission.PermissionGroup;
 import cn.bosenkeji.vo.permission.RolePermissionGroup;
 import cn.bosenkeji.vo.permission.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,7 +71,7 @@ public class CustomUserDetailsImpl implements UserDetails {
 
         } else {
             //如果没有设置角色，添加默认权限
-            authorities.add(new SimpleGrantedAuthority(GroupEnum.DEFAULT.getValue()));
+            authorities.add(new SimpleGrantedAuthority("default"));
         }
 
         return authorities;

@@ -1,6 +1,5 @@
 package cn.bosenkeji.service.impl;
 
-import cn.bosenkeji.enums.security.GroupEnum;
 import cn.bosenkeji.service.PermissionGroupService;
 import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.User;
@@ -72,7 +71,7 @@ public class CustomUserDetailsImpl implements UserDetails {
 
         } else {
             //如果没有设置角色，添加默认权限
-            authorities.add(new SimpleGrantedAuthority(GroupEnum.DEFAULT.getValue()));
+            authorities.add(new SimpleGrantedAuthority("default"));
         }
 
         return authorities;
