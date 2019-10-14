@@ -13,9 +13,8 @@ public class DealParameter {
 
     private Map<String,Object> trade;
 
-    private String accessKey;
-    private String secretKey;
     private String symbol;
+    private String signId;
 
     private Integer tradeStatus; //是否给node端发送消息
     private Double positionCost; //持仓费用
@@ -39,28 +38,20 @@ public class DealParameter {
 
     public DealParameter() { }
 
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
     public String getSymbol() {
         return symbol;
     }
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public String getSignId() {
+        return signId;
+    }
+
+    public void setSignId(String signId) {
+        this.signId = signId;
     }
 
     public Integer getTradeStatus() {

@@ -118,7 +118,7 @@ public class TradePlatformCoinPairController {
             return new Result<>(null,"交易平台货币对不存在");
         }
 
-        return new Result<>(this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId));
+        return new Result<>(this.tradePlatformCoinPairService.deleteByTradePlatformIdAndCoinPairId(tradePlatformId,coinPairId));
     }
 
     @ApiOperation(value = "发现服务")

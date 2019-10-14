@@ -129,13 +129,10 @@ public class DealUtil {
     public static boolean sendMessage(DealParameter dealParameter, String type, MySource source) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
-        String accessKey = dealParameter.getAccessKey();
-        String secretKey = dealParameter.getSecretKey();
         String symbol = dealParameter.getSymbol();
-
-        rocketMQResult.setAccessKey(accessKey);
-        rocketMQResult.setSecretKey(secretKey);
+        String signId = dealParameter.getSignId();
         rocketMQResult.setSymbol(symbol);
+        rocketMQResult.setSignId(signId);
         rocketMQResult.setType(type);
         rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
 
@@ -159,8 +156,7 @@ public class DealUtil {
 
         RedisParameter parameter = new RedisParameter();
 
-        String javaRedisKey = "trade-java_" + dealParameter.getAccessKey() + "_" +
-                dealParameter.getSecretKey() + "_" + dealParameter.getSymbol();
+        String javaRedisKey = "trade-java_" + dealParameter.getSignId() + "_" + dealParameter.getSymbol();
 
 //        Object o = redisTemplate.opsForValue().get(javaRedisKey);
         Map entries = redisTemplate.opsForHash().entries(javaRedisKey);

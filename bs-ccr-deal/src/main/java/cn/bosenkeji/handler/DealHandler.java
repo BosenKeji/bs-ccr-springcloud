@@ -26,16 +26,16 @@ import java.util.stream.Collectors;
 @RestController
 public class DealHandler {
 
-    private static final int threadNum = Runtime.getRuntime().availableProcessors();
-    private ThreadPoolExecutor threadPoolExecutor;
+//    private static final int threadNum = Runtime.getRuntime().availableProcessors();
+//    private ThreadPoolExecutor threadPoolExecutor;
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
     DealHandler() {
-        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
-                3, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(10),
-                Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.DiscardOldestPolicy());
+//        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
+//                3, TimeUnit.SECONDS,
+//                new LinkedBlockingQueue<>(10),
+//                Executors.defaultThreadFactory(),
+//                new ThreadPoolExecutor.DiscardOldestPolicy());
     }
 
     @Autowired
@@ -46,9 +46,10 @@ public class DealHandler {
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
-        threadPoolExecutor.execute(() -> {
-            handle(msg);
-        });
+//        threadPoolExecutor.execute(() -> {
+//            handle(msg);
+//        });
+        handle(msg);
     }
 
     private void handle(String msg) {
@@ -106,7 +107,7 @@ public class DealHandler {
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
 
-            log.info("accessKey:"+ dealParameter.getAccessKey() + "  symbol:"+ dealParameter.getSymbol()
+            log.info("accessKey:"+ dealParameter.getSignId() + "  symbol:"+ dealParameter.getSymbol()
                     +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
 
             //是否清除 触发追踪止盈标志
@@ -130,7 +131,7 @@ public class DealHandler {
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
+                    log.info("accessKey:"+ dealParameter.getSignId()+"  type:"+DealUtil.TRADE_TYPE_SELL
                             +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() +"  finished_order:" + dealParameter.getFinishedOrder());
                 }
 
@@ -144,7 +145,7 @@ public class DealHandler {
                 DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
+                 log.info("accessKey:"+ dealParameter.getSignId()+"  type:"+DealUtil.TRADE_TYPE_BUY
                          +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
