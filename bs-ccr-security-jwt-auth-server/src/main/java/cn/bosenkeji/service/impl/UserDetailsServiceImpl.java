@@ -1,12 +1,10 @@
 package cn.bosenkeji.service.impl;
 
-import cn.bosenkeji.enums.exception.user.UserEnum;
-import cn.bosenkeji.exception.NotFoundException;
+import cn.bosenkeji.service.PermissionGroupService;
+import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,16 +25,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private CustomJdbcUserDetailsService userDetailsService;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private PermissionGroupService permissionGroupService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         final  Optional<User> user = userDetailsService.getOneUserByTel(username);
 
         if (user.isPresent()) {
-            return new CustomUserDetailsImpl(user.get());
+            return new CustomUserDetailsImpl(user.get(),roleService,permissionGroupService);
         } else {
             final Admin admin = userDetailsService.getOneAdminByAccount(username).orElseThrow(()-> new UsernameNotFoundException(username));
-            return new CustomAdminDetailsImpl(admin);
+            return new CustomAdminDetailsImpl(admin,roleService,permissionGroupService);
         }
     }
 }

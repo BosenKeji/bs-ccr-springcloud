@@ -54,7 +54,7 @@ CREATE TABLE `permission_group_permission` (
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT '用户 ID',
-  `role_id` bigint(11) NOT NULL COMMENT '角色 ID',
+  `role_id` int(11) NOT NULL COMMENT '角色 ID',
   `user_type` tinyint not null comment '角色类型 1:admin 2:user',
   `status` tinyint not null default 1 ,
   `created_at` datetime NOT NULL,

@@ -3,7 +3,6 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.permission.Role;
 import cn.bosenkeji.vo.permission.RolePermissionGroup;
 import cn.bosenkeji.vo.permission.UserRole;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;

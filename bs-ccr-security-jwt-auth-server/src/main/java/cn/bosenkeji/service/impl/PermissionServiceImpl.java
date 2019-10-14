@@ -5,6 +5,7 @@ import cn.bosenkeji.service.PermissionService;
 import cn.bosenkeji.vo.permission.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
