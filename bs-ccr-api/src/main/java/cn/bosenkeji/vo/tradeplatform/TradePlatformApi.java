@@ -32,7 +32,7 @@ public class TradePlatformApi implements Serializable {
 //    private String secretKey;
 //
     @ApiModelProperty("加密后密钥")
-    private String robotId;
+    private String secret;
 
     @ApiModelProperty("别名")
     private String nickname;
@@ -87,12 +87,12 @@ public class TradePlatformApi implements Serializable {
         this.sign = sign;
     }
 
-    public String getRobotId() {
-        return robotId;
+    public String getSecret() {
+        return secret;
     }
 
-    public void setRobotId(String robotId) {
-        this.robotId = robotId;
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     public String getNickname() {
