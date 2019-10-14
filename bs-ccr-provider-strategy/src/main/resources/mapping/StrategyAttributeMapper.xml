@@ -11,10 +11,10 @@
       <arg column="lever" javaType="_int" jdbcType="INTEGER" />
       <arg column="strategy_sequence_id" javaType="_int" jdbcType="INTEGER" />
       <arg column="rate" javaType="_int" jdbcType="INTEGER" />
-      <arg column="stop_profit_ratio" javaType="_double" jdbcType="FLOAT" />
+      <arg column="stop_profit_ratio" javaType="_double" jdbcType="INTEGER" />
       <arg column="is_stop_profit_trace" javaType="_int" jdbcType="TINYINT" />
-      <arg column="stop_profit_trace_trigger_rate" javaType="_double" jdbcType="FLOAT" />
-      <arg column="stop_profit_trace_drop_rate" javaType="_double" jdbcType="FLOAT" />
+      <arg column="stop_profit_trace_trigger_rate" javaType="_double" jdbcType="INTEGER" />
+      <arg column="stop_profit_trace_drop_rate" javaType="_double" jdbcType="INTEGER" />
       <arg column="is_stop_profit_money" javaType="_int" jdbcType="TINYINT" />
       <arg column="is_stop_profit_grid" javaType="_int" jdbcType="TINYINT" />
       <arg column="build_reference" javaType="_int" jdbcType="TINYINT" />
@@ -46,8 +46,8 @@
       )
     values (#{name,jdbcType=VARCHAR}, #{strategyId,jdbcType=INTEGER}, #{isDefault,jdbcType=TINYINT}, 
       #{isTip,jdbcType=TINYINT}, #{lever,jdbcType=INTEGER}, #{strategySequenceId,jdbcType=INTEGER}, 
-      #{rate,jdbcType=INTEGER}, #{stopProfitRatio,jdbcType=TINYINT}, #{isStopProfitTrace,jdbcType=TINYINT}, 
-      #{stopProfitTraceTriggerRate,jdbcType=TINYINT}, #{stopProfitTraceDropRate,jdbcType=TINYINT}, 
+      #{rate,jdbcType=INTEGER}, #{stopProfitRatio,jdbcType=INTEGER}, #{isStopProfitTrace,jdbcType=TINYINT},
+      #{stopProfitTraceTriggerRate,jdbcType=INTEGER}, #{stopProfitTraceDropRate,jdbcType=INTEGER},
       #{isStopProfitMoney,jdbcType=TINYINT}, #{isStopProfitGrid,jdbcType=TINYINT}, #{buildReference,jdbcType=TINYINT}, 
       #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
       )
@@ -133,16 +133,16 @@
         #{rate,jdbcType=INTEGER},
       </if>
       <if test="stopProfitRatio != null">
-        #{stopProfitRatio,jdbcType=TINYINT},
+        #{stopProfitRatio,jdbcType=INTEGER},
       </if>
       <if test="isStopProfitTrace != null">
         #{isStopProfitTrace,jdbcType=TINYINT},
       </if>
       <if test="stopProfitTraceTriggerRate != null">
-        #{stopProfitTraceTriggerRate,jdbcType=TINYINT},
+        #{stopProfitTraceTriggerRate,jdbcType=INTEGER},
       </if>
       <if test="stopProfitTraceDropRate != null">
-        #{stopProfitTraceDropRate,jdbcType=TINYINT},
+        #{stopProfitTraceDropRate,jdbcType=INTEGER},
       </if>
       <if test="isStopProfitMoney != null">
         #{isStopProfitMoney,jdbcType=TINYINT},
