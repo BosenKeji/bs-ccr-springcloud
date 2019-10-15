@@ -25,14 +25,14 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("标识")
     private String sign;
 
-//    @ApiModelProperty("访问密钥")
+    //    @ApiModelProperty("访问密钥")
 //    private String accessKey;
 //
 //    @ApiModelProperty("加密后密钥")
 //    private String secretKey;
 //
     @ApiModelProperty("加密后密钥")
-    private String robotId;
+    private String secret;
 
     @ApiModelProperty("别名")
     private String nickname;
@@ -87,12 +87,12 @@ public class TradePlatformApi implements Serializable {
         this.sign = sign;
     }
 
-    public String getRobotId() {
-        return robotId;
+    public String getSecret() {
+        return secret;
     }
 
-    public void setRobotId(String robotId) {
-        this.robotId = robotId;
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     public String getNickname() {
