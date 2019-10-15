@@ -96,17 +96,21 @@ public class DealHandler {
             if (CollectionUtils.isEmpty(trade)) {
                 return;
             }
-
+            DealParameter dealParameter = null;
+            try {
+                dealParameter = new DealParameterParser(trade).getDealParameter();
+            } catch (NumberFormatException e) {
+                log.info("------数字转换异常，SginId为 : " + trade.get("signId") );
+            }
             //初始化
-            DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
-
-            //初始化或获取 java要操作redis的key和value
-            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
             //判断是否交易
             if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
                 return;
             }
+
+            //初始化或获取 java要操作redis的key和value
+            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
             //计算实时收益比   判断买卖
             //实时收益比
