@@ -232,4 +232,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     public int deleteByComboId(int userProductComboId) {
         return tradePlatformApiBindProductComboMapper.deleteByComboId(userProductComboId);
     }
+
+    @Override
+    public List findAll() {
+        return tradePlatformApiBindProductComboMapper.findAll();
+    }
 }

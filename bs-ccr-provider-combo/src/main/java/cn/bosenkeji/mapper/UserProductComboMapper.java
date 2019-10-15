@@ -1,5 +1,6 @@
 package cn.bosenkeji.mapper;
 
+import cn.bosenkeji.vo.ComboRedisKeyParameter;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import org.apache.ibatis.annotations.MapKey;
@@ -36,5 +37,10 @@ public interface UserProductComboMapper {
 
     @MapKey("id")
     Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
+
+    List<String> selectRedisByGroup();
+    List<UserProductCombo> findByRedisKeyId(Integer redisKeyId);
+
+    int updateRedisKeyIds(ComboRedisKeyParameter comboRedisKeyParameter);
 
 }

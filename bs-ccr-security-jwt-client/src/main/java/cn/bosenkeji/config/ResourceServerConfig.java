@@ -58,6 +58,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/configuration/ui").permitAll()
                 .antMatchers("/configuration/security").permitAll()
+                .antMatchers(HttpMethod.GET,"/trade_platform_api_bind_product_combo/").permitAll()
 
                 //Admin  管理员用户、产品、用户套餐、交易平台等接口
 //                .antMatchers(

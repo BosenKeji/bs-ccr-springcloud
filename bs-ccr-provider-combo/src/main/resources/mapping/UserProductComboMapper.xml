@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.UserProductComboMapper">
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
+
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
@@ -11,11 +12,16 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="redis_key" jdbcType="VARCHAR" property="redisKey" />
-    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <result column="redis_key_id" jdbcType="INTEGER" property="redisKeyId" />
+
+    <association fetchType="lazy" property="comboRedisKey" column="redis_key_id" javaType="cn.bosenkeji.vo.combo.ComboRedisKey"
+                 select="cn.bosenkeji.mapper.ComboRedisKeyMapper.selectByPrimaryKey" />
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+                 select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at, redis_key
+    id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at, redis_key, redis_key_id
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -199,6 +205,32 @@
     set
     redis_key = #{redisKey,jdbcType=VARCHAR}
 
+  </update>
+
+  <select id="selectRedisByGroup" resultType="java.lang.String">
+    select
+    redis_key
+    from
+    user_product_combo
+    GROUP BY redis_key
+  </select>
+
+  <select id="findByRedisKeyId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from
+    user_product_combo
+    where
+    redis_key_id = #{redisKeyId,jdbcType=INTEGER}
+  </select>
+
+  <update id="updateRedisKeyIds" parameterType="cn.bosenkeji.vo.ComboRedisKeyParameter" >
+    update user_product_combo
+    set redis_key_id=#{redisKeyId,jdbcType=INTEGER}
+    where id in
+    <foreach collection="list" item="id" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
   </update>
 
 </mapper>
