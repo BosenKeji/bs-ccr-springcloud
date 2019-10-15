@@ -138,7 +138,7 @@ public class CoinPairChoiceController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#coinPairChoice.id"),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id"),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }
     )
@@ -154,7 +154,7 @@ public class CoinPairChoiceController {
 
     //删除多个如何保证缓存同步呢？
     @Caching(
-            evict = {
+           evict = {
                     @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }

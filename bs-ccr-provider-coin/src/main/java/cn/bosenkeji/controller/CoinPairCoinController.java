@@ -111,7 +111,7 @@ public class CoinPairCoinController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_LIST_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COIN_SORT_LIST_TPID_KEY,allEntries = true)
             }

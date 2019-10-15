@@ -105,7 +105,7 @@ public class TradePlatformCoinPairController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_LIST_KEY,allEntries = true)
             }
     )
