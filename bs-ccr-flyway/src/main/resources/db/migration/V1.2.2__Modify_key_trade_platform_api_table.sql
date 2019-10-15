@@ -15,9 +15,9 @@ BEGIN
         ALTER TABLE trade_platform_api drop column secret_key;
     END IF;
 
-    IF NOT EXISTS(SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = CurrentDatabase AND TABLE_NAME = 'trade_platform_api' AND COLUMN_NAME = 'robot_id')
+    IF NOT EXISTS(SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = CurrentDatabase AND TABLE_NAME = 'trade_platform_api' AND COLUMN_NAME = 'secret')
         then
-            ALTER TABLE trade_platform_api add robot_id varchar(200) NOT NULL default '';
+            ALTER TABLE trade_platform_api add secret varchar(200) NOT NULL default '';
     END IF;
 end //
 DELIMITER ;
