@@ -61,13 +61,15 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     @Override
     public TradePlatform get(int id) {
         TradePlatform tradePlatform = tradePlatformMapper.selectByPrimaryKey(id);
-        List<TradePlatformCoinPair> tradePlatformCoinPairs = tradePlatform.getTradePlatformCoinPairs();
-        List<Integer> coinPairIds = new ArrayList<>();
-        if (!tradePlatformCoinPairs.isEmpty()){
-            for (TradePlatformCoinPair t: tradePlatformCoinPairs) {
-                coinPairIds.add(t.getCoinPairId());
+        if (tradePlatform != null){
+            List<TradePlatformCoinPair> tradePlatformCoinPairs = tradePlatform.getTradePlatformCoinPairs();
+            List<Integer> coinPairIds = new ArrayList<>();
+            if (!tradePlatformCoinPairs.isEmpty()){
+                for (TradePlatformCoinPair t: tradePlatformCoinPairs) {
+                    coinPairIds.add(t.getCoinPairId());
+                }
+                fill(tradePlatform,coinPairIds);
             }
-            fill(tradePlatform,coinPairIds);
         }
 
         return tradePlatform;
