@@ -10,6 +10,8 @@ import org.dromara.hmily.annotation.Hmily;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.service
@@ -51,6 +53,8 @@ public interface ITradePlatformApiBindProductComboClientService {
     @DeleteMapping("/trade_platform_api_bind_product_combo/by_combo/{userProductComboId}")
     public Result deleteByComboId(@PathVariable("userProductComboId") int userProductComboId);
 
+    @GetMapping("trade_platform_api_bind_product_combo/")
+    public List findAll();
 
 
 }

@@ -14,6 +14,15 @@
                  select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />
   </resultMap>
 
+  <resultMap id="NoApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="user_id" jdbcType="INTEGER" property="userId" />
+  <result column="trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
+  <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+  <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+
   <resultMap id="ApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApi">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -222,6 +231,11 @@
     from trade_platform_api_bind_product_combo
     where user_id=#{param1}
     and user_product_combo_id=#{param2}
+  </select>
+
+  <select id="findAll" resultMap="NoApiResultMap" >
+    select <include refid="Base_Column_List"></include> from
+    trade_platform_api_bind_product_combo
   </select>
 
 </mapper>

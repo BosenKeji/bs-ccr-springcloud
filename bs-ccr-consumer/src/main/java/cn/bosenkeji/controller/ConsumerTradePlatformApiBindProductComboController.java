@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author xivin
@@ -20,12 +21,12 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/trade_platform_api_bind_product_combo")
 @Api(tags = "tradePlatformApiBindProductCombo 交易平台api绑定用户套餐接口",value = "提供交易平台api绑定用户套餐相关功能 Rest接口")
-@PreAuthorize("hasAnyAuthority('USER')")
 public class ConsumerTradePlatformApiBindProductComboController {
 
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
@@ -39,6 +40,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")
     @ApiOperation(value = "根据用户ID 获取用户未绑定的交易平台api列表 api接口"
             ,httpMethod = "GET",nickname = "getNoBindTradePlatformApiListByUserIdWithPage")
@@ -51,6 +53,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @PutMapping("/{id}")
     @ApiOperation(value = "更新 交易平添api绑定用户套餐 api接口",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
     public Object updateTradePlatformApiBindProductCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
@@ -60,6 +63,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
         return iTradePlatformApiBindProductComboClientService.updateTradePlatformApiBindProductCombo(id,tradePlatformApiId,currentUserId);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @DeleteMapping("/{id}")
     @ApiOperation(value="解除 交易品台绑定用户套餐",httpMethod = "DELETE",nickname = "deleteTradePlatformApiBindProductCombo")
     public Object deleteOneApiBindCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
@@ -71,5 +75,12 @@ public class ConsumerTradePlatformApiBindProductComboController {
     public CustomUserDetailsImpl getCurrentUser() {
         CustomUserDetailsImpl principal = (CustomUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return principal;
+    }
+
+    @GetMapping("/")
+    @ApiOperation(value = "所有 获取交易平台api绑定用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListBWithPage")
+    public List findAll() {
+        return this.iTradePlatformApiBindProductComboClientService.findAll();
     }
 }

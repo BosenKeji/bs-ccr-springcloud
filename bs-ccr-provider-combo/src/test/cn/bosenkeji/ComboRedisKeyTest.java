@@ -14,7 +14,7 @@ import java.util.List;
 @SpringBootTest(classes = ComboApp.class)
 public class ComboRedisKeyTest {
 
-    @Resource
+    /*@Resource
     private ComboRedisKeyMapper comboRedisKeyMapper;
 
     @Test
@@ -49,6 +49,6 @@ public class ComboRedisKeyTest {
     @Test
     public void testGetByName() {
         System.out.println(comboRedisKeyMapper.selectByName("userComboTime_0"));
-    }
+    }*/
 
 }
