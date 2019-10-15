@@ -220,7 +220,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         }
         //从数据库查询
 
-        return selectUserProductComboByUserId(user.getId(),pageSize,pageNum);
+        return selectUserProductComboByUserId(pageNum,pageSize,user.getId());
 
     }
 

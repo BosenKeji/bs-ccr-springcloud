@@ -34,7 +34,7 @@
 <!--                    <user>bosen_follow</user>-->
 <!--                    <password>AYbosenkj19</password>-->
 
-                    <url>jdbc:mysql://127.0.0.1:3306/bs-ccr</url>
+                    <url>jdbc:mysql://192.168.2.243:3306/bs-ccr</url>
                     <user>root</user>
                     <password>123zxc</password>
                 </configuration>

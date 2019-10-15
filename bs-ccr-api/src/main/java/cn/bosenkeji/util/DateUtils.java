@@ -6,8 +6,6 @@
  */
 package cn.bosenkeji.util;
 
-import com.oracle.tools.packager.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

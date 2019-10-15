@@ -10,21 +10,12 @@ package cn.bosenkeji.vo;
 
 public class RocketMQResult {
 
-    private String accessKey;
-    private String secretKey;
     private String symbol;
+    private String signId;
     private String type;
     private Integer finished_order;
 
     public RocketMQResult() { }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
@@ -32,14 +23,6 @@ public class RocketMQResult {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
     }
 
     public String getSymbol() {
@@ -56,5 +39,13 @@ public class RocketMQResult {
 
     public void setFinished_order(Integer finished_order) {
         this.finished_order = finished_order;
+    }
+
+    public String getSignId() {
+        return signId;
+    }
+
+    public void setSignId(String signId) {
+        this.signId = signId;
     }
 }

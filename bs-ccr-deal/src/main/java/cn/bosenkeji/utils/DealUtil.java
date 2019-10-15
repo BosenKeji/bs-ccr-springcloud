@@ -67,13 +67,6 @@ public class DealUtil {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
-            log.info("清除建仓标志,symbol:"+dealParameter.getSymbol());
-            log.info(""  + (averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))
-                        + "   averagePrice:" + averagePrice + "  lowerAveragePrice:" + lowerAveragePrice + " currentOrder:" + dealParameter.getFinishedOrder()
-                        + "triggerOrder:" + redisParameter.getTriggerStopProfitOrder());
-            log.info((averagePrice - lowerAveragePrice > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
-            log.info(!(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()))+"");
-            log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
         }
         return false;
@@ -95,10 +88,6 @@ public class DealUtil {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_STOP_PROFIT_ORDER,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.HISTORY_MAX_BENEFIT_RATIO,"0",redisTemplate);
-            log.info("清除止盈标志,symbol:" + dealParameter.getSymbol());
-            log.info((redisParameter.getRealTimeEarningRatio() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
-            log.info(!(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder()))+"");
-            log.info((dealParameter.getTradeStatus() == 3)+"");
             return true;
         }
         return false;
@@ -129,13 +118,10 @@ public class DealUtil {
     public static boolean sendMessage(DealParameter dealParameter, String type, MySource source) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
-        String accessKey = dealParameter.getAccessKey();
-        String secretKey = dealParameter.getSecretKey();
         String symbol = dealParameter.getSymbol();
-
-        rocketMQResult.setAccessKey(accessKey);
-        rocketMQResult.setSecretKey(secretKey);
+        String signId = dealParameter.getSignId();
         rocketMQResult.setSymbol(symbol);
+        rocketMQResult.setSignId(signId);
         rocketMQResult.setType(type);
         rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
 
@@ -159,8 +145,7 @@ public class DealUtil {
 
         RedisParameter parameter = new RedisParameter();
 
-        String javaRedisKey = "trade-java_" + dealParameter.getAccessKey() + "_" +
-                dealParameter.getSecretKey() + "_" + dealParameter.getSymbol();
+        String javaRedisKey = "trade-java_" + dealParameter.getSignId() + "_" + dealParameter.getSymbol();
 
 //        Object o = redisTemplate.opsForValue().get(javaRedisKey);
         Map entries = redisTemplate.opsForHash().entries(javaRedisKey);
