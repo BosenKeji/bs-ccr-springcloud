@@ -73,6 +73,11 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             public Result deleteByComboId(int userProductComboId) {
                 return new Result(-1,"hystrix");
             }
+
+            @Override
+            public List findAll() {
+                return null;
+            }
         };
     }
 }

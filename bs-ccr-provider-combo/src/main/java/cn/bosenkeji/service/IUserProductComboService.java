@@ -32,4 +32,6 @@ public interface IUserProductComboService {
 
     int moveComboTime();
 
+    int moveComboRedis();
+
 }

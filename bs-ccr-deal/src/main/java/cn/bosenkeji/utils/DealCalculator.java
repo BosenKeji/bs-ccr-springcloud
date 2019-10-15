@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -119,30 +118,6 @@ public class DealCalculator {
         return priceSum/positionCost;
 
     }
-
-    public static void main(String[] args) {
-        JSONArray jsonArray = new JSONArray();
-        JSONArray p1 = new JSONArray();
-        JSONArray p2 = new JSONArray();
-        JSONArray p3 = new JSONArray();
-
-        p1.set(0,"100");
-        p1.set(1,"50");
-
-        p2.set(0,"99");
-        p2.set(1,"60");
-
-        p3.set(0,"98");
-        p3.set(1,"40");
-
-        jsonArray.add(0,p1);
-        jsonArray.add(1,p2);
-        jsonArray.add(2,p3);
-
-        System.out.println(countRealTimeEarningRatio(jsonArray,123.0,12000.0));
-
-    }
-
 
 
     /**
@@ -315,7 +290,6 @@ public class DealCalculator {
             updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
             updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
         }
-        log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "  最小拟买入均价:" + minAveragePrice);
         return isBuy;
     }
 
@@ -374,7 +348,7 @@ public class DealCalculator {
                         tuples.add(typedTuple);
                     }
                     redisTemplate.opsForZSet().add(s,tuples);
-                    log.info("处理交易异常trade，redisKey:" + s + "  value:" + tuples.toString());
+                    log.info("----处理交易异常trade，redisKey:" + s + "  value:" + tuples.toString());
                 }
             }
         }

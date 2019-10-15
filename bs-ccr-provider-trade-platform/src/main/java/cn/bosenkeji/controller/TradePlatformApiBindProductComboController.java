@@ -15,6 +15,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *  暂时未加缓存
@@ -72,6 +73,14 @@ public class TradePlatformApiBindProductComboController {
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo));
+    }
+
+    @GetMapping("/")
+    @ApiOperation(value = "所有 获取交易平台api绑定用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListBWithPage")
+    public List list() {
+
+        return tradePlatformApiBindProductComboService.findAll();
     }
 
     @PutMapping("/{id}")
@@ -157,5 +166,7 @@ public class TradePlatformApiBindProductComboController {
                                               int userProductComboId) {
         return new Result(this.tradePlatformApiBindProductComboService.deleteByComboId(userProductComboId));
     }
+
+
 
 }

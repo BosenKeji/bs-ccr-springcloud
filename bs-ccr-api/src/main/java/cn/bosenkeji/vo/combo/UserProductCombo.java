@@ -35,6 +35,7 @@ public class UserProductCombo implements Serializable {
     private int remainTime=0;
 
     private String redisKey;
+    private int redisKeyId;
 
     //一对一
     @ApiModelProperty(hidden = true)
@@ -42,6 +43,9 @@ public class UserProductCombo implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private User user;
+
+    @ApiModelProperty(hidden = true)
+    private ComboRedisKey comboRedisKey;
 
     public User getUser() {
         return user;
@@ -144,6 +148,22 @@ public class UserProductCombo implements Serializable {
         this.redisKey = redisKey;
     }
 
+    public int getRedisKeyId() {
+        return redisKeyId;
+    }
+
+    public void setRedisKeyId(int redisKeyId) {
+        this.redisKeyId = redisKeyId;
+    }
+
+    public ComboRedisKey getComboRedisKey() {
+        return comboRedisKey;
+    }
+
+    public void setComboRedisKey(ComboRedisKey comboRedisKey) {
+        this.comboRedisKey = comboRedisKey;
+    }
+
     @Override
     public String toString() {
         return "UserProductCombo{" +
@@ -157,8 +177,10 @@ public class UserProductCombo implements Serializable {
                 ", updatedAt=" + updatedAt +
                 ", remainTime=" + remainTime +
                 ", redisKey='" + redisKey + '\'' +
+                ", redisKeyId=" + redisKeyId +
                 ", productCombo=" + productCombo +
                 ", user=" + user +
+                ", comboRedisKey=" + comboRedisKey +
                 '}';
     }
 }

@@ -1,19 +1,23 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.mapper.ComboRedisKeyMapper;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.UserComboTimeUtil;
+import cn.bosenkeji.vo.ComboRedisKeyParameter;
 import cn.bosenkeji.vo.User;
+import cn.bosenkeji.vo.combo.ComboRedisKey;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.map.HashedMap;
 import org.dromara.hmily.annotation.Hmily;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Autowired
     private JobService jobService;
 
+    @Resource
+    private ComboRedisKeyMapper comboRedisKeyMapper;
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
     
@@ -214,7 +220,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         }
         //从数据库查询
 
-        return selectUserProductComboByUserId(user.getId(),pageSize,pageNum);
+        return selectUserProductComboByUserId(pageNum,pageSize,user.getId());
 
     }
 
@@ -298,12 +304,11 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
             if(all!=null&&all.size()>0) {
-
+                
+                //先尝试创建任调度再创建redis key
                 try{
 
                     System.out.println("尝试创建任务调度");
-                    /*String timeExpression = "0 " + key * 5 + " 0 * * ?";
-                    jobService.createJob(currentKey, timeExpression, currentKey);*/
                     CreateJobResponse job = jobService.createJob(UserComboRedisEnum.UserComboTime + "_0", "0 0 0 * * ?", UserComboRedisEnum.UserComboTime + "_0");
                     if(!job.getSuccess()) {
                         Log.error("schedulex create fail");
@@ -338,4 +343,56 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         return result;
     }
+
+    @Override
+    public int moveComboRedis() {
+
+        List<UserProductCombo> redisId0 = userProductComboMapper.findByRedisKeyId(0);
+        int result=0;
+
+        if(redisId0!=null&&redisId0.size()>0) {
+
+            List<String> redisByGroup = userProductComboMapper.selectRedisByGroup();
+            for (String key : redisByGroup) {
+                if(!redisTemplate.hasKey(key)) {
+
+                }
+                ComboRedisKey comboRedisKey = comboRedisKeyMapper.selectByName(key);
+                if(comboRedisKey==null) {
+
+                    comboRedisKey = new ComboRedisKey();
+                    comboRedisKey.setName(key);
+                    comboRedisKey.setStatus(1);
+                    int insert = comboRedisKeyMapper.insert(comboRedisKey);
+                    if(insert==1)
+                        Log.info("添加ComboRedisKey:"+key+" 成功");
+                    else
+                        Log.info("添加ComboRedisKey:"+key+" 失败了！！！");
+
+                }
+
+                List<Integer> comboIdList=new ArrayList();
+                for(UserProductCombo userProductCombo:redisId0) {
+                    if(key.equals(userProductCombo.getRedisKey()))
+                        comboIdList.add(userProductCombo.getId());
+                }
+
+                if(comboIdList.size()>0) {
+                    ComboRedisKeyParameter comboRedisKeyParameter = new ComboRedisKeyParameter();
+                    comboRedisKeyParameter.setList(comboIdList);
+                    comboRedisKeyParameter.setRedisKeyId(comboRedisKey.getId());
+                    int i = userProductComboMapper.updateRedisKeyIds(comboRedisKeyParameter);
+                    result += i;
+                    Log.info(key + " 更新了" + i + "条 套餐数据");
+                }
+
+            }
+
+
+        }
+
+        Log.info("套餐 更新 redis_key_id 总共"+result+"条记录");
+        return  result;
+    }
+    
 }

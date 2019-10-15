@@ -89,6 +89,11 @@ public class DealHandler {
         }).collect(Collectors.toSet());
 
 
+        if (CollectionUtils.isEmpty(filterSet)) {
+            log.info("-----过滤后的keySet为空 : " + keySet);
+            return;
+        }
+
         filterSet.parallelStream().forEach((s)->{
 
             Map trade = redisTemplate.opsForHash().entries(s);
@@ -96,17 +101,20 @@ public class DealHandler {
             if (CollectionUtils.isEmpty(trade)) {
                 return;
             }
-
-            //初始化
-            DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
-
-            //初始化或获取 java要操作redis的key和value
-            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
+            DealParameter dealParameter = null;
+            try {
+                dealParameter = new DealParameterParser(trade).getDealParameter();
+            } catch (NumberFormatException e) {
+                log.info("------数字转换异常，SginId为 : " + trade.get("signId") );
+            }
 
             //判断是否交易
             if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
                 return;
             }
+
+            //初始化或获取 java要操作redis的key和value
+            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
 
             //计算实时收益比   判断买卖
             //实时收益比
@@ -114,9 +122,6 @@ public class DealHandler {
                     dealParameter.getPositionNum(),dealParameter.getPositionCost());
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
-
-            log.info("accessKey:"+ dealParameter.getSignId() + "  symbol:"+ dealParameter.getSymbol()
-                    +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {

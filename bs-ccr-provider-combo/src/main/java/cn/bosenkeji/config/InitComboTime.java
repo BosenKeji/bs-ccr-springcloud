@@ -17,6 +17,8 @@ public class InitComboTime implements ApplicationRunner {
 
         System.out.println("准备初始化数据");
         System.out.println(iUserProductComboService.moveComboTime());
+        //System.out.println("准备更新 用户套餐的redis_key_id");
+        //System.out.println(iUserProductComboService.moveComboRedis());
 
 
     }
