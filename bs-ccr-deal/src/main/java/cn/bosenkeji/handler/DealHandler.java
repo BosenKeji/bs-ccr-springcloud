@@ -89,7 +89,7 @@ public class DealHandler {
         }).collect(Collectors.toSet());
 
 
-        if (CollectionUtils.isEmpty(keySet)) {
+        if (CollectionUtils.isEmpty(filterSet)) {
             log.info("-----过滤后的keySet为空 : " + keySet);
             return;
         }
