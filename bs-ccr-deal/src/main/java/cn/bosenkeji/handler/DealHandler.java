@@ -104,13 +104,14 @@ public class DealHandler {
             DealParameter dealParameter = null;
             try {
                 dealParameter = new DealParameterParser(trade).getDealParameter();
+                //判断是否交易
+                if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
+                    return;
+                }
             } catch (NumberFormatException e) {
-                log.info("------数字转换异常，SginId为 : " + trade.get("signId") );
-            }
-
-            //判断是否交易
-            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
-                return;
+                log.info("------数字转换异常，SginId为 : " + trade.get("signId") + "  货币对为 : " + trade.get("symbol"));
+            } catch (NullPointerException e) {
+                log.info("------交易状态异常，SginId为 : " + trade.get("signId") + "  货币对为 : " + trade.get("symbol"));
             }
 
             //初始化或获取 java要操作redis的key和value
