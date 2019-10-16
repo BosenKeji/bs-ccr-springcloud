@@ -32,7 +32,7 @@ import java.time.Duration;
 @ConfigurationProperties("spring.cache.redis")
 //@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
-    private Duration timeToLive = Duration.ZERO;
+    private Duration timeToLive = Duration.ofDays(1);
 
 
     public void setTimeToLive(Duration timeToLive) {

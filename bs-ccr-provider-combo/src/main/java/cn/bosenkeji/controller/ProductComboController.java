@@ -82,7 +82,7 @@ public class ProductComboController {
         return this.iProductComboService.listByStatus(pageNum,pageSize,status);
     }
 
-    @Cacheable(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id",unless = "#result==null")
     @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getOneProductCombo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public ProductCombo get(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {

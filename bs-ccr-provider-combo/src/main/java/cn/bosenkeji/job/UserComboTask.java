@@ -95,7 +95,6 @@ public class UserComboTask extends JavaProcessor {
             list.add(next);
         }
 
-
         Boolean execute = (Boolean) redisTemplate.execute(redisScript, list, "-1",jobParameters);
         assert execute!=null;
         Log.info(jobParameters+"时长剩余1的套餐以完成-1 操作");

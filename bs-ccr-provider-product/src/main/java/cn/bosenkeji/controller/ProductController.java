@@ -62,7 +62,7 @@ public class ProductController {
         return this.iProductService.selectByStatus(status,pageNum,pageSize);
     }
 
-    @Cacheable(value = RedisInterface.PRODUCT_ID_KEY,key="#id")
+    @Cacheable(value = RedisInterface.PRODUCT_ID_KEY,key="#id",unless = "#result==null")
     @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getOneProduct")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public Product get(@PathVariable("id") @Min(1) @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {

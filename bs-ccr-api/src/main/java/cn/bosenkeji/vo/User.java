@@ -1,7 +1,9 @@
 package cn.bosenkeji.vo;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -10,12 +12,14 @@ import java.sql.Timestamp;
  * @create 2019/7/17 10:34
  */
 
+@Validated
 public class User implements Serializable {
 
     private int id;
 
     private String username;
 
+    @Size(min = 11,max = 11)
     private String tel;
 
     private String password;

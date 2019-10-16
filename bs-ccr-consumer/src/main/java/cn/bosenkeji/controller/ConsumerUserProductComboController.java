@@ -6,7 +6,9 @@ import cn.bosenkeji.vo.combo.UserProductCombo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.dromara.hmily.annotation.Hmily;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,11 +23,14 @@ import javax.annotation.Resource;
 @RequestMapping("/user_product_combo")
 @Api(tags = "UserProductCombo 用户套餐api接口",value = "提供用户套餐相关的 rest API")
 @PreAuthorize("hasAnyAuthority('ADMIN')")
+@Validated
 public class ConsumerUserProductComboController {
 
     @Resource
     private IUserProductComboClientService iUserProductComboClientService;
 
+
+    @Hmily
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @PostMapping("/")
     public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
