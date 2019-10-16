@@ -154,8 +154,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
         Result result = iTradePlatformApiBindProductComboClientService.deleteByComboId(id);
         int result1=(int) result.getData();
+        userProductComboMapper.selectByPrimaryKey(id);
         int result2 = userProductComboMapper.deleteByPrimaryKey(id);
-        userProductComboRedisTemplate.setExpire(id,0);
+        //userProductComboRedisTemplate.setExpire(id,0);
         System.out.println("result1:"+result1);
         System.out.println("result2:"+result2);
         if(result1==result2)

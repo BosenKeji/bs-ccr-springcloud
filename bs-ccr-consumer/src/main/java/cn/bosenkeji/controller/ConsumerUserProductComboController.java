@@ -30,7 +30,7 @@ public class ConsumerUserProductComboController {
     private IUserProductComboClientService iUserProductComboClientService;
 
 
-    @Hmily
+    //@Hmily
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @PostMapping("/")
     public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
