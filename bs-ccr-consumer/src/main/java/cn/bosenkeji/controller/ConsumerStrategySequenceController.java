@@ -33,7 +33,7 @@ public class ConsumerStrategySequenceController {
     public Result findSequenceByPrimaryKey(
             @PathVariable("id") @Min(value = 0) @ApiParam(value = "数列ID",required = true,example = "1") Integer id
     ){
-        return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
+        return strategySequenceService.findSequenceByPrimaryKey(id);
     }
 
 
