@@ -85,7 +85,7 @@ public class CoinPairChoiceController {
 
     }
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")
     @GetMapping("/{id}")
     public CoinPairChoice get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){

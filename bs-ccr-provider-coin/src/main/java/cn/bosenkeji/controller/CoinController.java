@@ -59,7 +59,7 @@ public class CoinController {
         return this.coinService.listByPage(pageNum,pageSizeCommon) ;
     }
 
-    @Cacheable(value = RedisInterface.COIN_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.COIN_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取单个货币信息列表接口", httpMethod = "GET",nickname = "getOneCoin")
     @RequestMapping(value="/{id}")
     public Coin get( @PathVariable("id")  @Min(value = 1) @ApiParam(value = "币种ID", required = true, type = "integer",example = "1") int id) {
