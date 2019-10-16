@@ -24,7 +24,7 @@ public interface IUserProductComboClientService {
 
 
 
-    @Hmily
+    //@Hmily
     @PostMapping("/user_product_combo/")
     Result add(@RequestBody UserProductCombo userProductCombo);
 

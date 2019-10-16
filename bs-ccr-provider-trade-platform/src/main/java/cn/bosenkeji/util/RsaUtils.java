@@ -345,10 +345,10 @@ public class RsaUtils {
     }
     public static void main(String[] args) throws Exception {
 
-        Map<String,String> keyMaps = RsaUtils.genKeyPair();
-        System.out.println(keyMaps.get(PUBLIC_KEY));
-        System.out.println(keyMaps.get(PRIVATE_KEY));
-
+//        Map<String,String> keyMaps = RsaUtils.genKeyPair();
+//        System.out.println(keyMaps.get(PUBLIC_KEY));
+//        System.out.println(keyMaps.get(PRIVATE_KEY));
+//
 //        //初始化密钥
 //        //生成密钥对
 //        Map<String,Object> keyMap=RsaUtils.initKey();

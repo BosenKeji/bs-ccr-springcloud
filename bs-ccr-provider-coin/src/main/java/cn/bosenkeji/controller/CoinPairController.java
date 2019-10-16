@@ -61,7 +61,7 @@ public class CoinPairController {
         return this.coinPairService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.COIN_PAIR_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取单个货币对接口",httpMethod = "GET",nickname = "getOneCoinPair")
     @GetMapping("/{id}")
     public CoinPair get(@PathVariable("id") @Min(1)  @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int id){

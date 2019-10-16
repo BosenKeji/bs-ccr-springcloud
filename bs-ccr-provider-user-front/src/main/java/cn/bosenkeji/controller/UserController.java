@@ -46,7 +46,7 @@ public class UserController {
         return this.userService.listByPage(pageNum,pageSize);
     }
 
-    @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
     public User get(@PathVariable("id") @Min(1) @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {

@@ -73,7 +73,7 @@ public class TradePlatformController {
      * @param id
      * @return
      */
-    @Cacheable(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET" ,nickname = "getOneTradePlatform")
     @GetMapping("/{id}")
     public TradePlatform get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){

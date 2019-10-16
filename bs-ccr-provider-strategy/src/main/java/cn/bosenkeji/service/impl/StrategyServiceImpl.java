@@ -57,7 +57,7 @@ public class StrategyServiceImpl implements StrategyService{
             return null;
         }
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        StrategySequenceOther sequenceOther = strategySequenceService.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId());
+        StrategySequenceOther sequenceOther = strategySequenceService.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId()).getData();
         return convertStrategyOther(strategy, strategyAttribute,sequenceOther);
     }
 
