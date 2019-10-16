@@ -34,7 +34,7 @@ public interface TradePlatformApiMapper {
 
     int checkExistByTradePlatformIdAndUserId (int tradePlatformId, int userId);
 
-    int checkExistByKeyAndStatus (int userId,String robotId,int status);
+    int checkExistByKeyAndStatus (int userId,String secret,int status);
 
     int checkExistByIdAndUserId(int id,int userId);
 

@@ -5,6 +5,7 @@ import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeCustomEnum;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.util.Result;
@@ -12,6 +13,8 @@ import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +56,12 @@ public class CoinPairChoiceAttributeCustomController {
         return this.coinPairChoiceAttributeCustomService.getByCoinPartnerChoiceId(coinPairChoiceId);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "设置交易参数接口",httpMethod = "POST",nickname = "settingParameters")
     @PostMapping("/")
     public Result settingParameters(@RequestBody @Valid @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
@@ -70,6 +79,12 @@ public class CoinPairChoiceAttributeCustomController {
         return new Result<>(this.coinPairChoiceAttributeCustomService.add(coinPairChoiceAttributeCustom));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "更新自选货币自定义属性接口",httpMethod = "PUT",nickname = "editCoinPairChoiceAttributeCustom")
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
@@ -84,6 +99,12 @@ public class CoinPairChoiceAttributeCustomController {
         return new Result<>(this.coinPairChoiceAttributeCustomService.update(coinPairChoiceAttributeCustom));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "删除自选货币自定义属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeCustomByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPartnerChoiceId}")
     public Result delete(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPartnerChoiceId){

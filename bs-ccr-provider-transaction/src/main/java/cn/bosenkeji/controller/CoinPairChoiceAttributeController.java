@@ -19,7 +19,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +65,12 @@ public class CoinPairChoiceAttributeController {
         return this.coinPairChoiceAttributeService.get(coinPartnerChoiceId);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
     public Result add(@RequestParam(value = "coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串 ", required = true, type = "string") String coinPairChoiceIdStr,
@@ -82,6 +90,12 @@ public class CoinPairChoiceAttributeController {
     }
 
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoiceAttribute")
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
@@ -92,6 +106,12 @@ public class CoinPairChoiceAttributeController {
         return new Result<>(this.coinPairChoiceAttributeService.update(coinPairChoiceAttribute));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
