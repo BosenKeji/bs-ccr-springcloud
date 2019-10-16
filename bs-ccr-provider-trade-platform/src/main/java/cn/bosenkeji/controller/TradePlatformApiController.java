@@ -109,11 +109,14 @@ public class TradePlatformApiController {
     @ApiOperation(value = "更新交易平台api接口",notes = "更新交易平台api接口",httpMethod = "PUT",nickname = "updateOneTradePlatformApi")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
-        if (this.tradePlatformApiService.get(tradePlatformApi.getId()) == null){
+        TradePlatformApi ExistTradePlatformApi = this.tradePlatformApiService.get(tradePlatformApi.getId());
+
+        if (ExistTradePlatformApi == null){
             return new Result<>(null,"交易平台API不存在");
         }
 
-        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0){
+        if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0
+                && !ExistTradePlatformApi.getNickname().equals(tradePlatformApi.getNickname())){
             return new Result<>(null,"该用户的nickName已存在");
         }
 
