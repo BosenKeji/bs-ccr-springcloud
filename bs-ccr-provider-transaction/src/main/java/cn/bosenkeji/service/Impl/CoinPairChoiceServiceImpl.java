@@ -147,8 +147,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Override
     public Optional<Integer> checkExistByCoinPartnerNameAndUserId(String coinPairName, int userId) {
-        CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
-        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPair.getId(), userId));
+        CoinPair coinPair = new CoinPair();
+        if (this.iCoinPairClientService.getCoinPairByName(coinPairName) != null){
+            coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
+        }
+        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPair.getId(), userId));
     }
 
     @Override

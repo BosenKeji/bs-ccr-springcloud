@@ -94,8 +94,12 @@
     <!--@mbg.generated-->
     insert into trade_platform_api
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId > 0">
       user_id,
-      trade_platform_id,
+      </if>
+      <if test="tradePlatformId > 0">
+        trade_platform_id,
+      </if>
       <if test="sign != null">
         sign,
       </if>
@@ -114,8 +118,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId > 0">
       #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tradePlatformId > 0">
       #{tradePlatformId,jdbcType=INTEGER},
+      </if>
       <if test="sign != null">
         #{sign,jdbcType=VARCHAR},
       </if>
@@ -150,7 +158,7 @@
       <if test="nickname != null">
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
