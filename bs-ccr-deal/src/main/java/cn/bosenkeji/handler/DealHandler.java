@@ -133,12 +133,10 @@ public class DealHandler {
                 boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isSell) {
                     //redis分数置为0
-//                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
-                    if (dealParameter.getSignId().equals("4069925") && dealParameter.getSymbol().equals("hb10usdt")) {
-                        log.info("-------" + dealParameter);
-                    }
+                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
+                    log.info("sell : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
                 }
 
             }
@@ -148,13 +146,12 @@ public class DealHandler {
 
             if (isBuy) {
                 //redis分数置为0
-//                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
-                if (dealParameter.getSignId().equals("4069925") && dealParameter.getSymbol().equals("hb10usdt")) {
-                    log.info("-------" + dealParameter);
-                }
+                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-
+                 if (isBuy) {
+                     log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
+                 }
             }
         });
     }
