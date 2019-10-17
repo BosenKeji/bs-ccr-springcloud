@@ -87,7 +87,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     }
 
 
-    @Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+    //@Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
     @Transactional
     @Override
     public int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {

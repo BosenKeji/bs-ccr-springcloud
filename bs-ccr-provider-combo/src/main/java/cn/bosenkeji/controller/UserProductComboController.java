@@ -7,6 +7,7 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
+import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -38,6 +39,9 @@ public class UserProductComboController {
     private IUserProductComboService iUserProductComboService;
 
     @Resource
+    private IProductComboService iProductComboService;
+
+    @Resource
     private DiscoveryClient discoveryClient;
 
 
@@ -59,6 +63,8 @@ public class UserProductComboController {
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
                       ) {
 
+        if(iProductComboService.get(userProductCombo.getProductComboId())==null)
+            return new Result(0,"产品套餐不存在");
         //判断用户是否没过该产品
         if(this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())>=1)
             return new Result(0,"该用户不能重复买该产品");
@@ -97,9 +103,21 @@ public class UserProductComboController {
         return new Result(this.iUserProductComboService.delete(id));
     }
 
-    @GetMapping("/moveData")
+    @PutMapping("/moveData")
     public Result moveData() {
         return new Result(this.iUserProductComboService.moveComboTime());
+    }
+
+    @ApiOperation(value = "刷新 全部用户套餐时长",httpMethod = "PUT",nickname = "flushAllComboDay")
+    @PutMapping("/flush_all_combo_day")
+    public Result flushAllComboDay() {
+        return new Result(this.iUserProductComboService.flushAllComboDay());
+    }
+
+    @ApiOperation(value = "刷新 批量 用户套餐时长",httpMethod = "PUT",nickname = "flushSomeComboDay")
+    @PutMapping("/flush_some_combo_day")
+    public Result flushSomeComboDay(@RequestParam("ids") List<Integer> ids) {
+        return new Result(this.iUserProductComboService.flushSomeComboDay(ids));
     }
 
     //获取单个用户套餐交易平台api接口

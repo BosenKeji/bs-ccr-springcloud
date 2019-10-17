@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Api
 @JsonIgnoreProperties(value = {"handler"})
@@ -35,7 +36,7 @@ public class UserProductCombo implements Serializable {
     private int remainTime=0;
 
     private String redisKey;
-    private int redisKeyId;
+   // private int redisKeyId;
 
     //一对一
     @ApiModelProperty(hidden = true)
@@ -44,8 +45,11 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private User user;
 
+    /*@ApiModelProperty(hidden = true)
+    private ComboRedisKey comboRedisKey;*/
+
     @ApiModelProperty(hidden = true)
-    private ComboRedisKey comboRedisKey;
+    private List<UserProductComboDay> userProductComboDays;
 
     public User getUser() {
         return user;
@@ -148,20 +152,13 @@ public class UserProductCombo implements Serializable {
         this.redisKey = redisKey;
     }
 
-    public int getRedisKeyId() {
-        return redisKeyId;
+
+    public List<UserProductComboDay> getUserProductComboDays() {
+        return userProductComboDays;
     }
 
-    public void setRedisKeyId(int redisKeyId) {
-        this.redisKeyId = redisKeyId;
-    }
-
-    public ComboRedisKey getComboRedisKey() {
-        return comboRedisKey;
-    }
-
-    public void setComboRedisKey(ComboRedisKey comboRedisKey) {
-        this.comboRedisKey = comboRedisKey;
+    public void setUserProductComboDays(List<UserProductComboDay> userProductComboDays) {
+        this.userProductComboDays = userProductComboDays;
     }
 
     @Override
@@ -177,10 +174,9 @@ public class UserProductCombo implements Serializable {
                 ", updatedAt=" + updatedAt +
                 ", remainTime=" + remainTime +
                 ", redisKey='" + redisKey + '\'' +
-                ", redisKeyId=" + redisKeyId +
                 ", productCombo=" + productCombo +
                 ", user=" + user +
-                ", comboRedisKey=" + comboRedisKey +
+                ", userProductComboDays=" + userProductComboDays +
                 '}';
     }
 }

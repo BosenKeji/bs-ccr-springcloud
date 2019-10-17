@@ -34,7 +34,7 @@ public interface ITradePlatformApiBindProductComboClientService {
                                     @RequestParam(value="pageSize",defaultValue="10") int pageSize,
                                     @RequestParam("userId") int userId);*/
 
-   @Hmily
+   //@Hmily
     @PostMapping("/trade_platform_api_bind_product_combo/")
     Result addTradePlatformApiBindProductCombo(@RequestBody TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
 

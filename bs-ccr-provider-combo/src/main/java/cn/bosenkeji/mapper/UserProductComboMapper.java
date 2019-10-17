@@ -38,9 +38,13 @@ public interface UserProductComboMapper {
     @MapKey("id")
     Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
 
+    List<UserProductCombo> selectByPrimaryKeysWithDay(List<Integer> ids);
+
     List<String> selectRedisByGroup();
     List<UserProductCombo> findByRedisKeyId(Integer redisKeyId);
 
     int updateRedisKeyIds(ComboRedisKeyParameter comboRedisKeyParameter);
+
+    List<UserProductCombo> findAllWithDay();
 
 }
