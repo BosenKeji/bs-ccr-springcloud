@@ -73,7 +73,7 @@ public class CoinPairChoiceController {
     public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
                                                   @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
 
-        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get()> 0){
+        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get() <= 0){
             Result<CoinPair> result = new Result<>();
             CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
 
