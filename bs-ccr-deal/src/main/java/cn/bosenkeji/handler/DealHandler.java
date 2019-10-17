@@ -97,17 +97,12 @@ public class DealHandler {
             if (CollectionUtils.isEmpty(trade)) {
                 return;
             }
-            DealParameter dealParameter = null;
-            try {
-                dealParameter = new DealParameterParser(trade).getDealParameter();
-                //判断是否交易
-                if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                log.info("------数字转换异常，SginId为 : " + trade.get("signId") + "  货币对为 : " + trade.get("symbol"));
-            } catch (NullPointerException e) {
-                log.info("------交易状态异常，SginId为 : " + trade.get("signId") + "  货币对为 : " + trade.get("symbol"));
+
+            DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
+
+            //判断是否交易
+            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
+                return;
             }
 
             //初始化或获取 java要操作redis的key和value
@@ -138,7 +133,7 @@ public class DealHandler {
                 boolean isSell = DealCalculator.isSell(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isSell) {
                     //redis分数置为0
-                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
+//                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
                 }
@@ -150,9 +145,10 @@ public class DealHandler {
 
             if (isBuy) {
                 //redis分数置为0
-                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
+//                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
+
             }
         });
     }
