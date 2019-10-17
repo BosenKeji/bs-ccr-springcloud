@@ -75,9 +75,6 @@ public class DealHandler {
         //获取redis中对应货币对的zset
         Set<String> keySet = redisTemplate.opsForZSet().rangeByScore(setKey, 1, 1);
 
-        //处理异常买卖的trade
-        DealCalculator.handleExceptionTrade(redisTemplate);
-
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
         //过滤不是该货币对的key 和旧的key
@@ -90,7 +87,6 @@ public class DealHandler {
 
 
         if (CollectionUtils.isEmpty(filterSet)) {
-            log.info("-----过滤后的keySet为空 : " + keySet);
             return;
         }
 
@@ -122,7 +118,7 @@ public class DealHandler {
             Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(buyDeep,
                     dealParameter.getPositionNum(),dealParameter.getPositionCost());
             //记录实时收益比
-            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
+            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.isNaN() ? "0.0" : realTimeEarningRatio.toString() ,redisTemplate);
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
@@ -145,8 +141,6 @@ public class DealHandler {
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("accessKey:"+ dealParameter.getSignId()+"  type:"+DealUtil.TRADE_TYPE_SELL
-                            +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() +"  finished_order:" + dealParameter.getFinishedOrder());
                 }
 
             }
@@ -159,8 +153,6 @@ public class DealHandler {
                 DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                 //mq发送买的消息
                  boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                 log.info("accessKey:"+ dealParameter.getSignId()+"  type:"+DealUtil.TRADE_TYPE_BUY
-                         +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
             }
         });
     }
