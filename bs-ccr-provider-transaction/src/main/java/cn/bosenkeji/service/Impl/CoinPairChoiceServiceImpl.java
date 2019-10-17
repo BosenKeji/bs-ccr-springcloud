@@ -107,13 +107,14 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
      */
     private List<CoinPairChoice> filter(int coinId,List<CoinPairChoice> coinPairChoices){
         Coin coin = iCoinClientService.get(coinId);
-        List<CoinPairChoice> result = new ArrayList<>();
+        List<CoinPairChoice> result = new ArrayList<>(coinPairChoices);
+
         String coinName = coin.getName().toUpperCase();
         for (CoinPairChoice c : coinPairChoices) {
             CoinPair coinPair = c.getCoinPair();
             String coinPairName = coinPair.getName().toUpperCase();
-            if (coinPairName.lastIndexOf(coinName) > 1){
-                result.add(c);
+            if (coinPairName.lastIndexOf(coinName) == 0){
+                result.remove(c);
             }
         }
 

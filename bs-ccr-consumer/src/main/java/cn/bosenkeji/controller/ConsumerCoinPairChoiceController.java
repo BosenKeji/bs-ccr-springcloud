@@ -42,6 +42,7 @@ public class ConsumerCoinPairChoiceController {
     public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") @Min(1) int pageNum,
                                                  @ApiIgnore @Min(1) @TokenUser int userId,
                                                  @RequestParam("coinId") @Min(1) @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
+        pageSizeCommon = 100;
         return this.iCoinPairChoiceClientService.getListCoinPairChoiceWithPage(pageNum, pageSizeCommon,userId,coinId);
     }
 
