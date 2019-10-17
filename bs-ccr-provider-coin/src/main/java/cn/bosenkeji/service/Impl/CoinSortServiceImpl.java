@@ -39,6 +39,11 @@ public class CoinSortServiceImpl implements CoinSortService {
     }
 
     @Override
+    public CoinSort get(int coinSortId) {
+        return this.coinSortMapper.selectByPrimaryKey(coinSortId);
+    }
+
+    @Override
     public Optional<Integer> delete(int tradePlatform,int coinId) {
         return  Optional.ofNullable(coinSortMapper.deleteByTradePlatformIdAndCoinId(tradePlatform,coinId));
     }

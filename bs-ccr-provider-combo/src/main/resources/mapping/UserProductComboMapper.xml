@@ -15,6 +15,27 @@
 
     <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
                  select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <!--<collection property="userProductComboDays" column="id" ofType="cn.bosenkeji.vo.combo.UserProductComboDay"
+                select="cn.bosenkeji.mapper.UserProductComboDayMapper.selectByUserProductComboId" />-->
+  </resultMap>
+
+  <resultMap id="WithDayResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="redis_key" jdbcType="VARCHAR" property="redisKey" />
+
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+                 select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <collection property="userProductComboDays" column="id" ofType="cn.bosenkeji.vo.combo.UserProductComboDay"
+                select="cn.bosenkeji.mapper.UserProductComboDayMapper.selectByUserProductComboId" />
+
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -28,6 +49,14 @@
     from user_product_combo
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="findAllWithDay" resultMap="WithDayResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo
     where id = #{id,jdbcType=INTEGER}
@@ -70,7 +99,7 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
-      <if test="redis_key != null">
+      <if test="redisKey != null">
         redis_key,
       </if>
     </trim>
@@ -96,7 +125,7 @@
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="redis_key != null">
+      <if test="redisKey != null">
         #{redisKey,jdbcType=VARCHAR},
       </if>
     </trim>
@@ -189,7 +218,25 @@
     </foreach>
   </select>
 
+  <select id="selectByPrimaryKeysWithDay" parameterType="List" resultMap="WithDayResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from user_product_combo
+    where id in
+    <foreach collection="list" item="id" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </select>
+
   <update id="updateRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+    where
+    id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateSomeRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     update user_product_combo
     set
     redis_key = #{redisKey,jdbcType=VARCHAR}

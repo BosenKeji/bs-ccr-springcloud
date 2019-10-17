@@ -32,6 +32,10 @@ public interface IUserProductComboService {
 
     int moveComboTime();
 
+    int flushAllComboDay();
+
+    int flushSomeComboDay(List<Integer> ids);
+
     int moveComboRedis();
 
 }

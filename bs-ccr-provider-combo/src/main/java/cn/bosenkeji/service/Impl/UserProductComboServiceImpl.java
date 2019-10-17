@@ -12,6 +12,7 @@ import cn.bosenkeji.vo.ComboRedisKeyParameter;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.ComboRedisKey;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
@@ -78,16 +79,18 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
      * @param userProductCombo
      * @return
      */
-    @Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+    //@Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
     //@Transactional
     @Override
     public int add(UserProductCombo userProductCombo) {
 
         //查询套餐时长
-        int time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
+        //userProductCombo.setRedisKey(" ");
+
+        Integer time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
         //int i=1/0;
         //保存到数据库 管理端部署机器人
-        int aresult=userProductComboMapper.insert(userProductCombo);
+        int aresult=userProductComboMapper.insertSelective(userProductCombo);
         //部署失败直接返回
         if(aresult!=1)
             return 0;
@@ -122,12 +125,15 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
     public int addCancel(UserProductCombo userProductCombo) {
-        Log.error(userProductCombo.getId()+"机器人部署失败，进入cancel");
+        Log.error(userProductCombo.getId()+"机器人部署失败，进入cancel"+userProductCombo);
 
+        //if(userProductCombo.getId()!=null)
         //删除机器人
         userProductComboMapper.deleteByPrimaryKey(userProductCombo.getId());
 
-        redisTemplate.opsForZSet().remove(userProductCombo.getRedisKey(),String.valueOf(userProductCombo.getId()));
+
+        if(userProductCombo.getRedisKey()!=null)
+            redisTemplate.opsForZSet().remove(userProductCombo.getRedisKey(),String.valueOf(userProductCombo.getId()));
         return -3;
     }
 
@@ -154,8 +160,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
         Result result = iTradePlatformApiBindProductComboClientService.deleteByComboId(id);
         int result1=(int) result.getData();
+        userProductComboMapper.selectByPrimaryKey(id);
         int result2 = userProductComboMapper.deleteByPrimaryKey(id);
-        userProductComboRedisTemplate.setExpire(id,0);
+        //userProductComboRedisTemplate.setExpire(id,0);
         System.out.println("result1:"+result1);
         System.out.println("result2:"+result2);
         if(result1==result2)
@@ -393,6 +400,79 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         Log.info("套餐 更新 redis_key_id 总共"+result+"条记录");
         return  result;
+    }
+
+    /**
+     *  刷新全部套餐剩余时长
+     * @return
+     */
+    @Override
+    public int flushAllComboDay() {
+
+        System.out.println("用户时长 数据刷新中");
+        List<UserProductCombo> all = userProductComboMapper.findAllWithDay();
+        int result = countComboTypeByCombo(all,null);
+        System.out.println("用户时长 数据恢复完成");
+        return result;
+    }
+
+    /**
+     *  通过一个或多个 ID 刷新用户套餐 剩余时长
+     * @param ids
+     * @return
+     */
+    @Override
+    public int flushSomeComboDay(List<Integer> ids) {
+
+        List<UserProductCombo> someCombo = userProductComboMapper.selectByPrimaryKeysWithDay(ids);
+        int result = countComboTypeByCombo(someCombo,ids);
+        return result;
+    }
+
+    /**
+     * 输入一个或多个用户套餐，计算剩余时长并保存在 redis
+     * @param all
+     * @return
+     */
+    public int countComboTypeByCombo(List<UserProductCombo> all,List<Integer> ids) {
+
+        int result=0;
+        long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
+        if(all!=null&&all.size()>0) {
+            for (UserProductCombo userProductCombo : all) {
+
+                int addNumber=0;
+                //读取增补时长
+                List<UserProductComboDay> userProductComboDays = userProductCombo.getUserProductComboDays();
+                for (UserProductComboDay userProductComboDay : userProductComboDays) {
+                    int number = userProductComboDay.getNumber();
+                    if(number>0) {
+                        addNumber+=number;
+                    }
+                }
+                Timestamp createdAt = userProductCombo.getCreatedAt();
+                long createTime = createdAt.getTime();
+
+                //已经使用了的时长
+                long remain= (currentTime-createTime)/(1000*60*60*24);
+
+                //套餐时长+增补时长 减去 用去的时长
+                long remainTime= userProductCombo.getProductCombo().getTime() + addNumber - remain;
+                if(remainTime>0) {
+                    redisTemplate.opsForZSet().add(UserComboRedisEnum.UserComboTime+"_0",String.valueOf(userProductCombo.getId()),remainTime);
+                    result++;
+                }
+            }
+
+//            if(ids==null) {
+                userProductComboMapper.updateRedisKeyAll(UserComboRedisEnum.UserComboTime + "_0");
+//            }else {
+                //userProductComboMapper.updateRedisKeyIds()
+//            }
+
+
+        }
+        return result;
     }
     
 }

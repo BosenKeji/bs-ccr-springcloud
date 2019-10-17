@@ -73,7 +73,7 @@ public class CoinPairChoiceController {
     public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
                                                   @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
 
-        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get().equals(0)){
+        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get() <= 0){
             Result<CoinPair> result = new Result<>();
             CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
 
@@ -85,7 +85,7 @@ public class CoinPairChoiceController {
 
     }
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")
     @GetMapping("/{id}")
     public CoinPairChoice get(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
@@ -102,6 +102,9 @@ public class CoinPairChoiceController {
     public Result add(@RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
                       @RequestParam("isStrategy")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int isStrategy,
                       @RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
+        if (this.iCoinPairClientService.getCoinPair(coinPairId) == null){
+            return new Result<>(null,"货币对不存在，添加自选币失败");
+        }
         if (this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId).get() >= 1){
             return new Result<>(null,"自选币已存在");
         }

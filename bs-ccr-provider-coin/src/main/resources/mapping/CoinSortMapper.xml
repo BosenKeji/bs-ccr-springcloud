@@ -69,13 +69,13 @@
       <if test="coinId != 0">
         coin_id,
       </if>
-      <if test="type != null">
+      <if test="type == 1 || type == 2">
         `type`,
       </if>
       <if test="sortNum != 0">
         sort_num,
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status`,
       </if>
       <if test="createdAt != null">
@@ -92,13 +92,13 @@
       <if test="coinId != 0">
         #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="type != 0">
+      <if test="type == 1 || type == 2">
         #{type,jdbcType=INTEGER},
       </if>
       <if test="sortNum != 0">
         #{sortNum,jdbcType=INTEGER},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -113,19 +113,19 @@
     <!--@mbg.generated-->
     update coin_sort
     <set>
-      <if test="tradePlatformId != 0">
+      <if test="tradePlatformId >= 0">
         trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
       </if>
-      <if test="coinId != 0">
+      <if test="coinId >= 0">
         coin_id = #{coinId,jdbcType=INTEGER},
       </if>
-      <if test="type != 0">
+      <if test="type == 1 || type == 2">
         `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="sortNum != 0">
         sort_num = #{sortNum,jdbcType=INTEGER},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
