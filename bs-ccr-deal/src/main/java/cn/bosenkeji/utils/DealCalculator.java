@@ -250,6 +250,10 @@ public class DealCalculator {
         //计算回调均价 回调均价=最小均价+整体持仓均价*追踪回调比
         Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
 
+        if (dealParameter.getSignId().equals("4069925") && dealParameter.getSymbol().equals("trxusdt")) {
+            log.info("修改最小拟买入均价----： 拟买入均价为：" + averagePrice + "  下调均价为：" + lowerAveragePrice + "  回调均价为：" + callbackAveragePrice );
+        }
+
         boolean isBuy = false;
 
         //拟买入均价小于等于下调均价？ 触发追踪建仓
