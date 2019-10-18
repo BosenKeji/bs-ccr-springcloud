@@ -1,10 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
-import cn.bosenkeji.service.CoinPairChoiceService;
-import cn.bosenkeji.service.ICoinClientService;
-import cn.bosenkeji.service.ICoinPairClientService;
-import cn.bosenkeji.service.ICoinPairCoinClientService;
+import cn.bosenkeji.service.*;
 import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
@@ -14,6 +11,9 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -41,6 +41,14 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Autowired
     ICoinPairClientService coinPairClientService;
 
+    @Autowired
+    CoinPairChoiceAttributeService coinPairChoiceAttributeService;
+
+    @Autowired
+    CoinPairChoiceAttributeCustomServiceImpl coinPairChoiceAttributeCustomService;
+
+    private final static int SUCCESS = 1;
+    private final static int FAIL = 0;
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId,int coinId) {
@@ -145,8 +153,25 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
     public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(coinPairChoiceMapper.deleteByPrimaryKey(id));
+        try{
+            if (this.coinPairChoiceAttributeService.checkByCoinPartnerChoiceId(id).get() == 1){
+                this.coinPairChoiceAttributeService.delete(id);
+            }
+
+            if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(id).get() == 1){
+                this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(id);
+            }
+
+            coinPairChoiceMapper.deleteByPrimaryKey(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Optional.of(FAIL);
+        }
+
+        return Optional.of(SUCCESS);
     }
 
     @Override
@@ -177,7 +202,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
     public Optional<Integer> batchDelete(String idStr) {
+        //有属性的自选币id集合
+        List<Integer> coinPairChoiceAttributeList = new ArrayList<>();
+
         //转格式
         String[] coinPairChoiceIdStr = idStr.split(",");
         List<Integer> coinPairChoiceIds = new ArrayList<>();
@@ -192,12 +221,33 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         if (!coinPairChoiceIds.isEmpty()) {
             for (Integer id : coinPairChoiceIds) {
                 if (!coinPairChoiceList.contains(id)){
-                    return Optional.of(-1);
+                    return Optional.of(FAIL);
                 }
             }
         }
 
-        return Optional.of(this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds));
+        //分开没有属性的自选币id
+        //所有自选币属性中的自选币id
+        List<Integer> coinPairChoiceAttributeIdList = this.coinPairChoiceAttributeService.findAllCoinPartnerChoiceId();
+        if (!coinPairChoiceAttributeIdList.isEmpty()){
+            for (Integer id : coinPairChoiceIds) {
+                if (coinPairChoiceAttributeIdList.contains(id)){
+                    coinPairChoiceAttributeList.add(id);
+                }
+            }
+        }
+
+        //删除，手动回滚
+        try{
+            this.coinPairChoiceAttributeService.batchDelete(coinPairChoiceAttributeList);
+            this.coinPairChoiceAttributeCustomService.batchDelete(coinPairChoiceAttributeList);
+            this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Optional.of(FAIL);
+        }
+        return Optional.of(SUCCESS);
     }
 
     @Override

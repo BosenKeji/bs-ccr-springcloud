@@ -113,7 +113,7 @@ public class CoinPairChoiceAttributeCustomController {
             return new Result<>(null,"自选币自定义属性不存在");
         }
 
-        return new Result<>(this.coinPairChoiceAttributeCustomService.delete(coinPartnerChoiceId));
+        return new Result<>(this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(coinPartnerChoiceId));
     }
 
 

@@ -2,6 +2,8 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 
+import java.util.List;
+
 /**
  * @Author CAJR
  * @create 2019/7/17 10:12
@@ -9,6 +11,10 @@ import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 
 public interface CoinPairChoiceAttributeCustomMapper {
     int deleteByPrimaryKey(int id);
+
+    int deleteByCoinPairChoiceId(int coinPairChoiceId);
+
+    int batchDelete(List<Integer> coinPairChoiceIds);
 
     int insert(CoinPairChoiceAttributeCustom record);
 

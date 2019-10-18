@@ -12,6 +12,10 @@ import java.util.List;
 public interface CoinPairChoiceAttributeMapper {
     int deleteByPrimaryKey(int id);
 
+    int deleteByCoinPairChoiceId(int coinPairChoiceId);
+
+    int batchDelete(List<Integer> coinPairChoiceIds);
+
     int insert(CoinPairChoiceAttribute record);
 
     int insertSelective(CoinPairChoiceAttribute record);
@@ -22,7 +26,6 @@ public interface CoinPairChoiceAttributeMapper {
 
     int updateByCoinPartnerChoiceIdSelective(CoinPairChoiceAttribute record);
 
-
     int updateByPrimaryKey(CoinPairChoiceAttribute record);
 
     CoinPairChoiceAttribute selectByCoinPartnerChoiceId(int coinPartnerChoiceId);
@@ -32,4 +35,6 @@ public interface CoinPairChoiceAttributeMapper {
     List<Integer> findAllCoinPartnerChoiceId();
 
     List<CoinPairChoiceAttribute> findSectionCoinPairChoiceAttributeByCoinPartnerChoiceIds(List<Integer> coinPartnerChoiceIds);
+
+    List<Integer> findAllCoinPairChoiceId();
 }

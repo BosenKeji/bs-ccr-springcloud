@@ -30,7 +30,7 @@ public interface ICoinPairChoiceAttributeClientService {
     public Result updateCoinPairChoiceAttribute(@RequestBody CoinPairChoiceAttribute coinPairChoiceAttribute);
 
 
-    @DeleteMapping("/coin_pair_choice_attribute/{id}")
-    public Result deleteOneCoinPairChoiceAttribute(@PathVariable("id") int id);
+    @DeleteMapping("/coin_pair_choice_attribute/{coinPairChoiceId}")
+    public Result deleteOneCoinPairChoiceAttribute(@PathVariable("coinPairChoiceId") int coinPairChoiceId);
 
 }

@@ -61,8 +61,8 @@ public class CoinPairChoiceAttributeController {
     //@Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ATTRIBUTE_ID_KEY,key = "#")
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET",nickname = "getOneCoinPairChoiceAttributeByCoinPartnerChoiceID")
     @GetMapping("/{coinPartnerChoiceId}")
-    public CoinPairChoiceAttribute get(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
-        return this.coinPairChoiceAttributeService.get(coinPartnerChoiceId);
+    public CoinPairChoiceAttribute getByCoinPartnerChoiceId(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
+        return this.coinPairChoiceAttributeService.getByCoinPartnerChoiceId(coinPartnerChoiceId);
     }
 
     @Caching(
@@ -113,12 +113,12 @@ public class CoinPairChoiceAttributeController {
             }
     )
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
-        if (this.coinPairChoiceAttributeService.get(id) == null){
+    @DeleteMapping("/{coinPairChoiceId}")
+    public Result delete(@PathVariable("coinPairChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPairChoiceId){
+        if (this.coinPairChoiceAttributeService.get(coinPairChoiceId) == null){
             return new Result<>(-1,"自选币属性不存在");
         }
-        return new Result<>(this.coinPairChoiceAttributeService.delete(id));
+        return new Result<>(this.coinPairChoiceAttributeService.delete(coinPairChoiceId));
     }
 
 
