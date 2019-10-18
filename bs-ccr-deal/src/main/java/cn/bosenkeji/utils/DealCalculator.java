@@ -262,8 +262,11 @@ public class DealCalculator {
             }
 
             //记录最小拟买入均价
-            if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
+            if (minAveragePrice - averagePrice > 0) {
                 updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
+                if (dealParameter.getSignId().equals("4069925") && dealParameter.getSymbol().equals("trxusdt")) {
+                    log.info("修改最小拟买入均价----： 拟买入均价为：" + averagePrice + "  下调均价为：" + lowerAveragePrice + "  回调均价为：" + callbackAveragePrice );
+                }
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
