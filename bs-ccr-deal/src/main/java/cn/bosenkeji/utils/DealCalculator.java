@@ -236,6 +236,7 @@ public class DealCalculator {
         }
         //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
         if ( realTimeTradeParameter.getSellPrice() - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
+            log.info("对冲-------------");
             return false;
         }
 
@@ -251,7 +252,7 @@ public class DealCalculator {
         Double callbackAveragePrice = countCallbackAveragePrice(minAveragePrice,averagePosition,followCallbackRatio);
 
         if (dealParameter.getSignId().equals("4069925") && dealParameter.getSymbol().equals("trxusdt")) {
-            log.info("修改最小拟买入均价----： 拟买入均价为：" + averagePrice + "  下调均价为：" + lowerAveragePrice + "  回调均价为：" + callbackAveragePrice );
+            log.info("外围记录 最小拟买入均价----： 拟买入均价为：" + averagePrice + "  下调均价为：" + lowerAveragePrice + "  回调均价为：" + callbackAveragePrice );
         }
 
         boolean isBuy = false;
