@@ -65,8 +65,8 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public Optional<Integer> checkExistByKeyAndStatus(int userId,String robotId,int status) {
-        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,robotId, status));
+    public Optional<Integer> checkExistByKeyAndStatus(int userId,String sign,int status) {
+        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,sign, status));
     }
 
 

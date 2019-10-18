@@ -82,7 +82,7 @@ public class CoinPairChoiceAttributeController {
         }
         Result result = new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
 
-        if (result.getData().equals(0)){
+        if (result.getData().toString().contains("0")){
             return new Result<>(-1,"添加自选币接口失败");
         }
 

@@ -90,7 +90,7 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSecret(),1).get() >= 1){
+        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1){
             return new Result<>(null,"key已存在");
         }
 

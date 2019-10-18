@@ -343,12 +343,30 @@ public class RsaUtils {
             throw new Exception("私钥输入流为空");
         }
     }
+
+    /**
+     *  公钥格式处理
+     * @param publicKey
+     * @return
+     */
+    public static  String formatPublicKey(String publicKey){
+       return publicKey.replaceAll("-----BEGIN PUBLIC KEY-----","").replaceAll("\n","").replaceAll("-----END PUBLIC KEY-----","").trim();
+    }
+
+    /**
+     * 私钥格式处理
+     * @param privateKey
+     * @return
+     */
+    public static  String formatPrivateKey(String privateKey){
+        return privateKey.replaceAll("-----BEGIN PRIVATE KEY-----","").replaceAll("\n","").replaceAll("-----END PRIVATE KEY-----","").trim();
+    }
     public static void main(String[] args) throws Exception {
 
 //        Map<String,String> keyMaps = RsaUtils.genKeyPair();
 //        System.out.println(keyMaps.get(PUBLIC_KEY));
 //        System.out.println(keyMaps.get(PRIVATE_KEY));
-//
+
 //        //初始化密钥
 //        //生成密钥对
 //        Map<String,Object> keyMap=RsaUtils.initKey();
@@ -359,22 +377,28 @@ public class RsaUtils {
 //        byte[] privateKey = RsaUtils.getPrivateKey(keyMap);
 //        System.out.println("公钥："+ Base64.toBase64String(publicKey));
 //        System.out.println("私钥："+ Base64.toBase64String(privateKey));
-//
-//        RsaUtils.loadKeyPairToFile(Base64.toBase64String(publicKey),Base64.toBase64String(privateKey));
+
+//        RsaUtils.loadKeyPairToFile(keyMaps.get(PUBLIC_KEY),keyMaps.get(PRIVATE_KEY));
 
         String publicKeyStr = RsaUtils.loadPublicKeyByFile();
         String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
 
+        String pubKeyFormat = RsaUtils.formatPublicKey(publicKeyStr);
+        String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
+
+
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3+967b59f5-c10d9f96-63126899-a0cc0";
+        String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
+        String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
+        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
         System.out.println("===========甲方向乙方发送加密数据==============");
         System.out.println("原文:"+str);
         //公钥加密
-        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(),Base64.decode(publicKeyStr));
-        System.out.println("甲方 使用乙方公钥加密后的数据："+ Base64.toBase64String(code));
+        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
+        System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
         System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
         //私钥解密
-        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(privateKeyStr));
+        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat));
         System.out.println("乙方解密后的数据："+new String(decode)+"");
 
 //        //私钥签名

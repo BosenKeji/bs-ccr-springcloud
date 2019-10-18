@@ -110,10 +110,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         List<CoinPairChoice> result = new ArrayList<>(coinPairChoices);
 
         String coinName = coin.getName().toUpperCase();
+        int coinNameLength = coinName.length();
         for (CoinPairChoice c : coinPairChoices) {
             CoinPair coinPair = c.getCoinPair();
+
             String coinPairName = coinPair.getName().toUpperCase();
-            if (coinPairName.lastIndexOf(coinName) == 0){
+            int coinPairNameLength = coinPairName.length();
+            if (coinPairName.lastIndexOf(coinName)+coinNameLength != coinPairNameLength){
                 result.remove(c);
             }
         }
