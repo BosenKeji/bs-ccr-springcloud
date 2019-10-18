@@ -84,7 +84,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         /*查询所有自选币id*/
         List<Integer> dbAllCoinPairChoiceIds = this.coinPairChoiceService.findAllCoinPartnerChoiceId();
         /*验证数据库是否有自选币id*/
-        if (!dbAllCoinPairChoiceIds.isEmpty()){
+        if (dbAllCoinPairChoiceIds.isEmpty()){
             for (int coinPairChoiceId : coinPairChoiceIds) {
                 if (!dbAllCoinPairChoiceIds.contains(coinPairChoiceId)){
                     return Optional.of(FAIL);
