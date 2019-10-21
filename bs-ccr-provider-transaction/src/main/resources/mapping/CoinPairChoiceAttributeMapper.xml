@@ -29,6 +29,11 @@
      #{item,jdbcType=INTEGER}
    </foreach>
   </select>
+
+  <select id="findAllCoinPairChoiceId" resultType="integer">
+    select coin_partner_choice_id from coin_pair_choice_attribute
+  </select>
+
   <select id="checkByCoinPartnerChoiceId" resultType="integer">
     select exists (select 1 from coin_pair_choice_attribute where coin_partner_choice_id =#{coinPartnerChoiceId} limit 1)
   </select>
@@ -46,6 +51,20 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from coin_pair_choice_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="batchDelete" parameterType="list">
+    delete from coin_pair_choice_attribute
+    where coin_partner_choice_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
+  <delete id="deleteByCoinPairChoiceId" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice_attribute
     where coin_partner_choice_id = #{id,jdbcType=INTEGER}

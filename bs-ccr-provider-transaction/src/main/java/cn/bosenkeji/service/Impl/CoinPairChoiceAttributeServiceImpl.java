@@ -43,7 +43,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Override
     public CoinPairChoiceAttribute get(int id) {
-        return this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id);
+        return this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -57,8 +57,13 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByPrimaryKey(id));
+    public Optional<Integer> delete(int coinPairChoiceId) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByCoinPairChoiceId(coinPairChoiceId));
+    }
+
+    @Override
+    public Optional<Integer> batchDelete(List<Integer> coinPartnerChoiceIds) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.batchDelete(coinPartnerChoiceIds));
     }
 
     @Override
@@ -145,5 +150,10 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         }
 
         return Optional.of(SUCCESS);
+    }
+
+    @Override
+    public List<Integer> findAllCoinPartnerChoiceId() {
+        return this.coinPairChoiceAttributeMapper.findAllCoinPartnerChoiceId();
     }
 }
