@@ -41,6 +41,8 @@ public interface TradePlatformApiBindProductComboService {
 
     int deleteByComboId(int userProductComboId);
 
+    int checkExistByComboId(int userProductComboId);
+
     List findAll();
 
 }

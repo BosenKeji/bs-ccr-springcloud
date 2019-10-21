@@ -100,13 +100,9 @@ public class UserProductComboController {
     @ApiOperation(value = "删除用户套餐",httpMethod = "DELETE",nickname = "deleteUserProductCombo")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") int id) {
-        return new Result(this.iUserProductComboService.delete(id));
+        return this.iUserProductComboService.delete(id);
     }
 
-    @PutMapping("/moveData")
-    public Result moveData() {
-        return new Result(this.iUserProductComboService.moveComboTime());
-    }
 
     @ApiOperation(value = "刷新 全部用户套餐时长",httpMethod = "PUT",nickname = "flushAllComboDay")
     @PutMapping("/flush_all_combo_day")
@@ -114,11 +110,11 @@ public class UserProductComboController {
         return new Result(this.iUserProductComboService.flushAllComboDay());
     }
 
-    @ApiOperation(value = "刷新 批量 用户套餐时长",httpMethod = "PUT",nickname = "flushSomeComboDay")
+    /*@ApiOperation(value = "刷新 批量 用户套餐时长",httpMethod = "PUT",nickname = "flushSomeComboDay")
     @PutMapping("/flush_some_combo_day")
     public Result flushSomeComboDay(@RequestParam("ids") List<Integer> ids) {
         return new Result(this.iUserProductComboService.flushSomeComboDay(ids));
-    }
+    }*/
 
     //获取单个用户套餐交易平台api接口
 

@@ -22,12 +22,7 @@ public class UserProductComboTest {
 
     @Test
     public void testSelectByGroup() {
-        System.out.println(userProductComboMapper.selectRedisByGroup());
     }
 
-    @Test
-    public void testMoveRedisKeyId() {
-        System.out.println(iUserProductComboService.moveComboRedis());
-    }
 
 }

@@ -1,6 +1,8 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.service.JobService;
+import cn.bosenkeji.vo.Job;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
@@ -10,6 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.aliyuncs.schedulerx2.model.v20190430.*;
 
+import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +22,9 @@ import java.util.List;
 public class JobServiceImpl implements JobService {
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
+
+    @Resource
+    private JobMapper jobMapper;
 
     @Value("${regionId}")
     private String regionId;
@@ -66,6 +74,13 @@ public class JobServiceImpl implements JobService {
     @Override
     public CreateJobResponse createJob(String jobName,String timeExpression,String parameters) throws ClientException {
 
+        if(jobMapper.checkExistByJobName(jobName)>=1) {
+            Log.info("任务"+jobName+"创建失败，因为任务调度"+jobName+"已存在！");
+            CreateJobResponse createJobResponse = new CreateJobResponse();
+            createJobResponse.setSuccess(false);
+            createJobResponse.setMessage("任务"+jobName+"创建失败，因为任务调度"+jobName+"已存在！");
+            return createJobResponse;
+        }
         Log.info("进入创建调度任务");
         DefaultAcsClient defaultAcsClient = getDefaultAcsClient();
         CreateJobRequest request=new CreateJobRequest();
@@ -93,6 +108,17 @@ public class JobServiceImpl implements JobService {
         Log.info("定时任务信息"+request);
         Log.info(toString());
         CreateJobResponse response=defaultAcsClient.getAcsResponse(request);
+
+        //保存到数据库
+        if(response.getSuccess()) {
+            Job job=new Job();
+            job.setJobName(jobName);
+            job.setStatus(1);
+            job.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            job.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            int i = jobMapper.insertSelective(job);
+            Log.info("job:"+jobName+"添加到数据库返回状态为"+i);
+        }
         Log.info(response.getMessage()+"------data:"+response.getData()+"------success:"+response.getSuccess()+"------code:"+response.getCode());
         return response;
     }

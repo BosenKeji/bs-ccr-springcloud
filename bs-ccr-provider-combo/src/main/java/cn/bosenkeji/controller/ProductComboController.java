@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.IProductComboService;
+import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
@@ -37,6 +38,9 @@ public class ProductComboController {
 
     @Resource
     private IProductComboService iProductComboService;
+
+    @Resource
+    private IUserProductComboService iUserProductComboService;
 
 
 
@@ -138,6 +142,9 @@ public class ProductComboController {
     @ApiOperation(value ="删除产品套餐信息api接口",httpMethod = "DELETE",nickname = "deleteProductComboInfo")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public Result delete(@PathVariable("id") @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
+        if(iUserProductComboService.checkExistByProductComboId(id)>=1) {
+            return new Result(0,"删除失败，该套餐有用户使用");
+        }
         return new Result(this.iProductComboService.delete(id));
     }
 

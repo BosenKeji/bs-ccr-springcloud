@@ -100,5 +100,57 @@ public class RedisTest {
         System.out.println(score);
     }
 
+    @Test
+    public void testDeleteSeveralKeys() {
+        Set keys = redisTemplate.keys("ccr1"+"*");
+        Long delete = redisTemplate.delete(keys);
+        System.out.println("int = " + delete);
+    }
+
+
+    @Test
+    public void testSet() {
+        long result=0;
+        for (int i=0;i<10;i++) {
+            result += redisTemplate.opsForSet().add(String.valueOf(i), "userComboTime_0");
+        }
+        System.out.println("result = " + result);
+    }
+
+    @Test
+    public void testHash() {
+        long result=0;
+        for(int i=0;i<10;i++) {
+            redisTemplate.opsForHash().put("comboLocal",String.valueOf(i),"userComboTime_0" );
+        }
+        Set comboLocal = redisTemplate.opsForHash().keys("comboLocal");
+        System.out.println("comboLocal = " + comboLocal);
+    }
+
+    @Test
+    public void test05() {
+        Long xinbgeih = redisTemplate.opsForZSet().size("xinbgeih");
+        System.out.println("xinbgeih = " + xinbgeih);
+    }
+
+    @Test
+    public void testGetHash() {
+        String comboRedisKey = (String) redisTemplate.opsForHash().get("comboRedisKeyTest", "1");
+        System.out.println("comboRedisKey = " + comboRedisKey);
+    }
+
+    @Test
+    public void testGetZsetObj(){
+        Double score = redisTemplate.opsForZSet().score("userComboTime_0", "sgei");
+        System.out.println("score = " + score);
+    }
+
+    @Test
+    public void testDeleteSomeZset() {
+        List list=new ArrayList();
+        list.add("1");
+        redisTemplate.delete(list);
+    }
+
 
 }

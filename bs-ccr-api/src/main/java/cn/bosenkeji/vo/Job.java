@@ -1,34 +1,24 @@
 package cn.bosenkeji.vo;
 
-import io.swagger.annotations.ApiModelProperty;
-
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * @Author CAJR
- * @create 2019/7/17 10:34
- */
-
-public class Job implements Serializable {
-
+public class Job {
     private int id;
 
-    private long jobId;
+    private String jobId;
 
     private String jobName;
 
-
-
-    @ApiModelProperty(hidden = true)
     private int status;
 
-
-    @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
+
+
+    public Job() {
+        super();
+    }
 
     public int getId() {
         return id;
@@ -38,11 +28,11 @@ public class Job implements Serializable {
         this.id = id;
     }
 
-    public long getJobId() {
+    public String getJobId() {
         return jobId;
     }
 
-    public void setJobId(long jobId) {
+    public void setJobId(String jobId) {
         this.jobId = jobId;
     }
 
@@ -76,5 +66,17 @@ public class Job implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", jobId='" + jobId + '\'' +
+                ", jobName='" + jobName + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

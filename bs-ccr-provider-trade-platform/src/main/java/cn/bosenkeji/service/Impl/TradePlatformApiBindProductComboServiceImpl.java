@@ -234,6 +234,11 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     }
 
     @Override
+    public int checkExistByComboId(int userProductComboId) {
+        return this.tradePlatformApiBindProductComboMapper.checkExistByComboId(userProductComboId);
+    }
+
+    @Override
     public List findAll() {
         return tradePlatformApiBindProductComboMapper.findAll();
     }

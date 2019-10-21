@@ -2,12 +2,12 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.Job;
 
-import java.util.List;
-
 public interface JobMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Job record);
+
+    int insertSelective(Job record);
 
     Job selectByPrimaryKey(Integer id);
 
@@ -15,9 +15,6 @@ public interface JobMapper {
 
     int updateByPrimaryKey(Job record);
 
-    List<Job> findAll();
-
     Job selectByJobName(String jobName);
-
-
+    int checkExistByJobName(String jobName);
 }

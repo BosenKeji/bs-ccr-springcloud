@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageInfo;
@@ -27,15 +28,17 @@ public interface IUserProductComboService {
 
     Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
 
-    int delete(int id);
+    Result delete(int id);
     int deleteByIds(List<Integer> ids);
 
-    int moveComboTime();
 
     int flushAllComboDay();
 
     int flushSomeComboDay(List<Integer> ids);
 
-    int moveComboRedis();
+    int checkExistById(Integer id);
+
+    int checkExistByProductComboId(int productComboId);
+
 
 }

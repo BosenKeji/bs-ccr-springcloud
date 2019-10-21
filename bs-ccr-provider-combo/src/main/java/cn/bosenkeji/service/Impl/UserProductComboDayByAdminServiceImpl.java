@@ -56,14 +56,17 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         int time=userProductComboDay.getNumber();
         if(userProductCombo==null)
             return 0;
-        String redisKey = userProductCombo.getRedisKey();
+        //String redisKey = userProductCombo.getRedisKey();
+        String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey,String.valueOf(id));
 
         //重新创建redis 的zset情况
+        if(redisKey==null)
+            UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
+            //return 0;
         if(redisTemplate.opsForZSet().score(redisKey,String.valueOf(id))==null) {
 
-            int key=0;
-            String currentKey="";
-            UserComboTimeUtil.addTime(currentKey,time,key,jobService,redisTemplate,userProductCombo,userProductComboMapper);
+            UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
+
         }
 
         //redis中的时长还在，直接加长
@@ -71,8 +74,9 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
             redisTemplate.opsForZSet().incrementScore(redisKey,String.valueOf(id),time);
         }
 
-
-
+        if(userProductCombo.getUserId()>0) {
+            userProductComboDay.setUserId(userProductCombo.getUserId());
+        }
         //新增用户套餐时长
         userProductComboDayMapper.insert(userProductComboDay);
 

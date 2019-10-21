@@ -9,6 +9,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
+import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
@@ -41,6 +42,9 @@ public class UserProductComboDayByAdminController {
     private IUserProductComboDayByAdminService iUserProductComboDayByAdminService;
 
     @Resource
+    private IUserProductComboService iUserProductComboService;
+
+    @Resource
     private DiscoveryClient discoveryClient;
 
 
@@ -63,6 +67,9 @@ public class UserProductComboDayByAdminController {
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Result add(
             @RequestBody @NotNull @ApiParam(value = "管理员实体",required = true,type = "string") UserProductComboDayByAdmin userProductComboDayByAdmin) {
+        if(iUserProductComboService.checkExistById(userProductComboDayByAdmin.getUserProductComboDay().getUserProductComboId()) != 1) {
+            return new Result(0,"用混套餐不存在");
+        }
         UserProductComboDay userProductComboDay = userProductComboDayByAdmin.getUserProductComboDay();
         userProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         userProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

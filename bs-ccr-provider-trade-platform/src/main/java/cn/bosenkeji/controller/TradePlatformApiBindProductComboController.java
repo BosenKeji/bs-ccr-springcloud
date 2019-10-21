@@ -70,6 +70,9 @@ public class TradePlatformApiBindProductComboController {
                 .filter((value)->value==1)
                 .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
 
+        if(tradePlatformApiBindProductComboService.checkExistByComboId(tradePlatformApiBindProductCombo.getUserProductComboId())>=1) {
+            return new Result(0,"机器人"+tradePlatformApiBindProductCombo.getUserProductComboId()+"已存在");
+        }
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo));
