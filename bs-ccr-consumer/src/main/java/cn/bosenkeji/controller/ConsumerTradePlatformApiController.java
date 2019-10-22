@@ -67,7 +67,7 @@ public class ConsumerTradePlatformApiController {
 
     @ApiOperation(value = "删除交易平台api 接口",notes = "删除平台api 接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{id}")
-    public Result deleteOneTradePlatformApi(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
-        return this.iTradePlatformApiClientService.deleteOneTradePlatformApi(id);
+    public Result deleteOneTradePlatformApi(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id,@ApiIgnore @TokenUser int userId){
+        return this.iTradePlatformApiClientService.deleteOneTradePlatformApi(id,userId);
     }
 }

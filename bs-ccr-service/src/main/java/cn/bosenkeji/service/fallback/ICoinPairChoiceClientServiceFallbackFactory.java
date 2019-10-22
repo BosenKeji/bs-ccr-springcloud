@@ -53,7 +53,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result deleteOneCoinPairChoice(int id) {
+            public Result deleteOneCoinPairChoice(int id,int userId) {
                 return  new Result<>(0,"fail");
             }
 
@@ -66,7 +66,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result batchDelete(String coinPairChoiceIds) {
+            public Result batchDelete(String coinPairChoiceIds,int userId) {
                 return  new Result<>(0,"hystrix fail");
             }
         };

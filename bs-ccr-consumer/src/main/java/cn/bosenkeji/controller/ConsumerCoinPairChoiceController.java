@@ -77,13 +77,13 @@ public class ConsumerCoinPairChoiceController {
 
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
-    public Result deleteOneCoinPairChoice(@PathVariable("id") @Min(1) @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id){
-        return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id);
+    public Result deleteOneCoinPairChoice(@PathVariable("id") @Min(1) @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id,@ApiIgnore @TokenUser @Min(1) int userId){
+        return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id,userId);
     }
 
     @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
     @DeleteMapping("/batch")
-    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") @NotNull String coinPairChoiceIds){
-        return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds);
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") @NotNull String coinPairChoiceIds,@ApiIgnore @TokenUser @Min(1) int userId){
+        return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds,userId);
     }
 }

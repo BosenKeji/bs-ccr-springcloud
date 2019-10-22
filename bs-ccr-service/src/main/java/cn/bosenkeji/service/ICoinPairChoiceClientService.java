@@ -47,11 +47,11 @@ public interface ICoinPairChoiceClientService {
     public Result updateCoinPairChoice(@RequestBody CoinPairChoice coinPairChoice);
 
     @DeleteMapping("/coin_pair_choice/{id}")
-    public Result deleteOneCoinPairChoice(@PathVariable("id") int id);
+    public Result deleteOneCoinPairChoice(@PathVariable("id") int id,@RequestParam("userId")int userId);
 
     @GetMapping("/coin_pair_choice/all")
     List<CoinPairChoice> findAll();
 
     @DeleteMapping("/coin_pair_choice/batch")
-    public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds);
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds,@RequestParam("userId")int userId);
 }

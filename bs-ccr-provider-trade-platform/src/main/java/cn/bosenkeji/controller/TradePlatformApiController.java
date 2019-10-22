@@ -132,10 +132,15 @@ public class TradePlatformApiController {
     )
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id,
+                         @RequestParam("userId")@ApiParam(value = "用户 id", required = true, type = "integer",example = "1") @Min(1) int userId){
+        TradePlatformApi tradePlatformApi = this.tradePlatformApiService.get(id);
 
-        if (this.tradePlatformApiService.get(id) == null){
+        if (tradePlatformApi == null){
             return new Result<>(null,"交易平台API不存在");
+        }
+        if (tradePlatformApi.getUserId() != userId){
+            return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
         }
 
         return new Result<>(this.tradePlatformApiService.delete(id));
