@@ -1,6 +1,8 @@
 package cn.bosenkeji;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.nacos.client.utils.JSONUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,7 @@ public class RedisTest {
 
     /**
      *  判断键是否存在，及键的个数
-     */
+     *//*
     @Test
     public void testGetZset() {
         Boolean userComboTime_01 = redisTemplate.hasKey("userComboTime_6");
@@ -152,5 +154,24 @@ public class RedisTest {
         redisTemplate.delete(list);
     }
 
+    @Test
+    public void testRemoveZset() {
+        List<String> list=new ArrayList();
+
+        list.add("10024");
+        list.add("10025");
+        Set eq0Set = redisTemplate.opsForZSet().rangeByScore("userComboTime_0", 0, 10);
+        System.out.println("eq0Set = " + eq0Set);
+        Long userComboTime_test = redisTemplate.opsForZSet().removeRangeByScore("userComboTime_test", 0, 0);
+        List<String> list1=new ArrayList();
+        list1.add("1001");
+        //String o = (String) JSONObject.toJSON(list1);
+        //HashMap hashMap=new HashMap();
+        //hashMap.put("10001","xivin");
+        redisTemplate.opsForHash().delete("ComboRedisKeyTest","1001","1002");
+        //Long userComboTime_0 = redisTemplate.opsForZSet().remove("userComboTime_0", eq0Set);
+        //System.out.println("userComboTime_0 = " + userComboTime_0);
+    }
+*/
 
 }

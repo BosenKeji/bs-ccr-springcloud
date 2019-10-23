@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.annotation.cache.MyCacheRemove;
 import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
@@ -58,6 +59,14 @@ public class CoinPairChoiceController {
     DiscoveryClient client;
 
 
+    /**
+     * 与coinPair coinPairChoiceAttribute coinPairChoiceAttributeCustom 关联查询
+     * @param pageNum
+     * @param pageSizeCommon
+     * @param userId
+     * @param coinId
+     * @return
+     */
     @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#userId+'-'+#coinId+'-'+#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoiceWithPage")
     @GetMapping("/")
@@ -92,11 +101,12 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.get(id);
     }
 
-    @Caching(
+    @MyCacheRemove("'ccr:coinPairChoice:list::'+#userId+'-*'")
+    /*@Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }
-    )
+    )*/
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
     public Result add(@RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,

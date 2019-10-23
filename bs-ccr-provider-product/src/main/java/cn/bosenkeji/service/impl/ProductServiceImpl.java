@@ -34,7 +34,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public int add(Product product) {
 
-        return productMapper.insert(product);
+        return productMapper.insertSelective(product);
         // return flag==1?true:false;
     }
 

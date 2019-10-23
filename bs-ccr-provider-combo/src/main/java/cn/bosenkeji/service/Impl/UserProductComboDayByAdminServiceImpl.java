@@ -78,12 +78,12 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
             userProductComboDay.setUserId(userProductCombo.getUserId());
         }
         //新增用户套餐时长
-        userProductComboDayMapper.insert(userProductComboDay);
+        userProductComboDayMapper.insertSelective(userProductComboDay);
 
         //新增用户套餐时长操作
         userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
 
-        return userProductComboDayByAdminMapper.insert(userProductComboDayByAdmin);
+        return userProductComboDayByAdminMapper.insertSelective(userProductComboDayByAdmin);
 
     }
 
