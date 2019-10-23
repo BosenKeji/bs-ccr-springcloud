@@ -115,9 +115,10 @@ public class CoinPairChoiceAttributeController {
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
     @DeleteMapping("/{coinPairChoiceId}")
     public Result delete(@PathVariable("coinPairChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPairChoiceId){
-        if (this.coinPairChoiceAttributeService.get(coinPairChoiceId) == null){
+        if (this.coinPairChoiceAttributeService.checkByCoinPartnerChoiceId(coinPairChoiceId).get() < 1){
             return new Result<>(-1,"自选币属性不存在");
         }
+
         return new Result<>(this.coinPairChoiceAttributeService.delete(coinPairChoiceId));
     }
 
