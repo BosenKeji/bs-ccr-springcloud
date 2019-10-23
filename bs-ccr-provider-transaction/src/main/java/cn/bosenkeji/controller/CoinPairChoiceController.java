@@ -157,9 +157,14 @@ public class CoinPairChoiceController {
     )
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
-        if (this.coinPairChoiceService.get(id) == null){
+    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id,
+            @Min(1)@RequestParam("userId") @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
+        CoinPairChoice coinPairChoice = this.coinPairChoiceService.get(id);
+        if (coinPairChoice == null){
             return new Result<>(null,"自选币不存在");
+        }
+        if (coinPairChoice.getUserId() != userId){
+            return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
         }
 
         return new Result<>(this.coinPairChoiceService.delete(id));
@@ -174,8 +179,13 @@ public class CoinPairChoiceController {
     )
     @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
     @DeleteMapping("/batch")
-    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds){
-        return new Result<>(this.coinPairChoiceService.batchDelete(coinPairChoiceIds));
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds,
+                              @Min(1)@RequestParam("userId") @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
+        Optional<Integer> result = this.coinPairChoiceService.batchDelete(coinPairChoiceIds,userId);
+        if (result.get() == 0){
+            return new Result<>(null,"批量删除自选币失败！");
+        }
+        return new Result<>(result);
     }
 
     

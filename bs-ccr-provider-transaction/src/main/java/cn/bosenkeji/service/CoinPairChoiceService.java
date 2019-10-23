@@ -30,7 +30,7 @@ public interface CoinPairChoiceService {
 
     List<CoinPairChoice> findAll();
 
-    Optional<Integer> batchDelete(String idStr);
+    Optional<Integer> batchDelete(String idStr,int userId);
 
     List<Integer> findAllCoinPartnerChoiceId();
 }

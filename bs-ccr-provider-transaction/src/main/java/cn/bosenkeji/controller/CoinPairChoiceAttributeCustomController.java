@@ -70,7 +70,13 @@ public class CoinPairChoiceAttributeCustomController {
             return new Result<>(null,"自选币不存在");
         }
         if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()).get() >=1){
-            return new Result<>(null,"自选币自定义属性已存在");
+            coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+            Optional<Integer> result = this.coinPairChoiceAttributeCustomService.updateByCoinPairChoiceId(coinPairChoiceAttributeCustom);
+            if (result.get() > 0){
+                return new Result<>(result,"自选币自定义属性存在并更新！");
+            }else {
+                return new Result<>(result,"自选币自定义属性存在,更新失败！");
+            }
         }
 
         coinPairChoiceAttributeCustom.setStatus(1);

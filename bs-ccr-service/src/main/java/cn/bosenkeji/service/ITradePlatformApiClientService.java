@@ -34,7 +34,7 @@ public interface ITradePlatformApiClientService {
     public Result updateTradePlatformApi(@RequestBody TradePlatformApi tradePlatformApi);
 
     @DeleteMapping("/trade_platform_apis/{id}")
-    public Result deleteOneTradePlatformApi(@PathVariable("id") int tradePlatformId);
+    public Result deleteOneTradePlatformApi(@PathVariable("id") int tradePlatformId,int userId);
 
     @GetMapping("/trade_platform_apis/user/{userId}")
     TradePlatformApi selectByUserId(@PathVariable("userId") Integer userId);
