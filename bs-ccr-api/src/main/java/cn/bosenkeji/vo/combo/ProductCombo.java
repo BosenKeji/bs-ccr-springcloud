@@ -3,7 +3,10 @@ package cn.bosenkeji.vo.combo;
 import cn.bosenkeji.vo.product.Product;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -11,15 +14,20 @@ import java.sql.Timestamp;
  * @author xivinChen
  */
 @Api
+@Validated
 public class ProductCombo implements Serializable {
     private int id;
 
+    @Min(value = 1,message = "产品id必须大于等于1")
     private int productId;
 
+    @NotBlank(message = "套餐名称不能为空")
     private String name;
 
+    @Min(value = 1,message = "套餐时长必须大于等于1")
     private int time;
 
+    @Min(value = 0,message = "价格不能为负数")
     private float price;
 
     private String remark;

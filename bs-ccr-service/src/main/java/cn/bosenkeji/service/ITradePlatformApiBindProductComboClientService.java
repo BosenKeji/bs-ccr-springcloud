@@ -5,8 +5,6 @@ import cn.bosenkeji.service.fallback.ITradePlatformApiBindProductComboClientServ
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiParam;
-import org.dromara.hmily.annotation.Hmily;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,7 @@ public interface ITradePlatformApiBindProductComboClientService {
                                     @RequestParam(value="pageSize",defaultValue="10") int pageSize,
                                     @RequestParam("userId") int userId);*/
 
-   //@Hmily
+
     @PostMapping("/trade_platform_api_bind_product_combo/")
     Result addTradePlatformApiBindProductCombo(@RequestBody TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
 

@@ -71,4 +71,14 @@ public class ProductServiceImpl implements IProductService {
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(productMapper.selectByStatus(status));
     }
+
+    @Override
+    public int checkExistByNameAndVersionName(String name, String versionName) {
+        return productMapper.checkExistByNameAndVersionName(name,versionName);
+    }
+
+    @Override
+    public int checkExistById(int id) {
+        return productMapper.checkExistById(id);
+    }
 }

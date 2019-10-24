@@ -68,7 +68,7 @@ public class UserProductComboDayByAdminController {
     public Result add(
             @RequestBody @NotNull @ApiParam(value = "管理员实体",required = true,type = "string") UserProductComboDayByAdmin userProductComboDayByAdmin) {
         if(iUserProductComboService.checkExistById(userProductComboDayByAdmin.getUserProductComboDay().getUserProductComboId()) != 1) {
-            return new Result(0,"用混套餐不存在");
+            return new Result(0,"用户套餐不存在，增补时长失败！");
         }
         UserProductComboDay userProductComboDay = userProductComboDayByAdmin.getUserProductComboDay();
         userProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));

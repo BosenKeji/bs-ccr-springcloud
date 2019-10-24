@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.interfaces.RedisInterface;
+import cn.bosenkeji.service.IProductComboClientService;
 import cn.bosenkeji.service.IProductService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.product.Product;
@@ -43,6 +44,9 @@ public class ProductController {
     @Resource
     private DiscoveryClient discoveryClient;
 
+    @Resource
+    private IProductComboClientService iProductComboClientService;
+
     @Cacheable(value = RedisInterface.PRODUCT_LIST_KEY,key = "#pageNum+'-'+#pageSize")
     @ApiOperation(value="获取产品列表api接口",httpMethod = "GET",nickname = "getProductListWithPage")
     @RequestMapping(value="/",method = RequestMethod.GET)
@@ -78,7 +82,7 @@ public class ProductController {
     @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProduct")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品实体",required = true,type = "string") Product product) {
-       if(this.iProductService.checkExistByName(product.getName())==1)
+       if(this.iProductService.checkExistByNameAndVersionName(product.getName(),product.getVersionName())==1)
            return new Result(0,"产品名称已存在");
         product.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -98,6 +102,10 @@ public class ProductController {
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public Result delete(@PathVariable("id") @Min(1)
                                         @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+        Result result = iProductComboClientService.checkExistByProductId(id);
+        Integer isExist=(Integer) result.getData();
+        if(isExist!=null && isExist>0)
+            return new Result(0,"该产品 存在对应的套餐，删除失败");
         return new Result(this.iProductService.delete(id));
     }
 
@@ -137,16 +145,18 @@ public class ProductController {
 
 
 
-    //@Cacheable(value = RedisInterface.PRODUCT_LIST_IDS,key = "#root.target.listToString(#ids)")
+
     @GetMapping("/list_by_ids")
     public Map<Integer,Product> listByPrimaryKes(@RequestParam("ids") List<Integer> ids) {
         return this.iProductService.selectByPrimaryKeys(ids);
     }
 
-    public String listToString(List list) {
-        String s = list.toString();
-        return s;
+    @GetMapping("/check_exist_by_id")
+    public Result checkExistById(@RequestParam("id") @Min(1)
+                                 @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int id) {
+        return new Result(iProductService.checkExistById(id));
     }
+
 
     @ApiOperation(value="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")
     @RequestMapping(value="/discover")

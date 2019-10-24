@@ -19,6 +19,7 @@ public class UserProductComboDayByAdmin implements Serializable {
 
     private int userProductComboDayId;
 
+    @ApiModelProperty(hidden = true)
     private int status;
 
     private String orderNumber;
@@ -38,6 +39,7 @@ public class UserProductComboDayByAdmin implements Serializable {
     //@ApiModelProperty(hidden = true)
     private UserProductComboDay userProductComboDay;
 
+    @ApiModelProperty(hidden = true)
     private ComboDayReason comboDayReason;
 
     public ComboDayReason getComboDayReason() {

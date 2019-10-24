@@ -17,4 +17,5 @@ public interface IProductComboService {
     int update(ProductCombo productCombo);
     int delete(int id);
     int checkExistByNameAndProductId(String name, int productId);
+    int checkExistByProductId(int productId);
 }

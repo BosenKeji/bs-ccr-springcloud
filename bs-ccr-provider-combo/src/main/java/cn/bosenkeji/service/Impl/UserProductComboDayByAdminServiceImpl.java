@@ -24,6 +24,7 @@ import javax.annotation.Resource;
  * @ClassName cn.bosenkeji.service.Impl
  * @Version V1.0
  * @create 2019-07-15 11:17
+ * 增补时长操作，用来新加时长，而UserProductComboDayService 则针对时长管理，即查询都在UserProductComboDayService
  */
 @Service
 public class UserProductComboDayByAdminServiceImpl implements IUserProductComboDayByAdminService {
@@ -47,6 +48,13 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
 
+    /**
+     *  增补时长 注意用户套餐是否过期 而不同处理
+     *  数据插入userProductComboDay 外，同时插入userProductComboDayByAdmin
+     * @param userProductComboDay
+     * @param userProductComboDayByAdmin
+     * @return
+     */
     @Override
     public int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin) {
 

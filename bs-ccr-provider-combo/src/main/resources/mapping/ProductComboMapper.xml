@@ -178,6 +178,10 @@
     select EXISTS (select 1 from product_combo where `name`=#{param1} and product_id=#{param2} limit 1)
   </select>
 
+  <select id="checkExistByProductId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+    select exists (select 1 from product_combo where product_id= #{productId,jdbcType=INTEGER} limit 1)
+  </select>
+
   <select id="selectProductIdByPrimaryKey" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
     select product_id from product_combo where `id`=#{id} limit 1
   </select>

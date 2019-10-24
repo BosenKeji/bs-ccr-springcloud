@@ -59,6 +59,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
+
+    private final int FAIL=0;
+    private final int SUCCESS=1;
     
 
     @Resource
@@ -66,25 +69,28 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     /**
      * 涉及分布式事务，要注意各个操作的顺序
+     *
+     * 用户套餐部署完后，马上生成机器人的绑定记录
+     * 即往 userProductCombo插入一条数据，同是往tradePlatformBindProductCombo 插入一条数据
      * @param userProductCombo
      * @return
      */
-    //@Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+
     //@Transactional
     @Override
     public int add(UserProductCombo userProductCombo) {
 
         //查询套餐时长
-        //userProductCombo.setRedisKey(" ");
 
         Integer time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
         //int i=1/0;
         //保存到数据库 管理端部署机器人
-        int aresult=userProductComboMapper.insertSelective(userProductCombo);
+        int adminResult=userProductComboMapper.insertSelective(userProductCombo);
         //部署失败直接返回
-        if(aresult!=1)
-            return 0;
+        if(adminResult!=SUCCESS)
+            return FAIL;
 
+        //把套餐剩余时长 存进缓存中
         UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
 
 
@@ -95,18 +101,17 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         tradePlatformApiBindProductCombo.setUserId(userProductCombo.getUserId());
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int uresult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();
+        int userResult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();
 
-        System.out.println(uresult+"uresult");
         //int i=1/0;
-        return 1;
+        return SUCCESS;
 
     }
 
     public int addConfirm(UserProductCombo userProductCombo) {
 
         Log.info(userProductCombo.getId()+"机器人部署确认成功");
-        return 3;
+        return SUCCESS;
     }
 
 
@@ -117,10 +122,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //删除机器人
         userProductComboMapper.deleteByPrimaryKey(userProductCombo.getId());
 
-
-        //if(userProductCombo.getRedisKey()!=null)
-            //redisTemplate.opsForZSet().remove(userProductCombo.getRedisKey(),String.valueOf(userProductCombo.getId()));
-        return -3;
+        return FAIL;
     }
 
 
@@ -178,7 +180,8 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
 
         //根据id获取用户套餐的有效时长
-        setTimeForOneCombo(userProductCombo);
+        if(userProductCombo!=null)
+            setTimeForOneCombo(userProductCombo);
 
         return userProductCombo;
 
@@ -271,28 +274,12 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
      */
     public List<UserProductCombo> getProductByPids(List<UserProductCombo> userProductCombos) {
 
-        // 收集id列表
+        //逐一设置套餐时间 并 收集id列表
         List<Integer> pids=new ArrayList<>();
         for (UserProductCombo userProductCombo : userProductCombos) {
 
+            // 设置套餐时间
             setTimeForOneCombo(userProductCombo);
-            /*//从缓存拿去剩余时间 把剩余时长填充到userProductCombo中
-            int id = userProductCombo.getId();
-            //先从 hash 中获取 对应用户套餐 保存时长的 zset位置
-            String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey, String.valueOf(id));
-            //再获取时长
-            Double score=0.0;
-            if(redisKey!=null)
-                score = redisTemplate.opsForZSet().score(redisKey, String.valueOf(id));
-            int time=0;
-
-            //注意判空处理
-            if(score!=null)
-            time=score.intValue();
-
-            //设置剩余时间
-            userProductCombo.setRemainTime(time>0?time:0);*/
-
             //循环收集产品ID
             pids.add(userProductCombo.getProductCombo().getProductId());
         }
@@ -322,6 +309,28 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public int flushAllComboDay() {
 
+        System.out.println("用户时长 数据刷新中……");
+        List<UserProductCombo> all = userProductComboMapper.findAllWithDay();
+
+        //清空redis，否则会叠加很多zset
+        Set keys = redisTemplate.keys(UserComboRedisEnum.UserComboTime + "*");
+        redisTemplate.delete(keys);
+
+        int result = countComboTypeByCombo(all,null);
+        System.out.println("用户时长 数据刷新完成！！！！！");
+        return result;
+    }
+
+    /**
+     *  初始化 刷新用户套餐剩余时长
+     *  不同强制刷新是 此方法只在 comboRedisKey 不存在时才会刷新数据
+     * @return
+     */
+    @Override
+    public int initFlushAllComboDay() {
+
+        if(redisTemplate.hasKey(UserComboRedisEnum.ComboRedisKey))
+            return FAIL;
         System.out.println("用户时长 数据刷新中……");
         List<UserProductCombo> all = userProductComboMapper.findAllWithDay();
 
@@ -400,7 +409,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
     /**
-     * 传入一个userProductCombo 查询剩余时间并设置进去
+     * 传入一个userProductCombo 从redis中查询剩余时间并设置进来
      * @param userProductCombo
      */
     public void setTimeForOneCombo(UserProductCombo userProductCombo) {

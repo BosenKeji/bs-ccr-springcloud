@@ -58,14 +58,14 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.dromara</groupId>
             <artifactId>hmily-springcloud</artifactId>
         </dependency>
         <dependency>
             <groupId>org.dromara</groupId>
             <artifactId>hmily-spring-boot-starter-springcloud</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- 模块依赖 -->
         <dependency>

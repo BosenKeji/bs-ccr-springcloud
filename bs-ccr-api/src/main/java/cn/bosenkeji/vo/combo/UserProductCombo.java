@@ -5,24 +5,30 @@ import cn.bosenkeji.vo.combo.ProductCombo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Api
 @JsonIgnoreProperties(value = {"handler"})
+@Validated
 public class UserProductCombo implements Serializable {
     private int id;
 
+    @Min(value = 1,message = "用户ID不能小于1")
     private int userId;
 
     private String orderNumber;
 
+    @Min(value = 1,message = "套餐ID 不能小于1")
     private int productComboId;
 
     private String remark;
 
+    @ApiModelProperty(hidden = true)
     private int status;
 
     @ApiModelProperty(hidden = true)
@@ -35,7 +41,6 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private int remainTime=0;
 
-    private String redisKey;
    // private int redisKeyId;
 
     //一对一
@@ -144,15 +149,6 @@ public class UserProductCombo implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public String getRedisKey() {
-        return redisKey;
-    }
-
-    public void setRedisKey(String redisKey) {
-        this.redisKey = redisKey;
-    }
-
-
     public List<UserProductComboDay> getUserProductComboDays() {
         return userProductComboDays;
     }
@@ -173,7 +169,6 @@ public class UserProductCombo implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", remainTime=" + remainTime +
-                ", redisKey='" + redisKey + '\'' +
                 ", productCombo=" + productCombo +
                 ", user=" + user +
                 ", userProductComboDays=" + userProductComboDays +

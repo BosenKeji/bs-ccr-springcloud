@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @author xivin
@@ -32,7 +33,7 @@ public class ConsumerUserProductComboController {
     //@Hmily
     @ApiOperation(value="添加用户套餐信息api接口",httpMethod = "POST",nickname = "addUserProductCombo")
     @PostMapping("/")
-    public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
+    public Object add(@RequestBody @ApiParam(value = "用户套餐实体",required = true,type = "string") @Valid UserProductCombo userProductCombo
                       ) {
         return this.iUserProductComboClientService.add(userProductCombo);
     }

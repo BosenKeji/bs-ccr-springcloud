@@ -58,6 +58,9 @@ public interface IUserClientService {
     @GetMapping("/user/list_by_ids")
     public Map<Integer, User> listByIds(@RequestParam("ids") List<Integer> ids);
 
+    @GetMapping("/user/check_exist_by_id/")
+    Result checkExistById(@RequestParam("id") int id);
+
     @GetMapping("/user/")
     public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize);

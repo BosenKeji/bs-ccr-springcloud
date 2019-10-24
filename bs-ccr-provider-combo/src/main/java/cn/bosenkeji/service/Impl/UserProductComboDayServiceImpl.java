@@ -44,26 +44,6 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     @Resource
     private IAdminClientService iAdminClientService;
 
-    @Override
-    public int add(UserProductComboDay userProductComboDay) {
-        //添加缓存
-        int id = userProductComboDay.getUserProductComboId();
-        String key="userproductcombo:id_"+id;
-        Long expire = redisTemplate.getExpire(key, TimeUnit.DAYS);
-
-        if(expire>0) {
-            //设置有效时间
-            redisTemplate.expire(key,expire+userProductComboDay.getNumber(),TimeUnit.DAYS);
-            return userProductComboDayMapper.insert(userProductComboDay);
-        }
-        //当原来的用户套餐已过时时返回false
-        return 0;
-    }
-
-    @Override
-    public int update(UserProductComboDay userProductComboDay) {
-        return userProductComboDayMapper.updateByPrimaryKeySelective(userProductComboDay);
-    }
 
     @Override
     public PageInfo<UserProductComboDay> list(int pageNum,int pageSize) {

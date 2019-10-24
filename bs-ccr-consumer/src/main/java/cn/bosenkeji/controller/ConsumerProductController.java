@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -45,7 +46,7 @@ public class ConsumerProductController {
 
     @ApiOperation(value="添加产品api接口",httpMethod = "POST",nickname = "addProduct")
     @PostMapping("/")
-    public Object addProduct(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") @NotNull Product product) {
+    public Object addProduct(@RequestBody @ApiParam(value = "产品实体",required = true,type = "string") @NotNull @Valid Product product) {
         return this.iProductClientService.addProduct(product);
     }
 

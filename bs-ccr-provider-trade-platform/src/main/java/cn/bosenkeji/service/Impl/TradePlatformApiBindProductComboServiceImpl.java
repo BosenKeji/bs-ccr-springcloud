@@ -9,11 +9,8 @@ import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.dromara.hmily.annotation.Hmily;
-import org.dromara.hmily.common.exception.HmilyRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,13 +43,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Override
     public PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId, int pageNum, int pageSize) {
 
-        //查询用户下的所有的套餐
-        //PageInfo pageInfo = this.iUserProductComboClientService.listByUserId(userId, pageNum, pageSize);
-
         //查询用户下的
         PageHelper.startPage(pageNum,pageSize);
-        /*PageInfo<TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboPageInfo =
-                new PageInfo<>(tradePlatformApiBindProductComboMapper.findByUserId(userId));*/
+
         List<TradePlatformApiBindProductCombo> pageList = tradePlatformApiBindProductComboMapper.findByUserId(userId);
 
         //

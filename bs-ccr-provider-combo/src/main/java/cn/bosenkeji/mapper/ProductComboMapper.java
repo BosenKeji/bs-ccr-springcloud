@@ -26,6 +26,8 @@ public interface ProductComboMapper {
     int selectTimeByPrimaryKey(Integer id);
     int checkExistByNameAndProductId(String name, Integer productId);
 
+    int checkExistByProductId(Integer productId);
+
     int selectProductIdByPrimaryKey(Integer id);
 
 }

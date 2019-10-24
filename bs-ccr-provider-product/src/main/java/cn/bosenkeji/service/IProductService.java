@@ -28,5 +28,8 @@ public interface IProductService {
 
     PageInfo<Product> selectByStatus(int status,int pageNum,int pageSize);
 
+    int checkExistByNameAndVersionName(String name,String versionName);
+    int checkExistById(int id);
+
 
 }

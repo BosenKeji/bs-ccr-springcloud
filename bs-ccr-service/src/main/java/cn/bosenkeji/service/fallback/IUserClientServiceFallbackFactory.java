@@ -25,6 +25,11 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
         return new IUserClientService() {
 
             @Override
+            public Result checkExistById(int id) {
+                return new Result(0,"hystrix");
+            }
+
+            @Override
             public PageInfo listByPage(Integer pageNum, Integer pageSize) {
                 User user=new User();
                 user.setUsername("hystrix");

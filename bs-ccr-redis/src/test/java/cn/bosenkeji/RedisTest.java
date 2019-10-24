@@ -62,8 +62,8 @@ public class RedisTest {
 
     /**
      *  判断键是否存在，及键的个数
-     *//*
-    @Test
+     */
+    /*@Test
     public void testGetZset() {
         Boolean userComboTime_01 = redisTemplate.hasKey("userComboTime_6");
         Long userComboTime_0 = redisTemplate.opsForZSet().size("userComboTime_6");
@@ -152,26 +152,17 @@ public class RedisTest {
         List list=new ArrayList();
         list.add("1");
         redisTemplate.delete(list);
-    }
+    }*/
 
     @Test
     public void testRemoveZset() {
-        List<String> list=new ArrayList();
-
-        list.add("10024");
-        list.add("10025");
-        Set eq0Set = redisTemplate.opsForZSet().rangeByScore("userComboTime_0", 0, 10);
-        System.out.println("eq0Set = " + eq0Set);
-        Long userComboTime_test = redisTemplate.opsForZSet().removeRangeByScore("userComboTime_test", 0, 0);
-        List<String> list1=new ArrayList();
-        list1.add("1001");
-        //String o = (String) JSONObject.toJSON(list1);
-        //HashMap hashMap=new HashMap();
-        //hashMap.put("10001","xivin");
-        redisTemplate.opsForHash().delete("ComboRedisKeyTest","1001","1002");
-        //Long userComboTime_0 = redisTemplate.opsForZSet().remove("userComboTime_0", eq0Set);
-        //System.out.println("userComboTime_0 = " + userComboTime_0);
+        String[] str=new String[10];
+        str[0]="1001";
+        str[1]="1002";
+        Long userComboTime_0 = redisTemplate.opsForZSet().remove("userComboTime_0", str);
+        System.out.println("userComboTime_0 = " + userComboTime_0);
+        Long userComboRedisKeyTest = redisTemplate.opsForHash().delete("comboRedisKeyTest", str);
+        System.out.println("userComboRedisKeyTest = " + userComboRedisKeyTest);
     }
-*/
 
 }

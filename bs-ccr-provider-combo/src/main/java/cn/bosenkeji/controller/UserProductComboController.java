@@ -8,6 +8,7 @@ package cn.bosenkeji.controller;
  */
 
 import cn.bosenkeji.service.IProductComboService;
+import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -42,6 +43,9 @@ public class UserProductComboController {
     private IProductComboService iProductComboService;
 
     @Resource
+    private IUserClientService iUserClientService;
+
+    @Resource
     private DiscoveryClient discoveryClient;
 
 
@@ -63,8 +67,12 @@ public class UserProductComboController {
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "用户套餐实体",required = true,type = "string") UserProductCombo userProductCombo
                       ) {
 
+        Result result = iUserClientService.checkExistById(userProductCombo.getUserId());
+        Integer isExist=(Integer) result.getData();
+        if(isExist==null || isExist<1)
+            return new Result(0,"用户不存在，机器人部署失败");
         if(iProductComboService.get(userProductCombo.getProductComboId())==null)
-            return new Result(0,"产品套餐不存在");
+            return new Result(0,"产品套餐不存在，机器人部署失败！");
         //判断用户是否没过该产品
         if(this.iUserProductComboService.checkExistByProductIdAndUserId(userProductCombo.getProductComboId(),userProductCombo.getUserId())>=1)
             return new Result(0,"该用户不能重复买该产品");

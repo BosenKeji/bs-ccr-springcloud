@@ -74,4 +74,9 @@ public class ProductComboServiceImpl implements IProductComboService {
     public int checkExistByNameAndProductId(String name,int productId) {
         return productComboMapper.checkExistByNameAndProductId(name,productId);
     }
+
+    @Override
+    public int checkExistByProductId(int productId) {
+        return productComboMapper.checkExistByProductId(productId);
+    }
 }

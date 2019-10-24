@@ -59,6 +59,11 @@
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-redis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-service</artifactId>
+        </dependency>
     </dependencies>
 
 

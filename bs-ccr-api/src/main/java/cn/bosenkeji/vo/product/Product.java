@@ -2,7 +2,9 @@ package cn.bosenkeji.vo.product;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -10,11 +12,14 @@ import java.sql.Timestamp;
  * @author: xivinChen
  */
 @Api
+@Validated
 public class Product implements Serializable {
     private int id;
 
+    @NotBlank(message = "产品名称不能为空")
     private String name;
 
+    @NotBlank(message = "产品版本名称不能为空")
     private String versionName;
 
     private String logo;

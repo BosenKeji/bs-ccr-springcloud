@@ -27,4 +27,8 @@ public interface ProductMapper {
     Map<Integer,Product> selectByPrimaryKeys(List ids);
 
     List<Product> selectByStatus(Integer status);
+
+    int checkExistByNameAndVersionName(String name,String versionName);
+
+    int checkExistById(Integer id);
 }

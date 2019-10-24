@@ -46,18 +46,26 @@ public class UserController {
         return this.userService.listByPage(pageNum,pageSize);
     }
 
-    @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
+    //@Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
     public User get(@PathVariable("id") @Min(1) @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
         return userService.get(id);
     }
 
+
+
     @GetMapping("/get_by_username")
     @ApiOperation(value = "通过用户名获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByUsername")
     public User getByUsername(@RequestParam("username") @NotNull @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") String username) {
+        /*Integer id=userService.getIdByUsername(username);
+        if(id==null||id<1)
+            return null;
+        return this.get(userService.getIdByUsername(username));*/
         return userService.getByUsername(username);
     }
+
+
 
     @GetMapping("/get_by_tel")
     @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
@@ -127,6 +135,7 @@ public class UserController {
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    //@CacheEvict(value = RedisInterface.USER_REDIS_USERNAME_KEY,key = )
                     @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
             }
@@ -209,6 +218,11 @@ public class UserController {
         else
             return new Result(0,"用户不存在");
 
+    }
+
+    @GetMapping("/check_exist_by_id")
+    public Result checkExistById(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
+        return new Result(userService.checkExistById(id));
     }
 
     @ApiOperation(value = "获取多个用户信息接口",httpMethod = "GET",nickname = "getUserByIds")

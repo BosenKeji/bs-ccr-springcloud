@@ -36,6 +36,8 @@ public interface IUserProductComboService {
 
     int flushSomeComboDay(List<Integer> ids);
 
+    int initFlushAllComboDay();
+
     int checkExistById(Integer id);
 
     int checkExistByProductComboId(int productComboId);

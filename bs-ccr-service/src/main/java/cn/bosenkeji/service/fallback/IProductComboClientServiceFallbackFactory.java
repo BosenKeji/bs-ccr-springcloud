@@ -65,6 +65,11 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
             public Result updateByStatus(int id, int status) {
                return new Result(0,"hystrix");
             }
+
+            @Override
+            public Result checkExistByProductId(int productId) {
+                return new Result(0,"hystrix");
+            }
         };
     }
 }

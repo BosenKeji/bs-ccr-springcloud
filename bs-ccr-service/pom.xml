@@ -37,10 +37,10 @@
         </dependency>
 
         <!-- 分布式式事务hmily相关-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.dromara</groupId>
             <artifactId>hmily-springcloud</artifactId>
-        </dependency>
+        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>org.dromara</groupId>-->
 <!--            <artifactId>hmily-spring-boot-starter-springcloud</artifactId>-->
