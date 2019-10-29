@@ -11,7 +11,7 @@
 
     <artifactId>bs-ccr-aws-redis</artifactId>
     <version>1.0.0</version>
-    <name>bs-ccr-redis</name>
+    <name>bs-ccr-aws-redis</name>
 
 
     <dependencies>

@@ -7,7 +7,15 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CacheRemoveByValue {
+public @interface CacheWithHash {
 
-    String[] value() default {};
+    String key() default "";
+
+    String name() default "";
+
+    String operation() default "";
+
+    String value() default "";
+
+    String unless() default "";
 }

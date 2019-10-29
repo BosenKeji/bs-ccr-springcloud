@@ -77,6 +77,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
      */
 
     //@Transactional
+
     @Override
     public int add(UserProductCombo userProductCombo) {
 

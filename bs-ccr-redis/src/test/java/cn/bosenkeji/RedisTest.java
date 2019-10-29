@@ -1,6 +1,9 @@
 package cn.bosenkeji;
 
 
+import cn.bosenkeji.interfaces.RedisInterface;
+import cn.bosenkeji.vo.User;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.client.utils.JSONUtils;
 import org.junit.Test;
@@ -23,7 +26,7 @@ import java.util.*;
 public class RedisTest {
 //
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 //
 //
 //
@@ -154,15 +157,5 @@ public class RedisTest {
         redisTemplate.delete(list);
     }*/
 
-    @Test
-    public void testRemoveZset() {
-        String[] str=new String[10];
-        str[0]="1001";
-        str[1]="1002";
-        Long userComboTime_0 = redisTemplate.opsForZSet().remove("userComboTime_0", str);
-        System.out.println("userComboTime_0 = " + userComboTime_0);
-        Long userComboRedisKeyTest = redisTemplate.opsForHash().delete("comboRedisKeyTest", str);
-        System.out.println("userComboRedisKeyTest = " + userComboRedisKeyTest);
-    }
 
 }

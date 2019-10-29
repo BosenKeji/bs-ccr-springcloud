@@ -1,5 +1,8 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.annotation.cache.CacheWithHash;
+import cn.bosenkeji.annotation.cache.ZSetCacheEvict;
+import cn.bosenkeji.interfaces.HashOperation;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.util.Result;
@@ -58,11 +61,11 @@ public class UserController {
     @GetMapping("/get_by_username")
     @ApiOperation(value = "通过用户名获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByUsername")
     public User getByUsername(@RequestParam("username") @NotNull @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") String username) {
-        /*Integer id=userService.getIdByUsername(username);
+        Integer id=userService.getIdByUsername(username);
         if(id==null||id<1)
             return null;
-        return this.get(userService.getIdByUsername(username));*/
-        return userService.getByUsername(username);
+        return this.get(userService.getIdByUsername(username));
+        //return userService.getByUsername(username);
     }
 
 
@@ -93,6 +96,8 @@ public class UserController {
         return new Result(userService.add(user));
     }
 
+    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#user.id")
+    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#user.username",value = "#user.id",unless = "#result == 0",operation = HashOperation.SET)
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#user.id"),
@@ -132,6 +137,8 @@ public class UserController {
         return new Result(userService.updateByPrimaryKeySelective(user));
     }
 
+    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#id")
+    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",operation = HashOperation.REMOVE)
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
