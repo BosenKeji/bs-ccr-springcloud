@@ -52,15 +52,15 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     private final static int FAIL = 0;
 
     @Override
-    public PageInfo listByPage(int pageNum, int pageSize,int userId,int coinId) {
+    public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(fill( userId, coinId));
+        return new PageInfo<>(fill( tradePlatformApiBindProductComboId, coinId));
     }
 
-    private List<CoinPairChoice> fill(int userId,int coinId) {
+    private List<CoinPairChoice> fill(int tradePlatformApiBindProductComboId,int coinId) {
         //货币对Map
         Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
-        //根据userId查询自选币list
+        //根据tradePlatformApiBindProductComboId查询自选币list
         List<CoinPairChoice>  coinPairChoices;
         //根据货币id查询货币对货币的列表
         List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
@@ -89,8 +89,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             return resultCoinPairChoiceList;
         }
 
-        //根据userId填充自选币的货币对数据
-        coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
+        //根据TradePlatformApiBindProductComboId填充自选币的货币对数据
+        coinPairChoices = coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
                 if (coinPairMap.containsKey(c.getCoinPartnerId())){
@@ -176,17 +176,17 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
-    public Optional<Integer> checkExistByCoinPartnerNameAndUserId(String coinPairName, int userId) {
+    public Optional<Integer> checkExistByCoinPartnerNameAndRobotId(String coinPairName, int tradePlatformApiBindProductComboId) {
         CoinPair coinPair = new CoinPair();
         if (this.iCoinPairClientService.getCoinPairByName(coinPairName) != null){
             coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
         }
-        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPair.getId(), userId));
+        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotId(coinPair.getId(), tradePlatformApiBindProductComboId));
     }
 
     @Override
-    public Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId, int userId) {
-        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPairId, userId));
+    public Optional<Integer> checkExistByCoinPartnerIdAndRobotId(int coinPairId, int tradePlatformApiBindProductComboId) {
+        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotId(coinPairId, tradePlatformApiBindProductComboId));
     }
 
     @Override
@@ -204,7 +204,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Override
     @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
-    public Optional<Integer> batchDelete(String idStr,int userId) {
+    public Optional<Integer> batchDelete(String idStr,int tradePlatformApiBindProductComboId) {
         //有属性的自选币id集合
         List<Integer> coinPairChoiceAttributeList = new ArrayList<>();
 
@@ -219,23 +219,23 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
         //验证verification
         List<CoinPairChoice> coinPairChoices = this.coinPairChoiceMapper.findAll();
-        //筛选出等于userId的自选币
-        List<CoinPairChoice> coinPairChoicesByUserId;
-        //筛选出等于userId的自选币id
-        List<Integer> coinPairChoiceList = new ArrayList<>();
+        //筛选出等于tradePlatformApiBindProductComboId的自选币
+        List<CoinPairChoice> coinPairChoicesByTradePlatformApiBindProductComboId;
+        //筛选出等于tradePlatformApiBindProductComboId的自选币id
+        List<Integer> coinPairChoiceIdList = new ArrayList<>();
         if (!coinPairChoices.isEmpty()){
-            coinPairChoicesByUserId = coinPairChoices.stream().filter(coinPairChoice -> coinPairChoice.getUserId() == userId).collect(Collectors.toList());
-            if (!coinPairChoicesByUserId.isEmpty()){
-                coinPairChoicesByUserId.forEach(coinPairChoice -> {
-                    coinPairChoiceList.add(coinPairChoice.getId());
+            coinPairChoicesByTradePlatformApiBindProductComboId = coinPairChoices.stream().filter(coinPairChoice -> coinPairChoice.getTradePlatformApiBindProductComboId() == tradePlatformApiBindProductComboId).collect(Collectors.toList());
+            if (!coinPairChoicesByTradePlatformApiBindProductComboId.isEmpty()){
+                coinPairChoicesByTradePlatformApiBindProductComboId.forEach(coinPairChoice -> {
+                    coinPairChoiceIdList.add(coinPairChoice.getId());
                 });
             }else {
                 return Optional.of(FAIL);
             }
         }
-        if (!coinPairChoiceList.isEmpty()) {
+        if (!coinPairChoiceIdList.isEmpty()) {
             for (Integer id : coinPairChoiceIds) {
-                if (!coinPairChoiceList.contains(id)){
+                if (!coinPairChoiceIdList.contains(id)){
                     return Optional.of(FAIL);
                 }
             }

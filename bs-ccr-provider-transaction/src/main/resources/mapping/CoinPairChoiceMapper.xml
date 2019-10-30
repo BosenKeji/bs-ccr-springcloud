@@ -10,6 +10,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="trade_platform_api_bind_product_combo_id" jdbcType="INTEGER" property="tradePlatformApiBindProductComboId"/>
 
     <association fetchType="lazy" property="coinPairChoiceAttribute" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute"
                  column="id"
@@ -25,19 +26,19 @@
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at
+    id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
   </sql>
-  <select id="checkExistByCoinPartnerIdAndUserId" resultType="integer">
-    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and user_id=#{param2}  LIMIT 1)
+  <select id="checkExistByCoinPartnerIdAndRobotId" resultType="integer">
+    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id =#{param2}  LIMIT 1)
   </select>
   <select id="findAllCoinPairChoiceId" resultType="integer">
     select id from coin_pair_choice
   </select>
-  <select id="findAllByUserId" parameterType="integer" resultMap="BaseResultMap">
+  <select id="findAllByTradePlatformApiBindProductComboId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice
-   where user_id = #{userId,jdbcType=INTEGER}
+   where trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -68,10 +69,10 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_pair_choice (coin_partner_id, user_id, is_start,
-      `status`, created_at, updated_at
+      `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
       )
     values (#{coinPartnerId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{isStart,jdbcType=TINYINT}, 
-      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
@@ -88,6 +89,9 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
+      <if test="tradePlatformApiBindProductComboId > 0">
+        trade_platform_api_bind_product_combo_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       #{coinPartnerId,jdbcType=INTEGER},
@@ -99,6 +103,9 @@
       </if>
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradePlatformApiBindProductComboId > 0">
+        #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -124,6 +131,9 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="tradePlatformApiBindProductComboId > 0">
+        trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -135,7 +145,8 @@
       is_start = #{isStart,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+    trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

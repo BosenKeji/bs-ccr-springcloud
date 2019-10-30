@@ -7,7 +7,6 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Cipher;
 import java.io.*;
@@ -17,7 +16,6 @@ import java.security.interfaces.RSAPublicKey;
 
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -379,27 +377,27 @@ public class RsaUtils {
 //        System.out.println("私钥："+ Base64.toBase64String(privateKey));
 
 //        RsaUtils.loadKeyPairToFile(keyMaps.get(PUBLIC_KEY),keyMaps.get(PRIVATE_KEY));
-
-        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
-        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
-
-        String pubKeyFormat = RsaUtils.formatPublicKey(publicKeyStr);
-        String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
-
-
-        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
-        String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
-        System.out.println("===========甲方向乙方发送加密数据==============");
-        System.out.println("原文:"+str);
-        //公钥加密
-        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
-        System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
-        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
-        //私钥解密
-        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat));
-        System.out.println("乙方解密后的数据："+new String(decode)+"");
+//
+//        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
+//        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+//
+//        String pubKeyFormat = RsaUtils.formatPublicKey(publicKeyStr);
+//        String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
+//
+//
+//        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
+//        String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
+//        String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
+//        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
+//        System.out.println("===========甲方向乙方发送加密数据==============");
+//        System.out.println("原文:"+str);
+//        //公钥加密
+//        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
+//        System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
+//        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
+//        //私钥解密
+//        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat));
+//        System.out.println("乙方解密后的数据："+new String(decode)+"");
 
 //        //私钥签名
 //        String sign = RsaUtils.sign(code,Base64.toBase64String(privateKey));
@@ -414,5 +412,6 @@ public class RsaUtils {
 //        System.out.println(RsaUtils.checkFile("publicKey.keystore"));
 //        System.out.println(RsaUtils.checkFile("privateKey.keystore"));
 //        System.out.println("私钥为："+RsaUtils.loadPrivateKeyByFile());
+
     }
 }

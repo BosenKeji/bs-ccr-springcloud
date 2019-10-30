@@ -24,34 +24,34 @@ public interface ICoinPairChoiceClientService {
     /**
      * @param pageNum
      * @param pageSizeCommon
-     * @param userId
+     * @param tradePlatformApiBindProductComboId
      * @param coinId
      * @return
      */
     @GetMapping("/coin_pair_choice/")
     public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
                                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
-                                                  @RequestParam("userId") int userId,
+                                                  @RequestParam("tradePlatformApiBindProductComboId") int tradePlatformApiBindProductComboId,
                                                   @RequestParam("coinId") int coinId);
 
     @GetMapping("/coin_pair_choice/check_coin_pair_choice")
-    public Result checkExistByCoinPairNameAndUserId(@RequestParam("coinPairName") String coinPairName,@RequestParam("userId") int userId);
+    public Result checkExistByCoinPairNameAndTradePlatformApiBindProductComboId(@RequestParam("coinPairName") String coinPairName,@RequestParam("tradePlatformApiBindProductComboId") int tradePlatformApiBindProductComboId);
 
     @GetMapping("/coin_pair_choice/{id}")
     public CoinPairChoice getOneCoinPairChoice(@PathVariable("id") int id);
 
     @PostMapping("/coin_pair_choice/")
-    public Result addOneCoinPairChoice(@RequestParam("userId")  int userId, @RequestParam("isStrategy")  int strategyStatus, @RequestParam("coinPairId")   int coinPairId);
+    public Result addOneCoinPairChoice(@RequestParam("tradePlatformApiBindProductComboId")  int tradePlatformApiBindProductComboId, @RequestParam("isStrategy")  int strategyStatus, @RequestParam("coinPairId")   int coinPairId);
 
     @PutMapping("/coin_pair_choice/")
     public Result updateCoinPairChoice(@RequestBody CoinPairChoice coinPairChoice);
 
     @DeleteMapping("/coin_pair_choice/{id}")
-    public Result deleteOneCoinPairChoice(@PathVariable("id") int id,@RequestParam("userId")int userId);
+    public Result deleteOneCoinPairChoice(@PathVariable("id") int id,@RequestParam("tradePlatformApiBindProductComboId")int tradePlatformApiBindProductComboId);
 
     @GetMapping("/coin_pair_choice/all")
     List<CoinPairChoice> findAll();
 
     @DeleteMapping("/coin_pair_choice/batch")
-    public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds,@RequestParam("userId")int userId);
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds,@RequestParam("tradePlatformApiBindProductComboId")int tradePlatformApiBindProductComboId);
 }

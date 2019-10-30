@@ -22,7 +22,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
     public ICoinPairChoiceClientService create(Throwable throwable) {
         return new ICoinPairChoiceClientService() {
             @Override
-            public PageInfo getListCoinPairChoiceWithPage(int pageNum, int pageSizeCommon,int userId,int coinId) {
+            public PageInfo getListCoinPairChoiceWithPage(int pageNum, int pageSizeCommon,int tradePlatformApiBindProductComboId,int coinId) {
                 List<CoinPairChoice> coinPairChoices = new ArrayList<>();
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 coinPairChoice.setId(0);
@@ -31,7 +31,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result checkExistByCoinPairNameAndUserId(String coinPairName, int userId) {
+            public Result checkExistByCoinPairNameAndTradePlatformApiBindProductComboId(String coinPairName, int tradePlatformApiBindProductComboId) {
                 return new Result<>(0,"hystrix fail");
             }
 
@@ -43,7 +43,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result addOneCoinPairChoice(int userId, int strategyStatus, int coinPairId) {
+            public Result addOneCoinPairChoice(int tradePlatformApiBindProductComboId, int strategyStatus, int coinPairId) {
                 return  new Result<>(0,"hystrix fail");
             }
 
@@ -53,7 +53,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result deleteOneCoinPairChoice(int id,int userId) {
+            public Result deleteOneCoinPairChoice(int id,int tradePlatformApiBindProductComboId) {
                 return  new Result<>(0,"fail");
             }
 
@@ -66,7 +66,7 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
-            public Result batchDelete(String coinPairChoiceIds,int userId) {
+            public Result batchDelete(String coinPairChoiceIds,int tradePlatformApiBindProductComboId) {
                 return  new Result<>(0,"hystrix fail");
             }
         };

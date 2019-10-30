@@ -63,33 +63,33 @@ public class CoinPairChoiceController {
      * 与coinPair coinPairChoiceAttribute coinPairChoiceAttributeCustom 关联查询
      * @param pageNum
      * @param pageSizeCommon
-     * @param userId
+     * @param tradePlatformApiBindProductComboId
      * @param coinId
      * @return
      */
-    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#userId+'-'+#coinId+'-'+#pageNum+'-'+#pageSizeCommon")
+    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#tradePlatformApiBindProductComboId+'-'+#coinId+'-'+#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoiceWithPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
                          @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
-                         @RequestParam("userId") @ApiParam(value = "用户ID", required = true, type = "integer",example = "1") int userId,
+                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
                          @RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
-        return this.coinPairChoiceService.listByPage(pageNum,pageSizeCommon,userId,coinId);
+        return this.coinPairChoiceService.listByPage(pageNum,pageSizeCommon,tradePlatformApiBindProductComboId,coinId);
     }
 
     @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
     @GetMapping("/check_coin_pair_choice")
     public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
-                                                  @RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId){
+                                                  @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
 
-        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId).get() <= 0){
+        if (this.coinPairChoiceService.checkExistByCoinPartnerNameAndRobotId(coinPairName,tradePlatformApiBindProductComboId).get() <= 0){
             Result<CoinPair> result = new Result<>();
             CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
 
             result.setData(coinPair);
             return result;
         }else{
-            return new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerNameAndUserId(coinPairName,userId));
+            return new Result<>(this.coinPairChoiceService.checkExistByCoinPartnerNameAndRobotId(coinPairName,tradePlatformApiBindProductComboId));
         }
 
     }
@@ -101,7 +101,7 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.get(id);
     }
 
-    @MyCacheRemove("'ccr:coinPairChoice:list::'+#userId+'-*'")
+    @MyCacheRemove("'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-*'")
     /*@Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
@@ -109,23 +109,23 @@ public class CoinPairChoiceController {
     )*/
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
-    public Result add(@RequestParam("userId") @Min(1)  @ApiParam(value = "用户id", required = true, type = "integer",example = "1") int userId,
+    public Result add(@RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
                       @RequestParam("isStrategy")  @ApiParam(value = "策略状态", required = true, type = "integer",example = "1") int isStrategy,
                       @RequestParam("coinPairId") @Min(1)  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
         if (this.iCoinPairClientService.getCoinPair(coinPairId) == null){
             return new Result<>(null,"货币对不存在，添加自选币失败");
         }
-        if (this.coinPairChoiceService.checkExistByCoinPartnerIdAndUserId(coinPairId,userId).get() >= 1){
+        if (this.coinPairChoiceService.checkExistByCoinPartnerIdAndRobotId(coinPairId,tradePlatformApiBindProductComboId).get() >= 1){
             return new Result<>(null,"自选币已存在");
         }
 
         CoinPairChoice coinPairChoice =new CoinPairChoice();
-        coinPairChoice.setUserId(userId);
+//        coinPairChoice.setUserId(userId);
+        coinPairChoice.setTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
         coinPairChoice.setCoinPartnerId(coinPairId);
         coinPairChoice.setStatus(1);
         coinPairChoice.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
         coinPairChoice.setIsStart(isStrategy);
 
 
@@ -141,8 +141,12 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
-        if (this.coinPairChoiceService.get(coinPairChoice.getId()) == null){
+        CoinPairChoice coinPairChoiceVerification = this.coinPairChoiceService.get(coinPairChoice.getId());
+        if (coinPairChoiceVerification == null){
             return new Result<>(null,"自选币不存在");
+        }
+        if (coinPairChoiceVerification.getTradePlatformApiBindProductComboId() != coinPairChoice.getTradePlatformApiBindProductComboId()){
+            return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
         }
 
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -158,12 +162,12 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id,
-            @Min(1)@RequestParam("userId") @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
+                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️shadiao机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
         CoinPairChoice coinPairChoice = this.coinPairChoiceService.get(id);
         if (coinPairChoice == null){
             return new Result<>(null,"自选币不存在");
         }
-        if (coinPairChoice.getUserId() != userId){
+        if (coinPairChoice.getTradePlatformApiBindProductComboId() != tradePlatformApiBindProductComboId){
             return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
         }
 
@@ -180,8 +184,8 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
     @DeleteMapping("/batch")
     public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds,
-                              @Min(1)@RequestParam("userId") @ApiParam(value = "用户 id", required = true, type = "integer",example = "1") int userId){
-        Optional<Integer> result = this.coinPairChoiceService.batchDelete(coinPairChoiceIds,userId);
+                              @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+        Optional<Integer> result = this.coinPairChoiceService.batchDelete(coinPairChoiceIds,tradePlatformApiBindProductComboId);
         if (result.get() == 0){
             return new Result<>(null,"批量删除自选币失败！");
         }
