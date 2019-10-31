@@ -1,7 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
-import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboRedisTemplate;
@@ -9,14 +8,10 @@ import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.CalculateUtil;
 import cn.bosenkeji.utils.UserComboTimeUtil;
-import cn.bosenkeji.vo.Job;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.schedulerx2.model.v20190430.CreateJobResponse;
-import com.aliyuncs.schedulerx2.model.v20190430.GetJobInfoResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

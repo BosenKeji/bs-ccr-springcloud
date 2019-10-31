@@ -1,0 +1,1 @@
+alter table product_combo add column is_customized tinyint not null default 0 comment '是否自定义';

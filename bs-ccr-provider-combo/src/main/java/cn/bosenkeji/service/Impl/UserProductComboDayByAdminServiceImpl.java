@@ -1,17 +1,13 @@
 package cn.bosenkeji.service.Impl;
 
-import cn.bosenkeji.UserComboRedisEnum;
-import cn.bosenkeji.mapper.JobMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
-import cn.bosenkeji.service.JobService;
 import cn.bosenkeji.utils.UserComboTimeUtil;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
