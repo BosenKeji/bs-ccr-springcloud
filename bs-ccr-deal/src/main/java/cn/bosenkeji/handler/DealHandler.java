@@ -101,7 +101,7 @@ public class DealHandler {
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
 
             //判断是否交易
-            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
+            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 3) {
                 return;
             }
 
@@ -141,17 +141,18 @@ public class DealHandler {
 
             }
 
-            //判断买
-            boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
-
-            if (isBuy) {
-                //redis分数置为0
-                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
-                //mq发送买的消息
-                 boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                 if (isBuy) {
-                     log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
-                 }
+            if (dealParameter.getTradeStatus() != 3) {  //交易状态为3 停止买入 正常买出
+                //判断买
+                boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
+                if (isBuy) {
+                    //redis分数置为0
+                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
+                    //mq发送买的消息
+                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
+                     if (isBuy) {
+                         log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
+                     }
+                }
             }
         });
     }
