@@ -58,7 +58,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     public void configure(final HttpSecurity http) throws Exception {
 
-        List<PermissionGroupOther> permissionGroupOtherList = permissionGroupService.listPermissionGroupJoin();
+//        List<PermissionGroupOther> permissionGroupOtherList = permissionGroupService.listPermissionGroupJoin();
 
         //basic
         http.authorizeRequests().antMatchers("/login/**").permitAll()
@@ -80,7 +80,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                .antMatchers(HttpMethod.GET,"/strategy_sequence/").hasAuthority("use");
 
 
-
+        /*
         permissionGroupOtherList.forEach((g) -> {
             //按HttpMethod分组
             Map<Integer, List<Permission>> permissionMethodMap = g.getPermissionList().stream().collect(Collectors.groupingBy(Permission::getHttpMethod));
@@ -102,6 +102,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 }
             });
         });
+        */
 
         http.authorizeRequests().anyRequest().authenticated().and().formLogin().permitAll().and().csrf().disable();
     }

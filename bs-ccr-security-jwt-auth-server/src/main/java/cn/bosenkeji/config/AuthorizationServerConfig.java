@@ -115,4 +115,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public WebResponseExceptionTranslator webResponseExceptionTranslator() {
         return new CustomWebResponseExceptionTranslator();
     }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("123");
+        System.out.println(encode);
+    }
 }

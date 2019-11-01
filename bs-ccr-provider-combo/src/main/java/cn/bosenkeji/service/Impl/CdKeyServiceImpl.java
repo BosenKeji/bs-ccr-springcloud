@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CdKeyServiceImpl implements CdKeyService {
@@ -60,7 +61,7 @@ public class CdKeyServiceImpl implements CdKeyService {
     private static final Integer USED_STATUS = 0; //已激活
 
 
-    public Result getCdKeys(Integer num ,Integer productComboId, String prefix, String remark) {
+    public Result generateCdKeys(Integer num ,Integer productComboId, String prefix, String remark) {
         URL url = null;
         try {
             List<CdKey> cdKeys = generateCdKeys(num, prefix, productComboId, remark);
@@ -77,7 +78,7 @@ public class CdKeyServiceImpl implements CdKeyService {
 
             cdKeys.forEach((k) -> {
                 cdKeyMap.put(k.getKey(), String.valueOf(k.getId()));
-                cdKeyOthers.add(new CdKeyOther(k.getId(), k.getKey(), localDateTime.toString(), productComboId, product.getName(), productCombo.getName(), productCombo.getTime(), prefix, remark, 0, 1));
+                cdKeyOthers.add(new CdKeyOther(k.getId(), k.getKey(), localDateTime.toString(), productComboId, product.getName(), productCombo.getName(), productCombo.getTime(), prefix, remark, 0, ""));
             });
 
             redisTemplate.opsForHash().putAll(CD_KEY_HASH, cdKeyMap); //cdKeys存入redis
@@ -188,11 +189,44 @@ public class CdKeyServiceImpl implements CdKeyService {
     }
 
 
+    /**
+     * 获取激活码分页列表
+     * @param pageNum 页码
+     * @param pageSize 每页条数
+     * @return pageInfo
+     */
+
     @Override
-    public PageInfo<CdKey> list(Integer pageNum, Integer pageSize) {
+    public PageInfo<CdKeyOther> getCdKeyByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<CdKey> cdKeys = cdKeyMapper.get();
-        return new PageInfo<>(cdKeys);
+        List<CdKeyOther> cdKeyOthers = new ArrayList<>();
+        List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
+        List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
+        List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
+        Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
+        Collection<Product> products = productMap.values();
+        cdKeys.forEach((k) -> {
+            Optional<Product> productOptional = Optional.empty();
+            Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
+            if (productComboOptional.isPresent()) {
+                productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
+            }
+            CdKeyOther cdKeyOther = new CdKeyOther();
+            cdKeyOther.setKey(k.getKey());
+            cdKeyOther.setProductComboId(k.getProductComboId());
+            cdKeyOther.setId(k.getId());
+            cdKeyOther.setCreateAt(k.getCreatedAt().toString());
+            cdKeyOther.setProductName(productOptional.get().getName());
+            cdKeyOther.setComboName(productComboOptional.get().getName());
+            cdKeyOther.setTime(productComboOptional.get().getTime());
+            cdKeyOther.setRemark(k.getRemark());
+            cdKeyOther.setIsUsed(k.getStatus());
+            cdKeyOther.setProfix(k.getKey().split("-")[0]);
+            cdKeyOther.setUsername(k.getUsername());
+            cdKeyOthers.add(cdKeyOther);
+        });
+        return new PageInfo<>(cdKeyOthers);
 
     }
 
@@ -230,5 +264,6 @@ public class CdKeyServiceImpl implements CdKeyService {
         redisTemplate.opsForHash().put(USED_KEY_HASH,key,cdKeyId.toString());
         redisTemplate.opsForHash().delete(CD_KEY_HASH, key);
     }
+
 
 }

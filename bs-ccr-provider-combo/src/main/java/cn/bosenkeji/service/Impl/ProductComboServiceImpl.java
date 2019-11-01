@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author xivin
@@ -73,5 +74,10 @@ public class ProductComboServiceImpl implements IProductComboService {
     @Override
     public int checkExistByNameAndProductId(String name,int productId) {
         return productComboMapper.checkExistByNameAndProductId(name,productId);
+    }
+
+    @Override
+    public List<ProductCombo> getByIds(List<Integer> ids) {
+        return productComboMapper.selectProductComboByIds(ids);
     }
 }

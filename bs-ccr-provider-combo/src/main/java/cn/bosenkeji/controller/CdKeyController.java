@@ -29,10 +29,10 @@ public class CdKeyController {
     private CdKeyService cdKeyService;
 
 
-    @GetMapping("/")
+    @GetMapping("/generation")
     public Result getCdKeys(@RequestParam("num") Integer num, @RequestParam("productComboId") Integer productComboId,
                             @RequestParam("prefix") String prefix, @RequestParam("remark") String remark) {
-        return cdKeyService.getCdKeys(num, productComboId, prefix, remark);
+        return cdKeyService.generateCdKeys(num, productComboId, prefix, remark);
     }
 
     @PostMapping("/activation")
@@ -45,9 +45,9 @@ public class CdKeyController {
         return cdKeyService.renew(userId,username,userProductComboId,key);
     }
 
-    @GetMapping("/list")
-    public PageInfo<CdKey> getCdKeyByPage(@RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
-        return cdKeyService.list(pageNum, pageSize);
+    @GetMapping("/")
+    public PageInfo<CdKeyOther> getCdKeyByPage(@RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
+        return cdKeyService.getCdKeyByPage(pageNum, pageSize);
     }
 
 }

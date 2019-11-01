@@ -1,6 +1,7 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.combo.ProductCombo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,5 +28,7 @@ public interface ProductComboMapper {
     int checkExistByNameAndProductId(String name, Integer productId);
 
     int selectProductIdByPrimaryKey(Integer id);
+
+    List<ProductCombo> selectProductComboByIds(@Param("ids") List ids);
 
 }

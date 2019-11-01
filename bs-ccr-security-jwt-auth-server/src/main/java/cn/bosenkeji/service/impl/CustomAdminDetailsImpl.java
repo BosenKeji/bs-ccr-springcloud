@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,7 @@ public class CustomAdminDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        /*
         //获取当前用户的角色
         List<UserRole> userRoleList = roleService.listUserRoleByUserIdAndType(admin.getId(), 1);
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -57,7 +59,6 @@ public class CustomAdminDetailsImpl implements UserDetails {
             //获取所有的权限组
             List<PermissionGroup> permissionGroupList = permissionGroupService.listPermissionGroupByIds(groupIds);
 
-//        final List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER"));
 
             //设置用户拥有的角色对应的权限组
             permissionGroupList.stream().map(PermissionGroup::getName).forEach((p) -> {
@@ -68,7 +69,8 @@ public class CustomAdminDetailsImpl implements UserDetails {
             //如果没有设置角色，添加默认权限
             authorities.add(new SimpleGrantedAuthority("default"));
         }
-
+        */
+        final List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
         return authorities;
     }
 

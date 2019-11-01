@@ -182,5 +182,13 @@
     select product_id from product_combo where `id`=#{id} limit 1
   </select>
 
-
+  <select id="selectProductComboByIds" resultMap="BaseResultMap" parameterType="list">
+    select
+    <include refid="Base_Column_List" />
+    from product_combo
+    where id in
+    <foreach collection="ids" separator="," open="(" close=")" item="item">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

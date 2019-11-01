@@ -15,11 +15,11 @@ public class CdKeyOther {
     private String remark;
 
     private int isUsed;
-    private int userId;
+    private String username;
 
     public CdKeyOther() { }
 
-    public CdKeyOther(int id, String key, String createAt, int productComboId, String productName, String comboName, int time, String prefix, String remark, int isUsed, int userId) {
+    public CdKeyOther(int id, String key, String createAt, int productComboId, String productName, String comboName, int time, String prefix, String remark, int isUsed, String username) {
         this.id = id;
         this.key = key;
         this.createAt = createAt;
@@ -30,7 +30,7 @@ public class CdKeyOther {
         this.prefix = prefix;
         this.remark = remark;
         this.isUsed = isUsed;
-        this.userId = userId;
+        this.username = username;
     }
 
     public int getId() {
@@ -113,11 +113,11 @@ public class CdKeyOther {
         this.isUsed = isUsed;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
