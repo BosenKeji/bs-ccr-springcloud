@@ -117,7 +117,7 @@
       <if test="password != null">
         `password` = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="status != 0">
+      <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

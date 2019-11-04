@@ -106,6 +106,6 @@ public class CustomAdminDetailsImpl implements UserDetails {
         if (admin.getStatus() >= 1){
             return true;
         }
-        return true;
+        return false;
     }
 }

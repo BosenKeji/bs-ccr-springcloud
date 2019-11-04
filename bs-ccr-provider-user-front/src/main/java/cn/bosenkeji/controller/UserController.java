@@ -1,8 +1,6 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.annotation.cache.CacheWithHash;
 import cn.bosenkeji.annotation.cache.ZSetCacheEvict;
-import cn.bosenkeji.interfaces.HashOperation;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.util.Result;
@@ -14,7 +12,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -81,10 +78,10 @@ public class UserController {
     public Result add(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
         if(userService.checkExistByUsrename(user.getUsername())!=0) {
-            return new Result("0","此用户名已存在！");
+            return new Result<>("0","此用户名已存在！");
         }
         if(userService.checkExistByTel(user.getTel())!=0) {
-            return new Result("0","此电话号码已注册");
+            return new Result<>("0","此电话号码已注册");
         }
 
         user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
@@ -93,7 +90,7 @@ public class UserController {
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         user.setStatus(1);
 
-        return new Result(userService.add(user));
+        return new Result<>(userService.add(user));
     }
 
     @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#user.id")
@@ -114,7 +111,7 @@ public class UserController {
 
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-        return new Result(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelective(user));
 
     }
 
@@ -134,7 +131,7 @@ public class UserController {
         user.setId(id);
         user.setPassword((new BCryptPasswordEncoder()).encode(password));
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelective(user));
     }
 
     @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#id")
@@ -153,12 +150,12 @@ public class UserController {
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                                  @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") String username) {
         if(userService.checkExistByUsrename(username)!=0)
-            return new Result("0","用户名已存在");
+            return new Result<>("0","用户名已存在");
         User user=new User();
         user.setId(id);
         user.setUsername(username);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelective(user));
     }
 
     @Caching(
@@ -174,12 +171,12 @@ public class UserController {
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                                  @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
         if(userService.checkExistByTel(tel)!=0)
-            return new Result("0","此电话号码以存在！");
+            return new Result<>("0","此电话号码以存在！");
         User user=new User();
         user.setId(id);
         user.setTel(tel);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelective(user));
     }
 
     @Caching(
@@ -194,7 +191,7 @@ public class UserController {
     public Result delete(@PathVariable("id") @Min(1)
                              @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
 
-        return new Result(userService.delete(id));
+        return new Result<>(userService.delete(id));
     }
 
     @Caching(
@@ -208,7 +205,7 @@ public class UserController {
     @PutMapping("/update_binding")
     public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
                                 @RequestParam("isBinding") @ApiParam(value = "绑定值",required = true,type = "integer",example = "1") int isBinding) {
-        return new Result(userService.updateBinding(id,isBinding));
+        return new Result<>(userService.updateBinding(id,isBinding));
     }
 
     @ApiOperation(value = "通过手机更新密码接口",httpMethod = "PUT",nickname = "updatePasswordByTel")
@@ -218,18 +215,18 @@ public class UserController {
         User byTel = userService.getByTel(tel);
         if (byTel!=null) {
 
-            Result result = new Result(userService.updatePasswordByTel(tel, new BCryptPasswordEncoder().encode(password)));
+            Result result = new Result<>(userService.updatePasswordByTel(tel, new BCryptPasswordEncoder().encode(password)));
             userService.evictUser(byTel.getId());
             return result;
         }
         else
-            return new Result(0,"用户不存在");
+            return new Result<>(0,"用户不存在");
 
     }
 
     @GetMapping("/check_exist_by_id")
     public Result checkExistById(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
-        return new Result(userService.checkExistById(id));
+        return new Result<>(userService.checkExistById(id));
     }
 
     @ApiOperation(value = "获取多个用户信息接口",httpMethod = "GET",nickname = "getUserByIds")
@@ -239,4 +236,15 @@ public class UserController {
         return userService.getByIds(ids);
     }
 
+    @PutMapping("/status")
+    public Result updateStatusById(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
+        Integer i = userService.updateStatusById(id, status);
+        Result result;
+        if (i > 0) {
+            result = new Result<>(1,"success");
+        }else {
+            result = new Result<>(0,"failed") ;
+        }
+        return result;
+    }
 }
