@@ -20,7 +20,7 @@ begin
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     end if ;
 
-    IF NOT EXISTS(SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = CurrentDatabase AND TABLE_NAME = 'order')
+    IF NOT EXISTS(SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = CurrentDatabase AND TABLE_NAME = 'trade_order')
     then
         create table trade_order(
             id int (11) NOT NULL AUTO_INCREMENT ,
