@@ -47,7 +47,7 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public Result deleteOneTradePlatformApi(int tradePlatformId) {
+            public Result deleteOneTradePlatformApi(int tradePlatformId,int userId) {
                 return new Result<>(0,"hystrix fail");
             }
 

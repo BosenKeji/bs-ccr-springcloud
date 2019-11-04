@@ -83,6 +83,17 @@ public class StrategyController {
         if (checkAttribute) {
             return new Result<>(0,"策略属性添加失败，该策略属性已存在！");
         }
+
+        double stopProfitRatio = strategyAttribute.getStopProfitRatio();
+        double stopProfitTraceTriggerRate = strategyAttribute.getStopProfitTraceTriggerRate();
+        double stopProfitTraceDropRate = strategyAttribute.getStopProfitTraceDropRate();
+
+        if ( (stopProfitRatio != 0 && stopProfitRatio < 0.01) ||
+                (stopProfitTraceTriggerRate !=0 && stopProfitTraceTriggerRate < 0.01) ||
+                (stopProfitTraceDropRate !=0 && stopProfitTraceDropRate < 0.01)) {
+            return new Result<>(0,"参数设置过小");
+        }
+
         return new Result<>(strategyService.insertStrategyAttributeBySelective(strategyAttribute));
     }
 

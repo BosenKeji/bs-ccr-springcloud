@@ -26,9 +26,9 @@ public interface CoinPairChoiceMapper {
 
     int updateByPrimaryKey(CoinPairChoice record);
 
-    Integer checkExistByCoinPartnerIdAndUserId(int coinPartnerId,int userId);
+    Integer checkExistByCoinPartnerIdAndRobotId(int coinPartnerId,int userId);
 
-    List<CoinPairChoice> findAllByUserId (int userId);
+    List<CoinPairChoice> findAllByTradePlatformApiBindProductComboId (int tradePlatformApiBindProductComboId);
 
     List<CoinPairChoice> findAll();
 

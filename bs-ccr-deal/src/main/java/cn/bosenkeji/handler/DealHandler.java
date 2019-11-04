@@ -20,22 +20,24 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
 @RestController
 public class DealHandler {
 
-    private static final int threadNum = Runtime.getRuntime().availableProcessors();
-    private ThreadPoolExecutor threadPoolExecutor;
+//    private static final int threadNum = Runtime.getRuntime().availableProcessors();
+//    private ThreadPoolExecutor threadPoolExecutor;
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
     DealHandler() {
-        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
-                3, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(10),
-                Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.DiscardOldestPolicy());
+//        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
+//                3, TimeUnit.SECONDS,
+//                new LinkedBlockingQueue<>(10),
+//                Executors.defaultThreadFactory(),
+//                new ThreadPoolExecutor.DiscardOldestPolicy());
     }
 
     @Autowired
@@ -46,9 +48,10 @@ public class DealHandler {
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
-        threadPoolExecutor.execute(() -> {
-            handle(msg);
-        });
+//        threadPoolExecutor.execute(() -> {
+//            handle(msg);
+//        });
+        handle(msg);
     }
 
     private void handle(String msg) {
@@ -72,13 +75,20 @@ public class DealHandler {
         //获取redis中对应货币对的zset
         Set<String> keySet = redisTemplate.opsForZSet().rangeByScore(setKey, 1, 1);
 
-        //处理异常买卖的trade
-        DealCalculator.handleExceptionTrade(redisTemplate);
-
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
-        //过滤不是该货币对的key
-        Set<String> filterSet = keySet.stream().filter((s) -> s.contains(symbol)).collect(Collectors.toSet());
+        //过滤不是该货币对的key 和旧的key
+        Set<String> filterSet = keySet.stream().filter((s) -> {
+            String regExg = "^trade-condition_\\S+_\\S+_\\S+";
+            Pattern p = Pattern.compile(regExg);
+            Matcher m = p.matcher(s);
+            return s.contains(symbol) && !m.matches();
+        }).collect(Collectors.toSet());
+
+
+        if (CollectionUtils.isEmpty(filterSet)) {
+            return;
+        }
 
         filterSet.parallelStream().forEach((s)->{
 
@@ -88,26 +98,22 @@ public class DealHandler {
                 return;
             }
 
-            //初始化
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
+
+            //判断是否交易
+            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 3) {
+                return;
+            }
 
             //初始化或获取 java要操作redis的key和value
             RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
-
-            //判断是否交易
-            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 2) {
-                return;
-            }
 
             //计算实时收益比   判断买卖
             //实时收益比
             Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(buyDeep,
                     dealParameter.getPositionNum(),dealParameter.getPositionCost());
             //记录实时收益比
-            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.toString(),redisTemplate);
-
-            log.info("accessKey:"+ dealParameter.getAccessKey() + "  symbol:"+ dealParameter.getSymbol()
-                    +"  实时收益比:"+realTimeEarningRatio + "  num:"+ dealParameter.getPositionNum() + "  cost:" + dealParameter.getPositionCost());
+            DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.isNaN() ? "0.0" : realTimeEarningRatio.toString() ,redisTemplate);
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
@@ -130,22 +136,23 @@ public class DealHandler {
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL
-                            +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() +"  finished_order:" + dealParameter.getFinishedOrder());
+                    log.info("sell : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
                 }
 
             }
 
-            //判断买
-            boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
-
-            if (isBuy) {
-                //redis分数置为0
-                DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
-                //mq发送买的消息
-                 boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
-                 log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY
-                         +"  消息发送:"+isSend + "  symbol:"+ dealParameter.getSymbol() + "  finished_order:" + dealParameter.getFinishedOrder());
+            if (dealParameter.getTradeStatus() != 3) {  //交易状态为3 停止买入 正常买出
+                //判断买
+                boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
+                if (isBuy) {
+                    //redis分数置为0
+                    DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
+                    //mq发送买的消息
+                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
+                     if (isBuy) {
+                         log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
+                     }
+                }
             }
         });
     }

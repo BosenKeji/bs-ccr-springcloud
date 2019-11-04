@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -120,30 +119,6 @@ public class DealCalculator {
 
     }
 
-    public static void main(String[] args) {
-        JSONArray jsonArray = new JSONArray();
-        JSONArray p1 = new JSONArray();
-        JSONArray p2 = new JSONArray();
-        JSONArray p3 = new JSONArray();
-
-        p1.set(0,"100");
-        p1.set(1,"50");
-
-        p2.set(0,"99");
-        p2.set(1,"60");
-
-        p3.set(0,"98");
-        p3.set(1,"40");
-
-        jsonArray.add(0,p1);
-        jsonArray.add(1,p2);
-        jsonArray.add(2,p3);
-
-        System.out.println(countRealTimeEarningRatio(jsonArray,123.0,12000.0));
-
-    }
-
-
 
     /**
      *
@@ -186,8 +161,6 @@ public class DealCalculator {
                 if (isTriggerTraceStopProfit == 0) {
                     updateRedisHashValue(javaRedisKey,DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
                     updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
-                            +"触发追踪止盈");
                     return false;
                 }
 
@@ -200,9 +173,6 @@ public class DealCalculator {
             if (isTriggerTraceStopProfit == 1) {
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) <= 0) {
-                    log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
-                            +"  卖，追踪止盈模式：实时收益比≤最高实时收益比-回降比例，发送卖出消息" + "  实时收益比:"+realTimeEarningRatio +
-                            "  历史最高收益比：" + historyMaxBenefitRatio + "  回调比例：" + callBackRatio);
                     return true;
                 }
             }
@@ -210,8 +180,6 @@ public class DealCalculator {
             //固定止盈
             //收益比≥1+止盈比例？ //确定卖出
             if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
-                        +"  卖，固定止盈模式：收益比≥1+止盈比例，发送卖出消息"+"  实时收益比:"+realTimeEarningRatio + "  止盈比例:"+ stopProfitRatio);
                 return true;
             }
         }
@@ -220,10 +188,6 @@ public class DealCalculator {
             return false;
         } else {
             // 金额止盈
-            if ((positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0) {
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_SELL + "  symbol:"+ dealParameter.getSymbol()
-                        +"  卖，金额止盈，发送卖出消息");
-            }
             return (positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0;
         }
 
@@ -268,8 +232,6 @@ public class DealCalculator {
         }
         //是否为第一单？ 第一单直接购买
         if ( finishedOrder == 0 ) {
-            log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
-                    +"  买，首单直接买入，发送买消息");
             return true;
         }
         //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
@@ -296,13 +258,11 @@ public class DealCalculator {
             if (isFollowBuild == 0) {
                 updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
                 updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
-                log.info("accessKey:"+ dealParameter.getAccessKey()+"  type:"+DealUtil.TRADE_TYPE_BUY + "  symbol:"+ dealParameter.getSymbol()
-                        +"触发追踪建仓");
                 return false;
             }
 
             //记录最小拟买入均价
-            if (minAveragePrice == 0 || minAveragePrice > averagePrice) {
+            if (minAveragePrice - averagePrice > 0) {
                 updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
             }
 
@@ -315,7 +275,6 @@ public class DealCalculator {
             updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
             updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
         }
-        log.info("拟买入均价:" + averagePrice + "  下调均价:" + lowerAveragePrice + "  回调均价:" + callbackAveragePrice + "  最小拟买入均价:" + minAveragePrice);
         return isBuy;
     }
 
@@ -344,42 +303,5 @@ public class DealCalculator {
         redisTemplate.opsForZSet().add(redisKey,setValue,score);
     }
 
-    /**
-     * 处理redis中交易失败置为2的ZSet中的value值
-     * @param redisTemplate 操作redis
-     */
-
-    public static void handleExceptionTrade(RedisTemplate redisTemplate) {
-        Set<String> keys = redisTemplate.keys("*_zset");
-        Set<String> exceptionTradeValue;
-        Map<String,Set<String>> map = new HashMap<>();
-        if (!CollectionUtils.isEmpty(keys)) {
-            for (String k : keys) {
-                exceptionTradeValue = redisTemplate.opsForZSet().rangeByScore(k, 2, 2);
-                if (CollectionUtils.isEmpty(exceptionTradeValue)) {
-                    continue;
-                }
-                map.put(k,exceptionTradeValue);
-            }
-        } else {
-            return;
-        }
-        if (!CollectionUtils.isEmpty(map)) {
-            for (String s : map.keySet()) {
-                Set<String> values = map.get(s);
-                if (!CollectionUtils.isEmpty(values)) {
-                    Set<ZSetOperations.TypedTuple<Object>> tuples = new HashSet<>();
-                    for (String v : values) {
-                        ZSetOperations.TypedTuple<Object> typedTuple = new DefaultTypedTuple<>(v,1.0);
-                        tuples.add(typedTuple);
-                    }
-                    redisTemplate.opsForZSet().add(s,tuples);
-                    log.info("处理交易异常trade，redisKey:" + s + "  value:" + tuples.toString());
-                }
-            }
-        }
-
-
-    }
 
 }

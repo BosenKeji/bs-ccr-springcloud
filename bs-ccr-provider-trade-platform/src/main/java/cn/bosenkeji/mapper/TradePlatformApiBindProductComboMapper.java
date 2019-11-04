@@ -37,4 +37,8 @@ public interface TradePlatformApiBindProductComboMapper {
 
     int deleteByComboId(Integer userProductComboId);
 
+    int checkExistByComboId(Integer userProductComboId);
+
+    List<TradePlatformApiBindProductCombo> findAll();
+
 }

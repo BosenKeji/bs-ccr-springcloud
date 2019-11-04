@@ -5,23 +5,30 @@ import cn.bosenkeji.vo.combo.ProductCombo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Api
 @JsonIgnoreProperties(value = {"handler"})
+@Validated
 public class UserProductCombo implements Serializable {
     private int id;
 
+    @Min(value = 1,message = "用户ID不能小于1")
     private int userId;
 
     private String orderNumber;
 
+    @Min(value = 1,message = "套餐ID 不能小于1")
     private int productComboId;
 
     private String remark;
 
+    @ApiModelProperty(hidden = true)
     private int status;
 
     @ApiModelProperty(hidden = true)
@@ -34,12 +41,20 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private int remainTime=0;
 
+   // private int redisKeyId;
+
     //一对一
     @ApiModelProperty(hidden = true)
     private ProductCombo productCombo;
 
     @ApiModelProperty(hidden = true)
     private User user;
+
+    /*@ApiModelProperty(hidden = true)
+    private ComboRedisKey comboRedisKey;*/
+
+    @ApiModelProperty(hidden = true)
+    private List<UserProductComboDay> userProductComboDays;
 
     public User getUser() {
         return user;
@@ -49,16 +64,6 @@ public class UserProductCombo implements Serializable {
         this.user = user;
     }
 
-    public UserProductCombo(int id, int userId, String orderNumber, int productComboId, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
-        this.id = id;
-        this.userId = userId;
-        this.orderNumber = orderNumber;
-        this.productComboId = productComboId;
-        this.remark = remark;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
     public ProductCombo getProductCombo() {
         return productCombo;
@@ -144,6 +149,14 @@ public class UserProductCombo implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public List<UserProductComboDay> getUserProductComboDays() {
+        return userProductComboDays;
+    }
+
+    public void setUserProductComboDays(List<UserProductComboDay> userProductComboDays) {
+        this.userProductComboDays = userProductComboDays;
+    }
+
     @Override
     public String toString() {
         return "UserProductCombo{" +
@@ -158,6 +171,7 @@ public class UserProductCombo implements Serializable {
                 ", remainTime=" + remainTime +
                 ", productCombo=" + productCombo +
                 ", user=" + user +
+                ", userProductComboDays=" + userProductComboDays +
                 '}';
     }
 }

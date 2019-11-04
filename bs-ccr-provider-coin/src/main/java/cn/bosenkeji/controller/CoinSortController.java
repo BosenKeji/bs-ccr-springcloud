@@ -90,7 +90,7 @@ public class CoinSortController {
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "货币排序实体", required = true, type = "String" ) CoinSort coinSort){
 
-        if (this.coinSortService.checkByTradePlatformIdAndCoinId(coinSort.getTradePlatformId(),coinSort.getCoinId()).get() < 1){
+        if (this.coinSortService.get(coinSort.getId()) == null){
             return new Result(null,"货币排序实体不存在");
         }
 

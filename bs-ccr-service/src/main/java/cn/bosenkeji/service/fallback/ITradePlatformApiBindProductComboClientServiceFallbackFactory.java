@@ -48,11 +48,11 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
                 return new PageInfo(list);
             }
 
-            @Override
+            /*@Override
             public PageInfo getNoBindUserProductComboListByUserId(int pageNum, int pageSize, int userId) {
 
                 return new PageInfo();
-            }
+            }*/
 
             @Override
             public Result updateTradePlatformApiBindProductCombo(int id, int tradePlatformApiId, int userId) {
@@ -72,6 +72,11 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             @Override
             public Result deleteByComboId(int userProductComboId) {
                 return new Result(-1,"hystrix");
+            }
+
+            @Override
+            public List findAll() {
+                return null;
             }
         };
     }

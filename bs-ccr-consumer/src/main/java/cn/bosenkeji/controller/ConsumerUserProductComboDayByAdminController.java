@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/user_product_combo_day_by_admin")
 @Api(tags="UserProductComboDayByAdmin 用户时长操作api接口",value = "用户套餐时长操作相关 rest API")
 @PreAuthorize("hasAnyAuthority('ADMIN')")
+@Validated
 public class ConsumerUserProductComboDayByAdminController {
 
     @Resource

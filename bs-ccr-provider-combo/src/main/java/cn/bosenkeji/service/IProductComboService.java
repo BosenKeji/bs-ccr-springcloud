@@ -21,4 +21,6 @@ public interface IProductComboService {
     int checkExistByNameAndProductId(String name, int productId);
 
     List<ProductCombo> getByIds(List<Integer> ids);
+
+    int checkExistByProductId(int productId);
 }

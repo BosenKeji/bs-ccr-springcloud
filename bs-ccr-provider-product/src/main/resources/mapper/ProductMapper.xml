@@ -135,7 +135,15 @@
 
     <select id="checkExistByName" parameterType="java.lang.String" resultType="java.lang.Integer">
     SELECT EXISTS (select 1 from product where `name`=#{name} limit 1)
-  </select>
+    </select>
+
+    <select id="checkExistByNameAndVersionName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select EXISTS (select 1 from product where `name`=#{param1} and `version_name`=#{param2} limit 1)
+    </select>
+
+    <select id="checkExistById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select EXISTS (select 1 from product where `id`=#{id,jdbcType=INTEGER} limit 1 )
+    </select>
 
     <select id="selectByPrimaryKeys" parameterType="List" resultMap="BaseResultMap" >
         select

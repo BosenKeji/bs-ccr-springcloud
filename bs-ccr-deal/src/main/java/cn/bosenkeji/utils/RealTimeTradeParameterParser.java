@@ -4,9 +4,6 @@ import cn.bosenkeji.vo.RealTimeTradeParameter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import java.math.BigDecimal;
-import java.util.Map;
-
 /**
  *
  * mq取的实时信息解析

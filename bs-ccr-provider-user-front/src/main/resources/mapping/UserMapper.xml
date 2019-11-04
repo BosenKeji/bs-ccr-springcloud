@@ -151,6 +151,10 @@
     (select 1 from user where tel=#{tel} limit 1)
   </select>
 
+  <select id="checkExistById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select exists (select 1 from user where id = #{id,jdbcType=INTEGER} limit 1)
+  </select>
+
   <update id="updateBinding" parameterType="java.lang.Integer">
     update user
     set is_binding = #{param2}

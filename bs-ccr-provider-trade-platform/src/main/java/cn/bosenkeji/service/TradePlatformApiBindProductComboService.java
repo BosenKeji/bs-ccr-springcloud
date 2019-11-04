@@ -5,6 +5,8 @@ import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author xivin
  * @ClassName cn.bosenkeji.service
@@ -38,5 +40,9 @@ public interface TradePlatformApiBindProductComboService {
     TradePlatformApiBindProductCombo getByUserIdAndComboId(int userId,int userProductComboId);
 
     int deleteByComboId(int userProductComboId);
+
+    int checkExistByComboId(int userProductComboId);
+
+    List findAll();
 
 }

@@ -1,0 +1,34 @@
+货币模块
+coin:
+    list: 经常查询 少更新 不限用户
+    get: 经常查询 少更新 不限用户
+
+coinPair:
+    list: 暂时少
+    get:
+    findSection: 多，但未缓存 不区分
+
+coinPairCoin:
+    list: 暂时少
+    get:
+    listByCoinId: 多
+
+coinSort:
+    listByTradePlatformId:
+
+交易平台模块
+tradePlatform:
+    list: 一般，但很少更改
+    get: 未知，但少更改
+
+tradePlatformCoinPair:
+    list:
+    get:
+
+
+tradePlatformApi:
+    list:
+    get:
+
+
+

@@ -39,8 +39,22 @@
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice_attribute_custom
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByCoinPairChoiceId" parameterType="int">
+    <!--@mbg.generated-->
+    delete from coin_pair_choice_attribute_custom
     where coin_partner_choice_id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="batchDelete" parameterType="list">
+    delete from coin_pair_choice_attribute_custom
+    where coin_partner_choice_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_pair_choice_attribute_custom (coin_partner_choice_id, stop_profit_type,
@@ -61,13 +75,13 @@
       coin_partner_choice_id,
       stop_profit_type,
       stop_profit_money,
-      <if test="stopProfitTraceTriggerRate != null">
+      <if test="stopProfitTraceTriggerRate >= 0">
         stop_profit_trace_trigger_rate,
       </if>
-      <if test="stopProfitTraceDropRate != null">
+      <if test="stopProfitTraceDropRate >= 0">
         stop_profit_trace_drop_rate,
       </if>
-      <if test="stopProfitFixedRate != null">
+      <if test="stopProfitFixedRate >= 0">
         stop_profit_fixed_rate,
       </if>
       `status`,
@@ -104,25 +118,25 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute_custom
     <set>
-      <if test="coinPartnerChoiceId != 0">
+      <if test="coinPartnerChoiceId >= 0">
         coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitType != 0">
+      <if test="stopProfitType >= 1">
         stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
       </if>
-      <if test="stopProfitMoney != 0">
+      <if test="stopProfitMoney >= 0">
         stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitTraceTriggerRate != null">
+      <if test="stopProfitTraceTriggerRate >= 0">
         stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
       </if>
-      <if test="stopProfitTraceDropRate != null">
+      <if test="stopProfitTraceDropRate >= 0">
         stop_profit_trace_drop_rate = #{stopProfitTraceDropRate,jdbcType=FLOAT},
       </if>
-      <if test="stopProfitFixedRate != null">
+      <if test="stopProfitFixedRate >= 0">
         stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -142,22 +156,22 @@
       <if test="id != 0">
         id = #{id,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitType != 0">
+      <if test="stopProfitType >= 1">
         stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
       </if>
-      <if test="stopProfitMoney != 0">
+      <if test="stopProfitMoney >= 0">
         stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
       </if>
-      <if test="stopProfitTraceTriggerRate != null">
+      <if test="stopProfitTraceTriggerRate >= 0">
         stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},
       </if>
-      <if test="stopProfitTraceDropRate != null">
+      <if test="stopProfitTraceDropRate >= 0">
         stop_profit_trace_drop_rate = #{stopProfitTraceDropRate,jdbcType=FLOAT},
       </if>
-      <if test="stopProfitFixedRate != null">
+      <if test="stopProfitFixedRate >= 0">
         stop_profit_fixed_rate = #{stopProfitFixedRate,jdbcType=FLOAT},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

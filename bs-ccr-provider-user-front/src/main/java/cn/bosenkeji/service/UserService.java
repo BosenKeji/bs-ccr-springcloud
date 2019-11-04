@@ -26,6 +26,10 @@ public interface UserService {
 
     void evictUser(int id);
 
+    Integer getIdByUsername(String username);
+
+    Integer checkExistById(int id);
+
 
 
 }

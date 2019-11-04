@@ -19,6 +19,8 @@ public interface CoinSortService {
 
     Optional<Integer> update(CoinSort coinSort);
 
+    CoinSort get(int coinSortId);
+
     Optional<Integer> delete(int tradePlatform,int coinId);
 
     Optional<Integer> checkByTradePlatformIdAndCoinId(int tradePlatformId,int coinId);

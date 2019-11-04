@@ -11,11 +11,13 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 /**
@@ -23,6 +25,7 @@ import java.util.Optional;
  * @create 2019/7/22 17:02
  */
 @RestController
+@Validated
 @RequestMapping("/coin_pair_choice")
 @Api(tags = "CoinPairChoice 自选货币接口",value = "自选货币相关功能 Rest接口")
 @RefreshScope
@@ -36,50 +39,52 @@ public class ConsumerCoinPairChoiceController {
 
     @ApiOperation(value = "获取自选货币分页接口",httpMethod = "GET",nickname = "getListCoinPairChoiceWithPage")
     @GetMapping("/")
-    public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                                 @ApiIgnore @TokenUser int userId,
-                                                 @RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
-        return this.iCoinPairChoiceClientService.getListCoinPairChoiceWithPage(pageNum, pageSizeCommon,userId,coinId);
+    public PageInfo getListCoinPairChoiceWithPage(@RequestParam(value="pageNum",defaultValue="1") @Min(1) int pageNum,
+                                                  @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                                                 @RequestParam("coinId") @Min(1) @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId){
+        pageSizeCommon = 100;
+        return this.iCoinPairChoiceClientService.getListCoinPairChoiceWithPage(pageNum, pageSizeCommon,tradePlatformApiBindProductComboId,coinId);
     }
 
-    @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
+    @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPairNameAndTradePlatformApiBindProductComboId")
     @GetMapping("/check_coin_pair_choice")
-    public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
-                                                  @ApiIgnore @TokenUser int userId){
-       return this.iCoinPairChoiceClientService.checkExistByCoinPairNameAndUserId(coinPairName, userId);
+    public Result checkExistByCoinPairNameAndTradePlatformApiBindProductComboId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") @NotNull String coinPairName,
+                                                  @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+       return this.iCoinPairChoiceClientService.checkExistByCoinPairNameAndTradePlatformApiBindProductComboId(coinPairName, tradePlatformApiBindProductComboId);
 
     }
 
     @ApiOperation(value = "获取单个自选货币接口",httpMethod = "GET",nickname = "getOneCoinPairChoice")
     @GetMapping("/{id}")
-    public CoinPairChoice getOneCoinPairChoice(@PathVariable("id")  @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
+    public CoinPairChoice getOneCoinPairChoice(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id){
         return this.iCoinPairChoiceClientService.getOneCoinPairChoice(id);
     }
 
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
-    public Result addOneCoinPairChoice(@ApiIgnore @TokenUser int userId,
-                                       @RequestParam("isStrategy")  @ApiParam(value = "是否开始策略", required = true, type = "integer",example = "1") int isStrategy,
-                                       @RequestParam("coinPairId")  @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
-        return this.iCoinPairChoiceClientService.addOneCoinPairChoice(userId, isStrategy, coinPairId);
+    public Result addOneCoinPairChoice(@RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                                       @RequestParam("isStrategy")  @ApiParam(value = "是否开始策略", required = true, type = "integer",example = "1") @Min(0) int isStrategy,
+                                       @RequestParam("coinPairId") @Min(1) @ApiParam(value = "货币对id", required = true, type = "integer",example = "1") int coinPairId){
+        return this.iCoinPairChoiceClientService.addOneCoinPairChoice(tradePlatformApiBindProductComboId, isStrategy, coinPairId);
     }
 
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")
     @PutMapping("/")
-    public Result updateCoinPairChoice(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice,@ApiIgnore @TokenUser int userId){
-        coinPairChoice.setUserId(userId);
+    public Result updateCoinPairChoice(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") @NotNull CoinPairChoice coinPairChoice){
         return this.iCoinPairChoiceClientService.updateCoinPairChoice(coinPairChoice);
     }
 
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
-    public Result deleteOneCoinPairChoice(@PathVariable("id") @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id){
-        return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id);
+    public Result deleteOneCoinPairChoice(@PathVariable("id") @Min(1) @ApiParam(value = "自选币 ID", required = true, type = "integer",example = "1") int id,
+                                          @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+        return this.iCoinPairChoiceClientService.deleteOneCoinPairChoice(id,tradePlatformApiBindProductComboId);
     }
 
     @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
     @DeleteMapping("/batch")
-    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds){
-        return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds);
+    public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") @NotNull String coinPairChoiceIds,
+                              @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+        return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds,tradePlatformApiBindProductComboId);
     }
 }

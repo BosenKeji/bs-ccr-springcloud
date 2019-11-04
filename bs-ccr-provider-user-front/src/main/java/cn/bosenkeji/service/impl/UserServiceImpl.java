@@ -1,5 +1,8 @@
 package cn.bosenkeji.service.impl;
 
+import cn.bosenkeji.annotation.cache.CacheWithHash;
+import cn.bosenkeji.annotation.cache.ZSetCacheable;
+import cn.bosenkeji.interfaces.HashOperation;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.UserMapper;
 import cn.bosenkeji.service.UserService;
@@ -8,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    //@CacheWithHash(name = RedisInterface.USER_REDIS_ID_KEY+"copy",key = "#id",unless = "#result == null",operation = HashOperation.GET)
+    @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
     @Override
     public User get(int id) {
         return userMapper.selectByPrimaryKey(id);
@@ -65,6 +72,18 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateBinding(id,isBinding);
     }
 
+    @ZSetCacheable(key = RedisInterface.USER_REDIS_USERNAME_KEY,value = "#username",unless = "#result == null")
+    //@Cacheable(value = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",unless = "#result < 1")
+    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",unless = "#result==null", operation = HashOperation.GET)
+    @Override
+    public Integer getIdByUsername(String username) {
+        User user = userMapper.selectByUsername(username);
+        if(user!=null) {
+            return user.getId();
+        }else
+            return null;
+    }
+
     @Override
     public Integer updatePasswordByTel(String tel, String password) {
         return userMapper.updatePasswordByTel(tel,password);
@@ -97,5 +116,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void evictUser(int id) {
         System.out.println("update caceh userId"+id);
+    }
+
+    @Override
+    public Integer checkExistById(int id) {
+        return userMapper.checkExistById(id);
     }
 }

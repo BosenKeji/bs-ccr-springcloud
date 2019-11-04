@@ -24,13 +24,20 @@ public interface UserProductComboMapper {
     List<Integer> selectPrimaryKeyByUserId(int userId);
 
 
-    //List<UserProductCombo> selectUserProductComboByUserTel(String userTel);
-
     List<UserProductCombo> selectUserProductComboByUserId(Integer userId);
 
     Integer checkExistByProductIdAndUserId(Integer productId, Integer userId);
 
     @MapKey("id")
     Map<Integer,UserProductCombo> selectByPrimaryKeys(List<Integer> ids);
+
+    List<UserProductCombo> selectByPrimaryKeysWithDay(List<Integer> ids);
+
+
+    List<UserProductCombo> findAllWithDay();
+
+    int checkExistById(Integer id);
+
+    int checkExistByProductComboId(Integer productComboId);
 
 }

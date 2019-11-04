@@ -80,4 +80,9 @@ public class ProductComboServiceImpl implements IProductComboService {
     public List<ProductCombo> getByIds(List<Integer> ids) {
         return productComboMapper.selectProductComboByIds(ids);
     }
+
+    @Override
+    public int checkExistByProductId(int productId) {
+        return productComboMapper.checkExistByProductId(productId);
+    }
 }

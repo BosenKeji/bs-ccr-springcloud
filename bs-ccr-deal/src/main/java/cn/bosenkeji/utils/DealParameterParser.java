@@ -29,9 +29,8 @@ public class DealParameterParser {
     }
 
     //通用参数
-    private static final String ACCESS_KEY = "accessKey";
-    private static final String SECRET_KEY = "secretKey";
     private static final String SYMBOL = "symbol";
+    private static final String SIGN_ID = "signId";
 
     private static final String TRADE_STATUS = "trade_status";  //是否给node端发送消息
 
@@ -66,9 +65,8 @@ public class DealParameterParser {
         DealParameter parameter = new DealParameter();
         parameter.setTrade(trade);
 
-        parameter.setAccessKey(DealUtil.getString(trade.get(ACCESS_KEY)));
-        parameter.setSecretKey(DealUtil.getString(trade.get(SECRET_KEY)));
         parameter.setSymbol(DealUtil.getString(trade.get(SYMBOL)));
+        parameter.setSignId(DealUtil.getString(trade.get(SIGN_ID)));
 
         parameter.setTradeStatus(DealUtil.getInteger(trade.get(TRADE_STATUS)));
         parameter.setPositionCost(DealUtil.getDouble(trade.get(POSITION_COST)));

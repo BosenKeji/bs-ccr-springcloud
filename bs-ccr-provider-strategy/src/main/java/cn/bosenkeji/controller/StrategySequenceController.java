@@ -104,7 +104,7 @@ public class StrategySequenceController {
             StrategySequenceOther sequenceOther = new StrategySequenceOther();
             return new Result<>(sequenceOther,"数列不存在");
         }
-        return new Result<>(strategySequenceService.findSequenceByPrimaryKey(id));
+        return strategySequenceService.findSequenceByPrimaryKey(id);
     }
 
 

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bosenkeji.mapper.UserProductComboMapper">
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
+
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
@@ -10,7 +11,29 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo" select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+                 select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <!--<collection property="userProductComboDays" column="id" ofType="cn.bosenkeji.vo.combo.UserProductComboDay"
+                select="cn.bosenkeji.mapper.UserProductComboDayMapper.selectByUserProductComboId" />-->
+  </resultMap>
+
+  <resultMap id="WithDayResultMap" type="cn.bosenkeji.vo.combo.UserProductCombo">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+                 select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
+    <collection property="userProductComboDays" column="id" ofType="cn.bosenkeji.vo.combo.UserProductComboDay"
+                select="cn.bosenkeji.mapper.UserProductComboDayMapper.selectByUserProductComboId" />
+
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -24,6 +47,14 @@
     from user_product_combo
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="findAllWithDay" resultMap="WithDayResultMap">
+
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_product_combo
     where id = #{id,jdbcType=INTEGER}
@@ -37,7 +68,7 @@
       updated_at)
     values (#{userId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{productComboId,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{updatedAt,jdbcType=TIMESTAMP} )
   </insert>
   <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -173,6 +204,65 @@
     <foreach collection="list" item="id" open="(" close=")" separator="," >
       #{id}
     </foreach>
+  </select>
+
+  <select id="selectByPrimaryKeysWithDay" parameterType="List" resultMap="WithDayResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from user_product_combo
+    where id in
+    <foreach collection="list" item="id" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
+  </select>
+
+  <!--<update id="updateRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+    where
+    id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateSomeRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+    where
+    id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateRedisKeyAll" parameterType="java.lang.String">
+    update user_product_combo
+    set
+    redis_key = #{redisKey,jdbcType=VARCHAR}
+
+  </update>-->
+
+  <!--<select id="selectRedisByGroup" resultType="java.lang.String">
+    select
+    redis_key
+    from
+    user_product_combo
+    GROUP BY redis_key
+  </select>-->
+
+  <select id="checkExistById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    exists(
+    select 1 from user_product_combo
+    where id = #{id,jdbcType=INTEGER}
+    limit 1
+    )
+  </select>
+
+  <select id="checkExistByProductComboId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    exists (
+    select 1 from user_product_combo
+    where product_combo_id = #{productComboId,jdbcType=INTEGER}
+    limit 1
+    )
   </select>
 
 </mapper>

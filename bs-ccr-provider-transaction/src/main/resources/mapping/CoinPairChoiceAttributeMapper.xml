@@ -29,6 +29,11 @@
      #{item,jdbcType=INTEGER}
    </foreach>
   </select>
+
+  <select id="findAllCoinPairChoiceId" resultType="integer">
+    select coin_partner_choice_id from coin_pair_choice_attribute
+  </select>
+
   <select id="checkByCoinPartnerChoiceId" resultType="integer">
     select exists (select 1 from coin_pair_choice_attribute where coin_partner_choice_id =#{coinPartnerChoiceId} limit 1)
   </select>
@@ -46,6 +51,20 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="int">
+    <!--@mbg.generated-->
+    delete from coin_pair_choice_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="batchDelete" parameterType="list">
+    delete from coin_pair_choice_attribute
+    where coin_partner_choice_id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+
+  <delete id="deleteByCoinPairChoiceId" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice_attribute
     where coin_partner_choice_id = #{id,jdbcType=INTEGER}
@@ -94,19 +113,19 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute
     <set>
-      <if test="coinPartnerChoiceId != null">
+      <if test="coinPartnerChoiceId > 0">
         coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
       </if>
-      <if test="expectMoney != 0">
+      <if test="expectMoney >= 0">
         expect_money = #{expectMoney,jdbcType=INTEGER},
       </if>
-      <if test="strategyId != 0">
+      <if test="strategyId > 0">
         strategy_id = #{strategyId,jdbcType=INTEGER},
       </if>
-      <if test="isCustom != 0">
+      <if test="isCustom >= 0">
         is_custom = #{isCustom,jdbcType=TINYINT},
       </if>
-      <if test="status != 0">
+      <if test="status == 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -123,19 +142,19 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute
     <set>
-      <if test="coinPartnerChoiceId != 0">
+      <if test="coinPartnerChoiceId > 0">
         coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
       </if>
-      <if test="expectMoney != 0">
+      <if test="expectMoney > 0">
         expect_money = #{expectMoney,jdbcType=INTEGER},
       </if>
-      <if test="strategyId != 0">
+      <if test="strategyId > 0">
         strategy_id = #{strategyId,jdbcType=INTEGER},
       </if>
-      <if test="isCustom != 0">
+      <if test="isCustom >= 0">
         is_custom = #{isCustom,jdbcType=TINYINT},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

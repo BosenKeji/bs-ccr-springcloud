@@ -19,6 +19,7 @@ public class UserProductComboDay implements Serializable {
 
     private int number;
 
+    @ApiModelProperty(hidden = true)
     private int status;
 
     @ApiModelProperty(hidden = true)
