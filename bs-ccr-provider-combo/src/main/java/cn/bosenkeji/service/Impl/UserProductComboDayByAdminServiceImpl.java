@@ -1,9 +1,11 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.UserComboRedisEnum;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
+import cn.bosenkeji.service.JobService;
 import cn.bosenkeji.utils.UserComboTimeUtil;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
@@ -34,7 +36,8 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Resource
     private UserProductComboMapper userProductComboMapper;
 
-    @Resource JobService jobService;
+    @Resource
+    private JobService jobService;
 
     @Resource
     private RedisTemplate redisTemplate;

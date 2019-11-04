@@ -57,7 +57,7 @@ public class ProductComboServiceImpl implements IProductComboService {
 
     @Override
     public int add(ProductCombo productCombo) {
-        return this.productComboMapper.insert(productCombo);
+        return this.productComboMapper.insertSelective(productCombo);
     }
 
     @Override
