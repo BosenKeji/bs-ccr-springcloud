@@ -1,12 +1,17 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.interfaces.CommonStatusEnum;
+import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.service.JobService;
+import cn.bosenkeji.service.reason.IReasonClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.UserComboTimeUtil;
+import cn.bosenkeji.vo.combo.ComboDayByAdminReason;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
@@ -16,6 +21,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author xivin
@@ -37,12 +44,20 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     private UserProductComboMapper userProductComboMapper;
 
     @Resource
+    private ComboDayByAdminReasonMapper comboDayByAdminReasonMapper;
+
+    @Resource
+    private IReasonClientService iReasonClientService;
+
+    @Resource
     private JobService jobService;
 
     @Resource
     private RedisTemplate redisTemplate;
 
 
+    private final int SUCCESS=1;
+    private final int FAIL=0;
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
@@ -90,7 +105,22 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         //新增用户套餐时长操作
         userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
 
-        return userProductComboDayByAdminMapper.insertSelective(userProductComboDayByAdmin);
+        userProductComboDayByAdminMapper.insertSelective(userProductComboDayByAdmin);
+
+        if(userProductComboDayByAdmin.getReasonId()>0) {
+            Result<Integer> result=iReasonClientService.checkExistById(userProductComboDayByAdmin.getReasonId());
+            if(result.getData()>0) {
+                ComboDayByAdminReason comboDayByAdminReason = new ComboDayByAdminReason();
+                comboDayByAdminReason.setUserProductComboDayByAdminId(userProductComboDayByAdmin.getId());
+                comboDayByAdminReason.setReasonId(userProductComboDayByAdmin.getReasonId());
+                comboDayByAdminReason.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                comboDayByAdminReason.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                comboDayByAdminReason.setStatus(CommonStatusEnum.NORMAL);
+                comboDayByAdminReasonMapper.insertSelective(comboDayByAdminReason);
+            }
+        }
+
+       return SUCCESS;
 
     }
 

@@ -24,7 +24,7 @@ public class UserProductComboDayByAdmin implements Serializable {
 
     private String orderNumber;
     private String remark;
-    private int comboDayReasonId;
+    private int reasonId;
 
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
@@ -40,14 +40,14 @@ public class UserProductComboDayByAdmin implements Serializable {
     private UserProductComboDay userProductComboDay;
 
     @ApiModelProperty(hidden = true)
-    private ComboDayReason comboDayReason;
+    private ComboDayByAdminReason comboDayByAdminReason;
 
-    public ComboDayReason getComboDayReason() {
-        return comboDayReason;
+    public ComboDayByAdminReason getComboDayByAdminReason() {
+        return comboDayByAdminReason;
     }
 
-    public void setComboDayReason(ComboDayReason comboDayReason) {
-        this.comboDayReason = comboDayReason;
+    public void setComboDayByAdminReason(ComboDayByAdminReason comboDayByAdminReason) {
+        this.comboDayByAdminReason = comboDayByAdminReason;
     }
 
     public String getOrderNumber() {
@@ -66,12 +66,12 @@ public class UserProductComboDayByAdmin implements Serializable {
         this.remark = remark;
     }
 
-    public int getComboDayReasonId() {
-        return comboDayReasonId;
+    public int getReasonId() {
+        return reasonId;
     }
 
-    public void setComboDayReasonId(int comboDayReasonId) {
-        this.comboDayReasonId = comboDayReasonId;
+    public void setReasonId(int reasonId) {
+        this.reasonId = reasonId;
     }
 
     public UserProductComboDay getUserProductComboDay() {

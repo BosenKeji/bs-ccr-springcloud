@@ -43,6 +43,7 @@
         <module>bs-ccr-provider-combo</module>
         <module>bs-ccr-aws-deal</module>
         <module>bs-ccr-aws-sqs</module>
+        <module>bs-ccr-provider-reason</module>
 
     </modules>
 
@@ -338,6 +339,12 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-aws-sqs</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-provider-reason</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
