@@ -148,8 +148,10 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {
         Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
-        if (coinPairChoiceId > 0){
-            return Optional.ofNullable(this.coinPairChoiceMapper.updateStatusByPrimaryKey(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
+        if (coinPairChoiceId != null){
+            if (coinPairChoiceId >0){
+                return Optional.ofNullable(this.coinPairChoiceMapper.updateStatusByPrimaryKey(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
+            }
         }
 
         return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
