@@ -28,30 +28,33 @@
     <!--@mbg.generated-->
     id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
   </sql>
-  <select id="checkExistByCoinPartnerIdAndRobotId" resultType="integer">
-    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id =#{param2}  LIMIT 1)
+  <select id="selectIdByCoinPartnerIdAndRobotIdAndStatus" resultType="integer">
+    select id from coin_pair_choice where coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id = #{param2} and status = 0
+  </select>
+  <select id="checkExistByCoinPartnerIdAndRobotIdAndStatus" resultType="integer">
+    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id =#{param2}  and status = 1 LIMIT 1)
   </select>
   <select id="findAllCoinPairChoiceId" resultType="integer">
-    select id from coin_pair_choice
+    select id from coin_pair_choice  where status = 1
   </select>
   <select id="findAllByTradePlatformApiBindProductComboId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice
-   where trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
+   where trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER} and status = 1
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and status = 1
   </select>
 
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from coin_pair_choice
+    from coin_pair_choice where status = 1
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="int">
@@ -59,7 +62,7 @@
     delete from coin_pair_choice
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="batchDelete" parameterType="list">
+  <delete id="batchDelete" parameterType="List">
     delete from coin_pair_choice
     where id in
     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
@@ -135,7 +138,7 @@
         trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and status = 1
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice">
     <!--@mbg.generated-->
@@ -147,6 +150,22 @@
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
     trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+
+  <update id="updateStatusByPrimaryKey" >
+    update coin_pair_choice
+    set `status` = #{param3,jdbcType=INTEGER},
+    updated_at = #{param2,jdbcType=TIMESTAMP}
+    where id = #{param1,jdbcType=INTEGER}
+  </update>
+  <update id="batchUpdateStatusByPrimaryKey" >
+    update coin_pair_choice
+    set `status` = 0,
+    updated_at = #{param2,jdbcType=TIMESTAMP}
+    where id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
   </update>
 </mapper>
