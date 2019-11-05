@@ -145,6 +145,14 @@ public class ConsumerUserController {
         return iUserClientService.updatePasswordByTel(tel,password);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @ApiOperation(value = "更改用户状态",httpMethod = "PUT",nickname = "updateStatusById")
+    @PutMapping("/status")
+    public Result updateStatusById(@RequestParam("id") @Min(1) @ApiParam(value = "用户id",required = true, type = "integer", example = "1") Integer id,
+                                   @RequestParam("status") @ApiParam(value = "用户状态",required = true, type = "integer", example = "1") Integer status) {
+        return iUserClientService.updateStatusById(id,status);
+    }
+
     @PreAuthorize("hasAuthority('USER')")
     @ApiOperation(value = "获取当前登录用户接口",httpMethod = "GET",nickname = "getCurrentUser")
     @GetMapping("/current_user")

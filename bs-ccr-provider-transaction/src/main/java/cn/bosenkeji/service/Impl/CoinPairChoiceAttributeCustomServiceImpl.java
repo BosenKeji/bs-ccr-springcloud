@@ -12,15 +12,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static cn.bosenkeji.util.CommonConstantUtil.FAIL;
+
 /**
  * @Author CAJR
  * @create 2019/7/18 17:30
  */
 @Service
 public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceAttributeCustomService {
-
-    private final static int SUCCESS = 1;
-    private final static int FAIL = 0;
 
     @Resource
     CoinPairChoiceAttributeCustomMapper coinPairChoiceAttributeCustomMapper;

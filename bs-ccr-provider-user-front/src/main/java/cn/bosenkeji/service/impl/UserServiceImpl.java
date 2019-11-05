@@ -122,4 +122,12 @@ public class UserServiceImpl implements UserService {
     public Integer checkExistById(int id) {
         return userMapper.checkExistById(id);
     }
+
+    @Override
+    public Integer updateStatusById(Integer id,Integer status) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus(status);
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
 }

@@ -9,6 +9,7 @@ begin
     then
         create table order_group(
             id int (11) NOT NULL AUTO_INCREMENT ,
+            coin_pair_choice_id int(11) not null ,
             name varchar(50) not null default'',
             end_profit_ratio int(11) not null  comment '结单收益比',
             is_end tinyint not null default 0 comment '是否结单',
@@ -25,7 +26,6 @@ begin
         create table trade_order(
             id int (11) NOT NULL AUTO_INCREMENT ,
             order_group_id int(11) not null ,
-            coin_pair_choice_id int(11) not null ,
             trade_average_price int(11) not null comment '交易均价',
             trade_numbers int(11) not null comment '交易数量' ,
             trade_cost int(11) not null comment '交易费用',

@@ -2,6 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
 import cn.bosenkeji.service.*;
+import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
@@ -17,8 +18,11 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 /**
  * @Author CAJR
@@ -48,8 +52,6 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Autowired
     CoinPairChoiceAttributeCustomServiceImpl coinPairChoiceAttributeCustomService;
 
-    private final static int SUCCESS = 1;
-    private final static int FAIL = 0;
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
@@ -145,6 +147,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {
+        Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
+        if (coinPairChoiceId > 0){
+            return Optional.ofNullable(this.coinPairChoiceMapper.updateStatusByPrimaryKey(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
+        }
+
         return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
     }
 
@@ -165,14 +172,14 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(id);
             }
 
-            coinPairChoiceMapper.deleteByPrimaryKey(id);
+            coinPairChoiceMapper.updateStatusByPrimaryKey(id,Timestamp.valueOf(LocalDateTime.now()), CommonConstantUtil.DELETE_STATUS);
         }catch (Exception e){
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Optional.of(FAIL);
+            return Optional.of(CommonConstantUtil.FAIL);
         }
 
-        return Optional.of(SUCCESS);
+        return Optional.of(CommonConstantUtil.SUCCESS);
     }
 
     @Override
@@ -181,12 +188,12 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         if (this.iCoinPairClientService.getCoinPairByName(coinPairName) != null){
             coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
         }
-        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotId(coinPair.getId(), tradePlatformApiBindProductComboId));
+        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotIdAndStatus(coinPair.getId(), tradePlatformApiBindProductComboId));
     }
 
     @Override
     public Optional<Integer> checkExistByCoinPartnerIdAndRobotId(int coinPairId, int tradePlatformApiBindProductComboId) {
-        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotId(coinPairId, tradePlatformApiBindProductComboId));
+        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotIdAndStatus(coinPairId, tradePlatformApiBindProductComboId));
     }
 
     @Override
@@ -230,13 +237,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                     coinPairChoiceIdList.add(coinPairChoice.getId());
                 });
             }else {
-                return Optional.of(FAIL);
+                return Optional.of(CommonConstantUtil.FAIL);
             }
         }
         if (!coinPairChoiceIdList.isEmpty()) {
             for (Integer id : coinPairChoiceIds) {
                 if (!coinPairChoiceIdList.contains(id)){
-                    return Optional.of(FAIL);
+                    return Optional.of(CommonConstantUtil.FAIL);
                 }
             }
         }
@@ -261,18 +268,18 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }catch (Exception e){
                 e.printStackTrace();
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Optional.of(FAIL);
+                return Optional.of(CommonConstantUtil.FAIL);
             }
         }else{
             try{
-                this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds);
+                this.coinPairChoiceMapper.batchUpdateStatusByPrimaryKey(coinPairChoiceIds,Timestamp.valueOf(LocalDateTime.now()));
             }catch (Exception e){
                 e.printStackTrace();
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Optional.of(FAIL);
+                return Optional.of(CommonConstantUtil.FAIL);
             }
         }
-        return Optional.of(SUCCESS);
+        return Optional.of(CommonConstantUtil.SUCCESS);
     }
 
     @Override

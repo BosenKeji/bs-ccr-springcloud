@@ -30,6 +30,8 @@ public interface UserService {
 
     Integer checkExistById(int id);
 
+    Integer updateStatusById(Integer id, Integer status);
+
 
 
 }

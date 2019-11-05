@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.TradeOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.TradeOrder">
+    <!--@mbg.generated-->
+    <!--@Table trade_order-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_group_id" jdbcType="INTEGER" property="orderGroupId" />
+    <result column="trade_average_price" jdbcType="INTEGER" javaType="double" property="tradeAveragePrice" />
+    <result column="trade_numbers" jdbcType="INTEGER" javaType="double" property="tradeNumbers" />
+    <result column="trade_cost" jdbcType="INTEGER" javaType="double" property="tradeCost" />
+    <result column="shell_profit" jdbcType="INTEGER"  javaType="double" property="shellProfit" />
+    <result column="trade_type" jdbcType="TINYINT" property="tradeType" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, order_group_id, trade_average_price, trade_numbers, trade_cost,
+    shell_profit, trade_type, `status`, created_at, updated_at
+  </sql>
+
+  <select id="findAllByOrderGroupId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from trade_order where order_group_id=#{orderGroupId,jdbcType=INTEGER} and status = 1
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from trade_order where status = 1
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from trade_order
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from trade_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.TradeOrder" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into trade_order (order_group_id, trade_average_price,
+      trade_numbers, trade_cost, shell_profit, 
+      trade_type, `status`, created_at, 
+      updated_at)
+    values (#{orderGroupId,jdbcType=INTEGER}, #{tradeAveragePrice,jdbcType=INTEGER},
+      #{tradeNumbers,jdbcType=INTEGER}, #{tradeCost,jdbcType=INTEGER}, #{shellProfit,jdbcType=INTEGER}, 
+      #{tradeType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.TradeOrder" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into trade_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderGroupId != null">
+        order_group_id,
+      </if>
+      <if test="tradeAveragePrice != null">
+        trade_average_price,
+      </if>
+      <if test="tradeNumbers != null">
+        trade_numbers,
+      </if>
+      <if test="tradeCost != null">
+        trade_cost,
+      </if>
+      <if test="shellProfit != null">
+        shell_profit,
+      </if>
+      <if test="tradeType != null">
+        trade_type,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderGroupId != null">
+        #{orderGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="tradeAveragePrice != null">
+        #{tradeAveragePrice,jdbcType=INTEGER},
+      </if>
+      <if test="tradeNumbers != null">
+        #{tradeNumbers,jdbcType=INTEGER},
+      </if>
+      <if test="tradeCost != null">
+        #{tradeCost,jdbcType=INTEGER},
+      </if>
+      <if test="shellProfit != null">
+        #{shellProfit,jdbcType=INTEGER},
+      </if>
+      <if test="tradeType != null">
+        #{tradeType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.transaction.TradeOrder">
+    <!--@mbg.generated-->
+    update trade_order
+    <set>
+      <if test="orderGroupId != null">
+        order_group_id = #{orderGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="tradeAveragePrice != null">
+        trade_average_price = #{tradeAveragePrice,jdbcType=INTEGER},
+      </if>
+      <if test="tradeNumbers != null">
+        trade_numbers = #{tradeNumbers,jdbcType=INTEGER},
+      </if>
+      <if test="tradeCost != null">
+        trade_cost = #{tradeCost,jdbcType=INTEGER},
+      </if>
+      <if test="shellProfit != null">
+        shell_profit = #{shellProfit,jdbcType=INTEGER},
+      </if>
+      <if test="tradeType != null">
+        trade_type = #{tradeType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.TradeOrder">
+    <!--@mbg.generated-->
+    update trade_order
+    set order_group_id = #{orderGroupId,jdbcType=INTEGER},
+      trade_average_price = #{tradeAveragePrice,jdbcType=INTEGER},
+      trade_numbers = #{tradeNumbers,jdbcType=INTEGER},
+      trade_cost = #{tradeCost,jdbcType=INTEGER},
+      shell_profit = #{shellProfit,jdbcType=INTEGER},
+      trade_type = #{tradeType,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+</mapper>
