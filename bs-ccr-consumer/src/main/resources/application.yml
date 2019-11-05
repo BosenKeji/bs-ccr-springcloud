@@ -11,7 +11,7 @@ spring:
         server-addr: 127.0.0.1:8848
 
 feign:
-  hystrix:
+  sentinel:
     enabled: true
   compression:
     request:
@@ -21,4 +21,11 @@ feign:
         - application/xml
         - application/json
       min-request-size: 2048 # 超过2048的字节进行压缩
+
+ahas:
+  namespace: default
+  #license: f7690a9780e14e42b948aadcbb681f9e #公网使用
+
+project:
+  name: bs-ccr-consumer-ahas
 

@@ -386,6 +386,20 @@
                 <version>3.4.2</version>
             </dependency>
 
+            <!--阿里云sentinel 代替Hystrix -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-sentinel</artifactId>
+                <version>2.0.0.RELEASE</version>
+            </dependency>
+
+            <!--阿里云AHAS应用高可用服务-->
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>spring-boot-starter-ahas-sentinel-client</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
