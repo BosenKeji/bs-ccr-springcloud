@@ -142,8 +142,8 @@ public class CoinPairChoiceController {
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
         CoinPairChoice coinPairChoiceVerification = this.coinPairChoiceService.get(coinPairChoice.getId());
-        if (coinPairChoiceVerification == null){
-            return new Result<>(null,"自选币不存在");
+        if (coinPairChoiceVerification == null || coinPairChoiceVerification.getStatus() == 0){
+            return new Result<>(null,"自选币不存在或已删除");
         }
         if (coinPairChoiceVerification.getTradePlatformApiBindProductComboId() != coinPairChoice.getTradePlatformApiBindProductComboId()){
             return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
@@ -162,10 +162,10 @@ public class CoinPairChoiceController {
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id,
-                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️shadiao机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
         CoinPairChoice coinPairChoice = this.coinPairChoiceService.get(id);
-        if (coinPairChoice == null){
-            return new Result<>(null,"自选币不存在");
+        if (coinPairChoice == null || coinPairChoice.getStatus() == 0){
+            return new Result<>(null,"自选币不存在或已删除");
         }
         if (coinPairChoice.getTradePlatformApiBindProductComboId() != tradePlatformApiBindProductComboId){
             return new Result<>(null,"非法操作，不能删除其他用户的东西哦");

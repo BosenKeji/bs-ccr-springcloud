@@ -223,6 +223,19 @@
                 <version>1.45</version>
             </dependency>
 
+<!--            openSearch-->
+            <dependency>
+                <groupId>com.aliyun.opensearch</groupId>
+                <artifactId>aliyun-sdk-opensearch</artifactId>
+                <version>3.4.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.54</version>
+            </dependency>
+
             <!-- 模块依赖 -->
             <dependency>
                 <groupId>bosenCCR</groupId>
