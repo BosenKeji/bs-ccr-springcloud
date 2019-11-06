@@ -1,0 +1,4 @@
+2019-11-06 22:12:00,813 INFO DEFAULT_GROUP@@bs-ccr-consumer {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [172.17.0.7:8080:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2019-11-06 22:12:00,889 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@bs-ccr-consumer, ips: 172.17.0.7:8080_true,
+

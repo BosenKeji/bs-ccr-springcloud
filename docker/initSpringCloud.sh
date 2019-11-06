@@ -44,5 +44,37 @@ services:
           - $homePath/.m2:/root/.m2
         working_dir: $currentProjectSourcePath/bs-ccr-provider-product-combo
         command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
+    consumer:
+        image: maven:3-jdk-8
+        container_name: consumer
+        hostname: consumer
+        network_mode: bridge
+        ports:
+          - "8080:8080"
+        external_links:
+          - mysql-dev:mysql-dev
+          - redis-dev:redis-dev
+          - nacos-dev:nacos-dev
+        volumes:
+          - $currentProjectSourcePath:$currentProjectSourcePath
+          - $homePath/.m2:/root/.m2
+        working_dir: $currentProjectSourcePath/bs-ccr-consumer
+        command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
+    jwt:
+        image: maven:3-jdk-8
+        container_name: jwt
+        hostname: jwt
+        network_mode: bridge
+        ports:
+          - "8100:8100"
+        external_links:
+          - mysql-dev:mysql-dev
+          - redis-dev:redis-dev
+          - nacos-dev:nacos-dev
+        volumes:
+          - $currentProjectSourcePath:$currentProjectSourcePath
+          - $homePath/.m2:/root/.m2
+        working_dir: $currentProjectSourcePath/bs-ccr-security-jwt-auth-server
+        command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
 
 EOF

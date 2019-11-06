@@ -1774,3 +1774,973 @@
 
 2019-11-06 21:53:13,585 INFO raw beat data size: 160, size of compressed data: 139
 
+2019-11-06 22:03:48,469 INFO initializing Raft sub-system
+
+2019-11-06 22:03:48,482 INFO raft notifier started
+
+2019-11-06 22:03:48,483 INFO finish loading all datums, size: 0 cost 1 ms.
+
+2019-11-06 22:03:48,277 INFO server list is updated, new: 1 servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:03:48,492 INFO cache loaded, datum count: 0, current term: 0
+
+2019-11-06 22:03:48,492 INFO finish to load data from disk, cost: 10 ms.
+
+2019-11-06 22:03:48,499 INFO timer started: leader timeout ms: 15000, heart-beat timeout ms: 5000
+
+2019-11-06 22:03:48,500 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"lastRefTimeStr":"","servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:03:48,633 INFO add listener: com.alibaba.nacos.naming.domains.meta.
+
+2019-11-06 22:03:53,219 INFO add listener: com.alibaba.nacos.naming.domains.meta.00-00---000-NACOS_SWITCH_DOMAIN-000---00-00
+
+2019-11-06 22:03:58,227 INFO server list is updated, new: 1 servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:03:58,228 INFO server list is updated, dead: 1, servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"lastRefTimeStr":"","servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:03:58,228 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:00,531 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:00,549 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:04:05,555 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:05,556 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:04:08,241 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:10,565 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:10,565 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:04:15,570 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:15,570 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:04:20,576 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:20,576 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:04:25,547 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:25,547 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:04:30,553 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:30,553 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:04:35,560 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:35,562 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:04:40,586 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:40,586 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:04:45,594 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:04:45,594 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:09:45,473 INFO initializing Raft sub-system
+
+2019-11-06 22:09:45,481 INFO raft notifier started
+
+2019-11-06 22:09:45,481 INFO finish loading all datums, size: 0 cost 0 ms.
+
+2019-11-06 22:09:45,487 INFO cache loaded, datum count: 0, current term: 0
+
+2019-11-06 22:09:45,487 INFO finish to load data from disk, cost: 6 ms.
+
+2019-11-06 22:09:45,494 INFO timer started: leader timeout ms: 15000, heart-beat timeout ms: 5000
+
+2019-11-06 22:09:45,300 INFO server list is updated, new: 1 servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:45,519 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"lastRefTimeStr":"","servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:45,614 INFO add listener: com.alibaba.nacos.naming.domains.meta.
+
+2019-11-06 22:09:49,220 INFO add listener: com.alibaba.nacos.naming.domains.meta.00-00---000-NACOS_SWITCH_DOMAIN-000---00-00
+
+2019-11-06 22:09:55,257 INFO server list is updated, new: 1 servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:55,257 INFO server list is updated, dead: 1, servers: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:0","lastRefTime":0,"lastRefTimeStr":"","servePort":0,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:55,257 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:57,989 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:09:58,006 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:10:03,018 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:03,019 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:10:05,260 INFO raft peers changed: [{"adWeight":0,"alive":false,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":0,"lastRefTimeStr":"","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:08,025 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:08,025 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:10:13,034 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:13,035 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:10:18,040 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:18,040 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:10:23,047 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:23,048 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:10:28,021 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:28,022 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:10:33,028 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:33,029 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:10:38,034 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:38,036 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:10:43,040 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:43,040 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:10:48,046 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:48,046 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:10:53,053 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:53,053 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:10:58,024 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:10:58,025 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:11:03,029 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:03,029 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:11:08,041 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:08,056 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:11:13,087 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:13,090 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:11:18,095 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:18,098 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:11:23,102 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:23,103 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:11:28,077 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:28,078 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:11:33,082 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:33,083 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:11:38,092 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:38,106 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:11:43,111 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:43,113 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:11:48,117 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:48,118 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:11:53,129 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:53,129 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:11:58,103 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:11:58,105 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:11:58,291 INFO add listener: com.alibaba.nacos.naming.iplist.public##DEFAULT_GROUP@@bs-ccr-consumer
+
+2019-11-06 22:12:05,222 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:05,244 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:12:10,251 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:10,258 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:12:15,264 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:15,267 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:12:20,275 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:20,276 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:12:25,249 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:25,251 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:12:30,260 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:30,262 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:12:35,269 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:35,270 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:12:40,276 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:40,283 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:12:45,287 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:45,288 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:12:50,295 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:50,295 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:12:55,270 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:12:55,272 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:13:00,281 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:00,282 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:13:05,288 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:05,289 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:13:10,299 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:10,299 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:13:15,308 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:15,309 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:13:20,316 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:20,318 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:13:25,289 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:25,290 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:13:30,295 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:30,295 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:13:35,301 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:35,303 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:13:40,309 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:40,311 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:13:45,316 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:45,316 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:13:50,323 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:50,324 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:13:55,295 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:13:55,297 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:14:00,304 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:00,305 INFO raw beat data size: 160, size of compressed data: 135
+
+2019-11-06 22:14:05,311 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:05,312 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:14:10,323 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:10,329 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:14:15,337 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:15,339 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:14:20,347 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:20,347 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:14:25,317 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:25,327 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:14:30,335 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:30,340 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:14:35,346 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:35,349 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:14:40,359 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:40,369 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:14:45,375 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:45,376 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:14:50,382 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:50,386 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:14:55,361 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:14:55,366 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:15:00,371 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:00,378 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:15:05,385 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:05,386 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:15:10,397 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:10,403 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:15:15,411 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:15,416 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:15:20,424 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:20,427 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:15:25,400 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:25,406 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:15:30,413 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:30,417 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:15:35,425 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:35,427 INFO raw beat data size: 160, size of compressed data: 135
+
+2019-11-06 22:15:40,434 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:40,436 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:15:45,445 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:45,446 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:15:50,454 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:50,456 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:15:55,430 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:15:55,434 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:16:00,441 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:00,444 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:16:05,451 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:05,451 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:16:10,456 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:10,458 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:16:15,463 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:15,463 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:16:20,469 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:20,471 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:16:25,446 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:25,447 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:16:30,451 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:30,454 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:16:35,459 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:35,461 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:16:40,467 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:40,469 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:16:45,475 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:45,476 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:16:50,481 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:50,482 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:16:55,453 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:16:55,454 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:17:00,459 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:00,460 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:17:05,466 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:05,467 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:17:10,474 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:10,476 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:17:15,480 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:15,481 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:17:20,485 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:20,485 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:17:25,458 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:25,460 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:17:30,465 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:30,466 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:17:35,471 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:35,472 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:17:40,480 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:40,483 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:17:45,489 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:45,490 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:17:50,496 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:50,497 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:17:55,470 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:17:55,472 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:18:00,479 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:00,483 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:18:05,492 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:05,492 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:18:10,500 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:10,501 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:18:15,509 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:15,511 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:18:20,517 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:20,520 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:18:25,492 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:25,496 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:18:30,502 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:30,504 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:18:35,512 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:35,515 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:18:40,522 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:40,524 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:18:45,532 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:45,533 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:18:50,541 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:50,544 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:18:55,516 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:18:55,517 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:19:00,521 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:00,523 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:19:05,528 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:05,531 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:19:10,536 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:10,536 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:19:15,547 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:15,549 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:19:20,558 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:20,558 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:19:25,531 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:25,533 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:19:30,541 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:30,542 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:19:35,548 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:35,549 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:19:40,555 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:40,557 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:19:45,565 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:45,566 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:19:50,573 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:50,577 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:19:55,550 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:19:55,551 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:20:00,558 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:00,558 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:20:05,564 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:05,568 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:20:10,574 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:10,577 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:20:15,582 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:15,584 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:20:20,591 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:20,592 INFO raw beat data size: 160, size of compressed data: 135
+
+2019-11-06 22:20:25,563 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:25,563 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:20:30,567 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:30,568 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:20:35,574 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:35,575 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:20:40,581 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:40,583 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:20:45,590 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:45,592 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:20:50,598 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:50,601 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:20:55,573 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:20:55,573 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:21:00,580 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:00,581 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:21:05,586 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:05,587 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:21:10,594 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:10,598 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:21:15,606 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:15,608 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:21:20,614 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:20,615 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:21:25,590 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:25,592 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:21:30,602 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:30,606 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:21:35,616 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:35,619 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:21:40,630 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:40,632 INFO raw beat data size: 160, size of compressed data: 136
+
+2019-11-06 22:21:45,640 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:45,640 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:21:50,647 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:50,648 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:21:55,621 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:21:55,622 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:22:00,630 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:00,630 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:22:05,640 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:05,641 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:22:10,649 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:10,649 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:22:15,657 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:15,658 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:22:20,666 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:20,667 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:22:25,643 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:25,645 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:22:30,654 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:30,654 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:22:35,662 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:35,663 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:22:40,671 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:40,673 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:22:45,680 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:45,681 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:22:50,690 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:50,692 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:22:55,662 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:22:55,665 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:23:00,673 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:00,673 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:23:05,681 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:05,683 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:23:10,691 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:10,692 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:23:15,699 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:15,700 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:23:20,707 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:20,709 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:23:25,680 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:25,682 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:23:30,688 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:30,689 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:23:35,698 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:35,701 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:23:40,714 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:40,716 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:23:45,723 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:45,725 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:23:50,730 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:50,733 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:23:55,704 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:23:55,705 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:24:00,711 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:00,712 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:24:05,717 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:05,717 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:24:10,725 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:10,729 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:24:15,737 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:15,737 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:24:20,744 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:20,746 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:24:25,719 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:25,720 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:24:30,727 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:30,730 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:24:35,737 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:35,739 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:24:40,745 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:40,749 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:24:45,753 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:45,753 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:24:50,759 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:50,759 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:24:55,731 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:24:55,733 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:25:00,738 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:00,740 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:25:05,745 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:05,745 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:25:10,751 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:10,753 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:25:15,760 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:15,760 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:25:20,766 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:20,775 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:25:25,746 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:25,749 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:25:30,756 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:30,757 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:25:35,763 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:35,771 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:25:40,779 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:40,782 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:25:45,788 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:45,789 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:25:50,795 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:50,796 INFO raw beat data size: 160, size of compressed data: 137
+
+2019-11-06 22:25:55,768 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:25:55,783 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:26:00,790 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:00,794 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:26:05,799 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:05,800 INFO raw beat data size: 160, size of compressed data: 138
+
+2019-11-06 22:26:10,806 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:10,808 INFO raw beat data size: 160, size of compressed data: 135
+
+2019-11-06 22:26:15,816 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:15,818 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:26:20,828 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:20,829 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:26:25,802 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:25,805 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:26:30,811 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:30,811 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:26:35,817 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:35,818 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:26:40,823 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:40,826 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:26:45,832 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:45,833 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:26:50,840 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:50,841 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:26:55,812 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:26:55,812 INFO raw beat data size: 160, size of compressed data: 140
+
+2019-11-06 22:27:00,818 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:00,822 INFO raw beat data size: 160, size of compressed data: 133
+
+2019-11-06 22:27:05,828 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:05,829 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:27:10,835 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:10,839 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:27:15,847 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:15,848 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:27:20,853 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:20,855 INFO raw beat data size: 160, size of compressed data: 142
+
+2019-11-06 22:27:25,825 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:25,827 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:27:30,834 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:30,835 INFO raw beat data size: 160, size of compressed data: 145
+
+2019-11-06 22:27:35,845 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:35,850 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:27:40,855 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:40,857 INFO raw beat data size: 160, size of compressed data: 143
+
+2019-11-06 22:27:45,865 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:45,865 INFO raw beat data size: 160, size of compressed data: 141
+
+2019-11-06 22:27:50,872 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:50,874 INFO raw beat data size: 160, size of compressed data: 144
+
+2019-11-06 22:27:55,841 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:27:55,843 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:28:00,849 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:28:00,850 INFO raw beat data size: 160, size of compressed data: 139
+
+2019-11-06 22:28:05,858 INFO [RAFT] send beat with 0 keys.
+
+2019-11-06 22:28:05,858 INFO raw beat data size: 160, size of compressed data: 141
+

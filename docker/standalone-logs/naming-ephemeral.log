@@ -832,3 +832,859 @@
 
 2019-11-06 21:53:11,504 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573047577059,"lastRefTimeStr":"2019-11-06 21:39:37","servePort":8848,"site":"unknown","weight":1}]
 
+2019-11-06 22:03:48,570 INFO distro notifier started
+
+2019-11-06 22:03:53,553 DEBUG server list is: []
+
+2019-11-06 22:03:58,521 DEBUG server list is: []
+
+2019-11-06 22:04:03,522 DEBUG server list is: []
+
+2019-11-06 22:04:08,523 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:13,524 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:18,524 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:23,526 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:28,492 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:33,492 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:38,493 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:43,494 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:09:45,552 INFO distro notifier started
+
+2019-11-06 22:09:50,536 DEBUG server list is: []
+
+2019-11-06 22:09:55,502 DEBUG server list is: []
+
+2019-11-06 22:10:00,503 DEBUG server list is: []
+
+2019-11-06 22:10:05,504 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:10,505 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:15,505 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:20,506 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:25,474 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:30,474 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:35,475 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:40,476 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:45,477 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:50,477 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:55,443 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:00,445 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:05,446 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:10,447 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:15,447 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:20,448 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:25,414 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:30,415 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:35,416 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:40,417 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:45,418 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:50,418 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:11:55,385 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:00,585 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:00,699 DEBUG got key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer
+
+2019-11-06 22:12:00,890 DEBUG [NACOS-DISTRO] datum change notified, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer, listener count: 1, action: CHANGE
+
+2019-11-06 22:12:05,587 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:05,593 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:10,594 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:10,598 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:15,599 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:15,601 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:20,601 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:20,604 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:25,570 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:25,573 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:30,585 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:30,586 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:35,587 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:35,589 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:40,591 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:40,591 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:45,592 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:45,594 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:50,596 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:50,597 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:12:55,564 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:12:55,565 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:00,566 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:00,569 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:05,571 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:05,573 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:10,573 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:10,574 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:15,574 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:15,575 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:20,581 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:20,583 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:25,550 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:25,552 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:30,552 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:30,553 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:35,553 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:35,557 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:40,557 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:40,559 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:45,561 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:45,562 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:50,563 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:50,564 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:13:55,529 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:13:55,531 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:00,535 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:00,536 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:05,536 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:05,537 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:10,537 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:10,540 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:15,540 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:15,541 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:20,541 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:20,542 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:25,507 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:25,507 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:30,508 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:30,510 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:35,510 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:35,510 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:40,511 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:40,512 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:45,512 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:45,513 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:50,513 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:50,514 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:14:55,481 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:14:55,481 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:00,482 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:00,483 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:05,483 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:05,483 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:10,484 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:10,485 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:15,486 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:15,488 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:20,490 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:20,491 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:25,458 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:25,459 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:30,460 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:30,462 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:35,462 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:35,465 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:40,466 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:40,468 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:45,469 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:45,470 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:50,471 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:50,471 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:15:55,439 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:15:55,441 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:00,441 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:00,442 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:05,442 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:05,443 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:10,444 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:10,450 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:15,450 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:15,452 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:20,457 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:20,458 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:25,425 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:25,429 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:30,430 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:30,434 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:35,435 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:35,437 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:40,437 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:40,440 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:45,442 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:45,443 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:50,443 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:50,445 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:16:55,412 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:16:55,414 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:00,415 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:00,416 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:05,416 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:05,417 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:10,418 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:10,421 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:15,422 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:15,424 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:20,424 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:20,425 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:25,391 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:25,392 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:30,392 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:30,393 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:35,393 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:35,394 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:40,395 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:40,396 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:45,396 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:45,398 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:50,398 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:50,400 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:17:55,367 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:17:55,371 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:00,372 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:00,373 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:05,374 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:05,374 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:10,376 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:10,378 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:15,379 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:15,381 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:20,382 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:20,384 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:25,350 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:25,355 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:30,356 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:30,358 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:35,358 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:35,359 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:40,359 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:40,361 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:45,362 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:45,363 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:50,364 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:50,367 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:18:55,334 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:18:55,340 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:00,340 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:00,344 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:05,345 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:05,347 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:10,347 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:10,349 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:15,349 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:15,350 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:20,352 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:20,352 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:25,319 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:25,322 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:30,323 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:30,326 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:35,326 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:35,328 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:40,328 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:40,333 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:45,337 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:45,340 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:50,342 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:50,344 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:19:55,310 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:19:55,311 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:00,312 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:00,313 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:05,314 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:05,315 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:10,315 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:10,316 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:15,317 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:15,317 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:20,318 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:20,319 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:25,285 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:25,287 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:30,287 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:30,289 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:35,289 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:35,290 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:40,291 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:40,294 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:45,294 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:45,296 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:50,297 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:50,298 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:20:55,267 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:20:55,268 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:00,268 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:00,269 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:05,269 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:05,270 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:10,271 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:10,273 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:15,274 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:15,275 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:20,277 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:20,279 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:25,246 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:25,251 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:30,251 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:30,253 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:35,254 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:35,255 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:40,256 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:40,256 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:45,256 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:45,259 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:50,259 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:50,262 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:21:55,228 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:21:55,229 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:00,229 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:00,232 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:05,233 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:05,236 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:10,238 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:10,239 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:15,240 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:15,241 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:20,242 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:20,242 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:25,209 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:25,210 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:30,210 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:30,212 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:35,213 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:35,217 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:40,218 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:40,219 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:45,220 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:45,221 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:50,222 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:50,223 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:22:55,187 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:22:55,192 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:00,193 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:00,194 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:05,194 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:05,195 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:10,196 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:10,198 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:15,199 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:15,201 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:20,201 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:20,202 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:25,167 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:25,170 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:30,171 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:30,172 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:35,173 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:35,175 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:40,175 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:40,179 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:45,179 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:45,180 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:50,180 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:50,181 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:23:55,146 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:23:55,148 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:00,149 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:00,151 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:05,151 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:05,152 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:10,154 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:10,155 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:15,155 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:15,156 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:20,157 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:20,158 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:25,126 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:25,129 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:30,129 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:30,129 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:35,130 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:35,132 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:40,132 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:40,135 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:45,136 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:45,138 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:50,139 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:50,140 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:24:55,106 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:24:55,109 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:00,109 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:00,113 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:05,114 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:05,120 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:10,122 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:10,123 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:15,124 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:15,126 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:20,126 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:20,128 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:25,095 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:25,096 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:30,096 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:30,098 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:35,099 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:35,101 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:40,101 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:40,104 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:45,106 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:45,107 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:50,108 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:50,109 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:25:55,076 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:25:55,077 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:00,078 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:00,079 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:05,080 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:05,080 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:10,081 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:10,082 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:15,082 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:15,084 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:20,085 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:20,085 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:25,052 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:25,052 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:30,053 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:30,055 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:35,055 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:35,055 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:40,056 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:40,057 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:45,057 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:45,058 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:50,059 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:50,060 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:26:55,027 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:26:55,028 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:00,029 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:00,031 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:05,032 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:05,034 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:10,035 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:10,036 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:15,037 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:15,037 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:20,038 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:20,041 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:25,007 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:25,008 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:30,009 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:30,013 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:35,013 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:35,015 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:40,015 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:40,018 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:45,019 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:45,025 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:50,026 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:50,027 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:54,991 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:54,992 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:27:59,992 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:27:59,993 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+
+2019-11-06 22:28:04,994 DEBUG server list is: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:28:04,995 DEBUG sync checksums: {com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer=3fc5a87945906cdc99d275facbc42f37}
+

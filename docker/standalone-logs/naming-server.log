@@ -474,3 +474,265 @@
 2019-11-06 21:53:06,207 INFO receive config info: unknown#nacos-dev:8848#1573048386207#1
 
 
+2019-11-06 22:03:48,633 INFO listen for service meta change
+
+2019-11-06 22:03:57,753 INFO [SERVER-INIT] got port: 8848
+
+2019-11-06 22:03:57,753 INFO [SERVER-INIT] got path: /nacos
+
+2019-11-06 22:04:08,239 INFO receive config info: unknown#nacos-dev:8848#1573049048239#1
+
+
+2019-11-06 22:04:08,240 INFO [NACOS-DISTRO] healthy server list changed, disable health check for 60000 ms from now on, old: [], new: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049048239,"lastRefTimeStr":"2019-11-06 22:04:08","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:04:23,241 INFO receive config info: unknown#nacos-dev:8848#1573049063241#1
+
+
+2019-11-06 22:04:24,584 INFO [HEALTH-CHECK] health check is false
+
+2019-11-06 22:04:38,209 INFO receive config info: unknown#nacos-dev:8848#1573049078209#1
+
+
+2019-11-06 22:09:45,614 INFO listen for service meta change
+
+2019-11-06 22:09:52,529 INFO [SERVER-INIT] got port: 8848
+
+2019-11-06 22:09:52,529 INFO [SERVER-INIT] got path: /nacos
+
+2019-11-06 22:10:05,259 INFO receive config info: unknown#nacos-dev:8848#1573049405259#1
+
+
+2019-11-06 22:10:05,260 INFO [NACOS-DISTRO] healthy server list changed, disable health check for 60000 ms from now on, old: [], new: [{"adWeight":0,"alive":true,"ip":"nacos-dev","key":"nacos-dev:8848","lastRefTime":1573049405259,"lastRefTimeStr":"2019-11-06 22:10:05","servePort":8848,"site":"unknown","weight":1}]
+
+2019-11-06 22:10:20,259 INFO [HEALTH-CHECK] health check is false
+
+2019-11-06 22:10:20,260 INFO receive config info: unknown#nacos-dev:8848#1573049420260#1
+
+
+2019-11-06 22:10:35,228 INFO receive config info: unknown#nacos-dev:8848#1573049435227#1
+
+
+2019-11-06 22:10:50,229 INFO receive config info: unknown#nacos-dev:8848#1573049450229#1
+
+
+2019-11-06 22:11:05,206 INFO receive config info: unknown#nacos-dev:8848#1573049465206#1
+
+
+2019-11-06 22:11:20,209 INFO receive config info: unknown#nacos-dev:8848#1573049480209#1
+
+
+2019-11-06 22:11:20,214 INFO [NACOS-DISTRO] distro threshold restored and stable now, enable health check. current ratio: 1.0
+
+2019-11-06 22:11:35,184 INFO receive config info: unknown#nacos-dev:8848#1573049495183#1
+
+
+2019-11-06 22:11:50,185 INFO receive config info: unknown#nacos-dev:8848#1573049510185#1
+
+
+2019-11-06 22:11:58,217 INFO creating empty service public:DEFAULT_GROUP@@bs-ccr-consumer
+
+2019-11-06 22:12:00,640 WARN cluster: DEFAULT not found, ip: {"app":"DEFAULT","clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"instanceId":"172.17.0.7#8080#DEFAULT#DEFAULT_GROUP@@bs-ccr-consumer","ip":"172.17.0.7","ipDeleteTimeout":30000,"lastBeat":1573049518174,"marked":false,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":8080,"serviceName":"DEFAULT_GROUP@@bs-ccr-consumer","tenant":"","weight":1}, will create new cluster with default configuration.
+
+2019-11-06 22:12:00,716 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##DEFAULT_GROUP@@bs-ccr-consumer, value: {"cachedChecksum":"","instanceList":[{"app":"DEFAULT","clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"instanceId":"172.17.0.7#8080#DEFAULT#DEFAULT_GROUP@@bs-ccr-consumer","ip":"172.17.0.7","ipDeleteTimeout":30000,"lastBeat":1573049518174,"marked":false,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":8080,"serviceName":"DEFAULT_GROUP@@bs-ccr-consumer","tenant":"","weight":1}]}
+
+2019-11-06 22:12:05,233 INFO receive config info: unknown#nacos-dev:8848#1573049525233#1
+
+
+2019-11-06 22:12:20,245 INFO receive config info: unknown#nacos-dev:8848#1573049540245#1
+
+
+2019-11-06 22:12:35,217 INFO receive config info: unknown#nacos-dev:8848#1573049555217#1
+
+
+2019-11-06 22:12:50,222 INFO receive config info: unknown#nacos-dev:8848#1573049570222#1
+
+
+2019-11-06 22:13:05,194 INFO receive config info: unknown#nacos-dev:8848#1573049585194#1
+
+
+2019-11-06 22:13:20,196 INFO receive config info: unknown#nacos-dev:8848#1573049600196#1
+
+
+2019-11-06 22:13:35,163 INFO receive config info: unknown#nacos-dev:8848#1573049615163#1
+
+
+2019-11-06 22:13:50,170 INFO receive config info: unknown#nacos-dev:8848#1573049630170#1
+
+
+2019-11-06 22:14:05,141 INFO receive config info: unknown#nacos-dev:8848#1573049645141#1
+
+
+2019-11-06 22:14:20,146 INFO receive config info: unknown#nacos-dev:8848#1573049660146#1
+
+
+2019-11-06 22:14:35,116 INFO receive config info: unknown#nacos-dev:8848#1573049675116#1
+
+
+2019-11-06 22:14:50,126 INFO receive config info: unknown#nacos-dev:8848#1573049690126#1
+
+
+2019-11-06 22:15:05,100 INFO receive config info: unknown#nacos-dev:8848#1573049705100#1
+
+
+2019-11-06 22:15:19,929 INFO [HEALTH-CHECK] health check is true
+
+2019-11-06 22:15:20,108 INFO receive config info: unknown#nacos-dev:8848#1573049720108#1
+
+
+2019-11-06 22:15:35,086 INFO receive config info: unknown#nacos-dev:8848#1573049735086#1
+
+
+2019-11-06 22:15:50,093 INFO receive config info: unknown#nacos-dev:8848#1573049750093#1
+
+
+2019-11-06 22:16:05,071 INFO receive config info: unknown#nacos-dev:8848#1573049765068#1
+
+
+2019-11-06 22:16:20,076 INFO receive config info: unknown#nacos-dev:8848#1573049780076#1
+
+
+2019-11-06 22:16:35,052 INFO receive config info: unknown#nacos-dev:8848#1573049795049#1
+
+
+2019-11-06 22:16:50,057 INFO receive config info: unknown#nacos-dev:8848#1573049810057#1
+
+
+2019-11-06 22:17:05,028 INFO receive config info: unknown#nacos-dev:8848#1573049825028#1
+
+
+2019-11-06 22:17:20,031 INFO receive config info: unknown#nacos-dev:8848#1573049840031#1
+
+
+2019-11-06 22:17:35,003 INFO receive config info: unknown#nacos-dev:8848#1573049855003#1
+
+
+2019-11-06 22:17:50,008 INFO receive config info: unknown#nacos-dev:8848#1573049870008#1
+
+
+2019-11-06 22:18:04,979 INFO receive config info: unknown#nacos-dev:8848#1573049884979#1
+
+
+2019-11-06 22:18:19,984 INFO receive config info: unknown#nacos-dev:8848#1573049899984#1
+
+
+2019-11-06 22:18:34,956 INFO receive config info: unknown#nacos-dev:8848#1573049914956#1
+
+
+2019-11-06 22:18:49,964 INFO receive config info: unknown#nacos-dev:8848#1573049929962#1
+
+
+2019-11-06 22:19:04,935 INFO receive config info: unknown#nacos-dev:8848#1573049944935#1
+
+
+2019-11-06 22:19:19,941 INFO receive config info: unknown#nacos-dev:8848#1573049959941#1
+
+
+2019-11-06 22:19:34,911 INFO receive config info: unknown#nacos-dev:8848#1573049974911#1
+
+
+2019-11-06 22:19:49,916 INFO receive config info: unknown#nacos-dev:8848#1573049989916#1
+
+
+2019-11-06 22:20:04,890 INFO receive config info: unknown#nacos-dev:8848#1573050004888#1
+
+
+2019-11-06 22:20:19,590 INFO [HEALTH-CHECK] health check is true
+
+2019-11-06 22:20:19,897 INFO receive config info: unknown#nacos-dev:8848#1573050019897#1
+
+
+2019-11-06 22:20:34,866 INFO receive config info: unknown#nacos-dev:8848#1573050034866#1
+
+
+2019-11-06 22:20:49,872 INFO receive config info: unknown#nacos-dev:8848#1573050049872#1
+
+
+2019-11-06 22:21:04,844 INFO receive config info: unknown#nacos-dev:8848#1573050064844#1
+
+
+2019-11-06 22:21:19,850 INFO receive config info: unknown#nacos-dev:8848#1573050079850#1
+
+
+2019-11-06 22:21:34,825 INFO receive config info: unknown#nacos-dev:8848#1573050094824#1
+
+
+2019-11-06 22:21:49,833 INFO receive config info: unknown#nacos-dev:8848#1573050109833#1
+
+
+2019-11-06 22:22:04,805 INFO receive config info: unknown#nacos-dev:8848#1573050124805#1
+
+
+2019-11-06 22:22:19,815 INFO receive config info: unknown#nacos-dev:8848#1573050139810#1
+
+
+2019-11-06 22:22:34,783 INFO receive config info: unknown#nacos-dev:8848#1573050154783#1
+
+
+2019-11-06 22:22:49,788 INFO receive config info: unknown#nacos-dev:8848#1573050169788#1
+
+
+2019-11-06 22:23:04,758 INFO receive config info: unknown#nacos-dev:8848#1573050184758#1
+
+
+2019-11-06 22:23:19,766 INFO receive config info: unknown#nacos-dev:8848#1573050199766#1
+
+
+2019-11-06 22:23:34,734 INFO receive config info: unknown#nacos-dev:8848#1573050214734#1
+
+
+2019-11-06 22:23:49,740 INFO receive config info: unknown#nacos-dev:8848#1573050229740#1
+
+
+2019-11-06 22:24:04,709 INFO receive config info: unknown#nacos-dev:8848#1573050244709#1
+
+
+2019-11-06 22:24:19,717 INFO receive config info: unknown#nacos-dev:8848#1573050259716#1
+
+
+2019-11-06 22:24:34,689 INFO receive config info: unknown#nacos-dev:8848#1573050274689#1
+
+
+2019-11-06 22:24:49,695 INFO receive config info: unknown#nacos-dev:8848#1573050289695#1
+
+
+2019-11-06 22:25:04,667 INFO receive config info: unknown#nacos-dev:8848#1573050304667#1
+
+
+2019-11-06 22:25:19,247 INFO [HEALTH-CHECK] health check is true
+
+2019-11-06 22:25:19,670 INFO receive config info: unknown#nacos-dev:8848#1573050319670#1
+
+
+2019-11-06 22:25:34,638 INFO receive config info: unknown#nacos-dev:8848#1573050334638#1
+
+
+2019-11-06 22:25:49,641 INFO receive config info: unknown#nacos-dev:8848#1573050349641#1
+
+
+2019-11-06 22:26:04,611 INFO receive config info: unknown#nacos-dev:8848#1573050364611#1
+
+
+2019-11-06 22:26:19,617 INFO receive config info: unknown#nacos-dev:8848#1573050379617#1
+
+
+2019-11-06 22:26:34,586 INFO receive config info: unknown#nacos-dev:8848#1573050394586#1
+
+
+2019-11-06 22:26:49,591 INFO receive config info: unknown#nacos-dev:8848#1573050409591#1
+
+
+2019-11-06 22:27:04,563 INFO receive config info: unknown#nacos-dev:8848#1573050424563#1
+
+
+2019-11-06 22:27:19,569 INFO receive config info: unknown#nacos-dev:8848#1573050439569#1
+
+
+2019-11-06 22:27:34,539 INFO receive config info: unknown#nacos-dev:8848#1573050454539#1
+
+
+2019-11-06 22:27:49,547 INFO receive config info: unknown#nacos-dev:8848#1573050469547#1
+
+
+2019-11-06 22:28:04,515 INFO receive config info: unknown#nacos-dev:8848#1573050484515#1
+
+
