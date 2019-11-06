@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.transaction;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,36 +16,42 @@ public class TradeOrder {
     @ApiModelProperty("订单id")
     private int id;
 
+    @JSONField(name="order_group_id")
     @ApiModelProperty("订单组 id")
     private int orderGroupId;
 
     /**
     * 交易均价
     */
+    @JSONField(name = "trade_average_price")
     @ApiModelProperty("交易均价")
     private Double tradeAveragePrice;
 
     /**
     * 交易数量
     */
+    @JSONField(name = "trade_numbers")
     @ApiModelProperty("交易数量")
     private Double tradeNumbers;
 
     /**
     * 交易费用
     */
+    @JSONField(name = "trade_cost")
     @ApiModelProperty("交易费用")
     private Double tradeCost;
 
     /**
     * 卖出收益
     */
+    @JSONField(name = "shell_profit")
     @ApiModelProperty("卖出收益")
     private Double shellProfit;
 
     /**
     * 交易方式
     */
+    @JSONField(name = "trade_type")
     @ApiModelProperty("交易方式")
     private int tradeType;
 
@@ -54,12 +61,14 @@ public class TradeOrder {
     /**
     * 订单创建时间
     */
+    @JSONField(name = "created_at")
     @ApiModelProperty(value = "订单创建时间")
     private Timestamp createdAt;
 
     /**
     * 订单更新时间
     */
+    @JSONField(name = "updated_at")
     @ApiModelProperty(value = "订单更新时间",hidden = true)
     private Timestamp updatedAt;
 
