@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `reason`;
+
 CREATE TABLE `reason` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL default '',
@@ -9,7 +9,7 @@ CREATE TABLE `reason` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `reason_type`;
+
 CREATE TABLE `reason_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL default '',
@@ -19,7 +19,7 @@ CREATE TABLE `reason_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `combo_day_by_admin_reason`;
+
 CREATE TABLE `combo_day_by_admin_reason` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_product_combo_day_by_admin_id` int not null default 0,

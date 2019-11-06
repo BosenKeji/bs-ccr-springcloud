@@ -1,8 +1,10 @@
 package cn.bosenkeji.vo.transaction;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  * @date 2019/11/1 4:54 下午
  */
 @JsonIgnoreProperties(value = {"handler"})
-public class OrderGroup {
+public class OrderGroup implements Serializable {
 
     @ApiModelProperty("订单组 id")
     private int id;
@@ -19,24 +21,28 @@ public class OrderGroup {
     @ApiModelProperty("订单组 name")
     private String name;
 
+    @JSONField(name = "coin_pair_choice_id")
     @ApiModelProperty("自选币id")
     private int coinPairChoiceId;
 
     /**
     * 结单收益比
     */
+    @JSONField(name = "end_profit_retio")
     @ApiModelProperty("结单收益比")
     private Double endProfitRatio;
 
     /**
     * 是否结单
     */
+    @JSONField(name = "is_end")
     @ApiModelProperty("是否结单")
     private int isEnd;
 
     /**
     * 结单方式
     */
+    @JSONField(name = "end_type")
     @ApiModelProperty("结单方式")
     private int endType;
 
@@ -46,16 +52,19 @@ public class OrderGroup {
     /**
     * 订单组创建时间
     */
+    @JSONField(name = "created_at")
     @ApiModelProperty(value = "订单组创建时间",hidden = true)
     private Timestamp createdAt;
 
     /**
     * 订单组更新时间
     */
+    @JSONField(name = "updated_at")
     @ApiModelProperty(value = "订单组更新时间",hidden = true)
     private Timestamp updatedAt;
 
     /*非数据库字段*/
+    @JSONField(name = "coin_pair_choice")
     @ApiModelProperty(hidden = true)
     private CoinPairChoice coinPairChoice;
 

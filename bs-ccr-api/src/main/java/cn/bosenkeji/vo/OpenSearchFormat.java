@@ -4,17 +4,17 @@ package cn.bosenkeji.vo;
  * @author CAJR
  * @date 2019/11/5 2:31 下午
  */
-public class OpenSearchFormat {
+public class OpenSearchFormat<T> {
 
-    private Object fields;
+    private T fields;
 
     private String cmd;
 
-    public Object getFields() {
+    public T getFields() {
         return fields;
     }
 
-    public void setFields(Object fields) {
+    public void setFields(T fields) {
         this.fields = fields;
     }
 
