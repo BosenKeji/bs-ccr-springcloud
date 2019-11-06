@@ -51,10 +51,21 @@ public class OrderGroupController {
         return new Result<>(this.orderGroupService.add(orderGroup));
     }
 
+    @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
+    @PutMapping("/")
+    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup){
+        if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() > 0){
+            return new Result<>(null,"订单组不存在，更新订单组失败！");
+        }
+        return new Result<>(this.orderGroupService.update(orderGroup));
+    }
 
     @ApiOperation(value = "删除单个订单组信息",httpMethod = "DELETE",nickname = "deleteOneOrderGroupById")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int orderGroupId){
+        if (this.orderGroupService.checkExistByID(orderGroupId).get() > 0){
+            return new Result<>(null,"订单组不存在！");
+        }
         return new Result<>(this.orderGroupService.delete(orderGroupId));
     }
 }

@@ -23,6 +23,7 @@ public class OrderGroup implements Serializable {
 
     @JSONField(name = "coin_pair_choice_id")
     @ApiModelProperty("自选币id")
+    @JSONField(name = "coin_pair_choiceId")
     private int coinPairChoiceId;
 
     /**
@@ -69,7 +70,7 @@ public class OrderGroup implements Serializable {
     private CoinPairChoice coinPairChoice;
 
     @ApiModelProperty(hidden = true)
-    List<TradeOrder> tradeOrders;
+    private List<TradeOrder> tradeOrders;
 
     public int getId() {
         return id;
