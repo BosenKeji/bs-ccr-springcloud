@@ -14,3 +14,4 @@ CommandLine flags: -XX:GCLogFileSize=104857600 -XX:InitialHeapSize=536870912 -XX
 2019-11-06T22:09:51.102+0800: 15.486: [GC (Metadata GC Threshold) [PSYoungGen: 53801K->12904K(241664K)] 77311K->36414K(503808K), 0.0138219 secs] [Times: user=0.02 sys=0.01, real=0.02 secs] 
 2019-11-06T22:09:51.117+0800: 15.501: [Full GC (Metadata GC Threshold) [PSYoungGen: 12904K->0K(241664K)] [ParOldGen: 23509K->34397K(262144K)] 36414K->34397K(503808K), [Metaspace: 56754K->56754K(1101824K)], 0.1917362 secs] [Times: user=0.38 sys=0.01, real=0.19 secs] 
 2019-11-06T22:11:58.511+0800: 143.065: [GC (Allocation Failure) [PSYoungGen: 228352K->4288K(244224K)] 262749K->38693K(506368K), 2.0707043 secs] [Times: user=1.12 sys=1.10, real=2.07 secs] 
+2019-11-06T22:28:17.474+0800: 1123.131: [GC (Allocation Failure) [PSYoungGen: 230592K->6989K(244224K)] 264997K->41403K(506368K), 0.2166466 secs] [Times: user=0.02 sys=0.14, real=0.22 secs] 
