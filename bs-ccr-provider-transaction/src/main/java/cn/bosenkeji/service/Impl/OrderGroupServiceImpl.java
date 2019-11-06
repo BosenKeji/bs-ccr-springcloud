@@ -87,7 +87,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     public boolean pushToOpenSearch(int orderGroupId) {
 
         OrderGroup orderGroup = getOneById(orderGroupId);
+        if(null == orderGroup)
+            return false;
         orderGroup.setTradeOrders(null);
+        orderGroup.setCoin_pair_choice(JSON.toJSONString(orderGroup.getCoinPairChoice()));
         orderGroup.setCoinPairChoice(null);
         OpenSearchFormat<OrderGroup> format=new OpenSearchFormat();
 
