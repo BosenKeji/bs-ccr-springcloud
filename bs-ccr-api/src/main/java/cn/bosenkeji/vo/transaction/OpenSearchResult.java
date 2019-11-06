@@ -7,7 +7,7 @@ public class OpenSearchResult {
     private Long total;
     private Long num;
     private Long viewtotal;
-    private List items;
+    private List<OpenSearchField> items;
     private String error;
     private String status;
 
@@ -35,11 +35,11 @@ public class OpenSearchResult {
         this.viewtotal = viewtotal;
     }
 
-    public List getItems() {
+    public List<OpenSearchField> getItems() {
         return items;
     }
 
-    public void setItems(List items) {
+    public void setItems(List<OpenSearchField> items) {
         this.items = items;
     }
 
