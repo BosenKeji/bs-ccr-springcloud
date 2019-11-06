@@ -2,6 +2,9 @@ package cn.bosenkeji.config;
 
 import cn.bosenkeji.exception.AuthExceptionEntryPoint;
 import cn.bosenkeji.exception.CustomAccessDeniedHandler;
+import cn.bosenkeji.service.PermissionGroupService;
+import cn.bosenkeji.vo.permission.Permission;
+import cn.bosenkeji.vo.permission.PermissionGroupOther;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +21,14 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ResourceServerConfig
@@ -38,6 +47,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private CustomAccessDeniedHandler accessDeniedHandler;
 
+    @Autowired
+    private PermissionGroupService permissionGroupService;
+
+
     @Override
     /**
      * example:
@@ -45,6 +58,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     public void configure(final HttpSecurity http) throws Exception {
 
+//        List<PermissionGroupOther> permissionGroupOtherList = permissionGroupService.listPermissionGroupJoin();
+
+        //basic
         http.authorizeRequests().antMatchers("/login/**").permitAll()
                 .antMatchers("/oauth/token/**").permitAll()
                 .antMatchers("/tokens/**").permitAll()
@@ -58,20 +74,45 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/configuration/ui").permitAll()
-                .antMatchers("/configuration/security").permitAll()
+                .antMatchers("/configuration/security").permitAll();
 
-                //Admin  管理员用户、产品、用户套餐、交易平台等接口
-//                .antMatchers(
-//                        "/product**/**"
-//                        ,"/user_product_combo**/**"
-//                        ,"/admin/**"
-//                        ,"/trade_platform**/**"
-//                )
-//                .hasAuthority("ADMIN")
+//        http.authorizeRequests().antMatchers(HttpMethod.POST,"/strategy/").hasAuthority("manege")
+//                .antMatchers(HttpMethod.GET,"/strategy_sequence/").hasAuthority("use");
 
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().csrf().disable();
+
+        /*
+        permissionGroupOtherList.forEach((g) -> {
+            //按HttpMethod分组
+            Map<Integer, List<Permission>> permissionMethodMap = g.getPermissionList().stream().collect(Collectors.groupingBy(Permission::getHttpMethod));
+
+            permissionMethodMap.forEach((k,v) -> {
+                switch (k) {
+                    case 1 :
+                        setUrl(http,HttpMethod.POST,v.stream().map(Permission::getUrl).toArray(String[]::new),g.getName());
+                        break;
+                    case 2 :
+                        setUrl(http,HttpMethod.DELETE,v.stream().map(Permission::getUrl).toArray(String[]::new),g.getName());
+                        break;
+                    case 3 :
+                        setUrl(http,HttpMethod.PUT,v.stream().map(Permission::getUrl).toArray(String[]::new),g.getName());
+                        break;
+                    case 4 :
+                        setUrl(http,HttpMethod.GET,v.stream().map(Permission::getUrl).toArray(String[]::new),g.getName());
+                    break;
+                }
+            });
+        });
+        */
+
+        http.authorizeRequests().anyRequest().authenticated().and().formLogin().permitAll().and().csrf().disable();
+    }
+
+    private void setUrl(HttpSecurity httpSecurity, HttpMethod httpMethod, String[] urlArray,String authority) {
+        try {
+            httpSecurity.authorizeRequests().antMatchers(httpMethod,urlArray).hasAnyAuthority(authority);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -109,5 +150,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    public static void main(String[] args) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("123");
+        System.out.println(encode);
+    }
 
 }

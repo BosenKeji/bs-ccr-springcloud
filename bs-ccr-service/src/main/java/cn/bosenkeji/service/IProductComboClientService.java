@@ -36,8 +36,11 @@ public interface IProductComboClientService {
     @PutMapping("/product_combo/{id}")
     Result updateByStatus(@PathVariable("id") int id,@RequestParam("status") int status);
 
+    @GetMapping("/product_combo/check_exist_by_product_id/")
+    Result checkExistByProductId(@RequestParam("id") int productId);
+
     @GetMapping(value = "/product_combo/list_by_product_id_and_status")
-    public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+    PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
                                              @RequestParam(value="pageSize",defaultValue="15") int pageSize,
                                              @RequestParam("productId")int productId,
                                              @RequestParam("status")  int status);

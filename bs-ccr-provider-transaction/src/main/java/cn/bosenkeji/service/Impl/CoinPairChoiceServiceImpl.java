@@ -1,10 +1,8 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
-import cn.bosenkeji.service.CoinPairChoiceService;
-import cn.bosenkeji.service.ICoinClientService;
-import cn.bosenkeji.service.ICoinPairClientService;
-import cn.bosenkeji.service.ICoinPairCoinClientService;
+import cn.bosenkeji.service.*;
+import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
@@ -14,10 +12,17 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 /**
  * @Author CAJR
@@ -41,17 +46,23 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Autowired
     ICoinPairClientService coinPairClientService;
 
+    @Autowired
+    CoinPairChoiceAttributeService coinPairChoiceAttributeService;
+
+    @Autowired
+    CoinPairChoiceAttributeCustomServiceImpl coinPairChoiceAttributeCustomService;
+
 
     @Override
-    public PageInfo listByPage(int pageNum, int pageSize,int userId,int coinId) {
+    public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(fill( userId, coinId));
+        return new PageInfo<>(fill( tradePlatformApiBindProductComboId, coinId));
     }
 
-    private List<CoinPairChoice> fill(int userId,int coinId) {
+    private List<CoinPairChoice> fill(int tradePlatformApiBindProductComboId,int coinId) {
         //货币对Map
         Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
-        //根据userId查询自选币list
+        //根据tradePlatformApiBindProductComboId查询自选币list
         List<CoinPairChoice>  coinPairChoices;
         //根据货币id查询货币对货币的列表
         List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
@@ -80,8 +91,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             return resultCoinPairChoiceList;
         }
 
-        //根据userId填充自选币的货币对数据
-        coinPairChoices = coinPairChoiceMapper.findAllByUserId(userId);
+        //根据TradePlatformApiBindProductComboId填充自选币的货币对数据
+        coinPairChoices = coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
                 if (coinPairMap.containsKey(c.getCoinPartnerId())){
@@ -107,13 +118,17 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
      */
     private List<CoinPairChoice> filter(int coinId,List<CoinPairChoice> coinPairChoices){
         Coin coin = iCoinClientService.get(coinId);
-        List<CoinPairChoice> result = new ArrayList<>();
+        List<CoinPairChoice> result = new ArrayList<>(coinPairChoices);
+
         String coinName = coin.getName().toUpperCase();
+        int coinNameLength = coinName.length();
         for (CoinPairChoice c : coinPairChoices) {
             CoinPair coinPair = c.getCoinPair();
+
             String coinPairName = coinPair.getName().toUpperCase();
-            if (coinPairName.lastIndexOf(coinName) > 1){
-                result.add(c);
+            int coinPairNameLength = coinPairName.length();
+            if (coinPairName.lastIndexOf(coinName)+coinNameLength != coinPairNameLength){
+                result.remove(c);
             }
         }
 
@@ -132,6 +147,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {
+        Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
+        if (coinPairChoiceId != null){
+            if (coinPairChoiceId >0){
+                return Optional.ofNullable(this.coinPairChoiceMapper.updateStatusByPrimaryKey(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
+            }
+        }
+
         return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
     }
 
@@ -141,19 +163,39 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
     public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(coinPairChoiceMapper.deleteByPrimaryKey(id));
+        try{
+            if (this.coinPairChoiceAttributeService.checkByCoinPartnerChoiceId(id).get() == 1){
+                this.coinPairChoiceAttributeService.delete(id);
+            }
+
+            if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(id).get() == 1){
+                this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(id);
+            }
+
+            coinPairChoiceMapper.updateStatusByPrimaryKey(id,Timestamp.valueOf(LocalDateTime.now()), CommonConstantUtil.DELETE_STATUS);
+        }catch (Exception e){
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Optional.of(CommonConstantUtil.FAIL);
+        }
+
+        return Optional.of(CommonConstantUtil.SUCCESS);
     }
 
     @Override
-    public Optional<Integer> checkExistByCoinPartnerNameAndUserId(String coinPairName, int userId) {
-        CoinPair coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
-        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPair.getId(), userId));
+    public Optional<Integer> checkExistByCoinPartnerNameAndRobotId(String coinPairName, int tradePlatformApiBindProductComboId) {
+        CoinPair coinPair = new CoinPair();
+        if (this.iCoinPairClientService.getCoinPairByName(coinPairName) != null){
+            coinPair = this.iCoinPairClientService.getCoinPairByName(coinPairName);
+        }
+        return Optional.of(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotIdAndStatus(coinPair.getId(), tradePlatformApiBindProductComboId));
     }
 
     @Override
-    public Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId, int userId) {
-        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndUserId(coinPairId, userId));
+    public Optional<Integer> checkExistByCoinPartnerIdAndRobotId(int coinPairId, int tradePlatformApiBindProductComboId) {
+        return Optional.ofNullable(this.coinPairChoiceMapper.checkExistByCoinPartnerIdAndRobotIdAndStatus(coinPairId, tradePlatformApiBindProductComboId));
     }
 
     @Override
@@ -170,7 +212,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     @Override
-    public Optional<Integer> batchDelete(String idStr) {
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
+    public Optional<Integer> batchDelete(String idStr,int tradePlatformApiBindProductComboId) {
+        //有属性的自选币id集合
+        List<Integer> coinPairChoiceAttributeList = new ArrayList<>();
+
         //转格式
         String[] coinPairChoiceIdStr = idStr.split(",");
         List<Integer> coinPairChoiceIds = new ArrayList<>();
@@ -180,17 +226,62 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }
         }
 
-        //验证
-        List<Integer> coinPairChoiceList = this.coinPairChoiceMapper.findAllCoinPairChoiceId();
-        if (!coinPairChoiceIds.isEmpty()) {
+        //验证verification
+        List<CoinPairChoice> coinPairChoices = this.coinPairChoiceMapper.findAll();
+        //筛选出等于tradePlatformApiBindProductComboId的自选币
+        List<CoinPairChoice> coinPairChoicesByTradePlatformApiBindProductComboId;
+        //筛选出等于tradePlatformApiBindProductComboId的自选币id
+        List<Integer> coinPairChoiceIdList = new ArrayList<>();
+        if (!coinPairChoices.isEmpty()){
+            coinPairChoicesByTradePlatformApiBindProductComboId = coinPairChoices.stream().filter(coinPairChoice -> coinPairChoice.getTradePlatformApiBindProductComboId() == tradePlatformApiBindProductComboId).collect(Collectors.toList());
+            if (!coinPairChoicesByTradePlatformApiBindProductComboId.isEmpty()){
+                coinPairChoicesByTradePlatformApiBindProductComboId.forEach(coinPairChoice -> {
+                    coinPairChoiceIdList.add(coinPairChoice.getId());
+                });
+            }else {
+                return Optional.of(CommonConstantUtil.FAIL);
+            }
+        }
+        if (!coinPairChoiceIdList.isEmpty()) {
             for (Integer id : coinPairChoiceIds) {
-                if (!coinPairChoiceList.contains(id)){
-                    return Optional.of(-1);
+                if (!coinPairChoiceIdList.contains(id)){
+                    return Optional.of(CommonConstantUtil.FAIL);
                 }
             }
         }
 
-        return Optional.of(this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds));
+        //分开没有属性的自选币id
+        //所有自选币属性中的自选币id
+        List<Integer> coinPairChoiceAttributeIdList = this.coinPairChoiceAttributeService.findAllCoinPartnerChoiceId();
+        if (!coinPairChoiceAttributeIdList.isEmpty()){
+            for (Integer id : coinPairChoiceIds) {
+                if (coinPairChoiceAttributeIdList.contains(id)){
+                    coinPairChoiceAttributeList.add(id);
+                }
+            }
+        }
+
+        //删除，手动回滚
+        if (!coinPairChoiceAttributeList.isEmpty()){
+            try{
+                this.coinPairChoiceAttributeService.batchDelete(coinPairChoiceAttributeList);
+                this.coinPairChoiceAttributeCustomService.batchDelete(coinPairChoiceAttributeList);
+                this.coinPairChoiceMapper.batchDelete(coinPairChoiceIds);
+            }catch (Exception e){
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Optional.of(CommonConstantUtil.FAIL);
+            }
+        }else{
+            try{
+                this.coinPairChoiceMapper.batchUpdateStatusByPrimaryKey(coinPairChoiceIds,Timestamp.valueOf(LocalDateTime.now()));
+            }catch (Exception e){
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Optional.of(CommonConstantUtil.FAIL);
+            }
+        }
+        return Optional.of(CommonConstantUtil.SUCCESS);
     }
 
     @Override

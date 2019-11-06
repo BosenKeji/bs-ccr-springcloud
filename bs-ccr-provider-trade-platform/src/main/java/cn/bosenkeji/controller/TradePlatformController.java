@@ -52,7 +52,12 @@ public class TradePlatformController {
     @Resource
     private DiscoveryClient client ;
 
-
+    /**
+     * 单表查询
+     * @param pageNum
+     * @param pageSizeCommon
+     * @return
+     */
     @Cacheable(value = RedisInterface.TRADE_PLATFORM_LIST_KEY,key = "#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取交易平台分页信息",httpMethod = "GET",nickname = "getListTradePlatformWithPage")
     @GetMapping("/")
@@ -63,8 +68,12 @@ public class TradePlatformController {
     }
 
 
-
-    @Cacheable(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#id")
+    /**
+     * 与 coinPairs 关联查询
+     * @param id
+     * @return
+     */
+    @Cacheable(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取交易平台单个信息接口",httpMethod = "GET" ,nickname = "getOneTradePlatform")
     @GetMapping("/{id}")
     public TradePlatform get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台ID", required = true, type = "integer",example = "1") int id){
@@ -92,7 +101,10 @@ public class TradePlatformController {
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#tradePlatform.id"),
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_LIST_KEY,allEntries = true),
+
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,allEntries = true)
             }
     )
     @ApiOperation(value = "更新交易平台接口",httpMethod = "PUT",nickname = "updateTradePlatform")
@@ -110,7 +122,10 @@ public class TradePlatformController {
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.TRADE_PLATFORM_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_LIST_KEY,allEntries = true),
+
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,allEntries = true)
             }
     )
     @ApiOperation(value = "删除交易平台接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatform")

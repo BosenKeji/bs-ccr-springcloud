@@ -2,6 +2,7 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,10 +19,14 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<Integer> add(CoinPairChoiceAttribute coinPairChoiceAttribute);
 
-    Optional<Integer> delete(int id);
+    Optional<Integer> delete(int coinPairChoiceId);
+
+    Optional<Integer> batchDelete(List<Integer> coinPartnerChoiceIds);
 
     Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
 
     Optional<Integer> setting(String coinPairChoiceIdStr,int strategyId,int money ,int isCustom);
+
+    List<Integer> findAllCoinPartnerChoiceId();
 
 }

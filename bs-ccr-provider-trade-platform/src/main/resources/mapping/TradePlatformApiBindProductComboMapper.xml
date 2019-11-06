@@ -14,6 +14,15 @@
                  select="cn.bosenkeji.mapper.TradePlatformApiMapper.selectByPrimaryKey" />
   </resultMap>
 
+  <resultMap id="NoApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="user_id" jdbcType="INTEGER" property="userId" />
+  <result column="trade_platform_api_id" jdbcType="INTEGER" property="tradePlatformApiId" />
+  <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+  <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+
   <resultMap id="ApiResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApi">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -142,20 +151,6 @@
 
   </select>
 
-  <!--通过用户ID 查询没有绑定的品台api-->
-  <!--<select id="findNotInBindAndInApiListByUserId" parameterType="java.lang.Integer" resultMap="ApiResultMap">
-    select
-    id, user_id, trade_platform_id, sign, access_key, secret_key, nickname, `status`,
-    created_at, updated_at
-    from trade_platform_api pa
-    WHERE
-    pa.user_id=#{userId}
-    and
-    (SELECT count(0)
-    from trade_platform_api_bind_product_combo pab
-    where pab.trade_platform_api_id=pa.id and user_id=#{userId} )=0
-  </select>-->
-
   <select id="selectApiIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select trade_platform_api_id from trade_platform_api_bind_product_combo
     where user_id=#{userId}
@@ -165,34 +160,6 @@
     select user_product_combo_id from trade_platform_api_bind_product_combo
     where user_id=#{userId}
   </select>
-
-  <!--查询没有绑定的用户套餐ID-->
- <!-- <select id="findNotInBindAndInComboIdsByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT id
-    FROM
-    user_product_combo upc
-    where
-    upc.user_id=#{userId}
-    and
-    (select count(0)
-    from trade_platform_api_bind_product_combo pab
-     where pab.user_product_combo_id=upc.id
-      and pab.user_id=#{userId})=0
-  </select>-->
-
-  <!--此处查询的是 是否存在用户下没有绑定的 用户套餐 ，当存在没绑定的 用户套餐时 才可以执行绑定的添加或者更新操作 -->
- <!-- <select id="checkExistNotBindComboByUserIdAndUserProductComboId" resultType="java.lang.Integer">
-    SELECT EXISTS
-    (select 1 from user_product_combo upc
-     where
-    upc.user_id=#{param1}
-	and upc.id = #{param2}
-    and
-    (select count(0)
-    from trade_platform_api_bind_product_combo pab
-     where pab.user_product_combo_id=upc.id
-      and pab.user_id=#{param1})=0 limit 1 )
-  </select>-->
 
 
   <!-- 同理 此处查询是否存在没有绑定的api  ，当存在 api还没绑定时才能执行 绑定的添加或更新操作  -->
@@ -222,6 +189,24 @@
     from trade_platform_api_bind_product_combo
     where user_id=#{param1}
     and user_product_combo_id=#{param2}
+  </select>
+
+  <select id="checkExistByComboId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select exists (
+    select 1 from trade_platform_api_bind_product_combo
+    where user_product_combo_id = #{userProductComboId,jdbcType=INTEGER}
+    limit 1
+    )
+  </select>
+
+  <select id="findAll" resultMap="NoApiResultMap" >
+    select <include refid="Base_Column_List"></include> from
+    trade_platform_api_bind_product_combo
+  </select>
+
+  <select id="getUserIdById" resultType="int" >
+    select user_id from
+    trade_platform_api_bind_product_combo where id = #{id,jdbcType=INTEGER}
   </select>
 
 </mapper>

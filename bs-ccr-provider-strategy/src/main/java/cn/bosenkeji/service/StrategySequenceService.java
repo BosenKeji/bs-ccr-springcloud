@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
 import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
@@ -16,7 +17,7 @@ public interface StrategySequenceService {
 
     PageInfo<StrategySequence> findAll(Integer pageNum, Integer pageSize);
 
-    StrategySequenceOther findSequenceByPrimaryKey(Integer id);
+    Result<StrategySequenceOther> findSequenceByPrimaryKey(Integer id);
 
     Optional<Integer> checkSequenceByName(String name);
 

@@ -11,8 +11,8 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IUserProductComboDayService {
 
-    int add(UserProductComboDay userProductComboDay);
-    int update(UserProductComboDay userProductComboDay);
+    //int add(UserProductComboDay userProductComboDay);
+    //int update(UserProductComboDay userProductComboDay);
     PageInfo<UserProductComboDay> list(int pageNum, int pageSize);
     PageInfo<UserProductComboDay> selectByUserTel(String tel, int pageNum, int pageSize);
 

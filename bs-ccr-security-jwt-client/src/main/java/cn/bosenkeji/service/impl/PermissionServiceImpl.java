@@ -3,8 +3,6 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.PermissionMapper;
 import cn.bosenkeji.service.PermissionService;
 import cn.bosenkeji.vo.permission.Permission;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,20 +40,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> listPermission(Integer pageNum, Integer pageSize) {
-        List<Permission> permissionList = permissionMapper.listPermission();
-        return permissionList;
+        return permissionMapper.listPermission();
     }
 
-    @Autowired
+    @Override
     public List<Permission> listPermissionByIds(List<Integer> ids) {
-        List<Permission> permissionList = permissionMapper.listPermissionByIds(ids);
-        return permissionList;
+        return permissionMapper.listPermissionByIds(ids);
     }
 
     @Override
     public Permission getPermissionById(Integer id) {
-        Permission permission = permissionMapper.getPermissionById(id);
-        return permission;
+        return permissionMapper.getPermissionById(id);
     }
 
     @Override
@@ -73,6 +68,8 @@ public class PermissionServiceImpl implements PermissionService {
         int result = permissionMapper.updateBySelective(permission);
         return Optional.of(result);
     }
+
+
 
 
 }

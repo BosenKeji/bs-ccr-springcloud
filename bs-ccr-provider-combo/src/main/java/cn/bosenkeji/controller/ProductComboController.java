@@ -1,10 +1,13 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.interfaces.RedisInterface;
+import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.IProductComboService;
+import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,6 +18,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import scala.Int;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
@@ -37,6 +41,12 @@ public class ProductComboController {
 
     @Resource
     private IProductComboService iProductComboService;
+
+    @Resource
+    private IUserProductComboService iUserProductComboService;
+
+    @Resource
+    private IProductClientService iProductClientService;
 
 
 
@@ -82,7 +92,7 @@ public class ProductComboController {
         return this.iProductComboService.listByStatus(pageNum,pageSize,status);
     }
 
-    @Cacheable(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id",unless = "#result==null")
     @ApiOperation(value ="获取产品套餐详情api接口",httpMethod = "GET",nickname = "getOneProductCombo")
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public ProductCombo get(@PathVariable("id") @Min(1) @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
@@ -97,10 +107,14 @@ public class ProductComboController {
     )
     @ApiOperation(value ="获添加品套餐信息api接口",httpMethod = "POST",nickname = "addProductCombo")
     @RequestMapping(value="/",method = RequestMethod.POST)
-    public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
+    public Result add(@RequestBody @NotNull @ApiParam(value = "产品套餐实体",required = true,type = "string") ProductCombo productCombo) {
         //判断套餐时长是否合法
         if(productCombo.getTime()<1)
             return new Result(0,"套餐时间必须大于等于1");
+        Result result=iProductClientService.checkExistById(productCombo.getProductId());
+        Integer isExist = (Integer) result.getData();
+        if(isExist!=null&&isExist<1)
+            return new Result(0,"产品不存在");
         //判断 产品套餐名称是否存在
         if(this.iProductComboService.checkExistByNameAndProductId(productCombo.getName(),productCombo.getProductId())>=1)
             return new Result(0,"产品套餐已存在");
@@ -138,6 +152,9 @@ public class ProductComboController {
     @ApiOperation(value ="删除产品套餐信息api接口",httpMethod = "DELETE",nickname = "deleteProductComboInfo")
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public Result delete(@PathVariable("id") @ApiParam(value = "产品套餐ID",required = true,type = "integer",example = "1") int id) {
+        if(iUserProductComboService.checkExistByProductComboId(id)>=1) {
+            return new Result(0,"删除失败，该套餐有用户使用");
+        }
         return new Result(this.iProductComboService.delete(id));
     }
 
@@ -157,6 +174,11 @@ public class ProductComboController {
         productCombo.setStatus(status);
         productCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(this.iProductComboService.update(productCombo));
+    }
+
+    @GetMapping("/check_exist_by_product_id")
+    public Result checkExistByProductId(@RequestParam("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int productId) {
+        return new Result(iProductComboService.checkExistByProductId(productId));
     }
 
     @ApiOperation(value ="获取当前服务api接口",notes = "获取当前服务api接口",httpMethod = "GET")

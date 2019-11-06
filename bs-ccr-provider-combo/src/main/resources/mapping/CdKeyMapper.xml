@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bosenkeji.mapper.CdKeyMapper" >
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.cdKey.CdKey" >
+    <constructor >
+      <arg column="id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="product_combo_id" jdbcType="INTEGER" javaType="_int" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="TINYINT" javaType="_int" />
+      <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+      <arg column="updated_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List">id,`key`,product_combo_id,username,remark,status,created_at,updated_at</sql>
+  <insert id="insert" parameterType="cn.bosenkeji.vo.cdKey.CdKey" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cd_key (key, product_combo_id, remark, 
+      status, created_at, updated_at
+      )
+    values (#{key,jdbcType=VARCHAR}, #{productComboId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bosenkeji.vo.cdKey.CdKey" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cd_key
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="key != null" >
+        key,
+      </if>
+      <if test="productComboId != null" >
+        product_combo_id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="key != null" >
+        #{key,jdbcType=VARCHAR},
+      </if>
+      <if test="productComboId != null" >
+        #{productComboId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertCdKeyByBatch" parameterType="list" keyProperty="id" useGeneratedKeys="true">
+    insert into cd_key(`key`, product_combo_id, username, remark, status, created_at, updated_at) values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.key},#{item.productComboId},#{item.username},#{item.remark},#{item.status},#{item.createdAt},#{item.updatedAt})
+    </foreach>
+  </insert>
+
+  <update id="updateUsernameAndStatusById">
+    update cd_key set username = #{username}, status = #{status} where id = #{id}
+  </update>
+
+  <delete id="deleteByIds" parameterType="list">
+    delete from cd_key where id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="getByIds" parameterType="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cd_key where id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="getById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cd_key
+    where id = #{id}
+  </select>
+
+  <select id="get" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cd_key
+  </select>
+
+</mapper>

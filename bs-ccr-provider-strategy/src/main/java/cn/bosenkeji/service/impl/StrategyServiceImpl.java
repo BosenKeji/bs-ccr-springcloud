@@ -27,6 +27,7 @@ public class StrategyServiceImpl implements StrategyService{
     @Autowired
     private StrategySequenceService strategySequenceService;
 
+    private static final Integer ACCURACY = 100;
 
     @Override
     public Optional<Integer> addStrategyBySelective(Strategy strategy) {
@@ -39,6 +40,13 @@ public class StrategyServiceImpl implements StrategyService{
     public Optional<Integer> insertStrategyAttributeBySelective(StrategyAttribute strategyAttribute) {
         strategyAttribute.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         strategyAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        double tempStopProfitRatio = strategyAttribute.getStopProfitRatio() * ACCURACY;
+        double tempStopProfitTraceTriggerRate = strategyAttribute.getStopProfitTraceTriggerRate()*ACCURACY;
+        double tempStopProfitTraceDropRate = strategyAttribute.getStopProfitTraceDropRate()*ACCURACY;
+
+        strategyAttribute.setStopProfitRatio(tempStopProfitRatio);
+        strategyAttribute.setStopProfitTraceTriggerRate(tempStopProfitTraceTriggerRate);
+        strategyAttribute.setStopProfitTraceDropRate(tempStopProfitTraceDropRate);
         return Optional.of(strategyAttributeMapper.insertSelective(strategyAttribute));
     }
 
@@ -49,8 +57,8 @@ public class StrategyServiceImpl implements StrategyService{
             return null;
         }
         StrategyAttribute strategyAttribute = strategyAttributeMapper.findStrategyAttributeByStrategyId(id);
-        StrategySequenceOther seuqenceOther = strategySequenceService.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId());
-        return convertStrategyOther(strategy, strategyAttribute,seuqenceOther);
+        StrategySequenceOther sequenceOther = strategySequenceService.findSequenceByPrimaryKey(strategyAttribute.getStrategySequenceId()).getData();
+        return convertStrategyOther(strategy, strategyAttribute,sequenceOther);
     }
 
     @Override
@@ -92,11 +100,12 @@ public class StrategyServiceImpl implements StrategyService{
 
         other.setStrategySequenceId(strategyAttribute.getStrategySequenceId());
         other.setRate(strategyAttribute.getRate());
-        other.setStopProfitRatio(strategyAttribute.getStopProfitRatio()/100);
+
+        other.setStopProfitRatio(strategyAttribute.getStopProfitRatio() == 0 ? 0 : strategyAttribute.getStopProfitRatio()/ACCURACY);
 
         other.setIsStopProfitTrace(strategyAttribute.getIsStopProfitTrace());
-        other.setStopProfitTraceTriggerRate(strategyAttribute.getStopProfitTraceTriggerRate()/100);
-        other.setStopProfitTraceDropRate(strategyAttribute.getStopProfitTraceDropRate()/100);
+        other.setStopProfitTraceTriggerRate(strategyAttribute.getStopProfitTraceTriggerRate() == 0 ? 0 : strategyAttribute.getStopProfitTraceTriggerRate()/ACCURACY);
+        other.setStopProfitTraceDropRate(strategyAttribute.getStopProfitTraceDropRate() == 0 ? 0 : strategyAttribute.getStopProfitTraceDropRate()/ACCURACY);
 
         other.setIsStopProfitMoney(strategyAttribute.getIsStopProfitMoney());
         other.setIsStopProfitGrid(strategyAttribute.getIsStopProfitGrid());

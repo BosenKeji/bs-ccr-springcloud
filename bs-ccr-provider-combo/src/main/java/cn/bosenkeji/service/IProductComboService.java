@@ -3,6 +3,8 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author xivin
  * @create 2019-07-11 11:39
@@ -17,4 +19,8 @@ public interface IProductComboService {
     int update(ProductCombo productCombo);
     int delete(int id);
     int checkExistByNameAndProductId(String name, int productId);
+
+    List<ProductCombo> getByIds(List<Integer> ids);
+
+    int checkExistByProductId(int productId);
 }

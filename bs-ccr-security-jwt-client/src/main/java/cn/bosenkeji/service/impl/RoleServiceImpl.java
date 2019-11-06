@@ -1,9 +1,11 @@
 package cn.bosenkeji.service.impl;
 
 import cn.bosenkeji.mapper.RoleMapper;
+import cn.bosenkeji.mapper.RolePermissionGroupMapper;
 import cn.bosenkeji.mapper.UserRoleMapper;
 import cn.bosenkeji.service.RoleService;
 import cn.bosenkeji.vo.permission.Role;
+import cn.bosenkeji.vo.permission.RolePermissionGroup;
 import cn.bosenkeji.vo.permission.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+    @Autowired
+    private RolePermissionGroupMapper rolePermissionGroupMapper;
 
     @Override
     public Optional<Integer> saveRole(Role role) {
@@ -99,5 +103,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<UserRole> listUserRoleByUserIdAndType(Integer userId, Integer type) {
         return userRoleMapper.listUserRoleByUserIdAndType(userId,type);
+    }
+
+    @Override
+    public List<RolePermissionGroup> listRolePermissionGroupByRoleIds(List<Integer> roleIds) {
+        return rolePermissionGroupMapper.listRolePermissionGroupByRoleIds(roleIds);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public interface CoinPairChoiceService {
 
-    PageInfo listByPage(int pageNum,int pageSize,int userId,int coinId);
+    PageInfo listByPage(int pageNum,int pageSize,int tradePlatformApiBindProductComboId,int coinId);
 
     CoinPairChoice get(int id);
 
@@ -24,13 +24,13 @@ public interface CoinPairChoiceService {
 
     Optional<Integer> delete(int id);
 
-    Optional<Integer> checkExistByCoinPartnerNameAndUserId(String coinPairName,int userId);
+    Optional<Integer> checkExistByCoinPartnerNameAndRobotId(String coinPairName, int tradePlatformApiBindProductComboId);
 
-    Optional<Integer> checkExistByCoinPartnerIdAndUserId(int coinPairId,int userId);
+    Optional<Integer> checkExistByCoinPartnerIdAndRobotId(int coinPairId,int tradePlatformApiBindProductComboId);
 
     List<CoinPairChoice> findAll();
 
-    Optional<Integer> batchDelete(String idStr);
+    Optional<Integer> batchDelete(String idStr,int userId);
 
     List<Integer> findAllCoinPartnerChoiceId();
 }

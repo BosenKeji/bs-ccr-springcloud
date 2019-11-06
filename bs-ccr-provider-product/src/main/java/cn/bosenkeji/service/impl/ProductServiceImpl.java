@@ -34,7 +34,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public int add(Product product) {
 
-        return productMapper.insert(product);
+        return productMapper.insertSelective(product);
         // return flag==1?true:false;
     }
 
@@ -70,5 +70,15 @@ public class ProductServiceImpl implements IProductService {
     public PageInfo<Product> selectByStatus(int status,int pageNum,int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(productMapper.selectByStatus(status));
+    }
+
+    @Override
+    public int checkExistByNameAndVersionName(String name, String versionName) {
+        return productMapper.checkExistByNameAndVersionName(name,versionName);
+    }
+
+    @Override
+    public int checkExistById(int id) {
+        return productMapper.checkExistById(id);
     }
 }

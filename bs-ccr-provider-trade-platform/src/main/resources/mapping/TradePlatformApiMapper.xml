@@ -7,7 +7,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
     <result column="sign" jdbcType="VARCHAR" property="sign" />
-    <result column="robot_id" jdbcType="VARCHAR" property="robotId" />
+    <result column="secret" jdbcType="VARCHAR" property="secret" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -19,7 +19,7 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_id, trade_platform_id, sign, nickname, `status`,
-    created_at, updated_at,robot_id
+    created_at, updated_at,secret
   </sql>
   <select id="findAllByUserId" parameterType="integer" resultMap="BaseResultMap">
     select
@@ -53,7 +53,7 @@
   </select>
 
   <select id="checkExistByKeyAndStatus"  resultType="integer">
-    select exists (select 1 from trade_platform_api where trade_platform_api.user_id = #{param1,jdbcType=INTEGER} and trade_platform_api.robot_id=#{param2,jdbcType=VARCHAR} and trade_platform_api.status = #{param3,jdbcType=INTEGER} limit 1)
+    select exists (select 1 from trade_platform_api where trade_platform_api.user_id = #{param1,jdbcType=INTEGER} and trade_platform_api.sign=#{param2,jdbcType=VARCHAR} and trade_platform_api.status = #{param3,jdbcType=INTEGER} limit 1)
   </select>
 
   <select id="checkExistByTradePlatformIdAndUserId" parameterType="int" resultType="integer">
@@ -87,15 +87,19 @@
     `status`, created_at, updated_at
     )
     values (#{userId,jdbcType=INTEGER}, #{tradePlatformId,jdbcType=INTEGER}, #{sign,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
-    #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{robotId,jdbcType=VARCHAR}
+    #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{secret,jdbcType=VARCHAR}
     )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.tradeplatform.TradePlatformApi" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_platform_api
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId > 0">
       user_id,
-      trade_platform_id,
+      </if>
+      <if test="tradePlatformId > 0">
+        trade_platform_id,
+      </if>
       <if test="sign != null">
         sign,
       </if>
@@ -109,13 +113,17 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
-      <if test="robotId != null">
-        robot_id,
+      <if test="secret != null">
+        secret,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId > 0">
       #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tradePlatformId > 0">
       #{tradePlatformId,jdbcType=INTEGER},
+      </if>
       <if test="sign != null">
         #{sign,jdbcType=VARCHAR},
       </if>
@@ -129,8 +137,8 @@
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="robotId != null ">
-        #{robotId,jdbcType=VARCHAR},
+      <if test="secret != null ">
+        #{secret,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,7 +158,7 @@
       <if test="nickname != null">
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -159,8 +167,8 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="robotId != null">
-        robot_id = #{robotId,jdbcType=VARCHAR}
+      <if test="secret != null">
+        secret = #{secret,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -175,7 +183,7 @@
     `status` = #{status,jdbcType=TINYINT},
     created_at = #{createdAt,jdbcType=TIMESTAMP},
     updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-    robot_id = #{robotId,jdbcType=VARCHAR}
+    secret = #{secret,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

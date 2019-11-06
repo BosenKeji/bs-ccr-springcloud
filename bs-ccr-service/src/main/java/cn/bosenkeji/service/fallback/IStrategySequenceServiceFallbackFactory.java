@@ -40,10 +40,11 @@ public class IStrategySequenceServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public StrategySequenceOther findSequenceByPrimaryKey(Integer id) {
+            public Result<StrategySequenceOther> findSequenceByPrimaryKey(Integer id) {
+
                 StrategySequenceOther sequenceOther = new StrategySequenceOther();
                 sequenceOther.setName("strategy sequence hystrix");
-                return sequenceOther;
+                return new Result<>(sequenceOther);
             }
 
         };

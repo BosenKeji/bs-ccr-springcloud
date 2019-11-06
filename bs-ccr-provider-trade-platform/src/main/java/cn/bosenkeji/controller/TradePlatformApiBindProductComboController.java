@@ -15,6 +15,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ *  暂时未加缓存
+ *  PS : 用户套餐每天0-1点 会更新 剩余时长
+ */
 
 /**
  * @author xivin
@@ -64,9 +70,20 @@ public class TradePlatformApiBindProductComboController {
                 .filter((value)->value==1)
                 .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
 
+        if(tradePlatformApiBindProductComboService.checkExistByComboId(tradePlatformApiBindProductCombo.getUserProductComboId())>=1) {
+            return new Result(0,"机器人"+tradePlatformApiBindProductCombo.getUserProductComboId()+"已存在");
+        }
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(tradePlatformApiBindProductComboService.add(tradePlatformApiBindProductCombo));
+    }
+
+    @GetMapping("/")
+    @ApiOperation(value = "所有 获取交易平台api绑定用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListBWithPage")
+    public List list() {
+
+        return tradePlatformApiBindProductComboService.findAll();
     }
 
     @PutMapping("/{id}")
@@ -151,6 +168,11 @@ public class TradePlatformApiBindProductComboController {
                                       @ApiParam(value = "绑定ID",required = true,type = "integer",example = "1")
                                               int userProductComboId) {
         return new Result(this.tradePlatformApiBindProductComboService.deleteByComboId(userProductComboId));
+    }
+
+    @GetMapping("/{id}")
+    public int getUserIdById(@PathVariable("id") int id){
+        return 0;
     }
 
 }

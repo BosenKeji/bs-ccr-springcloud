@@ -1,23 +1,27 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
+import cn.bosenkeji.service.ComboDayByAdminReasonService;
 import cn.bosenkeji.service.IAdminClientService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboDayService;
+import cn.bosenkeji.service.reason.IReasonClientService;
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.User;
+import cn.bosenkeji.vo.combo.ComboDayByAdminReason;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
+import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
+import cn.bosenkeji.vo.reason.Reason;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,31 +43,17 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     private RedisTemplate redisTemplate;
 
     @Resource
+    private ComboDayByAdminReasonService comboDayByAdminReasonService;
+
+    @Resource
     private IUserClientService iUserClientService;
 
     @Resource
     private IAdminClientService iAdminClientService;
 
-    @Override
-    public int add(UserProductComboDay userProductComboDay) {
-        //添加缓存
-        int id = userProductComboDay.getUserProductComboId();
-        String key="userproductcombo:id_"+id;
-        Long expire = redisTemplate.getExpire(key, TimeUnit.DAYS);
+    @Resource
+    private IReasonClientService iReasonClientService;
 
-        if(expire>0) {
-            //设置有效时间
-            redisTemplate.expire(key,expire+userProductComboDay.getNumber(),TimeUnit.DAYS);
-            return userProductComboDayMapper.insert(userProductComboDay);
-        }
-        //当原来的用户套餐已过时时返回false
-        return 0;
-    }
-
-    @Override
-    public int update(UserProductComboDay userProductComboDay) {
-        return userProductComboDayMapper.updateByPrimaryKeySelective(userProductComboDay);
-    }
 
     @Override
     public PageInfo<UserProductComboDay> list(int pageNum,int pageSize) {
@@ -92,24 +82,32 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     @Override
     public PageInfo<UserProductComboDay> selectByUserTel(String tel, int pageNum, int pageSize) {
         User user=null;
-        try {
+
             user = iUserClientService.getOneUserByTel(tel);
-        }catch (Exception e) {
-            System.out.println("获取用户发生异常"+e.getMessage());
+        if(null == user) {
+            return new PageInfo<>();
         }
         List<Integer> adminIds=new ArrayList<>();
+        List<Integer> byAdminId=new ArrayList<>();
         if(user!=null) {
             PageHelper.startPage(pageNum,pageSize);
             List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserId(user.getId());
             for (UserProductComboDay userProductComboDay : userProductComboDays) {
                 userProductComboDay.setUser(user);
                 int adminId=userProductComboDay.getUserProductComboDayByAdmin().getAdminId();
+                Integer upcdba_id = userProductComboDay.getUserProductComboDayByAdmin().getId();
                 if(adminId>0) {
                     adminIds.add(adminId);
+                }
+                if(upcdba_id != null && upcdba_id >0) {
+                    byAdminId.add(upcdba_id);
                 }
             }
             if(adminIds.size()>0) {
                 this.getAdminByIds(userProductComboDays,adminIds);
+            }
+            if(byAdminId.size()>0) {
+                this.getComboDayByAdminReasons(userProductComboDays,byAdminId);
             }
             return new PageInfo<>(userProductComboDays);
         }
@@ -120,12 +118,11 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
     @Override
     public PageInfo<UserProductComboDay> selectByUserProductComboId(int userProductComboId, int pageNum, int pageSize) {
-        //User user = iUserClientService.getOneUser(tel);
 
         PageHelper.startPage(pageNum,pageSize);
         List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserProductComboId(userProductComboId);
 
-        //Integer userId=userProductComboMapper.selectByPrimaryKey(userProductComboId).getUserId();
+
         UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(userProductComboId);
         if(userProductCombo==null)
             return new PageInfo<>();
@@ -136,6 +133,8 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         }
 
         List<Integer> adminIds=new ArrayList<>();
+        List<Integer> byAdminId=new ArrayList<>();
+
         for (UserProductComboDay userProductComboDay : userProductComboDays) {
 
             if(user!=null) {
@@ -143,8 +142,12 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
             }
             if(userProductComboDay.getUserProductComboDayByAdmin()!=null) {
                 Integer adminId = userProductComboDay.getUserProductComboDayByAdmin().getAdminId();
+                Integer upcdba_id = userProductComboDay.getUserProductComboDayByAdmin().getId();
                 if (adminId != null && userId > 0) {
                     adminIds.add(adminId);
+                }
+                if(upcdba_id != null && upcdba_id >0) {
+                    byAdminId.add(upcdba_id);
                 }
             }
 
@@ -162,6 +165,8 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
                 }
             }
         }
+
+        getComboDayByAdminReasons(userProductComboDays,byAdminId);
         return new PageInfo<>(userProductComboDays);
     }
 
@@ -193,5 +198,32 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         }
         return userProductComboDays;
     }
+
+    public List<UserProductComboDay> getComboDayByAdminReasons(List<UserProductComboDay> userProductComboDays,List<Integer> ids) {
+        if (ids.size()>0) {
+
+            Map<Integer, ComboDayByAdminReason> reasonMap = comboDayByAdminReasonService.selectByPrimaryKeys(ids);
+
+            //填充关联的套餐时长事由
+            for(UserProductComboDay comboDay:userProductComboDays) {
+                if(comboDay.getUserProductComboDayByAdmin()!=null) {
+                    UserProductComboDayByAdmin comboDayByAdmin = comboDay.getUserProductComboDayByAdmin();
+                    int cid = comboDayByAdmin.getId();
+                    for (ComboDayByAdminReason value : reasonMap.values()) {
+
+                        if(cid == value.getUserProductComboDayByAdminId()) {
+                            comboDayByAdmin.setComboDayByAdminReason(value);
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return userProductComboDays;
+    }
+
+
 
 }

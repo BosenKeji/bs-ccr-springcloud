@@ -19,7 +19,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -59,10 +61,16 @@ public class CoinPairChoiceAttributeController {
     //@Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ATTRIBUTE_ID_KEY,key = "#")
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET",nickname = "getOneCoinPairChoiceAttributeByCoinPartnerChoiceID")
     @GetMapping("/{coinPartnerChoiceId}")
-    public CoinPairChoiceAttribute get(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
-        return this.coinPairChoiceAttributeService.get(coinPartnerChoiceId);
+    public CoinPairChoiceAttribute getByCoinPartnerChoiceId(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
+        return this.coinPairChoiceAttributeService.getByCoinPartnerChoiceId(coinPartnerChoiceId);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "添加自选货币属性接口",httpMethod = "POST",nickname = "addOneCoinPairChoiceAttribute")
     @PostMapping("/")
     public Result add(@RequestParam(value = "coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串 ", required = true, type = "string") String coinPairChoiceIdStr,
@@ -74,14 +82,20 @@ public class CoinPairChoiceAttributeController {
         }
         Result result = new Result<>(this.coinPairChoiceAttributeService.setting(coinPairChoiceIdStr, strategyId, money, isCustom));
 
-        if (result.getData().equals(0)){
-            return new Result<>(-1,"添加自选币接口失败");
+        if (result.getData().toString().contains("0")){
+            return new Result<>(-1,"添加自选币属性失败");
         }
 
         return result;
     }
 
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "更新自选货币属性接口",httpMethod = "PUT",nickname = "updateCoinPairChoiceAttribute")
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币属性实体'", required = true, type = "string" ) CoinPairChoiceAttribute coinPairChoiceAttribute){
@@ -92,13 +106,20 @@ public class CoinPairChoiceAttributeController {
         return new Result<>(this.coinPairChoiceAttributeService.update(coinPairChoiceAttribute));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+            }
+    )
     @ApiOperation(value = "删除自选货币属性接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoiceAttributeByCoinPartnerChoiceId")
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币属性ID'", required = true, type = "integer" ,example = "1") int id){
-        if (this.coinPairChoiceAttributeService.get(id) == null){
+    @DeleteMapping("/{coinPairChoiceId}")
+    public Result delete(@PathVariable("coinPairChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPairChoiceId){
+        if (this.coinPairChoiceAttributeService.checkByCoinPartnerChoiceId(coinPairChoiceId).get() < 1){
             return new Result<>(-1,"自选币属性不存在");
         }
-        return new Result<>(this.coinPairChoiceAttributeService.delete(id));
+
+        return new Result<>(this.coinPairChoiceAttributeService.delete(coinPairChoiceId));
     }
 
 

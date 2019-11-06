@@ -1,6 +1,11 @@
 package cn.bosenkeji;
 
 
+import cn.bosenkeji.interfaces.RedisInterface;
+import cn.bosenkeji.vo.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.nacos.client.utils.JSONUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +21,12 @@ import java.util.*;
  * @Version V1.0
  * @create 2019-07-15 18:07
  */
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(classes = RedisApp.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = RedisApp.class)
 public class RedisTest {
 //
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 //
 //
 //
@@ -57,6 +62,100 @@ public class RedisTest {
 //        Long time = redisTemplate.getExpire("test_springboot_redis");
 //        System.err.println("time = " + time);
 //    }
+
+    /**
+     *  判断键是否存在，及键的个数
+     */
+    /*@Test
+    public void testGetZset() {
+        Boolean userComboTime_01 = redisTemplate.hasKey("userComboTime_6");
+        Long userComboTime_0 = redisTemplate.opsForZSet().size("userComboTime_6");
+        System.out.println("userComboTime_0 = " + userComboTime_0+userComboTime_01);
+    }
+
+    @Test
+    public void test2() {
+        int key=0;
+        while (true) {
+            Long size = redisTemplate.opsForZSet().size("userComboTime_" + key);
+            if(size==0) {
+
+                System.out.println(key+"this is 00000");
+                if(!redisTemplate.hasKey("userComboTime_"+key)) {
+                    System.out.println("create schudelx");
+                }
+                redisTemplate.opsForZSet().add("userComboTime_"+key,String.valueOf(5+key),360);
+                break;
+            }
+            else if(size<=1) {
+
+                System.out.println(key+"this is <=5000");
+                break;
+            }
+            else {
+                key++;
+            }
+        }
+    }
+
+    @Test
+    public void test02() {
+        Double score = redisTemplate.opsForZSet().score("userComboTime_0", String.valueOf(2));
+
+        System.out.println(score);
+    }
+
+    @Test
+    public void testDeleteSeveralKeys() {
+        Set keys = redisTemplate.keys("ccr1"+"*");
+        Long delete = redisTemplate.delete(keys);
+        System.out.println("int = " + delete);
+    }
+
+
+    @Test
+    public void testSet() {
+        long result=0;
+        for (int i=0;i<10;i++) {
+            result += redisTemplate.opsForSet().add(String.valueOf(i), "userComboTime_0");
+        }
+        System.out.println("result = " + result);
+    }
+
+    @Test
+    public void testHash() {
+        long result=0;
+        for(int i=0;i<10;i++) {
+            redisTemplate.opsForHash().put("comboLocal",String.valueOf(i),"userComboTime_0" );
+        }
+        Set comboLocal = redisTemplate.opsForHash().keys("comboLocal");
+        System.out.println("comboLocal = " + comboLocal);
+    }
+
+    @Test
+    public void test05() {
+        Long xinbgeih = redisTemplate.opsForZSet().size("xinbgeih");
+        System.out.println("xinbgeih = " + xinbgeih);
+    }
+
+    @Test
+    public void testGetHash() {
+        String comboRedisKey = (String) redisTemplate.opsForHash().get("comboRedisKeyTest", "1");
+        System.out.println("comboRedisKey = " + comboRedisKey);
+    }
+
+    @Test
+    public void testGetZsetObj(){
+        Double score = redisTemplate.opsForZSet().score("userComboTime_0", "sgei");
+        System.out.println("score = " + score);
+    }
+
+    @Test
+    public void testDeleteSomeZset() {
+        List list=new ArrayList();
+        list.add("1");
+        redisTemplate.delete(list);
+    }*/
 
 
 }

@@ -50,13 +50,6 @@ public class UserProductComboDayController {
     @RequestMapping(value="/{id}",method = RequestMethod.GET)
     public UserProductComboDay get(@PathVariable("id") @Min(1) int id) { return this.iUserProductComboDayService.get(id);}
 
-    @ApiOperation(value="添加用户套餐时长信息api接口",notes="添加用户套餐时长信息api接口",httpMethod = "POST")
-    @RequestMapping(value="/",method = RequestMethod.POST)
-    public Result add(@RequestBody UserProductComboDay userProductComboDay) {
-        userProductComboDay.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        userProductComboDay.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result(this.iUserProductComboDayService.add(userProductComboDay));
-    }
 
     @Cacheable(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,key = "#tel+'-'+#pageNum+'-'+#pageSize")
     @GetMapping("/list_by_tel")

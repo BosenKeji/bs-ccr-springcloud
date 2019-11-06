@@ -60,7 +60,7 @@ public class TradePlatformCoinPairController {
         return this.tradePlatformCoinPairService.listByPage(pageNum,pageSizeCommon);
     }
 
-    @Cacheable(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取平台货币对单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformCoinPair")
     @GetMapping("/{id}")
     public TradePlatformCoinPair get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台货币对ID", required = true, type = "integer",example = "1") int id){
@@ -105,7 +105,7 @@ public class TradePlatformCoinPairController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.TRADE_PLATFORM_COIN_LIST_KEY,allEntries = true)
             }
     )
@@ -118,7 +118,7 @@ public class TradePlatformCoinPairController {
             return new Result<>(null,"交易平台货币对不存在");
         }
 
-        return new Result<>(this.tradePlatformCoinPairService.delete(tradePlatformId,coinPairId));
+        return new Result<>(this.tradePlatformCoinPairService.deleteByTradePlatformIdAndCoinPairId(tradePlatformId,coinPairId));
     }
 
     @ApiOperation(value = "发现服务")

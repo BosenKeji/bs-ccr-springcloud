@@ -12,7 +12,7 @@ class ExceptionUtil {
     static Map<String, Object> getExceptionMap(Integer status, List<String> errors) {
         Map<String, Object> map = new HashMap<>();
         map.put("timestamp", String.valueOf(new Timestamp(new Date().getTime())));
-        map.put("status", "401");
+        map.put("status", status);
         map.put("errors", errors);
         return map;
     }

@@ -5,7 +5,6 @@ import cn.bosenkeji.service.fallback.IUserProductComboClientServiceFallbackFacto
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +19,7 @@ import java.util.Map;
  */
 @FeignClient(name = "bs-ccr-provider-product-combo",configuration = FeignClientConfig.class,fallbackFactory = IUserProductComboClientServiceFallbackFactory.class)
 public interface IUserProductComboClientService {
+
 
 
 

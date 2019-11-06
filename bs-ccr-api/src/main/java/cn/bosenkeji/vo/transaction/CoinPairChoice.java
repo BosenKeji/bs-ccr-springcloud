@@ -24,6 +24,9 @@ public class CoinPairChoice {
     @ApiModelProperty(value = "用户id",hidden = true)
     private int userId;
 
+    @ApiModelProperty("机器人id")
+    private int tradePlatformApiBindProductComboId;
+
     @ApiModelProperty("是否开始策略")
     private int isStart;
 
@@ -121,5 +124,13 @@ public class CoinPairChoice {
 
     public void setCoinPair(CoinPair coinPair) {
         this.coinPair = coinPair;
+    }
+
+    public int getTradePlatformApiBindProductComboId() {
+        return tradePlatformApiBindProductComboId;
+    }
+
+    public void setTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId) {
+        this.tradePlatformApiBindProductComboId = tradePlatformApiBindProductComboId;
     }
 }

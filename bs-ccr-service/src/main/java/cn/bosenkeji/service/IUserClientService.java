@@ -19,7 +19,9 @@ import java.util.Map;
  * @Version V1.0
  * @create 2019-07-31 19:16
  */
-@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = IUserClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class
+        //,fallbackFactory = IUserClientServiceFallbackFactory.class
+)
 public interface IUserClientService {
 
     @GetMapping("/user/{id}")
@@ -56,11 +58,17 @@ public interface IUserClientService {
     Result updatePasswordByTel(@RequestParam("tel") String tel,@RequestParam("password") String password);
 
     @GetMapping("/user/list_by_ids")
-    public Map<Integer, User> listByIds(@RequestParam("ids") List<Integer> ids);
+    Map<Integer, User> listByIds(@RequestParam("ids") List<Integer> ids);
+
+    @GetMapping("/user/check_exist_by_id/")
+    Result checkExistById(@RequestParam("id") int id);
 
     @GetMapping("/user/")
-    public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+    PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize);
+
+    @PutMapping("/user/status")
+    Result updateStatusById(@RequestParam("id") Integer id, @RequestParam("status") Integer status);
 
 
 }

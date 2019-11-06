@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bosenkeji.mapper.OrderGroupMapper">
+  <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.OrderGroup">
+    <!--@mbg.generated-->
+    <!--@Table order_group-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="coin_pair_choice_id" jdbcType="INTEGER" property="coinPairChoiceId"/>
+    <result column="end_profit_ratio" jdbcType="INTEGER" javaType="double" property="endProfitRatio" />
+    <result column="is_end" jdbcType="TINYINT" property="isEnd" />
+    <result column="end_type" jdbcType="TINYINT" property="endType" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+
+    <association fetchType="lazy" property="coinPairChoice" javaType="cn.bosenkeji.vo.transaction.CoinPairChoice"
+                 column="coin_pair_choice_id"
+                 select="cn.bosenkeji.mapper.CoinPairChoiceMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="OtherResultMap" type="cn.bosenkeji.vo.transaction.OrderGroupOther">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, coin_pair_choice_id, end_profit_ratio, is_end, end_type, `status`, created_at, updated_at
+  </sql>
+
+  <select id="checkExistById" resultType="integer">
+    select exists (SELECT 1 FROM order_group WHERE id = #{orderGroupId,jdbcType=INTEGER} and status = 1 LIMIT 1)
+  </select>
+
+  <select id="findAll" resultMap="OtherResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and status = 1
+  </select>
+
+  <select id="checkExistByCoinPairChoiceIdAndIsEnd" resultType="integer">
+    select exists (SELECT 1 FROM order_group WHERE coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 0 and status = 1 LIMIT 1)
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from order_group
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from order_group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.OrderGroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into order_group (`name`, coin_pair_choice_id,end_profit_ratio, is_end,
+      end_type, `status`, created_at, 
+      updated_at)
+    values (#{name,jdbcType=VARCHAR}, #{coinPairChoiceId,jdbcType=INTEGER},#{endProfitRatio,jdbcType=INTEGER}, #{isEnd,jdbcType=TINYINT},
+      #{endType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.OrderGroup" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into order_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="coinPairChoiceId > 0">
+        coin_pair_choice_id,
+      </if>
+      <if test="endProfitRatio != null">
+        end_profit_ratio,
+      </if>
+      <if test="isEnd != null">
+        is_end,
+      </if>
+      <if test="endType != null">
+        end_type,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="coinPairChoiceId > 0">
+        #{coinPairChoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="endProfitRatio != null">
+        #{endProfitRatio,jdbcType=INTEGER},
+      </if>
+      <if test="isEnd != null">
+        #{isEnd,jdbcType=TINYINT},
+      </if>
+      <if test="endType != null">
+        #{endType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    <selectKey resultType="int" keyProperty="id" keyColumn="id" order="AFTER">
+      select  LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.transaction.OrderGroup">
+    <!--@mbg.generated-->
+    update order_group
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="coinPairChoiceId > 0">
+        coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
+      </if>
+      <if test="endProfitRatio != null">
+        end_profit_ratio = #{endProfitRatio,jdbcType=INTEGER},
+      </if>
+      <if test="isEnd != null">
+        is_end = #{isEnd,jdbcType=TINYINT},
+      </if>
+      <if test="endType != null">
+        end_type = #{endType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.OrderGroup">
+    <!--@mbg.generated-->
+    update order_group
+    set `name` = #{name,jdbcType=VARCHAR},
+      coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
+      end_profit_ratio = #{endProfitRatio,jdbcType=INTEGER},
+      is_end = #{isEnd,jdbcType=TINYINT},
+      end_type = #{endType,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+  <update id="updateStatusByPrimaryKey">
+    update order_group
+    set status = #{status,jdbcType=INTEGER},
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

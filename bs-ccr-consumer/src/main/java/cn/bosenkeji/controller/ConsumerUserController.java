@@ -12,11 +12,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 /**
  * @author xivin
@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "User 用户相关接口",value = "提供用户相关的 Rest API接口")
+@Validated
 public class ConsumerUserController {
 
     @Resource
@@ -35,12 +36,13 @@ public class ConsumerUserController {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
-    public User get(@PathVariable("id") @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
+    public User get(@PathVariable("id") @ApiParam(value = "用户ID", required = true, type = "integer", example = "1") @Min(1) int id) {
 
         return this.iUserClientService.getOneUser(id);
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @ApiOperation(value = "获取用户列表接口 ",httpMethod = "GET",nickname = "getUserListWithPage")
     @GetMapping("/")
     public PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") @Min(1) Integer pageNum,
@@ -52,7 +54,7 @@ public class ConsumerUserController {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get_by_username")
     @ApiOperation(value = "通过用户名获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByUsername")
-    public User getByUsername(@RequestParam("username") @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") String username) {
+    public User getByUsername(@RequestParam("username") @ApiParam(value = "用户名", required = true, type = "string", example = "zhangsan") @NotBlank String username) {
 
         return this.iUserClientService.getOneUserByUsername(username);
     }
@@ -60,14 +62,14 @@ public class ConsumerUserController {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get_by_tel")
     @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByTel")
-    public User getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") String tel) {
+    public User getByTel(@RequestParam("tel")  @ApiParam(value = "用户电话", required = true, type = "string", example = "13556559840") @Size(min = 11,max = 11) @NotEmpty String tel) {
 
         return this.iUserClientService.getOneUserByTel(tel);
     }
 
     @PostMapping("/")
     @ApiOperation(value = "添加单个用户接口", httpMethod = "POST", nickname = "addOneUser")
-    public Object add(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
+    public Object add(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") @Validated User user) {
 
         return this.iUserClientService.addOneUser(user);
     }
@@ -94,9 +96,9 @@ public class ConsumerUserController {
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_password/{id}")
     @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
-    public Object updatePassword(@PathVariable("id") @Min(1)
+    public Object updatePassword(@PathVariable("id")
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
-                                 @RequestParam("password") @NotNull @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") String password) {
+                                 @RequestParam("password") @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") @NotEmpty String password) {
 
         int currentId=this.getCurrentUser().getId();
         return this.iUserClientService.updateUserPassword(currentId,password);
@@ -105,9 +107,9 @@ public class ConsumerUserController {
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_username/{id}")
     @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
-    public Object updateUsername(@PathVariable("id") @Min(1)
+    public Object updateUsername(@PathVariable("id")
                                  @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
-                                 @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") String username) {
+                                 @RequestParam("username") @NotNull @ApiParam(value = "用户名",required = true,type = "string",example = "zhangsan") @NotBlank String username) {
 
         int currentId=this.getCurrentUser().getId();
         return this.iUserClientService.updateUserUsername(currentId,username);
@@ -116,9 +118,9 @@ public class ConsumerUserController {
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/update_tel/{id}")
     @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
-    public Object updateTel(@PathVariable("id") @Min(1)
+    public Object updateTel(@PathVariable("id")
                             @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,
-                            @RequestParam("tel") @NotNull @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") String tel) {
+                            @RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "12345678") @NotBlank @Size(min = 11,max = 11) String tel) {
 
         int currentId=this.getCurrentUser().getId();
         return this.iUserClientService.updateUserTel(currentId,tel);
@@ -127,7 +129,7 @@ public class ConsumerUserController {
     @PreAuthorize("hasAuthority('USER')")
     @ApiOperation(value = "用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
     @PutMapping("/update_binding")
-    public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
+    public Result updateBinding(@RequestParam("id") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
 
         int currentId=this.getCurrentUser().getId();
         int isBinding=1;
@@ -138,9 +140,17 @@ public class ConsumerUserController {
 
     @ApiOperation(value = "忘记密码接口",httpMethod = "PUT",nickname = "forgetPassword")
     @PutMapping("/forget_password")
-    public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") String tel,
-                                      @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") String password) {
+    public Result updatePasswordByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "123456") @NotEmpty String tel,
+                                      @RequestParam("password") @ApiParam(value = "密码",required = true,type = "string",example = "123456") @NotEmpty String password) {
         return iUserClientService.updatePasswordByTel(tel,password);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @ApiOperation(value = "更改用户状态",httpMethod = "PUT",nickname = "updateStatusById")
+    @PutMapping("/status")
+    public Result updateStatusById(@RequestParam("id") @Min(1) @ApiParam(value = "用户id",required = true, type = "integer", example = "1") Integer id,
+                                   @RequestParam("status") @ApiParam(value = "用户状态",required = true, type = "integer", example = "1") Integer status) {
+        return iUserClientService.updateStatusById(id,status);
     }
 
     @PreAuthorize("hasAuthority('USER')")

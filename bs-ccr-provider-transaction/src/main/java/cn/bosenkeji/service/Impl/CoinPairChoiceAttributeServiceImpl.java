@@ -1,13 +1,10 @@
 package cn.bosenkeji.service.Impl;
 
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.UpdateException;
-import cn.bosenkeji.exception.enums.CoinPairChoiceAttributeEnum;
 import cn.bosenkeji.mapper.CoinPairChoiceAttributeMapper;
 import cn.bosenkeji.service.CoinPairChoiceAttributeService;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.IStrategyService;
-import cn.bosenkeji.util.Result;
+import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.strategy.StrategyOther;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static cn.bosenkeji.util.CommonConstantUtil.FAIL;
+import static cn.bosenkeji.util.CommonConstantUtil.SUCCESS;
 
 /**
  * @Author CAJR
@@ -23,9 +25,6 @@ import java.util.*;
  */
 @Service
 public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttributeService {
-
-    private final static int SUCCESS = 1;
-    private final static int FAIL = 0;
 
     @Resource
     CoinPairChoiceAttributeMapper coinPairChoiceAttributeMapper;
@@ -43,7 +42,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Override
     public CoinPairChoiceAttribute get(int id) {
-        return this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(id);
+        return this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -57,8 +56,13 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByPrimaryKey(id));
+    public Optional<Integer> delete(int coinPairChoiceId) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByCoinPairChoiceId(coinPairChoiceId));
+    }
+
+    @Override
+    public Optional<Integer> batchDelete(List<Integer> coinPartnerChoiceIds) {
+        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.batchDelete(coinPartnerChoiceIds));
     }
 
     @Override
@@ -145,5 +149,10 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         }
 
         return Optional.of(SUCCESS);
+    }
+
+    @Override
+    public List<Integer> findAllCoinPartnerChoiceId() {
+        return this.coinPairChoiceAttributeMapper.findAllCoinPartnerChoiceId();
     }
 }

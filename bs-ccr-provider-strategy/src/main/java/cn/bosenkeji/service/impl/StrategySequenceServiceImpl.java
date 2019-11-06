@@ -3,6 +3,7 @@ package cn.bosenkeji.service.impl;
 import cn.bosenkeji.mapper.StrategySequenceMapper;
 import cn.bosenkeji.mapper.StrategySequenceValueMapper;
 import cn.bosenkeji.service.StrategySequenceService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.strategy.StrategySequence;
 import cn.bosenkeji.vo.strategy.StrategySequenceOther;
 import cn.bosenkeji.vo.strategy.StrategySequenceValue;
@@ -54,11 +55,11 @@ public class StrategySequenceServiceImpl implements StrategySequenceService {
     }
 
     @Override
-    public StrategySequenceOther findSequenceByPrimaryKey(Integer id) {
+    public Result<StrategySequenceOther> findSequenceByPrimaryKey(Integer id) {
         StrategySequence sequence = strategySequenceMapper.findSequenceByPrimaryKey(id);
         StrategySequenceValue sequenceValue = strategySequenceValueMapper.findSequenceValueBySequenceId(id);
         StrategySequenceOther sequenceOther = convertStrategySequenceVo(sequence,sequenceValue);
-        return sequenceOther;
+        return new Result<>(sequenceOther);
     }
 
 

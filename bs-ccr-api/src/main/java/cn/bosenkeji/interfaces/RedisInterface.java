@@ -11,6 +11,7 @@ package cn.bosenkeji.interfaces;
 
         //用户
         String USER_REDIS_ID_KEY="ccr:user:id";
+        String USER_REDIS_USERNAME_KEY="ccr:user:username";
 
         //产品
         String PRODUCT_ID_KEY="ccr:product:id";

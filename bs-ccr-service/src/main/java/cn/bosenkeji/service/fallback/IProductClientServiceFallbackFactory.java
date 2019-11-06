@@ -82,6 +82,11 @@ public class IProductClientServiceFallbackFactory implements FallbackFactory<IPr
                 list.add(product);
                 return new PageInfo(list);
             }
+
+            @Override
+            public Result checkExistById(int id) {
+                return new Result(0,"hystrix");
+            }
         };
 
     }

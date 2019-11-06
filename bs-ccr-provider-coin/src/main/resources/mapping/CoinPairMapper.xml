@@ -72,13 +72,13 @@
       <if test="name != null">
         `name`,
       </if>
-      <if test="isPopular != 0">
+      <if test="isPopular == 0 || isPopular == 1">
         is_popular,
       </if>
-      <if test="isOfficialSet != 0">
+      <if test="isOfficialSet == 0 || isOfficialSet == 1">
         is_official_set,
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status`,
       </if>
       <if test="createdAt != null">
@@ -92,13 +92,13 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="isPopular != 0">
+      <if test="isPopular == 0 || isPopular == 1">
         #{isPopular,jdbcType=TINYINT},
       </if>
-      <if test="isOfficialSet != 0">
+      <if test="isOfficialSet == 0 || isOfficialSet == 1">
         #{isOfficialSet,jdbcType=TINYINT},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -116,13 +116,13 @@
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="isPopular != 0">
+      <if test="isPopular == 0 || isPopular == 1">
         is_popular = #{isPopular,jdbcType=TINYINT},
       </if>
-      <if test="isOfficialSet != 0">
+      <if test="isOfficialSet == 0 || isOfficialSet == 1">
         is_official_set = #{isOfficialSet,jdbcType=TINYINT},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

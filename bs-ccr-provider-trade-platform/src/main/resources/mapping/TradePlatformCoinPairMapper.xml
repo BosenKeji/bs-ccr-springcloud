@@ -36,6 +36,10 @@
   <select id="checkExistByTradePlatformIdAndCoinPairId" parameterType="int" resultType="integer">
     select exists (select 1 from trade_platform_coin_pair where trade_platform_coin_pair.trade_platform_id=#{param1} and trade_platform_coin_pair.coin_pair_id=#{param2} limit 1)
   </select>
+  
+  <select id="checkExistById" parameterType="int" resultType="integer">
+    select exists (select 1 from trade_platform_coin_pair where trade_platform_coin_pair.id=#{id,javaType=INTEGER} limit 1)
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="int">
     <!--@mbg.generated-->
     delete from trade_platform_coin_pair
@@ -56,8 +60,12 @@
     <!--@mbg.generated-->
     insert into trade_platform_coin_pair
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tradePlatformId > 0">
       trade_platform_id,
+      </if>
+      <if test="coinPairId > 0">
       coin_pair_id,
+      </if>
       `status`,
       <if test="createdAt != null">
         created_at,
@@ -67,8 +75,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tradePlatformId > 0">
       #{tradePlatformId,jdbcType=INTEGER},
+      </if>
+      <if test="coinPairId > 0">
       #{coinPairId,jdbcType=INTEGER},
+      </if>
       #{status,jdbcType=TINYINT},
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -82,13 +94,13 @@
     <!--@mbg.generated-->
     update trade_platform_coin_pair
     <set>
-      <if test="tradePlatformId != 0">
+      <if test="tradePlatformId > 0">
         trade_platform_id = #{tradePlatformId,jdbcType=INTEGER},
       </if>
-      <if test="coinPairId != 0">
+      <if test="coinPairId > 0">
         coin_pair_id = #{coinPairId,jdbcType=INTEGER},
       </if>
-      <if test="status != 0">
+      <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">

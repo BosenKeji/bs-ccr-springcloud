@@ -38,4 +38,6 @@ public interface UserMapper {
     Map<Integer, User> getByIds(List<Integer> ids);
 
     List<User> list();
+
+    int checkExistById(Integer id);
 }

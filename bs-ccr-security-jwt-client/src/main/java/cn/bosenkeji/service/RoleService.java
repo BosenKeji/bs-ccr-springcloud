@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.permission.Role;
+import cn.bosenkeji.vo.permission.RolePermissionGroup;
 import cn.bosenkeji.vo.permission.UserRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,5 +31,7 @@ public interface RoleService {
     List<UserRole> listUserRole();
 
     List<UserRole> listUserRoleByUserIdAndType(Integer userId, Integer type);
+
+    List<RolePermissionGroup> listRolePermissionGroupByRoleIds(List<Integer> roleIds);
 
 }

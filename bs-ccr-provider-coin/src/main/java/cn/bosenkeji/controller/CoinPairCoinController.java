@@ -63,7 +63,7 @@ public class CoinPairCoinController {
         return this.coinPairCoinService.listByCoinId(coinId);
     }
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,key = "#id")
+    @Cacheable(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,key = "#id",unless = "#result == null")
     @ApiOperation(value = "获取单个货币对货币列表接口",nickname = "getOneCoinPairCoin",httpMethod = "GET")
     @GetMapping("/{id}")
     public CoinPairCoin get(@PathVariable("id") @Min(1) @ApiParam(value = "货币对货币ID", required = true, type = "integer",example = "1") int id){
@@ -111,7 +111,7 @@ public class CoinPairCoinController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_ID_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COIN_PAIR_COIN_LIST_KEY,allEntries = true),
                     @CacheEvict(value = RedisInterface.COIN_SORT_LIST_TPID_KEY,allEntries = true)
             }

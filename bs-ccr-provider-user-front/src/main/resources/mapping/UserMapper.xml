@@ -117,7 +117,7 @@
       <if test="password != null">
         `password` = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="status != 0">
+      <if test="status != null">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -149,6 +149,10 @@
   <select id="checkExistByTel" parameterType="java.lang.String" resultType="java.lang.Integer" >
     select EXISTS
     (select 1 from user where tel=#{tel} limit 1)
+  </select>
+
+  <select id="checkExistById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select exists (select 1 from user where id = #{id,jdbcType=INTEGER} limit 1)
   </select>
 
   <update id="updateBinding" parameterType="java.lang.Integer">
