@@ -41,8 +41,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     TradeOrderService tradeOrderService;
 
-    private static String appName = "bs_ccr_trade_dev";
-    private static String orderGroupTable="order_group";
+    private static final String appName = "bs_ccr_trade_dev";
+    private static final String orderGroupTable="order_group";
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int coinPairChoiceId) {
@@ -125,5 +125,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     public Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId) {
         return Optional.of(this.orderGroupMapper.checkExistByCoinPairChoiceIdAndIsEnd(coinPairChoiceId));
+    }
+
+    @Override
+    public Optional<Integer> checkExistByID(int orderGroupId) {
+        return Optional.of(this.orderGroupMapper.checkExistById(orderGroupId));
     }
 }

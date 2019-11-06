@@ -23,7 +23,7 @@ import javax.validation.constraints.Min;
 @Validated
 @Api(tags = "TradeOrder 自选货币交易订单接口",value = "自选货币交易订单相关功能 rest接口")
 @CacheConfig(cacheNames = "ccr:tradeOrder")
-public class TradeOrderServiceController {
+public class TradeOrderController {
 
     @Resource
     TradeOrderService tradeOrderService;
@@ -48,11 +48,6 @@ public class TradeOrderServiceController {
         return new Result<>(this.tradeOrderService.add(tradeOrder));
     }
 
-    @ApiOperation(value = "更新单个交易订单信息",httpMethod = "PUT",nickname = "updateTradeOrderById")
-    @PutMapping("/")
-    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") TradeOrder tradeOrder){
-        return new Result<>(this.tradeOrderService.update(tradeOrder));
-    }
 
     @ApiOperation(value = "删除单个交易订单信息",httpMethod = "DELETE",nickname = "deleteTradeOrderById")
     @DeleteMapping("/{id}")

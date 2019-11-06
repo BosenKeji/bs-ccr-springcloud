@@ -29,6 +29,10 @@
     id, `name`, coin_pair_choice_id, end_profit_ratio, is_end, end_type, `status`, created_at, updated_at
   </sql>
 
+  <select id="checkExistById" resultType="integer">
+    select exists (SELECT 1 FROM order_group WHERE id = #{orderGroupId,jdbcType=INTEGER} and status = 1 LIMIT 1)
+  </select>
+
   <select id="findAll" resultMap="OtherResultMap">
     select
     <include refid="Base_Column_List"/>

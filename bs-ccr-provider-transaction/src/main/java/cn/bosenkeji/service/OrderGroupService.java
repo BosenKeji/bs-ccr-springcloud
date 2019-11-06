@@ -23,4 +23,6 @@ public interface OrderGroupService {
     Optional<Integer> delete(int id);
 
     Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
+
+    Optional<Integer> checkExistByID(int orderGroupId);
 }
