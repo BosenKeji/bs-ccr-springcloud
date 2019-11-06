@@ -54,7 +54,7 @@ public class OrderGroupController {
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup){
-        if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() > 0){
+        if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() <= 0){
             return new Result<>(null,"订单组不存在，更新订单组失败！");
         }
         return new Result<>(this.orderGroupService.update(orderGroup));
