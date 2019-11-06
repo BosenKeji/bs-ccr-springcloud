@@ -1,18 +1,33 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.OrderGroupMapper;
-import cn.bosenkeji.service.*;
+import cn.bosenkeji.service.ICoinPairClientService;
+import cn.bosenkeji.service.OrderGroupService;
+import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.OpenSearchFormat;
 import cn.bosenkeji.vo.coin.CoinPair;
-import cn.bosenkeji.vo.transaction.CoinPairChoice;
-import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.*;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.opensearch.DocumentClient;
+import com.aliyun.opensearch.OpenSearchClient;
+import com.aliyun.opensearch.SearcherClient;
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
+import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchResult;
+import com.aliyun.opensearch.sdk.generated.search.Config;
+import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
+import com.aliyun.opensearch.sdk.generated.search.SearchParams;
+import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
+import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -20,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 
 /**
  * @author CAJR
@@ -41,11 +57,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     TradeOrderService tradeOrderService;
 
     @Resource
-    ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
-
-    @Resource
-    CoinPairChoiceService coinPairChoiceService;
-
+    OpenSearchClient openSearchClient;
 
     private static final String appName = "bs_ccr_trade_dev";
     private static final String orderGroupTable="order_group";
@@ -123,19 +135,17 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     @Override
     public Optional<Integer> update(OrderGroup orderGroup,int userId) {
-        if (verifyUserIdAndCoinPairChoiceId(userId,orderGroup.getCoinPairChoiceId())){
-            return Optional.of(this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup));
-        }
-        return Optional.of(CommonConstantUtil.VERIFY_FAIL);
+            double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY;
+
+            orderGroup.setEndProfitRatio(endProfitRatio);
+            Integer result = this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup);
+            pushToOpenSearch(orderGroup.getId());
+            return Optional.of(result);
     }
 
     @Override
     public Optional<Integer> delete(int id,int userId) {
-        OrderGroup orderGroup = this.orderGroupMapper.selectByPrimaryKey(id);
-        if (verifyUserIdAndCoinPairChoiceId(userId,orderGroup.getCoinPairChoiceId())){
-            return Optional.of(this.orderGroupMapper.updateStatusByPrimaryKey(id,CommonConstantUtil.DELETE_STATUS, Timestamp.valueOf(LocalDateTime.now())));
-        }
-        return Optional.of(CommonConstantUtil.VERIFY_FAIL);
+        return Optional.of(this.orderGroupMapper.updateStatusByPrimaryKey(id,CommonConstantUtil.DELETE_STATUS, Timestamp.valueOf(LocalDateTime.now())));
     }
 
     @Override
@@ -148,14 +158,59 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         return Optional.of(this.orderGroupMapper.checkExistById(orderGroupId));
     }
 
-    private boolean verifyUserIdAndCoinPairChoiceId(int userId,int coinPairChoiceId){
-        //userId验证
-        CoinPairChoice coinPairChoice = this.coinPairChoiceService.get(coinPairChoiceId);
-        if (coinPairChoice != null){
-            int tradePlatformApiBindProductComboId = coinPairChoice.getTradePlatformApiBindProductComboId();
-            int verifyUserId = this.iTradePlatformApiBindProductComboClientService.getUserIdById(tradePlatformApiBindProductComboId);
-            return userId == verifyUserId;
+    @Override
+    public List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
+
+        List<OrderGroupOpenSearchFormat> orderGroupOpenSearchFormats = new ArrayList<>();
+        if (startTime > endTime ){
+            return orderGroupOpenSearchFormats;
         }
-        return false;
+
+        SearcherClient searcherClient = new SearcherClient(openSearchClient);
+
+        Config config = new Config(Lists.newArrayList(appName));
+        config.setSearchFormat(SearchFormat.FULLJSON);
+        config.setStart(0);
+        config.setFetchFields(CommonConstantUtil.openSearchFetchFieldFormat);
+
+        SearchParams searchParams = new SearchParams(config);
+        String searchString;
+        if (startTime > 0 && endTime > 0 ){
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]";
+        }else {
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'";
+        }
+
+        searchParams.setQuery(searchString);
+        SearchParamsBuilder paramsBuilder = SearchParamsBuilder.create(searchParams);
+
+        try {
+            SearchResult execute = searcherClient.execute(paramsBuilder);
+            String result = execute.getResult();
+            OpenSearchExecuteResult openSearchExecuteResult = JSONObject.parseObject(result,OpenSearchExecuteResult.class);
+            List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
+
+            items.forEach(openSearchField -> {
+                OpenSearchOrderVo openSearchOrderVo = openSearchField.getFields();
+                OrderGroupOpenSearchFormat orderGroupOpenSearchFormat = new OrderGroupOpenSearchFormat();
+
+                orderGroupOpenSearchFormat.setId(openSearchOrderVo.getOrderGroupId());
+                orderGroupOpenSearchFormat.setName(openSearchOrderVo.getName());
+                orderGroupOpenSearchFormat.setCoinPairChoiceId(openSearchOrderVo.getCoinPairChoiceId());
+                orderGroupOpenSearchFormat.setCreatedAt(openSearchOrderVo.getCreatedTime());
+                orderGroupOpenSearchFormats.add(orderGroupOpenSearchFormat);
+            });
+        } catch (OpenSearchException | OpenSearchClientException e) {
+            e.printStackTrace();
+        }
+
+        //去重
+        List<OrderGroupOpenSearchFormat> unique = orderGroupOpenSearchFormats.stream().collect(
+                collectingAndThen(
+                        toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new)
+        );
+
+        return unique;
     }
+
 }

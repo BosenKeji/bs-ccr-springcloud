@@ -1,8 +1,11 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.OrderGroupOpenSearchFormat;
+import cn.bosenkeji.vo.transaction.OrderGroupOther;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,4 +27,6 @@ public interface OrderGroupService {
     Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 
     Optional<Integer> checkExistByID(int orderGroupId);
+
+    List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId);
 }

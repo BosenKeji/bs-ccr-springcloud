@@ -22,8 +22,6 @@ public interface TradeOrderService {
 
     Optional<Integer> add(TradeOrder tradeOrder);
 
-    Optional<Integer> update(TradeOrder tradeOrder);
-
     Optional<Integer> delete(int id);
 
     OpenSearchPage searchTradeOrderByCondition(OrderSearchRequestVo orderSearchRequestVo, int pageNum, int pageSize);
