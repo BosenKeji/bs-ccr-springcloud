@@ -234,11 +234,6 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     }
 
     @Override
-    public Optional<Integer> update(TradeOrder tradeOrder) {
-        return Optional.of(this.tradeOrderMapper.updateByPrimaryKeySelective(tradeOrder));
-    }
-
-    @Override
     public Optional<Integer> delete(int id) {
         return Optional.of(this.tradeOrderMapper.deleteByPrimaryKey(id));
     }

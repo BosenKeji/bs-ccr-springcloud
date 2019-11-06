@@ -3,6 +3,8 @@ package cn.bosenkeji.vo.transaction;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.sql.Timestamp;
+
 
 public class OpenSearchOrderVo extends TradeOrder{
 
@@ -35,7 +37,12 @@ public class OpenSearchOrderVo extends TradeOrder{
     @ApiModelProperty("结单方式")
     private int endType;
 
-
+    /**
+     * 订单组创建时间
+     */
+    @JSONField(name = "created_time")
+    @ApiModelProperty(value = "订单组创建时间",hidden = true)
+    private Timestamp createdTime;
 
     /*非数据库字段*/
     //@JSONField(name = "coin_pair_choice")
@@ -99,5 +106,13 @@ public class OpenSearchOrderVo extends TradeOrder{
 
     public void setCoin_pair_choice(String coin_pair_choice) {
         this.coin_pair_choice = coin_pair_choice;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 }

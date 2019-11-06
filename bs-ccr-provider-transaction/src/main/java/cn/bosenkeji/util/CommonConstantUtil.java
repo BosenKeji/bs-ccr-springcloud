@@ -1,5 +1,9 @@
 package cn.bosenkeji.util;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+
+import java.util.ArrayList;
+
 /**
  * @author CAJR
  * @date 2019/11/4 2:14 下午
@@ -14,4 +18,7 @@ public class CommonConstantUtil {
     public final static int ACTIVATE_STATUS = 1;
 
     public static final int ACCURACY = 100;
+
+    public static final ArrayList<String> openSearchFetchFieldFormat = Lists.newArrayList("order_group_id","coin_pair_choice_id","name","created_time");
+
 }

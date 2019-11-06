@@ -36,6 +36,13 @@ public class OrderGroupController {
                                @RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1") int coinPairChoiceId){
         return this.orderGroupService.listByPage(pageNum, pageSizeCommon,coinPairChoiceId);
     }
+    @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @GetMapping("/trade_record")
+    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为yyyy-mm-dd mm:ss:xx") Long startTime,
+                                              @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为yyyy-mm-dd mm:ss:xx") Long endTime,
+                                              @RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
+        return new Result<>(this.orderGroupService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId));
+    }
 
     @ApiOperation(value = "获取单个订单组信息",httpMethod = "GET",nickname = "getOneOrderGroupById")
     @GetMapping("/{id}")

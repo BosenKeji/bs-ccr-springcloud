@@ -21,8 +21,6 @@ public interface TradeOrderService {
 
     Optional<Integer> add(TradeOrder tradeOrder);
 
-    Optional<Integer> update(TradeOrder tradeOrder);
-
     Optional<Integer> delete(int id);
 
     Object openSearchTest(OrderSearchRequestVo orderSearchRequestVo,int pageNum,int pageSize);
