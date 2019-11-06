@@ -23,13 +23,13 @@ public class OrderGroup implements Serializable {
 
 
     @ApiModelProperty("自选币id")
-    @JSONField(name = "coin_pair_choiceId")
+    @JSONField(name = "coin_pair_choice_id")
     private int coinPairChoiceId;
 
     /**
     * 结单收益比
     */
-    @JSONField(name = "end_profit_retio")
+    @JSONField(name = "end_profit_ratio")
     @ApiModelProperty("结单收益比")
     private Double endProfitRatio;
 
@@ -53,24 +53,35 @@ public class OrderGroup implements Serializable {
     /**
     * 订单组创建时间
     */
-    @JSONField(name = "created_at")
+    @JSONField(name = "created_time")
     @ApiModelProperty(value = "订单组创建时间",hidden = true)
     private Timestamp createdAt;
 
     /**
     * 订单组更新时间
     */
-    @JSONField(name = "updated_at")
+    @JSONField(name = "updated_time")
     @ApiModelProperty(value = "订单组更新时间",hidden = true)
     private Timestamp updatedAt;
 
     /*非数据库字段*/
-    @JSONField(name = "coin_pair_choice")
+    //@JSONField(name = "coin_pair_choice")
     @ApiModelProperty(hidden = true)
     private CoinPairChoice coinPairChoice;
 
     @ApiModelProperty(hidden = true)
+    private String coin_pair_choice;
+
+    @ApiModelProperty(hidden = true)
     private List<TradeOrder> tradeOrders;
+
+    public String getCoin_pair_choice() {
+        return coin_pair_choice;
+    }
+
+    public void setCoin_pair_choice(String coin_pair_choice) {
+        this.coin_pair_choice = coin_pair_choice;
+    }
 
     public int getId() {
         return id;

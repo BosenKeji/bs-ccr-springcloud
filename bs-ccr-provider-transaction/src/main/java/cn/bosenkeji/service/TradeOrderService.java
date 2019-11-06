@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.vo.transaction.OrderSearchRequestVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
 
@@ -23,4 +24,8 @@ public interface TradeOrderService {
     Optional<Integer> update(TradeOrder tradeOrder);
 
     Optional<Integer> delete(int id);
+
+    Object openSearchTest(OrderSearchRequestVo orderSearchRequestVo,int pageNum,int pageSize);
+
+    Integer updateOpenSearchFromSql(int id);
 }

@@ -150,4 +150,12 @@ public class DateUtils {
         }
     }
 
+
+    public static void main(String[] args) {
+        long currentDayBegin = getCurrentDayBegin();
+        System.out.println("currentDayBegin = " + currentDayBegin);
+        long currentDayEnd = getCurrentDayEnd();
+        System.out.println("currentDayEnd = " + currentDayEnd);
+    }
+
 }
