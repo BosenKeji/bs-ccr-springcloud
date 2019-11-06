@@ -7,10 +7,7 @@ import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.util.DateUtils;
 import cn.bosenkeji.vo.OpenSearchFormat;
-import cn.bosenkeji.vo.transaction.OpenSearchExecuteResult;
-import cn.bosenkeji.vo.transaction.OpenSearchOrderVo;
-import cn.bosenkeji.vo.transaction.OrderSearchRequestVo;
-import cn.bosenkeji.vo.transaction.TradeOrder;
+import cn.bosenkeji.vo.transaction.*;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.DocumentClient;
 import com.aliyun.opensearch.OpenSearchClient;
@@ -25,14 +22,15 @@ import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,7 +158,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     }
 
     @Override
-    public Object openSearchTest(OrderSearchRequestVo orderSearchRequestVo,int pageNum,int pageSize) {
+    public OpenSearchPage searchTradeOrderByCondition(OrderSearchRequestVo orderSearchRequestVo,int pageNum,int pageSize) {
 
         SearcherClient searcherClient = new SearcherClient(openSearchClient);
         OpenSearchPage page= new OpenSearchPage();
@@ -177,7 +175,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         config.setFetchFields(openSearchFetchField);
 
         SearchParams searchParams = new SearchParams(config);
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuffer otherBuffer = new StringBuffer();
+        StringBuffer queryBuffer = new StringBuffer();
 
         //设置 自选币 条件
         String[] coin_ids = orderSearchRequestVo.getCoinPairChoiceIds().split(",");
@@ -185,14 +184,20 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             System.out.println("coin_id = " + coin_id);
             Integer integer = Integer.valueOf(coin_id);
             if(null != integer && integer>0) {
-                stringBuffer.append("OR coin_pair_choice_id:'"+integer+"'");
+                queryBuffer.append(" OR coin_pair_choice_id:'"+integer+"' ");
             }
+        }
+        String query="("+queryBuffer.toString().replaceFirst("OR","")+")";
+
+
+        if(org.apache.commons.lang.StringUtils.isBlank(queryBuffer.toString())) {
+            return page;
         }
 
         //设置交易类型 0默认全部不处理 1买入 2卖出
         Integer tradeType = orderSearchRequestVo.getTradeType();
         if(null != tradeType && tradeType >0) {
-            stringBuffer.append("AND trade_type:'"+tradeType+"'");
+            otherBuffer.append(" AND trade_type:'"+tradeType+"' ");
         }
 
         //处理时间
@@ -200,37 +205,42 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         Long endTime = orderSearchRequestVo.getEndTime();
         if(null != startTime && null!= endTime && startTime >0 && endTime > 0) {
 
-            stringBuffer.append("AND created_at:[" + orderSearchRequestVo.getStartTime() + ","+orderSearchRequestVo.getEndTime()+"]");
+            otherBuffer.append(" AND created_at:[" + orderSearchRequestVo.getStartTime() + ","+orderSearchRequestVo.getEndTime()+"] ");
         }
 
-        if(StringUtils.isEmpty(stringBuffer.toString())) {
-            return page;
+        if(StringUtils.isNotBlank(otherBuffer.toString())) {
+            query = query+otherBuffer.toString();
         }
-        searchParams.setQuery(stringBuffer.toString().replaceFirst("AND",""));
 
-        System.out.println("the query is"+stringBuffer.toString().replaceFirst("AND",""));
+        searchParams.setQuery(query);
+        System.out.println("the query is"+query);
         SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
 
         try{
             SearchResult execute = searcherClient.execute(searchParamsBuilder);
             String result = execute.getResult();
-            String jsonString = JSON.toJSONString(result);
-            JSONObject jsonObject = new JSONObject(result);
-            OpenSearchExecuteResult openSearchExecuteResult1 = JSON.parseObject(result, OpenSearchExecuteResult.class);
+
+
+            //OpenSearchExecuteResult openSearchExecuteResult1 = JSON.parseObject(result, OpenSearchExecuteResult.class);
             OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
             System.out.println("openSearchExecuteResult = " + openSearchExecuteResult);
-            System.out.println("jsonObject = " + jsonObject);
-            List items = openSearchExecuteResult.getResult().getItems();
-            page.setList(items);
+
+            List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
+            List<OpenSearchOrderVo> openSearchOrderVos=new ArrayList<>();
+            for (OpenSearchField item : items) {
+                item.getFields().setCoinPairChoice(com.alibaba.fastjson.JSONObject.parseObject(item.getFields().getCoin_pair_choice(),CoinPairChoice.class));
+                item.getFields().setCoin_pair_choice("");
+                openSearchOrderVos.add(item.getFields());
+            }
+            page.setList(openSearchOrderVos);
             page.setTotal(openSearchExecuteResult.getResult().getTotal());
-            //System.out.println("jsonString = " + jsonString);
             return page;
 
         }catch (Exception e) {
             e.printStackTrace();
+            return page;
         }
 
-        return null;
     }
 
     @Override

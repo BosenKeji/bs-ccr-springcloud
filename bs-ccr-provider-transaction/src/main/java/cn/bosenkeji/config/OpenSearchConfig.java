@@ -17,19 +17,19 @@ import org.springframework.context.annotation.DependsOn;
 @Configuration
 public class OpenSearchConfig {
 
-    //@Value("${open-search.access-key}")
+    @Value("${open-search.access-key}")
     //@Value("${spring.cloud.nacos.config.access-key}")
-    private String accessKey="LTAIEBWhTbhsWByO";
+    private String accessKey;
 
-    //@Value("${open-search.secret-key}")
+    @Value("${open-search.secret-key}")
     //@Value("${spring.cloud.nacos.config.secret-key}")
-    private String secretKey="FXqHcqjJMPftFuMjH1HOZeGpAGZ7Ko";
+    private String secretKey;
 
-    //@Value("${open-search.host}")
-    private String host="http://opensearch-cn-qingdao.aliyuncs.com";
+    @Value("${open-search.host}")
+    private String host;
 
-    //@Value("${open-search.appName}")
-    private String appName="";
+    @Value("${open-search.appName}")
+    private String appName;
 
     @Bean(name = "openSearchClient")
     public OpenSearchClient openSearchClient(){

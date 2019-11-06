@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.interfaces.OpenSearchTimeType;
 import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.Result;
@@ -60,12 +61,12 @@ public class TradeOrderController {
 
     @ApiOperation(value = " 多条件查询 订单 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
     @GetMapping("/by_condition")
-    public Object searchTradeOrderByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
-                                              @RequestParam(value = "tradeType",defaultValue = "0") @ApiParam(value = "交易类型 0全部 1买入 2卖出",required = true,type = "integer",example = "1") Integer tradeType,
-                                              @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为yyyy-mm-dd mm:ss:xx",example = "2019-11-05 00:00:00") Long startTime,
-                                              @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为yyyy-mm-dd mm:ss:xx",example = "2019-11-05 00:00:00") Long endTime,
-                                              @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                              @RequestParam(value="pageSize",defaultValue="12") int pageSize
+    public OpenSearchPage searchTradeOrderByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
+                                                      @RequestParam(value = "tradeType",defaultValue = "0") @ApiParam(value = "交易类型 0全部 1买入 2卖出",required = true,type = "integer",example = "1") Integer tradeType,
+                                                      @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为1673056999999",example = "1673056999999") Long startTime,
+                                                      @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为1573055999999",example = "1573055999999") Long endTime,
+                                                      @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                      @RequestParam(value="pageSize",defaultValue="12") int pageSize
                                               ) {
         OrderSearchRequestVo orderSearchRequestVo = new OrderSearchRequestVo();
         orderSearchRequestVo.setCoinPairChoiceIds(coinPairChoiceIds);
@@ -73,7 +74,7 @@ public class TradeOrderController {
         orderSearchRequestVo.setStartTime(startTime);
         orderSearchRequestVo.setEndTime(endTime);
 
-        return this.tradeOrderService.openSearchTest(orderSearchRequestVo,pageNum,pageSize);
+        return this.tradeOrderService.searchTradeOrderByCondition(orderSearchRequestVo,pageNum,pageSize);
     }
 
     @ApiOperation(value = "根据 ID 把 tradeOrder 添加/更新 到openSearch",httpMethod = "PUT",nickname = "pushToOpenSearchById")

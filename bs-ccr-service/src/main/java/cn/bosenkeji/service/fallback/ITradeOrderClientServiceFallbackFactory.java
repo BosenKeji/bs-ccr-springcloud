@@ -1,12 +1,16 @@
 package cn.bosenkeji.service.fallback;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.transaction.OpenSearchField;
+import cn.bosenkeji.vo.transaction.OpenSearchOrderVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,21 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
             @Override
             public Result delete(int id) {
                 return new Result<>(-1,"hystrix");
+            }
+
+            @Override
+            public OpenSearchPage searchTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType, Long startTime, Long endTime, int pageNum, int pageSize) {
+
+                OpenSearchPage page = new OpenSearchPage();
+                page.setTotal(0l);
+                OpenSearchField openSearchField = new OpenSearchField();
+                OpenSearchOrderVo openSearchOrderVo=new OpenSearchOrderVo();
+                openSearchOrderVo.setName("hystrix");
+                openSearchOrderVo.setIsEnd(-1);
+                openSearchField.setFields(openSearchOrderVo);
+                page.setList(openSearchField);
+                return page;
+
             }
         };
     }

@@ -1,10 +1,12 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradeOrderClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,4 +31,13 @@ public interface ITradeOrderClientService {
 
     @DeleteMapping("/trade_order/{id}")
     public Result delete(@PathVariable("id") int id);
+
+    @GetMapping("/trade_order/by_condition")
+    public OpenSearchPage searchTradeOrderByCondition(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds,
+                                                      @RequestParam(value = "tradeType",defaultValue = "0") Integer tradeType,
+                                                      @RequestParam(value = "startTime",defaultValue = "0") Long startTime,
+                                                      @RequestParam(value = "endTime",defaultValue = "0") Long endTime,
+                                                      @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                      @RequestParam(value="pageSize",defaultValue="12") int pageSize
+    );
 }

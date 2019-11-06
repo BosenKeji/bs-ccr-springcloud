@@ -1,5 +1,7 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.OpenSearchPage;
+import cn.bosenkeji.interfaces.TradeTypeInterface;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.TradeOrder;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -58,4 +61,31 @@ public class ConsumerTradeOrderController {
     public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单id", required = true, type = "integer",example = "1") int id){
         return this.iTradeOrderClientService.delete(id);
     }
+
+    @ApiOperation(value = " 多条件查询 买入日记 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @GetMapping("/by_condition_for_buy_logs")
+    public OpenSearchPage searchBuyLogsByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") @NotBlank String coinPairChoiceIds,
+                                                      @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为 1572969600000",example = "1572969600000") Long startTime,
+                                                      @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为 1573055999999",example = "1573055999999") Long endTime,
+                                                      @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                      @RequestParam(value="pageSize",defaultValue="12") int pageSize
+    )
+    {
+        int tradeType = TradeTypeInterface.BUY;
+       return this.iTradeOrderClientService.searchTradeOrderByCondition(coinPairChoiceIds,tradeType,startTime,endTime,pageNum,pageSize);
+    }
+
+    @ApiOperation(value = " 多条件查询 卖出收益总结 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @GetMapping("/by_condition_for_shell_profit")
+    public OpenSearchPage searchShellProfitByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
+                                                   @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为 1572969600000",example = "1572969600000") Long startTime,
+                                                   @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为 1573055999999",example = "1573055999999") Long endTime,
+                                                   @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                   @RequestParam(value="pageSize",defaultValue="12") int pageSize
+    )
+    {
+        int tradeType = TradeTypeInterface.SHELL;
+        return this.iTradeOrderClientService.searchTradeOrderByCondition(coinPairChoiceIds,tradeType,startTime,endTime,pageNum,pageSize);
+    }
+
 }
