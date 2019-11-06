@@ -1,12 +1,11 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.OrderGroupMapper;
-import cn.bosenkeji.service.ICoinPairClientService;
-import cn.bosenkeji.service.OrderGroupService;
-import cn.bosenkeji.service.TradeOrderService;
+import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.OpenSearchFormat;
 import cn.bosenkeji.vo.coin.CoinPair;
+import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.DocumentClient;
@@ -39,7 +38,13 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private DocumentClient documentClient;
 
     @Resource
+    ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
+
+    @Resource
     TradeOrderService tradeOrderService;
+
+    @Resource
+    CoinPairChoiceService coinPairChoiceService;
 
     private static final String appName = "bs_ccr_trade_dev";
     private static final String orderGroupTable="order_group";
@@ -83,7 +88,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         OrderGroup orderGroup = getOneById(orderGroupId);
         orderGroup.setTradeOrders(null);
         orderGroup.setCoinPairChoice(null);
-        OpenSearchFormat<OrderGroup> format=new OpenSearchFormat();
+        OpenSearchFormat<OrderGroup> format = new OpenSearchFormat<>();
 
         format.setFields(orderGroup);
         format.setCmd("ADD");
@@ -110,16 +115,24 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             e.printStackTrace();
             return false;
         }
+
     }
 
     @Override
-    public Optional<Integer> update(OrderGroup orderGroup) {
-        return Optional.of(this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup));
+    public Optional<Integer> update(OrderGroup orderGroup,int userId) {
+        if (verifyUserIdAndCoinPairChoiceId(userId,orderGroup.getCoinPairChoiceId())){
+            return Optional.of(this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup));
+        }
+        return Optional.of(CommonConstantUtil.VERIFY_FAIL);
     }
 
     @Override
-    public Optional<Integer> delete(int id) {
-        return Optional.of(this.orderGroupMapper.updateStatusByPrimaryKey(id,CommonConstantUtil.DELETE_STATUS, Timestamp.valueOf(LocalDateTime.now())));
+    public Optional<Integer> delete(int id,int userId) {
+        OrderGroup orderGroup = this.orderGroupMapper.selectByPrimaryKey(id);
+        if (verifyUserIdAndCoinPairChoiceId(userId,orderGroup.getCoinPairChoiceId())){
+            return Optional.of(this.orderGroupMapper.updateStatusByPrimaryKey(id,CommonConstantUtil.DELETE_STATUS, Timestamp.valueOf(LocalDateTime.now())));
+        }
+        return Optional.of(CommonConstantUtil.VERIFY_FAIL);
     }
 
     @Override
@@ -130,5 +143,16 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     public Optional<Integer> checkExistByID(int orderGroupId) {
         return Optional.of(this.orderGroupMapper.checkExistById(orderGroupId));
+    }
+
+    private boolean verifyUserIdAndCoinPairChoiceId(int userId,int coinPairChoiceId){
+        //userId验证
+        CoinPairChoice coinPairChoice = this.coinPairChoiceService.get(coinPairChoiceId);
+        if (coinPairChoice != null){
+            int tradePlatformApiBindProductComboId = coinPairChoice.getTradePlatformApiBindProductComboId();
+            int verifyUserId = this.iTradePlatformApiBindProductComboClientService.getUserIdById(tradePlatformApiBindProductComboId);
+            return userId == verifyUserId;
+        }
+        return false;
     }
 }

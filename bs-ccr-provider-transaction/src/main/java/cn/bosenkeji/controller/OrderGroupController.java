@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.OrderGroupService;
+import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
+import java.util.Optional;
 
 /**
  * @author CAJR
@@ -53,19 +55,29 @@ public class OrderGroupController {
 
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
-    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup){
+    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup,
+                         @RequestParam("userId") @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int userId){
         if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() <= 0){
             return new Result<>(null,"订单组不存在，更新订单组失败！");
         }
-        return new Result<>(this.orderGroupService.update(orderGroup));
+        Optional<Integer> result = this.orderGroupService.update(orderGroup,userId);
+        if (result.get() == CommonConstantUtil.VERIFY_FAIL){
+            return new Result<>(null,"不能操作不是自己的东西哦！");
+        }
+        return new Result<>(result);
     }
 
     @ApiOperation(value = "删除单个订单组信息",httpMethod = "DELETE",nickname = "deleteOneOrderGroupById")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int orderGroupId){
-        if (this.orderGroupService.checkExistByID(orderGroupId).get() > 0){
+    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int orderGroupId,
+                         @RequestParam("userId") @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int userId){
+        if (this.orderGroupService.checkExistByID(orderGroupId).get() <= 0){
             return new Result<>(null,"订单组不存在！");
         }
-        return new Result<>(this.orderGroupService.delete(orderGroupId));
+        Optional<Integer> result = this.orderGroupService.delete(orderGroupId,userId);
+        if (result.get() == CommonConstantUtil.VERIFY_FAIL){
+            return new Result<>(null,"不能删除不是自己的东西哦！😯");
+        }
+        return new Result<>(result);
     }
 }

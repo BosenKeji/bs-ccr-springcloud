@@ -3,7 +3,6 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,9 +17,9 @@ public interface OrderGroupService {
 
     Optional<Integer> add(OrderGroup orderGroup);
 
-    Optional<Integer> update(OrderGroup orderGroup);
+    Optional<Integer> update(OrderGroup orderGroup,int userId);
 
-    Optional<Integer> delete(int id);
+    Optional<Integer> delete(int id,int userId);
 
     Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 

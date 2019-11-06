@@ -45,4 +45,6 @@ public interface TradePlatformApiBindProductComboService {
 
     List findAll();
 
+    int getUserIdById(int id);
+
 }

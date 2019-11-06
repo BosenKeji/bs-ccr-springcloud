@@ -204,4 +204,9 @@
     trade_platform_api_bind_product_combo
   </select>
 
+  <select id="getUserIdById" resultType="int" >
+    select user_id from
+    trade_platform_api_bind_product_combo where id = #{id,jdbcType=INTEGER}
+  </select>
+
 </mapper>

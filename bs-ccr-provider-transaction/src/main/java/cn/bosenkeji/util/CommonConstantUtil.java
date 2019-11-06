@@ -8,6 +8,7 @@ package cn.bosenkeji.util;
 public class CommonConstantUtil {
     public final static int SUCCESS = 1;
     public final static int FAIL = 0;
+    public final static int VERIFY_FAIL = -1;
 
     public final static int DELETE_STATUS = 0;
     public final static int ACTIVATE_STATUS = 1;

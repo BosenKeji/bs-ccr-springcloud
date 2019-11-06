@@ -41,4 +41,6 @@ public interface TradePlatformApiBindProductComboMapper {
 
     List<TradePlatformApiBindProductCombo> findAll();
 
+    int getUserIdById(int id);
+
 }

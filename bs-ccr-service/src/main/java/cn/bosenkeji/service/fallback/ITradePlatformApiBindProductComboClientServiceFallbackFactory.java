@@ -78,6 +78,11 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             public List findAll() {
                 return null;
             }
+
+            @Override
+            public int getUserIdById(int id) {
+                return 0;
+            }
         };
     }
 }

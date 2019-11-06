@@ -170,6 +170,9 @@ public class TradePlatformApiBindProductComboController {
         return new Result(this.tradePlatformApiBindProductComboService.deleteByComboId(userProductComboId));
     }
 
-
+    @GetMapping("/{id}")
+    public int getUserIdById(@PathVariable("id") int id){
+        return 0;
+    }
 
 }

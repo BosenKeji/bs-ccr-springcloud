@@ -235,4 +235,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     public List findAll() {
         return tradePlatformApiBindProductComboMapper.findAll();
     }
+
+    @Override
+    public int getUserIdById(int id) {
+        return 0;
+    }
 }

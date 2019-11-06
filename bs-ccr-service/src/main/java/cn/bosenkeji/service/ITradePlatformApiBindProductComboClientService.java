@@ -54,5 +54,7 @@ public interface ITradePlatformApiBindProductComboClientService {
     @GetMapping("trade_platform_api_bind_product_combo/")
     public List findAll();
 
+    @GetMapping("trade_platform_api_bind_product_combo/{id}")
+    public int getUserIdById(@PathVariable("id") int id);
 
 }
