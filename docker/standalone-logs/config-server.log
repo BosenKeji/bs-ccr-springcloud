@@ -1,0 +1,228 @@
+2019-11-06 21:04:00,922 INFO notifyConnectTimeout:200
+
+2019-11-06 21:04:00,924 INFO notifySocketTimeout:8000
+
+2019-11-06 21:04:00,924 INFO isHealthCheck:true
+
+2019-11-06 21:04:00,925 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:04:00,926 INFO maxContent:10485760
+
+2019-11-06 21:04:00,928 INFO spring.datasource.platform:""
+
+2019-11-06 21:04:03,051 INFO ServerListService address-server port:8848
+
+2019-11-06 21:04:03,052 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:04:03,055 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:04:03,226 WARN DumpService start
+
+2019-11-06 21:04:03,233 INFO start clear all config-info.
+
+2019-11-06 21:04:03,240 WARN clear all config-info failed.
+
+2019-11-06 21:04:03,241 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:04:03,350 INFO start clear all config-info-beta.
+
+2019-11-06 21:04:03,350 WARN clear all config-info-beta failed.
+
+2019-11-06 21:04:03,351 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:04:03,367 INFO start clear all config-info-tag.
+
+2019-11-06 21:04:03,367 WARN clear all config-info-tag failed.
+
+2019-11-06 21:04:03,368 WARN clear all config-info-tag-tenant failed.
+
+2019-11-06 21:17:26,275 INFO notifyConnectTimeout:200
+
+2019-11-06 21:17:26,276 INFO notifySocketTimeout:8000
+
+2019-11-06 21:17:26,276 INFO isHealthCheck:true
+
+2019-11-06 21:17:26,277 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:17:26,278 INFO maxContent:10485760
+
+2019-11-06 21:17:26,279 INFO spring.datasource.platform:""
+
+2019-11-06 21:17:28,734 INFO ServerListService address-server port:8848
+
+2019-11-06 21:17:28,735 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:17:28,738 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:17:28,914 WARN DumpService start
+
+2019-11-06 21:17:28,922 INFO start clear all config-info.
+
+2019-11-06 21:17:28,928 WARN clear all config-info failed.
+
+2019-11-06 21:17:28,930 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:17:29,038 INFO start clear all config-info-beta.
+
+2019-11-06 21:17:29,038 WARN clear all config-info-beta failed.
+
+2019-11-06 21:17:29,039 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:17:29,060 INFO start clear all config-info-tag.
+
+2019-11-06 21:17:29,061 WARN clear all config-info-tag failed.
+
+2019-11-06 21:17:29,061 WARN clear all config-info-tag-tenant failed.
+
+2019-11-06 21:19:25,818 INFO notifyConnectTimeout:200
+
+2019-11-06 21:19:25,820 INFO notifySocketTimeout:8000
+
+2019-11-06 21:19:25,820 INFO isHealthCheck:true
+
+2019-11-06 21:19:25,821 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:19:25,822 INFO maxContent:10485760
+
+2019-11-06 21:19:25,823 INFO spring.datasource.platform:""
+
+2019-11-06 21:19:27,837 INFO ServerListService address-server port:8848
+
+2019-11-06 21:19:27,839 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:19:27,842 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:19:28,013 WARN DumpService start
+
+2019-11-06 21:19:28,020 INFO start clear all config-info.
+
+2019-11-06 21:19:28,026 WARN clear all config-info failed.
+
+2019-11-06 21:19:28,027 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:19:28,134 INFO start clear all config-info-beta.
+
+2019-11-06 21:19:28,135 WARN clear all config-info-beta failed.
+
+2019-11-06 21:19:28,135 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:19:28,161 INFO start clear all config-info-tag.
+
+2019-11-06 21:19:28,162 WARN clear all config-info-tag failed.
+
+2019-11-06 21:19:28,163 WARN clear all config-info-tag-tenant failed.
+
+2019-11-06 21:27:02,589 INFO notifyConnectTimeout:200
+
+2019-11-06 21:27:02,590 INFO notifySocketTimeout:8000
+
+2019-11-06 21:27:02,590 INFO isHealthCheck:true
+
+2019-11-06 21:27:02,591 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:27:02,592 INFO maxContent:10485760
+
+2019-11-06 21:27:02,593 INFO spring.datasource.platform:""
+
+2019-11-06 21:27:04,897 INFO ServerListService address-server port:8848
+
+2019-11-06 21:27:04,898 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:27:04,901 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:27:05,070 WARN DumpService start
+
+2019-11-06 21:27:05,076 INFO start clear all config-info.
+
+2019-11-06 21:27:05,082 WARN clear all config-info failed.
+
+2019-11-06 21:27:05,083 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:27:05,194 INFO start clear all config-info-beta.
+
+2019-11-06 21:27:05,194 WARN clear all config-info-beta failed.
+
+2019-11-06 21:27:05,195 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:27:05,219 INFO start clear all config-info-tag.
+
+2019-11-06 21:27:05,220 WARN clear all config-info-tag failed.
+
+2019-11-06 21:27:05,220 WARN clear all config-info-tag-tenant failed.
+
+2019-11-06 21:35:05,702 INFO notifyConnectTimeout:200
+
+2019-11-06 21:35:05,705 INFO notifySocketTimeout:8000
+
+2019-11-06 21:35:05,705 INFO isHealthCheck:true
+
+2019-11-06 21:35:05,706 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:35:05,707 INFO maxContent:10485760
+
+2019-11-06 21:35:05,709 INFO spring.datasource.platform:""
+
+2019-11-06 21:35:08,661 INFO ServerListService address-server port:8848
+
+2019-11-06 21:35:08,663 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:35:08,667 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:35:08,897 WARN DumpService start
+
+2019-11-06 21:35:08,909 INFO start clear all config-info.
+
+2019-11-06 21:35:08,919 WARN clear all config-info failed.
+
+2019-11-06 21:35:08,921 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:35:09,081 INFO start clear all config-info-beta.
+
+2019-11-06 21:35:09,082 WARN clear all config-info-beta failed.
+
+2019-11-06 21:35:09,083 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:35:09,107 INFO start clear all config-info-tag.
+
+2019-11-06 21:35:09,108 WARN clear all config-info-tag failed.
+
+2019-11-06 21:35:09,108 WARN clear all config-info-tag-tenant failed.
+
+2019-11-06 21:39:18,510 INFO notifyConnectTimeout:200
+
+2019-11-06 21:39:18,512 INFO notifySocketTimeout:8000
+
+2019-11-06 21:39:18,512 INFO isHealthCheck:true
+
+2019-11-06 21:39:18,513 INFO maxHealthCheckFailCount:12
+
+2019-11-06 21:39:18,513 INFO maxContent:10485760
+
+2019-11-06 21:39:18,514 INFO spring.datasource.platform:""
+
+2019-11-06 21:39:21,490 INFO ServerListService address-server port:8848
+
+2019-11-06 21:39:21,491 INFO ADDRESS_SERVER_URL:http://jmenv.tbsite.net:8080/nacos/serverlist
+
+2019-11-06 21:39:21,495 WARN [serverlist] updated to [nacos-dev]
+
+2019-11-06 21:39:21,721 WARN DumpService start
+
+2019-11-06 21:39:21,731 INFO start clear all config-info.
+
+2019-11-06 21:39:21,740 WARN clear all config-info failed.
+
+2019-11-06 21:39:21,742 WARN clear all config-info-tenant failed.
+
+2019-11-06 21:39:21,887 INFO start clear all config-info-beta.
+
+2019-11-06 21:39:21,888 WARN clear all config-info-beta failed.
+
+2019-11-06 21:39:21,889 WARN clear all config-info-beta-tenant failed.
+
+2019-11-06 21:39:21,920 INFO start clear all config-info-tag.
+
+2019-11-06 21:39:21,920 WARN clear all config-info-tag failed.
+
+2019-11-06 21:39:21,921 WARN clear all config-info-tag-tenant failed.
+
