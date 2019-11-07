@@ -37,11 +37,18 @@
   <select id="findAllCoinPairChoiceId" resultType="integer">
     select id from coin_pair_choice  where status = 1
   </select>
-  <select id="findAllByTradePlatformApiBindProductComboId" parameterType="integer" resultMap="BaseResultMap">
+  <select id="findByTradePlatformApiBindProductComboIdAndStatus" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice
    where trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER} and status = 1
+  </select>
+
+  <select id="findAllByTradePlatformApiBindProductComboId" parameterType="integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from coin_pair_choice
+    where trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->

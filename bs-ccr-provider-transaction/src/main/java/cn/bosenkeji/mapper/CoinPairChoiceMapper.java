@@ -38,6 +38,8 @@ public interface CoinPairChoiceMapper {
 
     List<CoinPairChoice> findAllByTradePlatformApiBindProductComboId (int tradePlatformApiBindProductComboId);
 
+    List<CoinPairChoice> findByTradePlatformApiBindProductComboIdAndStatus (int tradePlatformApiBindProductComboId);
+
     List<CoinPairChoice> findAll();
 
     List<Integer> findAllCoinPairChoiceId();

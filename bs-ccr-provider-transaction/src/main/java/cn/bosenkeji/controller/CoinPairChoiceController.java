@@ -1,12 +1,6 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.annotation.cache.MyCacheRemove;
-import cn.bosenkeji.exception.AddException;
-import cn.bosenkeji.exception.DeleteException;
-import cn.bosenkeji.exception.NotFoundException;
-import cn.bosenkeji.exception.UpdateException;
-import cn.bosenkeji.exception.enums.CoinPairChoiceEnum;
-import cn.bosenkeji.handler.CustomErrorResponse;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.ICoinPairClientService;
@@ -212,5 +206,15 @@ public class CoinPairChoiceController {
     @ApiIgnore
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
+    }
+
+    @ApiOperation(value = "根据计价货币id查询有买卖记录的货币对",httpMethod = "GET",nickname = "recordByCoinId")
+    @GetMapping("/record")
+    public PageInfo recordByCoinId (@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon,
+                                    @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                                    @RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") int coinId,
+                                    @RequestParam("type") @ApiParam(value = "收益记录（'profit'）还是买入日志（'buy'）", required = true, type = "String") String type){
+        return this.coinPairChoiceService.recordByPage(pageNum, pageSizeCommon, tradePlatformApiBindProductComboId, coinId, type);
     }
 }
