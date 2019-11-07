@@ -45,7 +45,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private static final String appName = "bs_ccr_trade_dev";
     private static final String orderTable="trade_order";
 
-    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","coin_pair_choice_id","coin_pair_choice","trade_profit_price","trade_numbers","trade_cost","trade_type","status","created_at","updated_at","name","created_time");
+    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","is_end","end_type","trade_profit_price");
 
 
     @Resource
