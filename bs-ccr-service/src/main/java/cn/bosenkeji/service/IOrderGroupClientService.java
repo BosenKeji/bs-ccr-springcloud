@@ -31,4 +31,9 @@ public interface IOrderGroupClientService {
 
     @DeleteMapping("/order_group/{id}")
     public Result deleteOne(@PathVariable("id") int id,@RequestParam("userId") int userId);
+
+    @GetMapping("/order_group/search_group")
+    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime") Long startTime,
+                                               @RequestParam(value = "endTime") Long endTime,
+                                               @RequestParam("coinPairChoiceId") int coinPairChoiceId);
 }

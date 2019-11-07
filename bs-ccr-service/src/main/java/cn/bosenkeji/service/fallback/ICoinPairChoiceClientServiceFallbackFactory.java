@@ -4,6 +4,7 @@ import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceShellOrBuyResult;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -68,6 +69,15 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             @Override
             public Result batchDelete(String coinPairChoiceIds,int tradePlatformApiBindProductComboId) {
                 return  new Result<>(0,"hystrix fail");
+            }
+
+            @Override
+            public PageInfo recordByCoinId(int pageNum, int pageSizeCommon, int tradePlatformApiBindProductComboId, int coinId, String type) {
+                List<CoinPairChoiceShellOrBuyResult> coinPairChoices = new ArrayList<>();
+                CoinPairChoiceShellOrBuyResult coinPairChoice = new CoinPairChoiceShellOrBuyResult();
+                coinPairChoice.setCoinPairChoiceId(0);
+                coinPairChoices.add(coinPairChoice);
+                return new PageInfo<>(coinPairChoices);
             }
         };
     }

@@ -3,7 +3,6 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.OrderGroupMapper;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.OrderGroupService;
-import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.OpenSearchFormat;
 import cn.bosenkeji.vo.coin.CoinPair;
@@ -25,9 +24,7 @@ import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import static java.util.Comparator.comparingLong;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -36,6 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeSet;
+
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 /**
  * @author CAJR
@@ -53,8 +54,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     private DocumentClient documentClient;
 
-    @Resource
-    TradeOrderService tradeOrderService;
 
     @Resource
     OpenSearchClient openSearchClient;
@@ -80,7 +79,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             }
 
             orderGroup.setEndProfitRatio(endProfitRatio);
-            orderGroup.setTradeOrders(this.tradeOrderService.listByOrderGroupId(orderGroupId));
         }
         return orderGroup;
     }
@@ -211,6 +209,14 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         );
 
         return unique;
+    }
+
+    @Override
+    public List<OrderGroup> partFindByCoinPairChoiceIds(List<Integer> coinPairChoiceIds) {
+        if (CollectionUtils.isEmpty(coinPairChoiceIds)){
+            return null;
+        }
+        return this.orderGroupMapper.partFindByCoinPairChoiceIds(coinPairChoiceIds);
     }
 
 }

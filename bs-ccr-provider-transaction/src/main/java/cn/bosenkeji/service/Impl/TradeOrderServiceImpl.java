@@ -9,12 +9,13 @@ import cn.bosenkeji.util.DateUtils;
 import cn.bosenkeji.vo.OpenSearchFormat;
 import cn.bosenkeji.vo.transaction.*;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.opensearch.DocumentClient;
 import com.aliyun.opensearch.OpenSearchClient;
 import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.aliyun.opensearch.sdk.dependencies.org.json.JSONObject;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchResult;
+import com.aliyun.opensearch.sdk.generated.search.Aggregate;
 import com.aliyun.opensearch.sdk.generated.search.Config;
 import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
 import com.aliyun.opensearch.sdk.generated.search.SearchParams;
@@ -45,7 +46,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private static final String appName = "bs_ccr_trade_dev";
     private static final String orderTable="trade_order";
 
-    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","coin_pair_choice_id","coin_pair_choice","trade_profit_price","trade_numbers","trade_cost","trade_type","status","created_at","updated_at","name","created_time");
+    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","is_end","end_type","trade_profit_price");
 
 
     @Resource
@@ -221,24 +222,124 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             String result = execute.getResult();
 
 
-            //OpenSearchExecuteResult openSearchExecuteResult1 = JSON.parseObject(result, OpenSearchExecuteResult.class);
             OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
             System.out.println("openSearchExecuteResult = " + openSearchExecuteResult);
 
             List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
-            List<OpenSearchOrderVo> openSearchOrderVos=new ArrayList<>();
+            List<TradeOrderLogVo> tradeOrderLogVos=new ArrayList<>();
             for (OpenSearchField item : items) {
-                item.getFields().setCoinPairChoice(com.alibaba.fastjson.JSONObject.parseObject(item.getFields().getCoin_pair_choice(),CoinPairChoice.class));
-                item.getFields().setCoin_pair_choice("");
-                openSearchOrderVos.add(item.getFields());
+
+                if(null != item.getFields()) {
+                    TradeOrderLogVo orderLogVo = new TradeOrderLogVo();
+                    CoinPairChoice coinPairChoice = null;
+                    try {
+                        coinPairChoice = JSONObject.parseObject(item.getFields().getCoin_pair_choice(), CoinPairChoice.class);
+
+                        orderLogVo.setCoinPairName(coinPairChoice.getCoinPair().getName());
+                        orderLogVo.setCoinPairId(coinPairChoice.getCoinPartnerId());
+                        orderLogVo.setCoinPairChoiceId(coinPairChoice.getId());
+
+                    } catch (Exception e) {
+                        //不处理
+                    }
+                    orderLogVo.setId(item.getFields().getId());
+                    orderLogVo.setCreateAt(item.getFields().getCreatedAt());
+                    orderLogVo.setTradeNumbers(item.getFields().getTradeNumbers());
+                    orderLogVo.setShellProfit(item.getFields().getShellProfit());
+                    orderLogVo.setTradeCost(item.getFields().getTradeCost());
+                    orderLogVo.setEndType(item.getFields().getEndType());
+                    orderLogVo.setEndProfitRatio(item.getFields().getEndProfitRatio());
+                    orderLogVo.setTradeType(item.getFields().getTradeType());
+                    tradeOrderLogVos.add(orderLogVo);
+                }
             }
-            page.setList(openSearchOrderVos);
+
+            page.setList(tradeOrderLogVos);
             page.setTotal(openSearchExecuteResult.getResult().getTotal());
             return page;
 
         }catch (Exception e) {
             e.printStackTrace();
             return page;
+        }
+
+    }
+
+    @Override
+    public Object searchAggregateTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType) {
+
+        SearcherClient searcherClient = new SearcherClient(openSearchClient);
+
+
+        if(org.apache.commons.lang.StringUtils.isBlank(coinPairChoiceIds))
+            return null;
+        Config config = new Config(Lists.newArrayList(appName));
+        config.setSearchFormat(SearchFormat.FULLJSON);
+        config.setStart(0);
+        config.setHits(1);
+        config.setFetchFields(openSearchFetchField);
+
+        SearchParams searchParams = new SearchParams(config);
+        StringBuffer otherBuffer = new StringBuffer();
+        StringBuffer queryBuffer = new StringBuffer();
+
+        //设置 自选币 条件
+        String[] coin_ids = coinPairChoiceIds.split(",");
+        for (String coin_id : coin_ids) {
+            System.out.println("coin_id = " + coin_id);
+            Integer integer = Integer.valueOf(coin_id);
+            if(null != integer && integer>0) {
+                queryBuffer.append(" OR coin_pair_choice_id:'"+integer+"' ");
+            }
+        }
+        String query="("+queryBuffer.toString().replaceFirst("OR","")+")";
+
+
+        if(org.apache.commons.lang.StringUtils.isBlank(queryBuffer.toString())) {
+            return null;
+        }
+
+        //设置交易类型 0默认全部不处理 1买入 2卖出
+        if(null != tradeType && tradeType >0) {
+            otherBuffer.append(" AND trade_type:'"+tradeType+"' ");
+        }
+
+        if(StringUtils.isNotBlank(otherBuffer.toString())) {
+            query = query+otherBuffer.toString();
+        }
+
+        searchParams.setQuery(query);
+
+        Aggregate aggregate = new Aggregate();
+        aggregate.setGroupKey("trade_type");
+        aggregate.setAggFun("count()#sum(trade_cost)");
+        searchParams.addToAggregates(aggregate);
+
+
+        System.out.println("the query is"+query);
+        SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
+
+        try{
+            SearchResult execute = searcherClient.execute(searchParamsBuilder);
+            String result = execute.getResult();
+            OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
+
+            List<OpenSearchFacet> facet = openSearchExecuteResult.getResult().getFacet();
+            for (OpenSearchFacet openSearchFacet : facet) {
+
+                List<OpenSearchFacetItem> items = openSearchFacet.getItems();
+                for (OpenSearchFacetItem item : items) {
+                    if(item.getValue().equals(String.valueOf(tradeType)))
+                        return item;
+                }
+
+            }
+
+            return new OpenSearchFacetItem("0","0","0","0","0");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new OpenSearchFacetItem("0","0","0","0","0");
         }
 
     }

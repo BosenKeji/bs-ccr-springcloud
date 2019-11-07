@@ -8,8 +8,17 @@ public class OpenSearchResult {
     private Long num;
     private Long viewtotal;
     private List<OpenSearchField> items;
+    private List<OpenSearchFacet> facet;
     private String error;
     private String status;
+
+    public List<OpenSearchFacet> getFacet() {
+        return facet;
+    }
+
+    public void setFacet(List<OpenSearchFacet> facet) {
+        this.facet = facet;
+    }
 
     public Long getTotal() {
         return total;

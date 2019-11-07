@@ -77,6 +77,15 @@ public class TradeOrderController {
         return this.tradeOrderService.searchTradeOrderByCondition(orderSearchRequestVo,pageNum,pageSize);
     }
 
+    @ApiOperation(value = " 多条件查询 订单 总计 方法",httpMethod = "GET",nickname = "getTotalLogsByCondition")
+    @GetMapping("/total_logs_by_condition")
+    public Object getTotalLogsByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
+                                                      @RequestParam(value = "tradeType",defaultValue = "0") @ApiParam(value = "交易类型 0全部 1买入 2卖出",required = true,type = "integer",example = "1") Integer tradeType
+    ) {
+
+        return this.tradeOrderService.searchAggregateTradeOrderByCondition(coinPairChoiceIds,tradeType);
+    }
+
     @ApiOperation(value = "根据 ID 把 tradeOrder 添加/更新 到openSearch",httpMethod = "PUT",nickname = "pushToOpenSearchById")
     @PutMapping("/to_open_search_by_id")
     public Result<Integer> pushToOpenSearchById(@RequestParam("id") @ApiParam(value = "订单id",required = true,type = "integer",example = "1") @Min(1) int id) {

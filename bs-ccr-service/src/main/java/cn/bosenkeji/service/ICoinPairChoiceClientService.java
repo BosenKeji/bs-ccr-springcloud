@@ -54,4 +54,11 @@ public interface ICoinPairChoiceClientService {
 
     @DeleteMapping("/coin_pair_choice/batch")
     public Result batchDelete(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds,@RequestParam("tradePlatformApiBindProductComboId")int tradePlatformApiBindProductComboId);
+
+    @GetMapping("/coin_pair_choice/record")
+    public PageInfo recordByCoinId (@RequestParam(value="pageNum") int pageNum,
+                                    @RequestParam(value = "pageSizeCommon") int pageSizeCommon,
+                                    @RequestParam("tradePlatformApiBindProductComboId")  int tradePlatformApiBindProductComboId,
+                                    @RequestParam("coinId")  int coinId,
+                                    @RequestParam("type")  String type);
 }

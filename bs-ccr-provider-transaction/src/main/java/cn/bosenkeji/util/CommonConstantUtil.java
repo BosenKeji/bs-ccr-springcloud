@@ -16,9 +16,16 @@ public class CommonConstantUtil {
 
     public final static int DELETE_STATUS = 0;
     public final static int ACTIVATE_STATUS = 1;
+    public final static int ALL_STATUS = 2;
 
     public static final int ACCURACY = 100;
 
     public static final ArrayList<String> openSearchFetchFieldFormat = Lists.newArrayList("order_group_id","coin_pair_choice_id","name","created_time");
+
+
+    public static final String RECORD_PROFIT = "profit";
+    public static final String RECORD_BUY = "buy";
+    public static final int ORDER_GROUP_FORGET = 3;
+    public static final int ORDER_GROUP_IS_END = 1;
 
 }

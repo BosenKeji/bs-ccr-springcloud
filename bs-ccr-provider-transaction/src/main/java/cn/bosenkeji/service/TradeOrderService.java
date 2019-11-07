@@ -27,4 +27,6 @@ public interface TradeOrderService {
     OpenSearchPage searchTradeOrderByCondition(OrderSearchRequestVo orderSearchRequestVo, int pageNum, int pageSize);
 
     Integer updateOpenSearchFromSql(int id);
+
+    Object searchAggregateTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType);
 }

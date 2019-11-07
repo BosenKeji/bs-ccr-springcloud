@@ -14,7 +14,9 @@ import java.util.Optional;
  */
 public interface CoinPairChoiceService {
 
-    PageInfo listByPage(int pageNum,int pageSize,int tradePlatformApiBindProductComboId,int coinId);
+    PageInfo listByPage(int pageNum, int pageSize, int tradePlatformApiBindProductComboId,int coinId);
+
+    PageInfo recordByPage(int pageNum, int pageSize, int tradePlatformApiBindProductComboId, int coinId, String type);
 
     CoinPairChoice get(int id);
 
