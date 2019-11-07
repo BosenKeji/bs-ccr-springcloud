@@ -69,5 +69,11 @@ public class ConsumerOrderGroupController {
         return this.iOrderGroupClientService.deleteOne(id, userId);
     }
 
-
+    @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @GetMapping("/search_group")
+    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为yyyy-mm-dd mm:ss:xx") @Min(0) Long startTime,
+                                               @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为yyyy-mm-dd mm:ss:xx") @Min(0) Long endTime,
+                                               @RequestParam("coinPairChoiceId")@Min(1)@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
+        return this.iOrderGroupClientService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId);
+    }
 }

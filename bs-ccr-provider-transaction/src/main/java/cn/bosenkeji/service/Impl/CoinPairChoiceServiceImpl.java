@@ -7,15 +7,20 @@ import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoiceShellOrBuyResult;
+import cn.bosenkeji.vo.transaction.OrderGroup;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
+
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -52,14 +57,35 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Autowired
     CoinPairChoiceAttributeCustomServiceImpl coinPairChoiceAttributeCustomService;
 
+    @Autowired
+    OrderGroupService orderGroupService;
+
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(fill( tradePlatformApiBindProductComboId, coinId));
+        return new PageInfo<>(fill( tradePlatformApiBindProductComboId, coinId,CommonConstantUtil.ACTIVATE_STATUS));
     }
 
-    private List<CoinPairChoice> fill(int tradePlatformApiBindProductComboId,int coinId) {
+    @Override
+    public PageInfo recordByPage(int pageNum, int pageSize, int tradePlatformApiBindProductComboId, int coinId, String type) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<CoinPairChoice> coinPairChoices = fill( tradePlatformApiBindProductComboId, coinId,CommonConstantUtil.ALL_STATUS);
+        coinPairChoices = filterIsTradeShell(coinPairChoices,type);
+        if (!CollectionUtils.isEmpty(coinPairChoices)){
+            List<CoinPairChoiceShellOrBuyResult> coinPairChoiceShellOrBuyResults = new ArrayList<>();
+            coinPairChoices.forEach(coinPairChoice -> {
+                CoinPairChoiceShellOrBuyResult coinPairChoiceShellOrBuyResult = new CoinPairChoiceShellOrBuyResult();
+                coinPairChoiceShellOrBuyResult.setCoinPairChoiceId(coinPairChoice.getId());
+                coinPairChoiceShellOrBuyResult.setCoinPairName(coinPairChoice.getCoinPair().getName());
+                coinPairChoiceShellOrBuyResults.add(coinPairChoiceShellOrBuyResult);
+            });
+            return new PageInfo<>(coinPairChoiceShellOrBuyResults);
+        }
+        return  new PageInfo<>();
+    }
+
+    private List<CoinPairChoice> fill(int tradePlatformApiBindProductComboId,int coinId,int status) {
         //货币对Map
         Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
         //根据tradePlatformApiBindProductComboId查询自选币list
@@ -92,7 +118,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         }
 
         //根据TradePlatformApiBindProductComboId填充自选币的货币对数据
-        coinPairChoices = coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
+        coinPairChoices = fillByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId,status);
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
                 if (coinPairMap.containsKey(c.getCoinPartnerId())){
@@ -108,6 +134,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         }
 
         return filter(coinId,resultCoinPairChoiceList);
+    }
+
+    private List<CoinPairChoice> fillByTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId,int status){
+        if (status == CommonConstantUtil.ACTIVATE_STATUS){
+            return this.coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdAndStatus(tradePlatformApiBindProductComboId);
+        }
+        return this.coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
     }
 
     /**
@@ -131,6 +164,60 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 result.remove(c);
             }
         }
+
+        return result;
+    }
+
+    /**
+     * 过滤掉没有卖买记录的该计价货币的货币对
+     * @param coinPairChoices 自选币的列表
+     */
+    private List<CoinPairChoice> filterIsTradeShell(List<CoinPairChoice> coinPairChoices, String type) {
+        if (CollectionUtils.isEmpty(coinPairChoices)){
+            return null;
+        }
+
+        List<CoinPairChoice> resultCoinPairChoices = new ArrayList<>();
+        List<Integer> coinPairChoiceIds = new ArrayList<>();
+        coinPairChoices.forEach(coinPairChoice -> {
+            coinPairChoiceIds.add(coinPairChoice.getId());
+        });
+
+        List<OrderGroup> orderGroups = new ArrayList<>();
+        if (!coinPairChoiceIds.isEmpty()){
+            orderGroups = this.orderGroupService.partFindByCoinPairChoiceIds(coinPairChoiceIds);
+        }
+
+        if (!type.isEmpty() && !orderGroups.isEmpty()){
+            if (type.equals(CommonConstantUtil.RECORD_PROFIT)){
+                orderGroups.forEach(orderGroup -> {
+                    if (orderGroup.getIsEnd() == CommonConstantUtil.ORDER_GROUP_IS_END && orderGroup.getEndType() != CommonConstantUtil.ORDER_GROUP_FORGET){
+                        resultCoinPairChoices.add(orderGroup.getCoinPairChoice());
+                    }
+                });
+            }
+            if (type.equals(CommonConstantUtil.RECORD_BUY)){
+                orderGroups.forEach(orderGroup -> {
+                    resultCoinPairChoices.add(orderGroup.getCoinPairChoice());
+                });
+            }
+        }
+
+        //去重
+        List<CoinPairChoice> unique =  resultCoinPairChoices.stream().collect(
+                collectingAndThen(
+                        toCollection(() -> new TreeSet<>(comparingLong(CoinPairChoice::getId))), ArrayList::new)
+        );
+
+        List<Integer> uniqueIdResult = new ArrayList<>();
+        unique.forEach(coinPairChoice -> uniqueIdResult.add(coinPairChoice.getId()));
+
+        List<CoinPairChoice> result = new ArrayList<>();
+        coinPairChoices.forEach(coinPairChoice -> {
+            if (uniqueIdResult.contains(coinPairChoice.getId())){
+                result.add(coinPairChoice);
+            }
+        });
 
         return result;
     }

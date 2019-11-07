@@ -87,4 +87,13 @@ public class ConsumerCoinPairChoiceController {
                               @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
         return this.iCoinPairChoiceClientService.batchDelete(coinPairChoiceIds,tradePlatformApiBindProductComboId);
     }
+
+    @ApiOperation(value = "根据计价货币id查询有买卖记录的货币对",httpMethod = "GET",nickname = "recordByCoinId")
+    @GetMapping("/record")
+    public PageInfo recordByCoinId (@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                                    @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                                    @RequestParam("coinId") @ApiParam(value = "货币ID", required = true, type = "integer",example = "1") @Min(1) int coinId,
+                                    @RequestParam("type") @ApiParam(value = "收益记录（'profit'）还是买入日志（'buy'）", required = true, type = "String") @NotNull String type){
+        return this.iCoinPairChoiceClientService.recordByCoinId(pageNum, pageSizeCommon, tradePlatformApiBindProductComboId, coinId, type);
+    }
 }

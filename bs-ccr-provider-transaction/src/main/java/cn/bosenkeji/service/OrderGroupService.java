@@ -29,4 +29,6 @@ public interface OrderGroupService {
     Optional<Integer> checkExistByID(int orderGroupId);
 
     List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId);
+
+    List<OrderGroup> partFindByCoinPairChoiceIds(List<Integer> coinPairChoiceIds);
 }

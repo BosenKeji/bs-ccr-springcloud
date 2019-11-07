@@ -52,6 +52,11 @@ public class IOrderGroupClientServiceFallbackFactory implements FallbackFactory<
             public Result deleteOne(int id, int userId) {
                 return new Result<>(-1,"hystrix");
             }
+
+            @Override
+            public Result searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
+                return  new Result<>(-1,"hystrix");
+            }
         };
     }
 }

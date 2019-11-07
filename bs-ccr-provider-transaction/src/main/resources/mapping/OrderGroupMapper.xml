@@ -17,6 +17,8 @@
     <association fetchType="lazy" property="coinPairChoice" javaType="cn.bosenkeji.vo.transaction.CoinPairChoice"
                  column="coin_pair_choice_id"
                  select="cn.bosenkeji.mapper.CoinPairChoiceMapper.selectByPrimaryKey"/>
+    <collection property="tradeOrders" ofType="cn.bosenkeji.vo.transaction.TradeOrder" column="id"
+                select="cn.bosenkeji.mapper.TradeOrderMapper.findAllByOrderGroupId"/>
   </resultMap>
 
   <resultMap id="OtherResultMap" type="cn.bosenkeji.vo.transaction.OrderGroupOther">
@@ -28,6 +30,14 @@
     <!--@mbg.generated-->
     id, `name`, coin_pair_choice_id, end_profit_ratio, is_end, end_type, `status`, created_at, updated_at
   </sql>
+
+  <select id="partFindByCoinPairChoiceIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from order_group where coin_pair_choice_id in
+    <foreach collection="coinPairChoiceIds" index="index" item="item" open="(" separator="," close=")">
+    #{item,jdbcType=INTEGER}
+  </foreach>
+  </select>
 
   <select id="checkExistById" resultType="integer">
     select exists (SELECT 1 FROM order_group WHERE id = #{orderGroupId,jdbcType=INTEGER} and status = 1 LIMIT 1)
