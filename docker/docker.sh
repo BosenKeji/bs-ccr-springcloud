@@ -71,10 +71,10 @@ echo "initConfigFile"
 
     echo -e "\033[36m Beginning <<mvn clean>> to $currentProjectSourcePath...... \033[0m"
 
-    mvn -f $currentProjectSourcePath clean
+    mvn -f $currentProjectSourcePath/pom.xml clean
 
     echo -e "\033[36m Beginning <<mvn install>> to $currentProjectSourcePath...... \033[0m"
-    mvn -f $currentProjectSourcePath install
+    mvn -f $currentProjectSourcePath/pom.xml install
 
     echo -e "\033[36m Beginning <<spring cloud applications>> to $currentProjectSourcePath...... \033[0m"
     docker-compose -f ./$springCloudFileName up -d
