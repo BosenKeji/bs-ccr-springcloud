@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IUserProductComboDayClientService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,8 +29,18 @@ public class ConsumerUserProductComboDayController {
     private IUserProductComboDayClientService iUserProductComboDayClientService;
 
     @GetMapping("/list_by_tel")
-    @ApiOperation(value = "通过用户电话 获取用户套餐时长列表 接口",httpMethod = "GET")
-    public Object listByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String tel, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
+    @ApiOperation(value = "通过用户电话 获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListByTel")
+    public PageInfo listByTel(@RequestParam("tel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String tel, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
+
+        return this.iUserProductComboDayClientService.listByTel(tel,pageNum,pageSize);
+
+    }
+
+    @GetMapping("/list_by_tel_and_combo_id")
+    @ApiOperation(value = "通过用户电话和用户套餐ID 获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListByTelAndComboId")
+    public PageInfo listByTelAndComboId(@RequestParam(value = "tel",defaultValue = "") @ApiParam(value = "用户电话",type = "string",example = "13556559840") String tel,
+                                        @RequestParam(value = "userProductComboId",defaultValue = "0") @ApiParam(value = "用户套餐ID",type = "integer",example = "1") int userProductComboId,
+                                        @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
 
         return this.iUserProductComboDayClientService.listByTel(tel,pageNum,pageSize);
 
@@ -37,7 +48,7 @@ public class ConsumerUserProductComboDayController {
 
     @GetMapping("/")
     @ApiOperation(value = "获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListWithPage")
-    public Object list(
+    public PageInfo list(
             @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
 
         return this.iUserProductComboDayClientService.list(pageNum,pageSize);
@@ -45,8 +56,8 @@ public class ConsumerUserProductComboDayController {
     }
 
     @GetMapping("/list_by_user_product_combo_id")
-    @ApiOperation(value = "通过用户套餐ID 获取用户套餐时长列表 接口",httpMethod = "GET")
-    public Object listByUserProductComboId(@RequestParam("userProductComboId") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
+    @ApiOperation(value = "通过用户套餐ID 获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListByComboId")
+    public PageInfo listByUserProductComboId(@RequestParam("userProductComboId") @ApiParam(value = "用户套餐ID",required = true,type = "integer",example = "1") int userProductComboId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
 
         return this.iUserProductComboDayClientService.listByUserProductComboId(userProductComboId,pageNum,pageSize);
 
