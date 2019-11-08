@@ -65,7 +65,8 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
 
         for (UserProductComboDay userProductComboDay : all) {
             userIds.add(userProductComboDay.getUserId());
-            adminIds.add(userProductComboDay.getUserProductComboDayByAdmin().getAdminId());
+            if(null != userProductComboDay.getUserProductComboDayByAdmin())
+                adminIds.add(userProductComboDay.getUserProductComboDayByAdmin().getAdminId());
         }
 
         getUserByIds(all,userIds);

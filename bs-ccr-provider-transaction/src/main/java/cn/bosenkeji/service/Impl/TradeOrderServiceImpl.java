@@ -127,6 +127,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
      */
     public boolean pushToOpenSearch(int tradeOrderId) {
 
+        try {
         if(tradeOrderId <= 0)
             return false;
         OpenSearchFormat<TradeOrder> field=new OpenSearchFormat<>();
@@ -142,7 +143,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         String jsonList = JSON.toJSONString(list);
         System.out.println("jsonList = " + jsonList);
 
-        try {
+
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");

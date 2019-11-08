@@ -7,12 +7,15 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xivin
@@ -39,6 +42,13 @@ public class ConsumerUserProductComboController {
         return this.iUserProductComboClientService.add(userProductCombo);
     }
 
+    @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboListWithPage")
+    @GetMapping("/")
+    public PageInfo listByPage(@RequestParam(value="pageNum",defaultValue = "1") int pageNum,
+                                  @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+        return this.iUserProductComboClientService.listByPage(pageNum,pageSize);
+    }
+
     @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")
     @GetMapping("/list_by_user_tel")
     public PageInfo listByUserTel(@RequestParam("userTel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String userTel,
@@ -53,7 +63,17 @@ public class ConsumerUserProductComboController {
                                      @RequestParam(value = "id",defaultValue = "0") @ApiParam(value = "用户套餐ID",type = "integer",example = "1") int id,
                                 @RequestParam(value="pageNum",defaultValue = "1") int pageNum,
                                 @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
-        return this.iUserProductComboClientService.listByUserTel(userTel,pageNum,pageSize);
+        if(id>0) {
+            UserProductCombo userProductCombo = this.iUserProductComboClientService.getUserProductCombo(id);
+            List list = new ArrayList();
+            list.add(userProductCombo);
+            return new PageInfo<>(list);
+        }else if (StringUtils.isNotBlank(userTel)) {
+            return this.iUserProductComboClientService.listByUserTel(userTel, pageNum, pageSize);
+        }
+        else {
+            return this.iUserProductComboClientService.listByPage(pageNum,pageSize);
+        }
     }
 
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")

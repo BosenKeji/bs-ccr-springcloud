@@ -1,5 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.interfaces.CommonResultNumberEnum;
 import cn.bosenkeji.mapper.OrderGroupMapper;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.OrderGroupService;
@@ -95,6 +96,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     public boolean pushToOpenSearch(int orderGroupId) {
 
+        try {
         OrderGroup orderGroup = getOneById(orderGroupId);
         if(null == orderGroup)
             return false;
@@ -114,7 +116,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
 
 
-        try {
+
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderGroupTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
@@ -218,4 +220,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         return this.orderGroupMapper.partFindByCoinPairChoiceIds(coinPairChoiceIds);
     }
 
+    @Override
+    public Integer updateOpenSearchFromSql(int id) {
+        return pushToOpenSearch(id)==true? CommonResultNumberEnum.SUCCESS :CommonResultNumberEnum.FAIL;
+    }
 }

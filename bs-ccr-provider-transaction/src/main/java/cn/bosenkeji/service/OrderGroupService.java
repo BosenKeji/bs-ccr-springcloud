@@ -31,4 +31,6 @@ public interface OrderGroupService {
     List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId);
 
     List<OrderGroup> partFindByCoinPairChoiceIds(List<Integer> coinPairChoiceIds);
+
+    Integer updateOpenSearchFromSql(int id);
 }

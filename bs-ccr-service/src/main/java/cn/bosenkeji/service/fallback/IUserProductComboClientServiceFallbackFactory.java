@@ -70,6 +70,17 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
             public Result delete(int id) {
                 return new Result(-1,"hystrix");
             }
+
+            @Override
+            public PageInfo listByPage(int pageNum, int pageSize) {
+
+                UserProductCombo userProductCombo=new UserProductCombo();
+                userProductCombo.setOrderNumber("hystrix");
+                userProductCombo.setRemark("hystrix");
+                List list=new ArrayList();
+                list.add(userProductCombo);
+                return new PageInfo(list);
+            }
         };
     }
 }

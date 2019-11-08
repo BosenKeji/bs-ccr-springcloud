@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,12 @@ public class ConsumerUserProductComboDayController {
                                         @RequestParam(value = "userProductComboId",defaultValue = "0") @ApiParam(value = "用户套餐ID",type = "integer",example = "1") int userProductComboId,
                                         @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
 
-        return this.iUserProductComboDayClientService.listByTel(tel,pageNum,pageSize);
+        if(userProductComboId>0)
+            return this.iUserProductComboDayClientService.listByUserProductComboId(userProductComboId, pageNum, pageSize);
+        else if(StringUtils.isNotBlank(tel))
+            return this.iUserProductComboDayClientService.listByTel(tel,pageNum,pageSize);
+        else
+            return this.iUserProductComboDayClientService.list(pageNum,pageSize);
 
     }
 

@@ -13,7 +13,7 @@ spring:
         server-addr: 127.0.0.1:8848
 
 open-search:
-  access-key: LTAIEBWhTbhsWByO
-  secret-key: FXqHcqjJMPftFuMjH1HOZeGpAGZ7Ko
-  host: http://opensearch-cn-qingdao.aliyuncs.com
-  appName: bs_ccr_trade_dev
+  access-key: LTAI4FipRPK3htsT54j4ahZa
+  secret-key: Oz9fRDjndnfTWMlBCcw8mVkm2Z0xQV
+  host: http://opensearch-cn-shenzhen.aliyuncs.com
+  appName: bs_ccr_search_trade_dev

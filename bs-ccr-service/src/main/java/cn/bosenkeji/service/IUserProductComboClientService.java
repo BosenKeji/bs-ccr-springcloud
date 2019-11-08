@@ -41,5 +41,6 @@ public interface IUserProductComboClientService {
     @DeleteMapping("/user_product_combo/{id}")
     Result delete(@PathVariable("id") int id);
 
-
+    @GetMapping("/user_product_combo/")
+    PageInfo listByPage(@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
 }
