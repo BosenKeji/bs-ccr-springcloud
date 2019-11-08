@@ -44,12 +44,12 @@ public class IOrderGroupClientServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public Result updateOneOrderGroup(OrderGroup orderGroup, int userId) {
+            public Result updateOneOrderGroup(OrderGroup orderGroup) {
                 return new Result<>(-1,"hystrix");
             }
 
             @Override
-            public Result deleteOne(int id, int userId) {
+            public Result deleteOne(int id) {
                 return new Result<>(-1,"hystrix");
             }
 

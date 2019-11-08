@@ -57,16 +57,14 @@ public class ConsumerOrderGroupController {
 
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
-    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string")@NotNull OrderGroup orderGroup,
-                         @ApiIgnore @TokenUser int userId){
-        return this.iOrderGroupClientService.updateOneOrderGroup(orderGroup,userId);
+    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string")@NotNull OrderGroup orderGroup){
+        return this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
     }
 
     @ApiOperation(value = "删除单个订单组信息",httpMethod = "DELETE",nickname = "deleteOneOrderGroupById")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int id,
-                         @ApiIgnore @TokenUser int userId){
-        return this.iOrderGroupClientService.deleteOne(id, userId);
+    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int id){
+        return this.iOrderGroupClientService.deleteOne(id);
     }
 
     @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")

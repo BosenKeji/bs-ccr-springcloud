@@ -90,10 +90,10 @@
       <if test="isEnd != null">
         is_end,
       </if>
-      <if test="endType != null">
+      <if test="endType > 0">
         end_type,
       </if>
-      <if test="status != null">
+      <if test="status > 0">
         `status`,
       </if>
       <if test="createdAt != null">
@@ -116,10 +116,10 @@
       <if test="isEnd != null">
         #{isEnd,jdbcType=TINYINT},
       </if>
-      <if test="endType != null">
+      <if test="endType > 0">
         #{endType,jdbcType=TINYINT},
       </if>
-      <if test="status != null">
+      <if test="status > 0">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
@@ -146,13 +146,13 @@
       <if test="endProfitRatio != null">
         end_profit_ratio = #{endProfitRatio,jdbcType=INTEGER},
       </if>
-      <if test="isEnd != null">
+      <if test="isEnd > 0">
         is_end = #{isEnd,jdbcType=TINYINT},
       </if>
-      <if test="endType != null">
+      <if test="endType > 0">
         end_type = #{endType,jdbcType=TINYINT},
       </if>
-      <if test="status != null">
+      <if test="status > 0">
         `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
