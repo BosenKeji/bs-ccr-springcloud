@@ -57,22 +57,20 @@ public class ConsumerOrderGroupController {
 
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
-    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string")@NotNull OrderGroup orderGroup,
-                         @ApiIgnore @TokenUser int userId){
-        return this.iOrderGroupClientService.updateOneOrderGroup(orderGroup,userId);
+    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string")@NotNull OrderGroup orderGroup){
+        return this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
     }
 
     @ApiOperation(value = "删除单个订单组信息",httpMethod = "DELETE",nickname = "deleteOneOrderGroupById")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int id,
-                         @ApiIgnore @TokenUser int userId){
-        return this.iOrderGroupClientService.deleteOne(id, userId);
+    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int id){
+        return this.iOrderGroupClientService.deleteOne(id);
     }
 
     @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
     @GetMapping("/search_group")
-    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为yyyy-mm-dd mm:ss:xx") @Min(0) Long startTime,
-                                               @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为yyyy-mm-dd mm:ss:xx") @Min(0) Long endTime,
+    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long",example = "1") @Min(0) Long startTime,
+                                               @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 ",required = true,type = "Long",example = "1") @Min(0) Long endTime,
                                                @RequestParam("coinPairChoiceId")@Min(1)@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
         return this.iOrderGroupClientService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId);
     }

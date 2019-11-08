@@ -20,9 +20,9 @@ public interface OrderGroupService {
 
     Optional<Integer> add(OrderGroup orderGroup);
 
-    Optional<Integer> update(OrderGroup orderGroup,int userId);
+    Optional<Integer> update(OrderGroup orderGroup);
 
-    Optional<Integer> delete(int id,int userId);
+    Optional<Integer> delete(int id);
 
     Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 

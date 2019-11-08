@@ -38,8 +38,8 @@ public class OrderGroupController {
     }
     @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
     @GetMapping("/search_group")
-    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为yyyy-mm-dd mm:ss:xx") Long startTime,
-                                              @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 格式为yyyy-mm-dd mm:ss:xx") Long endTime,
+    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long") Long startTime,
+                                              @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间",required = true,type = "Long") Long endTime,
                                               @RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
         return new Result<>(this.orderGroupService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId));
     }
@@ -62,12 +62,12 @@ public class OrderGroupController {
 
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
-    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup,
-                         @RequestParam("userId") @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int userId){
+    public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") OrderGroup orderGroup
+                         ){
         if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() <= 0){
             return new Result<>(null,"订单组不存在，更新订单组失败！");
         }
-        Optional<Integer> result = this.orderGroupService.update(orderGroup,userId);
+        Optional<Integer> result = this.orderGroupService.update(orderGroup);
         if (result.get() == CommonConstantUtil.VERIFY_FAIL){
             return new Result<>(null,"不能操作不是自己的东西哦！");
         }
@@ -76,12 +76,11 @@ public class OrderGroupController {
 
     @ApiOperation(value = "删除单个订单组信息",httpMethod = "DELETE",nickname = "deleteOneOrderGroupById")
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int orderGroupId,
-                         @RequestParam("userId") @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int userId){
+    public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单组id", required = true, type = "integer",example = "1") int orderGroupId){
         if (this.orderGroupService.checkExistByID(orderGroupId).get() <= 0){
             return new Result<>(null,"订单组不存在！");
         }
-        Optional<Integer> result = this.orderGroupService.delete(orderGroupId,userId);
+        Optional<Integer> result = this.orderGroupService.delete(orderGroupId);
         if (result.get() == CommonConstantUtil.VERIFY_FAIL){
             return new Result<>(null,"不能删除不是自己的东西哦！😯");
         }

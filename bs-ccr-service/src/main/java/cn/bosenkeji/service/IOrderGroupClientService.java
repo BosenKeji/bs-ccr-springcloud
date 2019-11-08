@@ -27,10 +27,10 @@ public interface IOrderGroupClientService {
     public Result addOneOrderGroup(@RequestBody OrderGroup orderGroup);
 
     @PutMapping("/order_group/")
-    public Result updateOneOrderGroup(@RequestBody OrderGroup orderGroup,@RequestParam("userId") int userId);
+    public Result updateOneOrderGroup(@RequestBody OrderGroup orderGroup);
 
     @DeleteMapping("/order_group/{id}")
-    public Result deleteOne(@PathVariable("id") int id,@RequestParam("userId") int userId);
+    public Result deleteOne(@PathVariable("id") int id);
 
     @GetMapping("/order_group/search_group")
     public Result searchTradeRecordByCondition(@RequestParam(value = "startTime") Long startTime,

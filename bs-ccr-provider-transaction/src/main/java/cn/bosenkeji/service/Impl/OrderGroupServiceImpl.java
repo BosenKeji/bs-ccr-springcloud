@@ -54,7 +54,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     private DocumentClient documentClient;
 
-
     @Resource
     OpenSearchClient openSearchClient;
 
@@ -132,7 +131,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
-    public Optional<Integer> update(OrderGroup orderGroup,int userId) {
+    public Optional<Integer> update(OrderGroup orderGroup) {
             double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY;
 
             orderGroup.setEndProfitRatio(endProfitRatio);
@@ -142,7 +141,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
-    public Optional<Integer> delete(int id,int userId) {
+    public Optional<Integer> delete(int id) {
         return Optional.of(this.orderGroupMapper.updateStatusByPrimaryKey(id,CommonConstantUtil.DELETE_STATUS, Timestamp.valueOf(LocalDateTime.now())));
     }
 
