@@ -13,7 +13,9 @@ import io.swagger.models.Operation;
 import io.swagger.models.Path;
 import io.swagger.models.Swagger;
 import io.swagger.models.parameters.Parameter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(tags = "阿里云api管理接口")
+@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
 public class AliCloudApiManageController {
 
     @Resource
@@ -46,6 +49,9 @@ public class AliCloudApiManageController {
 
     @Resource
     ServiceModelToSwagger2Mapper mapper;
+
+    @Value("${api.appId}")
+    private long appId;
 
 
     @ApiOperation(value = "获取分组api的ID信息",httpMethod = "GET")
@@ -65,7 +71,7 @@ public class AliCloudApiManageController {
 
         if (!splitApiIdsList.isEmpty()){
             for (List<String> splitApiIds : splitApiIdsList){
-                aliCloudApiManageUtil.setAppsAuthoritiesResponse((long) 110565671,
+                aliCloudApiManageUtil.setAppsAuthoritiesResponse(appId,
                         splitApiIds.stream().collect(Collectors.joining(",")));
 
             }
@@ -147,7 +153,7 @@ public class AliCloudApiManageController {
             }
         }
 
-        return new Result();
+        return new Result<>(1);
     }
 
     /**
@@ -279,12 +285,13 @@ public class AliCloudApiManageController {
         long start = System.currentTimeMillis();
 
         //建议10个线程以下
-        int nThreads =4;
+        int nThreads =5;
 
         CountDownLatch countDownLatch = new CountDownLatch(nThreads);
 
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
         int size = describeApisId.size();
+        System.out.println(size);
         ConcurrentLinkedQueue<String> describeApisIdQueue = new ConcurrentLinkedQueue<>(describeApisId);
 
         if (!describeApisIdQueue.isEmpty()){
@@ -324,7 +331,7 @@ public class AliCloudApiManageController {
         }
 
 
-        return new Result();
+        return new Result<>(1);
     }
 
     /**
