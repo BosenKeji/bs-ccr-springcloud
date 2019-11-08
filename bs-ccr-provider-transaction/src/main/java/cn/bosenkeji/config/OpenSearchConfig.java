@@ -17,18 +17,18 @@ import org.springframework.context.annotation.DependsOn;
 @Configuration
 public class OpenSearchConfig {
 
-    @Value("${open-search.access-key}")
+    @Value("${aliyun.access-key}")
     //@Value("${spring.cloud.nacos.config.access-key}")
     private String accessKey;
 
-    @Value("${open-search.secret-key}")
+    @Value("${aliyun.secret-key}")
     //@Value("${spring.cloud.nacos.config.secret-key}")
     private String secretKey;
 
-    @Value("${open-search.host}")
+    @Value("${aliyun.open-search.host}")
     private String host;
 
-    @Value("${open-search.appName}")
+    @Value("${aliyun.open-search.app-name}")
     private String appName;
 
     @Bean(name = "openSearchClient")

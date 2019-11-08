@@ -10,12 +10,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-dev:8848
-open-search:
+        server-addr: 127.0.0.1:8848
+
+aliyun:
   access-key: LTAIEBWhTbhsWByO
   secret-key: FXqHcqjJMPftFuMjH1HOZeGpAGZ7Ko
-  host: http://opensearch-cn-qingdao.aliyuncs.com
-  appName: bs_ccr_trade_dev
+  open-search:
+    host: http://opensearch-cn-qingdao.aliyuncs.com
+    app-name: bs_ccr_trade_dev
+
+
 #org:
 #  dromara:
 #    hmily:

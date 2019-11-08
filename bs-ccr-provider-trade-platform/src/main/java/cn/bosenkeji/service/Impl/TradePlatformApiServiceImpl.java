@@ -11,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.io.BufferedWriter;
@@ -41,7 +43,13 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public TradePlatformApi get(int id) {
-        return tradePlatformApiMapper.selectByPrimaryKey(id);
+        TradePlatformApi tradePlatformApi = tradePlatformApiMapper.selectByPrimaryKey(id);
+        if (tradePlatformApi != null){
+            String secret = tradePlatformApi.getSecret();
+            tradePlatformApi.setSecret(decryptSecretByPrivateKey(secret));
+        }
+
+        return tradePlatformApi;
     }
 
     @Override
@@ -51,7 +59,52 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public Optional<Integer> add(TradePlatformApi tradePlatformApi) {
+        List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(tradePlatformApi.getUserId());
+
+        if (!CollectionUtils.isEmpty(tradePlatformApis)){
+            for (TradePlatformApi t : tradePlatformApis) {
+                String keyStr , keyForDB;
+                keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
+                int indexKeyStr =keyStr.indexOf("_",2);
+                keyStr = keyStr.substring(0,indexKeyStr);
+
+                keyForDB = decryptSecretByPrivateKey(t.getSecret());
+                int indexKeyForDB = keyForDB.indexOf("_",2);
+                keyForDB = keyForDB.substring(0,indexKeyForDB);
+                System.out.println(indexKeyForDB);
+                if (keyStr.equals(keyForDB)){
+                    return Optional.of(-1);
+                }
+            }
+        }
         return Optional.ofNullable(tradePlatformApiMapper.insertSelective(tradePlatformApi));
+    }
+
+    /**
+     * 解密
+     * @param secret 密文
+     * @return
+     */
+    private static String decryptSecretByPrivateKey(String secret){
+        String apiKey = "";
+        if (RsaUtils.checkKeyPairOnOSS()){
+            RsaUtils.downloadPrivateKeyByOSS();
+            try {
+                String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+                String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
+                byte[] code = Base64Utils.decodeFromString(secret);
+                byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),0);
+                apiKey = Base64.toBase64String(decode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return apiKey;
+    }
+
+    public static void main(String[] args) {
+        String str = "tWHwUOeFgm8jz5XdDguZKLIk1V8EmH2npXnyw/IBGe4kozYtoxpS3EXOE9Jm5DoxzbejNbHz+DevtraB9J6UZN73NX6RSAtsuIiWaQDHIpSe6Yn2z/75xGD5+c2NDb5S+JDAuV0UW5jYPMD4C8OQoKZBlDv8CJp28dRQY1pmGAQ=";
+        System.out.println(decryptSecretByPrivateKey(str));
     }
 
     @Override

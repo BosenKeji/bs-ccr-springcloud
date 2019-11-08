@@ -1,5 +1,11 @@
 package cn.bosenkeji.util;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.internal.OSSHeaders;
+import com.aliyun.oss.model.CannedAccessControlList;
+import com.aliyun.oss.model.GetObjectRequest;
+import com.aliyun.oss.model.ObjectMetadata;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
@@ -7,8 +13,11 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
@@ -52,18 +61,24 @@ public class RsaUtils {
     /**
      * RSA最大解密密文大小
      */
-    private static final int MAX_DECRYPT_BLOCK = 128;
+    public static final int MAX_DECRYPT_BLOCK = 128;
 
     /**
      * RSA 位数 如果采用2048 上面最大加密和最大解密则须填写:  245 256
      */
     private static final int INITIALIZE_LENGTH = 1024;
 
+    private static final String publicKeyFileName = "publicKey.keystore";
 
-    private static String publicKeyFileName = "publicKey.keystore";
+    private static final String privateKeyFileName = "privateKey.keystore";
 
-    private static String privateKeyFileName = "privateKey.keystore";
+    private static final String accessKey = "LTAISwQkitLFbG0t";
 
+    private static final String secretKey = "aCeWQl874e6Jvh76GtfhEAeC24hKl0";
+
+    private static final String endPoint = "oss-cn-shenzhen.aliyuncs.com";
+
+    private  static final String bucketName = "bs-follow";
 
 
     /**
@@ -229,7 +244,7 @@ public class RsaUtils {
      * @param key 密钥
      * @return byte[] 解密数据
      * */
-    public static byte[] decryptByPrivateKey(byte[] data,byte[] key) throws Exception{
+    public static byte[] decryptByPrivateKey(byte[] data,byte[] key,int segmentSize) throws Exception{
         //取得私钥
         PKCS8EncodedKeySpec pkcs8KeySpec=new PKCS8EncodedKeySpec(key);
         KeyFactory keyFactory=KeyFactory.getInstance(KEY_ALGORITHM);
@@ -238,6 +253,9 @@ public class RsaUtils {
         //数据解密
         Cipher cipher=Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        if (segmentSize >= 128){
+            return cipherDoFinal(cipher,data,segmentSize);
+        }
         return cipher.doFinal(data);
     }
 
@@ -279,6 +297,69 @@ public class RsaUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 把密钥上传到OSS
+     */
+    public static void loadKeyPairToOSS(String publicKey,String privateKey){
+        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+        loadKeyPairToFile(publicKey, privateKey);
+
+        try {
+            InputStream inputStreamPub = new FileInputStream(publicKeyFileName);
+            InputStream inputStreamPri = new FileInputStream(privateKeyFileName);
+
+            //设置存储类型与访问权限
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setObjectAcl(CannedAccessControlList.Private);
+
+            ossClient.putObject(bucketName,"key/"+publicKeyFileName,inputStreamPub);
+            ossClient.putObject(bucketName,"key/"+privateKeyFileName,inputStreamPri,metadata);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            ossClient.shutdown();
+        }
+    }
+
+    /**
+     * 从oss下载私钥到本地
+     */
+    public static void downloadPrivateKeyByOSS(){
+        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+        ossClient.getObject(new GetObjectRequest(bucketName,"key/"+privateKeyFileName),new File(privateKeyFileName));
+        ossClient.shutdown();
+    }
+
+    /**
+     * 判断oss上的私钥是否存在
+     * @return boolean
+     */
+    public static boolean checkPrivateKeyOnOSS(){
+        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+
+        //判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
+        boolean found = ossClient.doesObjectExist(bucketName,"key/"+privateKeyFileName);
+        ossClient.shutdown();
+
+        return found;
+    }
+
+    /**
+     * 判断oss上的密钥对是否存在
+     * @return boolean
+     */
+    public static boolean checkKeyPairOnOSS(){
+        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+
+        //判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
+        boolean foundPub = ossClient.doesObjectExist(bucketName,"key/"+publicKeyFileName);
+        boolean foundPri = ossClient.doesObjectExist(bucketName,"key/"+privateKeyFileName);
+        ossClient.shutdown();
+
+        return foundPub && foundPri;
     }
 
     /**
@@ -329,7 +410,7 @@ public class RsaUtils {
     public static String loadPrivateKeyByFile() throws Exception {
         try (BufferedReader br = new BufferedReader(new FileReader(privateKeyFileName))) {
 
-                String readLine = null;
+            String readLine = null;
             StringBuilder sb = new StringBuilder();
             while ((readLine = br.readLine()) != null) {
                 sb.append(readLine);
@@ -359,6 +440,41 @@ public class RsaUtils {
     public static  String formatPrivateKey(String privateKey){
         return privateKey.replaceAll("-----BEGIN PRIVATE KEY-----","").replaceAll("\n","").replaceAll("-----END PRIVATE KEY-----","").trim();
     }
+    /**
+     * 分段大小
+     * @param cipher
+     * @param srcBytes
+     * @param segmentSize
+     * @return
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException
+     * @throws IOException
+     */
+    public static byte[] cipherDoFinal(Cipher cipher, byte[] srcBytes, int segmentSize)
+            throws  IOException, BadPaddingException, IllegalBlockSizeException {
+        if (segmentSize <= 0)
+            throw new RuntimeException("分段大小必须大于0");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int inputLen = srcBytes.length;
+        int offSet = 0;
+        byte[] cache;
+        int i = 0;
+        // 对数据分段解密
+        while (inputLen - offSet > 0) {
+            if (inputLen - offSet > segmentSize) {
+                cache = cipher.doFinal(srcBytes, offSet, segmentSize);
+            } else {
+                cache = cipher.doFinal(srcBytes, offSet, inputLen - offSet);
+            }
+            out.write(cache, 0, cache.length);
+            i++;
+            offSet = i * segmentSize;
+        }
+        byte[] data = out.toByteArray();
+        out.close();
+        return data;
+    }
+
     public static void main(String[] args) throws Exception {
 
 //        Map<String,String> keyMaps = RsaUtils.genKeyPair();
@@ -378,26 +494,26 @@ public class RsaUtils {
 
 //        RsaUtils.loadKeyPairToFile(keyMaps.get(PUBLIC_KEY),keyMaps.get(PRIVATE_KEY));
 //
-//        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
-//        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
-//
-//        String pubKeyFormat = RsaUtils.formatPublicKey(publicKeyStr);
-//        String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
-//
-//
-//        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-//        String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
-//        String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
-//        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
-//        System.out.println("===========甲方向乙方发送加密数据==============");
-//        System.out.println("原文:"+str);
-//        //公钥加密
-//        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
-//        System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
-//        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
-//        //私钥解密
-//        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat));
-//        System.out.println("乙方解密后的数据："+new String(decode)+"");
+        String publicKeyStr = RsaUtils.loadPublicKeyByFile();
+        String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+
+        String pubKeyFormat = RsaUtils.formatPublicKey(publicKeyStr);
+        String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
+
+
+        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
+        String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
+        String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
+        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
+        System.out.println("===========甲方向乙方发送加密数据==============");
+        System.out.println("原文:"+str);
+        //公钥加密
+        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
+        System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
+        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
+        //私钥解密
+        byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),RsaUtils.MAX_DECRYPT_BLOCK);
+        System.out.println("乙方解密后的数据："+new String(decode)+"");
 
 //        //私钥签名
 //        String sign = RsaUtils.sign(code,Base64.toBase64String(privateKey));
@@ -412,6 +528,8 @@ public class RsaUtils {
 //        System.out.println(RsaUtils.checkFile("publicKey.keystore"));
 //        System.out.println(RsaUtils.checkFile("privateKey.keystore"));
 //        System.out.println("私钥为："+RsaUtils.loadPrivateKeyByFile());
-
+//
+//        downloadPrivateKeyByOSS();
+//        System.out.println(checkPrivateKeyOnOSS());
     }
 }

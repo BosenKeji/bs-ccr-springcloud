@@ -76,6 +76,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             if (orderGroup.getCoinPairChoice() != null){
                 CoinPair coinPair = this.iCoinPairClientService.getCoinPair(orderGroup.getCoinPairChoice().getCoinPartnerId());
                 orderGroup.getCoinPairChoice().setCoinPair(coinPair);
+            }else {
+                return null;
             }
 
             orderGroup.setEndProfitRatio(endProfitRatio);

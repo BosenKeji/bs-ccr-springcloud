@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * add cache by xivin
@@ -90,14 +91,16 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1){
-            return new Result<>(null,"key已存在");
-        }
-
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.add(tradePlatformApi));
+        Optional<Integer> result = this.tradePlatformApiService.add(tradePlatformApi);
+
+        if (result.get() == -1){
+            return new Result<>(null,"key已存在");
+        }
+
+        return new Result<>(result);
     }
 
     @Caching(

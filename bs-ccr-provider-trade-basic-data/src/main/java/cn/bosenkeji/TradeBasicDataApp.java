@@ -29,7 +29,7 @@ public class TradeBasicDataApp {
     }
 
     private static void initKey(){
-        if (!RsaUtils.checkFile("publicKey.keystore") || !RsaUtils.checkFile("privateKey.keystore")){
+        if (!RsaUtils.checkKeyPairOnOSS()){
             //初始化密钥
             //生成密钥对
             LOGGER.info("初始化密钥并生成密钥对");
@@ -39,7 +39,7 @@ public class TradeBasicDataApp {
                 LOGGER.info("公钥："+ keyMap.get(RsaUtils.PUBLIC_KEY));
                 LOGGER.info("私钥："+ keyMap.get(RsaUtils.PRIVATE_KEY));
                 LOGGER.info("密钥保存到.keystore文件");
-                RsaUtils.loadKeyPairToFile(keyMap.get(RsaUtils.PUBLIC_KEY),keyMap.get(RsaUtils.PRIVATE_KEY));
+                RsaUtils.loadKeyPairToOSS(keyMap.get(RsaUtils.PUBLIC_KEY),keyMap.get(RsaUtils.PRIVATE_KEY));
                 LOGGER.info("密钥保存成功！");
             } catch (Exception e) {
                 e.printStackTrace();

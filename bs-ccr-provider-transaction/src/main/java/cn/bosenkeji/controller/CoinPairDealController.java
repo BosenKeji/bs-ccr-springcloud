@@ -39,9 +39,9 @@ public class CoinPairDealController {
     @ApiOperation(value = "获取货币对交易信息",notes = "指定用户ID，获取其所有的交易货币对的信息",
             nickname = "findCoinPairDealByUserId",httpMethod = "GET")
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserId(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "Integer",example = "1") Integer userId,
+            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,type = "Integer",example = "1") Integer pageNum,
+            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,type = "Integer",example = "3") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserId(userId, pageNum ,pageSize);
     }
@@ -51,10 +51,10 @@ public class CoinPairDealController {
     @ApiOperation(value = "获取指定货币对交易信息",notes = "指定用户ID和货币对ID，获取该用户某货币对交易信息",
             nickname = "findCoinPairDealByUserIdAndChoiceId",httpMethod = "GET")
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndChoiceId(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,example = "1") Integer choiceId,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "3") Integer pageSize
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "Integer",example = "1") Integer userId,
+            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,type = "Integer",example = "1") Integer choiceId,
+            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,type = "Integer",example = "1") Integer pageNum,
+            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,type = "Integer",example = "3") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndChoiceId(userId,choiceId,pageNum,pageSize);
     }
@@ -64,10 +64,10 @@ public class CoinPairDealController {
     @ApiOperation(value = "获取指定类型的交易信息",notes = "指定用户ID和交易类型，获取对应的交易信息",
             nickname = "findCoinPairDealByUserIdAndType",httpMethod = "GET")
     public PageInfo<CoinPairDealOther> findCoinPairDealByUserIdAndType(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @PathVariable("type") @Min(1) @Max(2) @ApiParam(value = "货币对交易类型",required = true,example = "1") Integer type,
-            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,example = "1") Integer pageNum,
-            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,example = "1") Integer pageSize
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "Integer",example = "1") Integer userId,
+            @PathVariable("type") @Min(1) @Max(2) @ApiParam(value = "货币对交易类型",required = true,type = "Integer",example = "1") Integer type,
+            @RequestParam("pageNum") @Min(1) @ApiParam(value = "分页起始页",required = true,type = "Integer",example = "1") Integer pageNum,
+            @RequestParam("pageSize") @Min(1) @ApiParam(value = "每页条数",required = true,type = "Integer",example = "1") Integer pageSize
     ) {
         return coinPairDealService.findCoinPairDealByUserIdAndType(userId,type,pageNum,pageSize);
     }
@@ -76,8 +76,8 @@ public class CoinPairDealController {
     @ApiOperation(value = "更新货币对交易状态",notes = "指定货币对交易ID，通过ID更新交易状态",
             nickname = "updateCoinPairDealStartsById",httpMethod = "PUT")
     public Result updateCoinPairDealStartsById(
-            @RequestParam("id") @Min(1) @ApiParam(value = "货币对交易ID",required = true,example = "1") Integer id ,
-            @RequestParam("status") @Min(1) @ApiParam(value = "货币对交易状态",required = true,example = "1") Integer status
+            @RequestParam("id") @Min(1) @ApiParam(value = "货币对交易ID",required = true,type = "Integer",example = "1") Integer id ,
+            @RequestParam("status") @Min(1) @ApiParam(value = "货币对交易状态",required = true,type = "Integer",example = "1") Integer status
     ) {
         return new Result(coinPairDealService.updateCoinPairDealStartsById(id,status));
     }
@@ -86,7 +86,7 @@ public class CoinPairDealController {
     @ApiOperation(value = "获取交易货币对数量" , notes = "指定用户ID，获取其交易货币对的总数",
             nickname = "countCoinPair",httpMethod = "GET")
     public Result countCoinPair(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "Integer",example = "1") Integer userId
     ) {
         return new Result(coinPairDealService.countCoinPair(userId));
     }
@@ -96,8 +96,8 @@ public class CoinPairDealController {
     @ApiOperation(value = "获取货币对交易的下单数",notes = "指定用户ID和货币对ID，统计已下单数",
             nickname = "countCoinPairDeal",httpMethod = "GET")
     public Result countCoinPairDeal(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,example = "1") Integer choiceId
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "Integer",example = "1") Integer userId,
+            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,type = "Integer",example = "1") Integer choiceId
     ) {
         return new Result(coinPairDealService.countCoinPairDeal(userId,choiceId));
     }
@@ -106,7 +106,7 @@ public class CoinPairDealController {
     @ApiOperation(value = "添加货币对交易信息",notes = "对于一个货币对每下一单的信息",
             nickname = "insertCoinPairDealBySelective",httpMethod = "POST")
     public Result insertCoinPairDealBySelective(
-            @RequestBody @NotNull @ApiParam(value = "货币对交易对象",required = true) CoinPairDeal coinPairDeal
+            @RequestBody @NotNull @ApiParam(value = "货币对交易对象",required = true,type = "string") CoinPairDeal coinPairDeal
     ) {
         return new Result(coinPairDealService.insertCoinPairDealBySelective(coinPairDeal)
                 .filter((value)->value>=0)
@@ -119,7 +119,7 @@ public class CoinPairDealController {
             nickname = "deleteCoinPairDealByPrimaryKey",httpMethod = "DELETE"
     )
     public Result deleteCoinPairDealByPrimaryKey(
-            @PathVariable("id") @Min(1) @ApiParam(value = "货币对交易ID",required = true,example = "1") Integer id
+            @PathVariable("id") @Min(1) @ApiParam(value = "货币对交易ID",required = true,type = "integer",example = "1") Integer id
     ) {
         return new Result(coinPairDealService.deleteCoinPairDealByPrimaryKey(id));
     }
@@ -129,8 +129,8 @@ public class CoinPairDealController {
             nickname = "deleteBatchCoinPairDealByUserIdAndCoinPairId",httpMethod = "DELETE"
     )
     public Result deleteBatchCoinPairDealByUserIdAndChoiceId(
-            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,example = "1") Integer userId,
-            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,example = "1") Integer choiceId
+            @PathVariable("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") Integer userId,
+            @PathVariable("choiceId") @Min(1) @ApiParam(value = "自选货币对ID",required = true,type = "integer",example = "1") Integer choiceId
     ) {
         return new Result(coinPairDealService.deleteBatchCoinPairDealByUserIdAndChoiceId(userId,choiceId));
     }
