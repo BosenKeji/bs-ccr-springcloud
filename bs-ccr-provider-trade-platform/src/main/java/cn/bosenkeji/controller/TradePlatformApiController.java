@@ -8,6 +8,7 @@ import cn.bosenkeji.exception.enums.TradePlatformApiEnum;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.util.RsaUtils;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -28,6 +29,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * add cache by xivin
@@ -90,14 +92,16 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1){
-            return new Result<>(null,"key已存在");
-        }
-
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.add(tradePlatformApi));
+        Optional<Integer> result = this.tradePlatformApiService.add(tradePlatformApi);
+
+        if (result.get() == -1){
+            return new Result<>(null,"key已存在");
+        }
+
+        return new Result<>(result);
     }
 
     @Caching(
@@ -121,7 +125,11 @@ public class TradePlatformApiController {
         }
 
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.update(tradePlatformApi));
+        Optional<Integer> result = this.tradePlatformApiService.update(tradePlatformApi);
+        if (result.get() == -1){
+            return new Result<>(null,"key已存在");
+        }
+        return new Result<>(result);
     }
 
     @Caching(
@@ -166,6 +174,12 @@ public class TradePlatformApiController {
     @ApiIgnore
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
+    }
+
+    @GetMapping("/oss_pri_key_cover")
+    public Result priKeyCoverOss(){
+        RsaUtils.downloadPrivateKeyByOSS();
+        return new Result<>(1);
     }
 
 }

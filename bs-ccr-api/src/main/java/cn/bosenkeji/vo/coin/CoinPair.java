@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.coin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -26,15 +27,17 @@ public class CoinPair implements Serializable {
     @ApiModelProperty("是否官方推荐")
     private int isOfficialSet;
 
+    @JsonIgnore
     @ApiModelProperty("货币对状态")
     private int status;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
-
 
     public int getId() {
         return id;

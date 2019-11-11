@@ -211,7 +211,6 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
         List<Integer> uniqueIdResult = new ArrayList<>();
         unique.forEach(coinPairChoice -> uniqueIdResult.add(coinPairChoice.getId()));
-
         List<CoinPairChoice> result = new ArrayList<>();
         coinPairChoices.forEach(coinPairChoice -> {
             if (uniqueIdResult.contains(coinPairChoice.getId())){

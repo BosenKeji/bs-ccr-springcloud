@@ -30,11 +30,14 @@ public class CoinSort implements Serializable {
     @ApiModelProperty("排序序号")
     private int sortNum;
 
+    @JsonIgnore
     private int status;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

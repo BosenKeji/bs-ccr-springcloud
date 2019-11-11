@@ -77,6 +77,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             if (orderGroup.getCoinPairChoice() != null){
                 CoinPair coinPair = this.iCoinPairClientService.getCoinPair(orderGroup.getCoinPairChoice().getCoinPartnerId());
                 orderGroup.getCoinPairChoice().setCoinPair(coinPair);
+            }else {
+                return null;
             }
 
             orderGroup.setEndProfitRatio(endProfitRatio);
@@ -86,6 +88,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     @Override
     public Optional<Integer> add(OrderGroup orderGroup) {
+
         double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY;
 
         orderGroup.setEndProfitRatio(endProfitRatio);

@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.OrderGroupService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.util.Result;
@@ -29,6 +30,9 @@ public class OrderGroupController {
     @Resource
     OrderGroupService orderGroupService;
 
+    @Resource
+    CoinPairChoiceService coinPairChoiceService;
+
     @ApiOperation(value = "获订单组列表",httpMethod = "GET",nickname = "listOrderGroupByPage")
     @GetMapping("/")
     public PageInfo listByPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
@@ -56,6 +60,13 @@ public class OrderGroupController {
     public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单组", required = true, type = "string") OrderGroup orderGroup){
         if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
             return new Result<>(null,"该自选币有未结单的订单组，创建订单组失败！");
+        }
+        if (orderGroup.getCoinPairChoiceId() != 0){
+            if (coinPairChoiceService.get(orderGroup.getCoinPairChoiceId()) == null){
+                return new Result<>(null,"该自选币不存在！");
+            }
+        }else {
+            return new Result<>(null,"该自选币id不合法");
         }
         return new Result<>(this.orderGroupService.add(orderGroup));
     }

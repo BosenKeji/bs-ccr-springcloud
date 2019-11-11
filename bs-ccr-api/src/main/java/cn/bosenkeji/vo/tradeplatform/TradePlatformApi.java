@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.tradeplatform;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -37,11 +38,14 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("别名")
     private String nickname;
 
+    @JsonIgnore
     private int status;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

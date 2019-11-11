@@ -31,7 +31,7 @@ public class OrderGroup implements Serializable {
     */
     @JSONField(name = "end_profit_ratio")
     @ApiModelProperty("结单收益比")
-    private Double endProfitRatio;
+    private double endProfitRatio;
 
     /**
     * 是否结单
@@ -107,11 +107,11 @@ public class OrderGroup implements Serializable {
         this.coinPairChoiceId = coinPairChoiceId;
     }
 
-    public Double getEndProfitRatio() {
+    public double getEndProfitRatio() {
         return endProfitRatio;
     }
 
-    public void setEndProfitRatio(Double endProfitRatio) {
+    public void setEndProfitRatio(double endProfitRatio) {
         this.endProfitRatio = endProfitRatio;
     }
 

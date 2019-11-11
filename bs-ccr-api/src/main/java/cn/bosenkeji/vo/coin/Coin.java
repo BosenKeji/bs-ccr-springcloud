@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.coin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,12 +14,15 @@ public class Coin implements Serializable{
     @ApiModelProperty("货币名")
     private String name;
 
+    @JsonIgnore
     @ApiModelProperty("货币状态")
     private int status;
 
+    @JsonIgnore
     @ApiModelProperty("货币创建时间")
     private Timestamp createdAt;
 
+    @JsonIgnore
     @ApiModelProperty("货币更新时间")
     private Timestamp updatedAt;
 

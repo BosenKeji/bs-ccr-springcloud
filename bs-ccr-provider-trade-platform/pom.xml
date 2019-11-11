@@ -67,6 +67,12 @@
             <artifactId>hmily-spring-boot-starter-springcloud</artifactId>
         </dependency>-->
 
+        <!--aliyun oss-->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+        </dependency>
+
         <!-- 模块依赖 -->
         <dependency>
             <groupId>bosenCCR</groupId>
