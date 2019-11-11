@@ -1,6 +1,7 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface TradePlatformApiMapper {
     List<TradePlatformApi> findAll();
 
     List<TradePlatformApi> findAllByUserId(int userId);
+
+    List<TradePlatformApiListResult> findAllByUser(int userId);
 
     TradePlatformApi selectByTradePlatformId(int tradePlatformId);
 

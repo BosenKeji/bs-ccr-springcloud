@@ -8,6 +8,7 @@ import cn.bosenkeji.exception.enums.TradePlatformApiEnum;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.util.RsaUtils;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -124,7 +125,11 @@ public class TradePlatformApiController {
         }
 
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformApiService.update(tradePlatformApi));
+        Optional<Integer> result = this.tradePlatformApiService.update(tradePlatformApi);
+        if (result.get() == -1){
+            return new Result<>(null,"key已存在");
+        }
+        return new Result<>(result);
     }
 
     @Caching(
@@ -169,6 +174,12 @@ public class TradePlatformApiController {
     @ApiIgnore
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
+    }
+
+    @GetMapping("/oss_pri_key_cover")
+    public Result priKeyCoverOss(){
+        RsaUtils.downloadPrivateKeyByOSS();
+        return new Result<>(1);
     }
 
 }

@@ -22,11 +22,14 @@ public class TradePlatform {
     @ApiModelProperty("交易平台图片url")
     private String logo;
 
+    @JsonIgnore
     private int status;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

@@ -38,7 +38,7 @@ public class TradeBasicDataApp {
                 LOGGER.info("密钥并生成成功");
                 LOGGER.info("公钥："+ keyMap.get(RsaUtils.PUBLIC_KEY));
                 LOGGER.info("私钥："+ keyMap.get(RsaUtils.PRIVATE_KEY));
-                LOGGER.info("密钥保存到.keystore文件");
+                LOGGER.info("密钥保存到OSS");
                 RsaUtils.loadKeyPairToOSS(keyMap.get(RsaUtils.PUBLIC_KEY),keyMap.get(RsaUtils.PRIVATE_KEY));
                 LOGGER.info("密钥保存成功！");
             } catch (Exception e) {

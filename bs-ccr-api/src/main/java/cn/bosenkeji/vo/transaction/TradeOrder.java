@@ -25,28 +25,28 @@ public class TradeOrder {
     */
     @JSONField(name = "trade_average_price")
     @ApiModelProperty("交易均价")
-    private Double tradeAveragePrice;
+    private double tradeAveragePrice;
 
     /**
     * 交易数量
     */
     @JSONField(name = "trade_numbers")
     @ApiModelProperty("交易数量")
-    private Double tradeNumbers;
+    private double tradeNumbers;
 
     /**
     * 交易费用
     */
     @JSONField(name = "trade_cost")
     @ApiModelProperty("交易费用")
-    private Double tradeCost;
+    private double tradeCost;
 
     /**
     * 卖出收益
     */
     @JSONField(name = "shell_profit")
     @ApiModelProperty("卖出收益")
-    private Double shellProfit;
+    private double shellProfit;
 
     /**
     * 交易方式
@@ -88,33 +88,36 @@ public class TradeOrder {
         this.orderGroupId = orderGroupId;
     }
 
-
-    public Double getTradeAveragePrice() {
+    public double getTradeAveragePrice() {
         return tradeAveragePrice;
     }
 
-    public void setTradeAveragePrice(Double tradeAveragePrice) {
+    public void setTradeAveragePrice(double tradeAveragePrice) {
         this.tradeAveragePrice = tradeAveragePrice;
     }
 
-    public Double getTradeNumbers() {
+    public double getTradeNumbers() {
         return tradeNumbers;
     }
 
-    public void setTradeNumbers(Double tradeNumbers) {
+    public void setTradeNumbers(double tradeNumbers) {
         this.tradeNumbers = tradeNumbers;
     }
 
-    public Double getTradeCost() {
+    public double getTradeCost() {
         return tradeCost;
     }
 
-    public void setTradeCost(Double tradeCost) {
+    public void setTradeCost(double tradeCost) {
         this.tradeCost = tradeCost;
     }
 
-    public Double getShellProfit() {
+    public double getShellProfit() {
         return shellProfit;
+    }
+
+    public void setShellProfit(double shellProfit) {
+        this.shellProfit = shellProfit;
     }
 
     public void setShellProfit(Double shellProfit) {

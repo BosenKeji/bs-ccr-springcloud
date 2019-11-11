@@ -19,6 +19,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -68,17 +69,17 @@ public class RsaUtils {
      */
     private static final int INITIALIZE_LENGTH = 1024;
 
-    private static final String publicKeyFileName = "publicKey.keystore";
+    private static final String PUBLIC_KEY_FILE_NAME = "publicKey.keystore";
 
-    private static final String privateKeyFileName = "privateKey.keystore";
+    public static final String PRIVATE_KEY_FILE_NAME = "privateKey.keystore";
 
-    private static final String accessKey = "LTAISwQkitLFbG0t";
+    private static final String ACCESS_KEY = "LTAISwQkitLFbG0t";
 
-    private static final String secretKey = "aCeWQl874e6Jvh76GtfhEAeC24hKl0";
+    private static final String SECRET_KEY = "aCeWQl874e6Jvh76GtfhEAeC24hKl0";
 
-    private static final String endPoint = "oss-cn-shenzhen.aliyuncs.com";
+    private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
 
-    private  static final String bucketName = "bs-follow";
+    private  static final String BUCKET_NAME = "bs-follow";
 
 
     /**
@@ -285,8 +286,8 @@ public class RsaUtils {
      */
     public static void loadKeyPairToFile(String publicKey,String privateKey){
         try(
-                FileWriter pubFw = new FileWriter(publicKeyFileName);
-                FileWriter priFw = new FileWriter(privateKeyFileName);
+                FileWriter pubFw = new FileWriter(PUBLIC_KEY_FILE_NAME);
+                FileWriter priFw = new FileWriter(PRIVATE_KEY_FILE_NAME);
                 BufferedWriter pubBw = new BufferedWriter(pubFw);
                 BufferedWriter priBw = new BufferedWriter(priFw)
         ) {
@@ -304,19 +305,19 @@ public class RsaUtils {
      * 把密钥上传到OSS
      */
     public static void loadKeyPairToOSS(String publicKey,String privateKey){
-        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+        OSS ossClient = new OSSClientBuilder().build(END_POINT,ACCESS_KEY,SECRET_KEY);
         loadKeyPairToFile(publicKey, privateKey);
 
         try {
-            InputStream inputStreamPub = new FileInputStream(publicKeyFileName);
-            InputStream inputStreamPri = new FileInputStream(privateKeyFileName);
+            InputStream inputStreamPub = new FileInputStream(PUBLIC_KEY_FILE_NAME);
+            InputStream inputStreamPri = new FileInputStream(PRIVATE_KEY_FILE_NAME);
 
             //设置存储类型与访问权限
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setObjectAcl(CannedAccessControlList.Private);
 
-            ossClient.putObject(bucketName,"key/"+publicKeyFileName,inputStreamPub);
-            ossClient.putObject(bucketName,"key/"+privateKeyFileName,inputStreamPri,metadata);
+            ossClient.putObject(BUCKET_NAME,"key/"+PUBLIC_KEY_FILE_NAME,inputStreamPub);
+            ossClient.putObject(BUCKET_NAME,"key/"+PRIVATE_KEY_FILE_NAME,inputStreamPri,metadata);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }finally {
@@ -328,8 +329,8 @@ public class RsaUtils {
      * 从oss下载私钥到本地
      */
     public static void downloadPrivateKeyByOSS(){
-        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
-        ossClient.getObject(new GetObjectRequest(bucketName,"key/"+privateKeyFileName),new File(privateKeyFileName));
+        OSS ossClient = new OSSClientBuilder().build(END_POINT,ACCESS_KEY,SECRET_KEY);
+        ossClient.getObject(new GetObjectRequest(BUCKET_NAME,"key/"+PRIVATE_KEY_FILE_NAME),new File(PRIVATE_KEY_FILE_NAME));
         ossClient.shutdown();
     }
 
@@ -338,10 +339,10 @@ public class RsaUtils {
      * @return boolean
      */
     public static boolean checkPrivateKeyOnOSS(){
-        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+        OSS ossClient = new OSSClientBuilder().build(END_POINT,ACCESS_KEY,SECRET_KEY);
 
         //判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
-        boolean found = ossClient.doesObjectExist(bucketName,"key/"+privateKeyFileName);
+        boolean found = ossClient.doesObjectExist(BUCKET_NAME,"key/"+PRIVATE_KEY_FILE_NAME);
         ossClient.shutdown();
 
         return found;
@@ -352,11 +353,11 @@ public class RsaUtils {
      * @return boolean
      */
     public static boolean checkKeyPairOnOSS(){
-        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKey,secretKey);
+        OSS ossClient = new OSSClientBuilder().build(END_POINT,ACCESS_KEY,SECRET_KEY);
 
         //判断文件是否存在。doesObjectExist还有一个参数isOnlyInOSS，如果为true则忽略302重定向或镜像；如果为false，则考虑302重定向或镜像。
-        boolean foundPub = ossClient.doesObjectExist(bucketName,"key/"+publicKeyFileName);
-        boolean foundPri = ossClient.doesObjectExist(bucketName,"key/"+privateKeyFileName);
+        boolean foundPub = ossClient.doesObjectExist(BUCKET_NAME,"key/"+PRIVATE_KEY_FILE_NAME);
+        boolean foundPri = ossClient.doesObjectExist(BUCKET_NAME,"key/"+PRIVATE_KEY_FILE_NAME);
         ossClient.shutdown();
 
         return foundPub && foundPri;
@@ -367,19 +368,19 @@ public class RsaUtils {
      * @param fileName 文件名
      * @return 空 false  不空 true
      */
-    public static boolean checkFile(String fileName){
-        boolean notNull = true;
+    public static boolean checkFileIsNull(String fileName){
+        boolean isNull = false;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))){
             if (bufferedReader.readLine() == null){
-                notNull = false;
+                isNull = true;
             }
         } catch (FileNotFoundException e) {
-            return false;
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return true;
         }
-        return notNull;
+        return isNull;
     }
 
     /**
@@ -388,7 +389,7 @@ public class RsaUtils {
      * @throws Exception
      */
     public static String loadPublicKeyByFile() throws Exception {
-        try (BufferedReader br = new BufferedReader(new FileReader(publicKeyFileName))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PUBLIC_KEY_FILE_NAME))) {
 
             String readLine = null;
             StringBuilder sb = new StringBuilder();
@@ -408,7 +409,7 @@ public class RsaUtils {
      * @throws Exception
      */
     public static String loadPrivateKeyByFile() throws Exception {
-        try (BufferedReader br = new BufferedReader(new FileReader(privateKeyFileName))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PRIVATE_KEY_FILE_NAME))) {
 
             String readLine = null;
             StringBuilder sb = new StringBuilder();
@@ -428,7 +429,7 @@ public class RsaUtils {
      * @param publicKey
      * @return
      */
-    public static  String formatPublicKey(String publicKey){
+    private static  String formatPublicKey(String publicKey){
        return publicKey.replaceAll("-----BEGIN PUBLIC KEY-----","").replaceAll("\n","").replaceAll("-----END PUBLIC KEY-----","").trim();
     }
 
@@ -504,11 +505,11 @@ public class RsaUtils {
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
         String accessKey = "28edf12c-cf599498-5b76183e-dqnh6tvdf3";
         String secretKey = "967b59f5-c10d9f96-63126899-a0cc0";
-        String str="28edf12c-cf599498-5b76183e-dqnh6tvdf3_967b59f5-c10d9f96-63126899-a0cc0";
+        String str = "7368a4f8-8010201b-9a2f7ddf-dab4c45e6f_a0994100-9d8f721b-73df1b4d-43f29";
         System.out.println("===========甲方向乙方发送加密数据==============");
         System.out.println("原文:"+str);
         //公钥加密
-        byte[] code = RsaUtils.encryptByPublicKey(secretKey.getBytes(),Base64.decode(pubKeyFormat));
+        byte[] code = RsaUtils.encryptByPublicKey(str.getBytes(StandardCharsets.UTF_8),Base64.decode(pubKeyFormat));
         System.out.println("甲方 使用乙方公钥加密后的数据："+Base64.toBase64String(code));
         System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
         //私钥解密

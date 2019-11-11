@@ -6,6 +6,7 @@ import cn.bosenkeji.service.TradePlatformService;
 import cn.bosenkeji.util.RsaUtils;
 import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bouncycastle.util.encoders.Base64;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @Author CAJR
@@ -37,24 +39,48 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId) {
         PageHelper.startPage(pageNum,pageSize);
-        List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(userId);
+        List<TradePlatformApiListResult> tradePlatformApis = this.tradePlatformApiMapper.findAllByUser(userId);
+        if (!CollectionUtils.isEmpty(tradePlatformApis)){
+            tradePlatformApis.forEach(t->{
+                if (t.getSecret() != null){
+                    String keyPair = decryptSecretByPrivateKey(t.getSecret());
+                    int index = keyPair.indexOf("_");
+                    String aKey = keyPair.substring(0,index);
+                    t.setAccessKey(aKey);
+                }
+            });
+        }
         return new PageInfo<>(tradePlatformApis);
     }
 
     @Override
     public TradePlatformApi get(int id) {
         TradePlatformApi tradePlatformApi = tradePlatformApiMapper.selectByPrimaryKey(id);
-        if (tradePlatformApi != null){
+        if (tradePlatformApi.getSecret() != null){
             String secret = tradePlatformApi.getSecret();
             tradePlatformApi.setSecret(decryptSecretByPrivateKey(secret));
         }
-
         return tradePlatformApi;
     }
 
     @Override
     public Optional<Integer> update(TradePlatformApi tradePlatformApi) {
-        return Optional.ofNullable(tradePlatformApiMapper.updateByPrimaryKeySelective(tradePlatformApi));
+        if (tradePlatformApi.getSecret() != null){
+            List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(tradePlatformApi.getUserId());
+            List<TradePlatformApi> tradePlatformApisFilter = tradePlatformApis.stream().filter(t -> t.getId() != tradePlatformApi.getId()).collect(Collectors.toList());
+            for (TradePlatformApi t : tradePlatformApisFilter) {
+                String keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
+
+                String keyForDB = decryptSecretByPrivateKey(t.getSecret());
+                System.out.println(keyForDB);
+                assert keyStr != null;
+                if (keyStr.equals(keyForDB)){
+                    return Optional.of(-1);
+                }
+            }
+        }
+
+        return Optional.of(tradePlatformApiMapper.updateByPrimaryKeySelective(tradePlatformApi));
     }
 
     @Override
@@ -65,19 +91,15 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
             for (TradePlatformApi t : tradePlatformApis) {
                 String keyStr , keyForDB;
                 keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
-                int indexKeyStr =keyStr.indexOf("_",2);
-                keyStr = keyStr.substring(0,indexKeyStr);
 
                 keyForDB = decryptSecretByPrivateKey(t.getSecret());
-                int indexKeyForDB = keyForDB.indexOf("_",2);
-                keyForDB = keyForDB.substring(0,indexKeyForDB);
-                System.out.println(indexKeyForDB);
+                System.out.println(keyForDB);
                 if (keyStr.equals(keyForDB)){
                     return Optional.of(-1);
                 }
             }
         }
-        return Optional.ofNullable(tradePlatformApiMapper.insertSelective(tradePlatformApi));
+        return Optional.of(tradePlatformApiMapper.insertSelective(tradePlatformApi));
     }
 
     /**
@@ -85,31 +107,30 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
      * @param secret 密文
      * @return
      */
-    private static String decryptSecretByPrivateKey(String secret){
+    private  String decryptSecretByPrivateKey(String secret){
         String apiKey = "";
-        if (RsaUtils.checkKeyPairOnOSS()){
+
+        //本地私钥文件是否为空
+        if (RsaUtils.checkFileIsNull(RsaUtils.PRIVATE_KEY_FILE_NAME) && RsaUtils.checkKeyPairOnOSS()){
             RsaUtils.downloadPrivateKeyByOSS();
-            try {
-                String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
-                String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
-                byte[] code = Base64Utils.decodeFromString(secret);
-                byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),0);
-                apiKey = Base64.toBase64String(decode);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+
+        try {
+            String privateKeyStr = RsaUtils.loadPrivateKeyByFile();
+            String priKeyFormat = RsaUtils.formatPrivateKey(privateKeyStr);
+            byte[] code = Base64.decode(secret);
+            byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),0);
+            apiKey = new String(decode);
+        } catch (Exception e) {
+            return null;
         }
         return apiKey;
     }
 
-    public static void main(String[] args) {
-        String str = "tWHwUOeFgm8jz5XdDguZKLIk1V8EmH2npXnyw/IBGe4kozYtoxpS3EXOE9Jm5DoxzbejNbHz+DevtraB9J6UZN73NX6RSAtsuIiWaQDHIpSe6Yn2z/75xGD5+c2NDb5S+JDAuV0UW5jYPMD4C8OQoKZBlDv8CJp28dRQY1pmGAQ=";
-        System.out.println(decryptSecretByPrivateKey(str));
-    }
 
     @Override
     public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(tradePlatformApiMapper.deleteByPrimaryKey(id)) ;
+        return Optional.of(tradePlatformApiMapper.deleteByPrimaryKey(id)) ;
     }
 
     @Override
@@ -119,13 +140,13 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public Optional<Integer> checkExistByKeyAndStatus(int userId,String sign,int status) {
-        return Optional.ofNullable(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,sign, status));
+        return Optional.of(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,sign, status));
     }
 
 
     @Override
     public Optional<Integer> checkExistByUserIdAndNickName(int userId, String nickName) {
-        return Optional.ofNullable(tradePlatformApiMapper.checkExistByUserIdAndNickName(userId, nickName));
+        return Optional.of(tradePlatformApiMapper.checkExistByUserIdAndNickName(userId, nickName));
     }
 
     @Override
