@@ -4,8 +4,11 @@ import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradeOrderClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.transaction.SumShellProfitAggregateVo;
+import cn.bosenkeji.vo.transaction.SumTradeCostAggregateVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -40,4 +43,12 @@ public interface ITradeOrderClientService {
                                                       @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                                       @RequestParam(value="pageSize",defaultValue="12") int pageSize
     );
+
+
+    @GetMapping("/trade_order/total_trade_cost_by_condition")
+    SumTradeCostAggregateVo getTotalTradeCostByCondition(@RequestParam("coinPairChoiceIds")  String coinPairChoiceIds,
+                                                                @RequestParam(value = "tradeType",defaultValue = "0") Integer tradeType);
+
+    @GetMapping("/trade_order/total_shell_profit_by_condition")
+    SumShellProfitAggregateVo getTotalShellProfitByCondition(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds);
 }

@@ -61,6 +61,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private static final String appName = "bs_ccr_trade_dev";
     private static final String orderGroupTable="order_group";
 
+
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int coinPairChoiceId) {
         PageHelper.startPage(pageNum, pageSize);
@@ -114,9 +115,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         String jsonList = JSON.toJSONString(list);
         System.out.println("jsonList = " + jsonList);
 
-
-
-
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderGroupTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
@@ -131,6 +129,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             return false;
         }
     }
+
 
     @Override
     public Optional<Integer> update(OrderGroup orderGroup) {

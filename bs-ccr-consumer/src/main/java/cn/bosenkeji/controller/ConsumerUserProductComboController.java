@@ -42,7 +42,7 @@ public class ConsumerUserProductComboController {
         return this.iUserProductComboClientService.add(userProductCombo);
     }
 
-    @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboListWithPage")
+    @ApiOperation(value="查询用户套餐列表接口",httpMethod = "GET",nickname = "getUserProductComboListWithPage")
     @GetMapping("/")
     public PageInfo listByPage(@RequestParam(value="pageNum",defaultValue = "1") int pageNum,
                                   @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
