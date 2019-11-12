@@ -2,26 +2,17 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
-import cn.bosenkeji.service.TradePlatformService;
 import cn.bosenkeji.util.RsaUtils;
-import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
-import cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bouncycastle.util.encoders.Base64;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +49,6 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
                 String keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
-                assert keyStr != null;
                 if (keyStr.equals(keyForDB)){
                     return Optional.of(-1);
                 }
@@ -70,13 +60,18 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public Optional<Integer> add(TradePlatformApi tradePlatformApi) {
+        if (tradePlatformApi.getSecret() == null){
+            return Optional.empty();
+        }
         List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(tradePlatformApi.getUserId());
 
         if (!CollectionUtils.isEmpty(tradePlatformApis)){
             for (TradePlatformApi t : tradePlatformApis) {
                 String keyStr , keyForDB;
                 keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
-
+                if ("".equals(keyStr)){
+                 return Optional.of(-2);
+                }
                 keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
                 if (keyStr.equals(keyForDB)){
@@ -107,7 +102,7 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
             byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),0);
             apiKey = new String(decode);
         } catch (Exception e) {
-            return null;
+            return apiKey;
         }
         return apiKey;
     }
