@@ -154,8 +154,13 @@ public class CdKeyServiceImpl implements CdKeyService {
             return new Result<>(0,"激活码不存在，激活码续费失败！");
         } else {
             CdKey cdKey = cdKeyMapper.getById(cdKeyId);
-            if (!(userProductComboId == cdKey.getProductComboId())) {
-                return new Result<>(0,"产品不匹配，激活续费失败！");
+            UserProductCombo userProductCombo = iUserProductComboService.get(userProductComboId);
+
+            if (userProductCombo == null ) {
+                return new Result<>(0,"机器人不存在，激活失败！");
+            }
+            if (userProductCombo.getProductComboId() != cdKey.getProductComboId()) {
+                return new Result<>(0,"激活码和产品不匹配，激活失败！");
             }
 
             ProductCombo productCombo = iProductComboService.get(cdKey.getProductComboId());
