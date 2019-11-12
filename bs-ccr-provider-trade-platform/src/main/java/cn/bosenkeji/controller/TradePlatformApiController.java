@@ -97,9 +97,13 @@ public class TradePlatformApiController {
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         Optional<Integer> result = this.tradePlatformApiService.add(tradePlatformApi);
 
+        if (result.get() == -2){
+            return new Result<>(null,"密文校验失败！");
+        }
         if (result.get() == -1){
             return new Result<>(null,"key已存在");
         }
+
 
         return new Result<>(result);
     }

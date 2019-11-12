@@ -76,10 +76,12 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
             for (TradePlatformApi t : tradePlatformApis) {
                 String keyStr , keyForDB;
                 keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
-
+                if ("".equals(keyStr)){
+                 return Optional.of(-2);
+                }
                 keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
-                if (keyStr.equals(keyForDB) || "".equals(keyStr)){
+                if (keyStr.equals(keyForDB)){
                     return Optional.of(-1);
                 }
             }
