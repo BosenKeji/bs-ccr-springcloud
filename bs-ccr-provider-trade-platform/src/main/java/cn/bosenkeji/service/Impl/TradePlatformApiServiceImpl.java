@@ -1,5 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.interfaces.CommonResultNumberEnum;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.util.RsaUtils;
