@@ -1,14 +1,9 @@
 package cn.bosenkeji.service.Impl;
 
-import cn.bosenkeji.interfaces.CommonResultNumberEnum;
-import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
-import cn.bosenkeji.service.TradePlatformService;
 import cn.bosenkeji.util.RsaUtils;
-import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
-import cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bouncycastle.util.encoders.Base64;
@@ -16,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -25,9 +19,7 @@ import java.io.FileWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -45,28 +37,13 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId) {
         PageHelper.startPage(pageNum,pageSize);
-        List<TradePlatformApiListResult> tradePlatformApis = this.tradePlatformApiMapper.findAllByUser(userId);
-        if (!CollectionUtils.isEmpty(tradePlatformApis)){
-            tradePlatformApis.forEach(t->{
-                if (t.getSecret() != null){
-                    String keyPair = decryptSecretByPrivateKey(t.getSecret());
-                    int index = keyPair.indexOf("_");
-                    String aKey = keyPair.substring(0,index);
-                    t.setAccessKey(aKey);
-                }
-            });
-        }
+        List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(userId);
         return new PageInfo<>(tradePlatformApis);
     }
 
     @Override
     public TradePlatformApi get(int id) {
-        TradePlatformApi tradePlatformApi = tradePlatformApiMapper.selectByPrimaryKey(id);
-        if (tradePlatformApi.getSecret() != null){
-            String secret = tradePlatformApi.getSecret();
-            tradePlatformApi.setSecret(decryptSecretByPrivateKey(secret));
-        }
-        return tradePlatformApi;
+        return tradePlatformApiMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -79,7 +56,6 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
                 String keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
-                assert keyStr != null;
                 if (keyStr.equals(keyForDB)){
                     return Optional.of(-1);
                 }
@@ -91,6 +67,9 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
     @Override
     public Optional<Integer> add(TradePlatformApi tradePlatformApi) {
+        if (tradePlatformApi.getSecret() == null){
+            return Optional.empty();
+        }
         List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(tradePlatformApi.getUserId());
 
         if (!CollectionUtils.isEmpty(tradePlatformApis)){
@@ -100,7 +79,7 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
 
                 keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
-                if (keyStr.equals(keyForDB)){
+                if (keyStr.equals(keyForDB) || "".equals(keyStr)){
                     return Optional.of(-1);
                 }
             }
@@ -128,7 +107,7 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
             byte[] decode = RsaUtils.decryptByPrivateKey(code,Base64.decode(priKeyFormat),0);
             apiKey = new String(decode);
         } catch (Exception e) {
-            return null;
+            return apiKey;
         }
         return apiKey;
     }
