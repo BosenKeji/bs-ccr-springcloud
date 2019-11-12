@@ -39,28 +39,13 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int userId) {
         PageHelper.startPage(pageNum,pageSize);
-        List<TradePlatformApiListResult> tradePlatformApis = this.tradePlatformApiMapper.findAllByUser(userId);
-        if (!CollectionUtils.isEmpty(tradePlatformApis)){
-            tradePlatformApis.forEach(t->{
-                if (t.getSecret() != null){
-                    String keyPair = decryptSecretByPrivateKey(t.getSecret());
-                    int index = keyPair.indexOf("_");
-                    String aKey = keyPair.substring(0,index);
-                    t.setAccessKey(aKey);
-                }
-            });
-        }
+        List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(userId);
         return new PageInfo<>(tradePlatformApis);
     }
 
     @Override
     public TradePlatformApi get(int id) {
-        TradePlatformApi tradePlatformApi = tradePlatformApiMapper.selectByPrimaryKey(id);
-        if (tradePlatformApi.getSecret() != null){
-            String secret = tradePlatformApi.getSecret();
-            tradePlatformApi.setSecret(decryptSecretByPrivateKey(secret));
-        }
-        return tradePlatformApi;
+        return tradePlatformApiMapper.selectByPrimaryKey(id);
     }
 
     @Override
