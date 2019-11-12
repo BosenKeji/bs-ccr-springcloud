@@ -1,9 +1,12 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.interfaces.CommonResultNumberEnum;
+import cn.bosenkeji.interfaces.TradePlatformApiBoundStatus;
 import cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
+import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
@@ -13,8 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Resource
     private TradePlatformApiMapper tradePlatformApiMapper;
+
+    @Resource
+    private TradePlatformApiService tradePlatformApiService;
 
     //注入用户套餐生产者
     @Resource
@@ -190,19 +199,61 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     }
 
-    /*@Override
-    public int checkExistByUserIdAndUserProductComboId(int userId, int userProductComboId) {
-        return Optional.ofNullable(this.tradePlatformApiBindProductComboMapper.checkExistNotBindComboByUserIdAndUserProductComboId(userId,userProductComboId));
-    }*/
 
+    @Transactional
     @Override
     public int updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
-        return this.tradePlatformApiBindProductComboMapper.updateApiByPrimaryKey(tradePlatformApiBindProductCombo);
+        try {
+            //把绑定前的 api状态设为 未绑定
+            TradePlatformApiBindProductCombo preBinding = tradePlatformApiBindProductComboMapper.selectByPrimaryKey(tradePlatformApiBindProductCombo.getId());
+            if (null == preBinding)
+                return CommonResultNumberEnum.FAIL;
+
+            //如果已绑定 则把前api 绑定状态 设为未绑定
+            if(preBinding.getTradePlatformApiId() > 0)
+                tradePlatformApiService.updateIsBound(preBinding.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND);
+
+            //更新 绑定
+            int result = this.tradePlatformApiBindProductComboMapper.updateApiByPrimaryKey(tradePlatformApiBindProductCombo);
+
+            //把绑定后的api 壮体啊设为 已绑定
+            if (result > 0) {
+                if (tradePlatformApiBindProductCombo.getTradePlatformApiId()>0) {
+                    tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.EXIST_BOUND);
+                }
+            }
+
+            return result;
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return CommonResultNumberEnum.FAIL;
+        }
+
     }
 
+    @Transactional
     @Override
     public int delete(int id) {
-        return this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id);
+
+        try{
+
+            //api 绑定状态 设置未 绑定
+            TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = tradePlatformApiBindProductComboMapper.selectByPrimaryKey(id);
+            if (null != tradePlatformApiBindProductCombo && tradePlatformApiBindProductCombo.getTradePlatformApiId() > 0) {
+                tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND);
+            }
+
+            //删除
+            int result = this.tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(id);
+
+            return result;
+
+            }catch (Exception e) {
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return CommonResultNumberEnum.FAIL;
+        }
     }
 
     @Override
@@ -210,10 +261,28 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         return this.tradePlatformApiBindProductComboMapper.checkExistByUserIdAndId(userId,id);
     }
 
+    @Transactional
     @Override
     public int removeBinding(int id) {
 
-        return tradePlatformApiBindProductComboMapper.updateApiIdByPrimaryKey(id,0);
+        try {
+
+            // 先修改api  的 isBound 状态
+            TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = tradePlatformApiBindProductComboMapper.selectByPrimaryKey(id);
+            if (null != tradePlatformApiBindProductCombo && tradePlatformApiBindProductCombo.getTradePlatformApiId() > 0) {
+                tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND);
+            }
+
+            //解除 绑定
+            int result = tradePlatformApiBindProductComboMapper.updateApiIdByPrimaryKey(id, 0);
+
+            return result;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return CommonResultNumberEnum.FAIL;
+        }
     }
 
     @Override
@@ -223,6 +292,13 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     @Override
     public int deleteByComboId(int userProductComboId) {
+
+        //先 把 api绑定状态 设为未绑定 再删除
+        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = tradePlatformApiBindProductComboMapper.selectByComboId(userProductComboId);
+        if(null != tradePlatformApiBindProductCombo && tradePlatformApiBindProductCombo.getTradePlatformApiId() > 0) {
+            tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getId(),TradePlatformApiBoundStatus.NOT_EXIST_BOUND);
+        }
+
         return tradePlatformApiBindProductComboMapper.deleteByComboId(userProductComboId);
     }
 

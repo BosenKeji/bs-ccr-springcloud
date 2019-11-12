@@ -23,6 +23,10 @@ public class TradePlatformApi implements Serializable {
     @ApiModelProperty("交易平台id")
     private int tradePlatformId;
 
+    @ApiModelProperty(hidden = true)
+    private int isBound;
+
+
     @ApiModelProperty("标识")
     private String sign;
 
@@ -143,4 +147,11 @@ public class TradePlatformApi implements Serializable {
         this.tradePlatform = tradePlatform;
     }
 
+    public int getIsBound() {
+        return isBound;
+    }
+
+    public void setIsBound(int isBound) {
+        this.isBound = isBound;
+    }
 }

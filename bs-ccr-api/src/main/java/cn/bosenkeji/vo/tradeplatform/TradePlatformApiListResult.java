@@ -23,6 +23,10 @@ public class TradePlatformApiListResult {
     @ApiModelProperty("别名")
     private String nickname;
 
+    //add by xivin
+    @ApiModelProperty(hidden = true)
+    private int isBound;
+
     @JsonIgnore
     @ApiModelProperty("加密后密钥")
     private String secret;
@@ -84,5 +88,13 @@ public class TradePlatformApiListResult {
 
     public void setTradePlatform(TradePlatform tradePlatform) {
         this.tradePlatform = tradePlatform;
+    }
+
+    public int getIsBound() {
+        return isBound;
+    }
+
+    public void setIsBound(int isBound) {
+        this.isBound = isBound;
     }
 }

@@ -1,5 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.interfaces.CommonResultNumberEnum;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.service.TradePlatformService;
@@ -11,6 +13,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +22,8 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -152,5 +158,25 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Override
     public List<TradePlatformApi> findAll() {
         return tradePlatformApiMapper.findAll();
+    }
+
+    /**
+     * add by xivin
+     * 更新 API isBound 是否被绑定状态
+     * @param id
+     * @param isBound
+     * @return
+     */
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true)
+            }
+    )
+    @Override
+    public int updateIsBound(int id, int isBound) {
+        if(id >0)
+            return this.tradePlatformApiMapper.updateIsBound(id,isBound, Timestamp.valueOf(LocalDateTime.now()));
+        return CommonResultNumberEnum.FAIL;
     }
 }

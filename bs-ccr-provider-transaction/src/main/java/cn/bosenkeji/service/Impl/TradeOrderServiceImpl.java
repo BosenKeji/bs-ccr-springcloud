@@ -25,6 +25,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -44,7 +45,8 @@ import java.util.Optional;
 public class TradeOrderServiceImpl implements TradeOrderService {
 
 
-    private static final String appName = "bs_ccr_trade_dev";
+    @Value("${aliyun.open-search.app-name}")
+    private String appName;
     private static final String orderTable="trade_order";
 
     private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","is_end","end_type","trade_profit_price");
@@ -147,7 +149,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         String jsonList = JSON.toJSONString(list);
         System.out.println("jsonList = " + jsonList);
 
-
+            System.out.println("appname"+appName);
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
@@ -226,6 +228,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             SearchResult execute = searcherClient.execute(searchParamsBuilder);
             String result = execute.getResult();
 
+            System.out.println("result = " + result);
 
             OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
 
