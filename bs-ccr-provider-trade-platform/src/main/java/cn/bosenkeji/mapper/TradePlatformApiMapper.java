@@ -2,7 +2,9 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult;
+import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ public interface TradePlatformApiMapper {
     int checkExistByIdAndUserId(int id,int userId);
 
     int checkExistByUserIdAndNickName(int userId,String nickName);
+
+    int updateIsBound(@Param("id") int id, @Param("isBound") int isBound, @Param("updatedAt") Timestamp updatedAt);
 
 
 }

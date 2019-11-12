@@ -24,6 +24,7 @@ import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -58,8 +59,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     OpenSearchClient openSearchClient;
 
-    private static final String appName = "bs_ccr_trade_dev";
+    @Value("${aliyun.open-search.app-name}")
+    private String appName;
+
     private static final String orderGroupTable="order_group";
+
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int coinPairChoiceId) {
@@ -117,9 +121,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         String jsonList = JSON.toJSONString(list);
         System.out.println("jsonList = " + jsonList);
 
-
-
-
+            System.out.println("APPNAME"+appName);
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderGroupTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
@@ -134,6 +136,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             return false;
         }
     }
+
 
     @Override
     public Optional<Integer> update(OrderGroup orderGroup) {

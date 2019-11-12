@@ -209,4 +209,12 @@
     trade_platform_api_bind_product_combo where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByComboId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"></include>
+    from trade_platform_api_bind_product_combo
+    where user_product_combo_id = #{userProductComboId,jdbcType=INTEGER}
+    limit 1
+  </select>
+
 </mapper>

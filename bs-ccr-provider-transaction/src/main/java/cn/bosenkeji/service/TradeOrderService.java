@@ -2,6 +2,8 @@ package cn.bosenkeji.service;
 
 import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.vo.transaction.OrderSearchRequestVo;
+import cn.bosenkeji.vo.transaction.SumShellProfitAggregateVo;
+import cn.bosenkeji.vo.transaction.SumTradeCostAggregateVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
 
@@ -28,5 +30,6 @@ public interface TradeOrderService {
 
     Integer updateOpenSearchFromSql(int id);
 
-    Object searchAggregateTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType);
+    SumTradeCostAggregateVo searchAggregateTradeOrderSumTradeCostByCondition(String coinPairChoiceIds, Integer tradeType);
+    SumShellProfitAggregateVo searchAggregateTradeOrderSumShellProfitByCondition(String coinPairChoiceIds);
 }

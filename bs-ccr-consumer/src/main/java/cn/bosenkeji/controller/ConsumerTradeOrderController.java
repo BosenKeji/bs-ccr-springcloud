@@ -4,6 +4,8 @@ import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.interfaces.TradeTypeInterface;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.transaction.SumShellProfitAggregateVo;
+import cn.bosenkeji.vo.transaction.SumTradeCostAggregateVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -62,7 +64,7 @@ public class ConsumerTradeOrderController {
         return this.iTradeOrderClientService.delete(id);
     }
 
-    @ApiOperation(value = " 多条件查询 买入日记 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @ApiOperation(value = " 多条件查询 买入日记 方法",httpMethod = "GET",nickname = "searchTradeOrderForBugByCondition")
     @GetMapping("/by_condition_for_buy_logs")
     public OpenSearchPage searchBuyLogsByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") @NotBlank String coinPairChoiceIds,
                                                       @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为 1572969600000",example = "1572969600000") Long startTime,
@@ -75,7 +77,7 @@ public class ConsumerTradeOrderController {
        return this.iTradeOrderClientService.searchTradeOrderByCondition(coinPairChoiceIds,tradeType,startTime,endTime,pageNum,pageSize);
     }
 
-    @ApiOperation(value = " 多条件查询 卖出收益总结 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
+    @ApiOperation(value = " 多条件查询 卖出收益总结 方法",httpMethod = "GET",nickname = "searchTradeOrderForShellByCondition")
     @GetMapping("/by_condition_for_shell_profit")
     public OpenSearchPage searchShellProfitByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
                                                    @RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 格式为 1572969600000",example = "1572969600000") Long startTime,
@@ -86,6 +88,23 @@ public class ConsumerTradeOrderController {
     {
         int tradeType = TradeTypeInterface.SHELL;
         return this.iTradeOrderClientService.searchTradeOrderByCondition(coinPairChoiceIds,tradeType,startTime,endTime,pageNum,pageSize);
+    }
+
+    @ApiOperation(value = " 多条件查询 买入 订单 费用 总计 方法",httpMethod = "GET",nickname = "getTradeOrderTotalTradeCostByCondition")
+    @GetMapping("/total_trade_cost_by_condition")
+    public SumTradeCostAggregateVo getTotalTradeCostByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds
+    ) {
+
+        int tradeType = TradeTypeInterface.BUY;
+        return this.iTradeOrderClientService.getTotalTradeCostByCondition(coinPairChoiceIds,tradeType);
+    }
+
+    @ApiOperation(value = " 多条件查询 订单 收益 总计 方法",httpMethod = "GET",nickname = "getTradeOrderTotalShellProfitByCondition")
+    @GetMapping("/total_shell_profit_by_condition")
+    public SumShellProfitAggregateVo getTotalShellProfitByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds
+    ) {
+
+        return this.iTradeOrderClientService.getTotalShellProfitByCondition(coinPairChoiceIds);
     }
 
 }

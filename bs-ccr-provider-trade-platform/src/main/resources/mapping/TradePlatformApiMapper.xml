@@ -10,6 +10,7 @@
     <result column="secret" jdbcType="VARCHAR" property="secret" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_bound" jdbcType="INTEGER" property="isBound" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <association property="tradePlatform" column="trade_platform_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform"
@@ -23,12 +24,13 @@
     <result column="trade_platform_id" jdbcType="INTEGER" property="tradePlatformId" />
     <result column="secret" jdbcType="VARCHAR" property="secret" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="is_bound" jdbcType="INTEGER" property="isBound" />
     <association property="tradePlatform" column="trade_platform_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform"
                  select="cn.bosenkeji.mapper.TradePlatformMapper.selectByPrimaryKey" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_id, trade_platform_id, sign, nickname, `status`,
+    id, user_id, trade_platform_id, sign, nickname, `status`,is_bound,
     created_at, updated_at,secret
   </sql>
   <select id="findAllByUser" parameterType="integer" resultMap="TradePlatformApiListResultMap">
@@ -200,6 +202,12 @@
     created_at = #{createdAt,jdbcType=TIMESTAMP},
     updated_at = #{updatedAt,jdbcType=TIMESTAMP},
     secret = #{secret,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateIsBound">
+    update trade_platform_api
+    set is_bound = #{isBound,jdbcType=INTEGER},
+    updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

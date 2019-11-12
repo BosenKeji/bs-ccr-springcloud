@@ -5,6 +5,8 @@ import cn.bosenkeji.interfaces.OpenSearchTimeType;
 import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderSearchRequestVo;
+import cn.bosenkeji.vo.transaction.SumShellProfitAggregateVo;
+import cn.bosenkeji.vo.transaction.SumTradeCostAggregateVo;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -77,13 +79,21 @@ public class TradeOrderController {
         return this.tradeOrderService.searchTradeOrderByCondition(orderSearchRequestVo,pageNum,pageSize);
     }
 
-    @ApiOperation(value = " 多条件查询 订单 总计 方法",httpMethod = "GET",nickname = "getTotalLogsByCondition")
-    @GetMapping("/total_logs_by_condition")
-    public Object getTotalLogsByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
-                                                      @RequestParam(value = "tradeType",defaultValue = "0") @ApiParam(value = "交易类型 0全部 1买入 2卖出",required = true,type = "integer",example = "1") Integer tradeType
+    @ApiOperation(value = " 多条件查询 订单 费用 总计 方法",httpMethod = "GET",nickname = "getTradeOrderTotalTradeCostByCondition")
+    @GetMapping("/total_trade_cost_by_condition")
+    public SumTradeCostAggregateVo getTotalTradeCostByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds,
+                                                                @RequestParam(value = "tradeType",defaultValue = "0") @ApiParam(value = "交易类型 0全部 1买入 2卖出",required = true,type = "integer",example = "1") Integer tradeType
     ) {
 
-        return this.tradeOrderService.searchAggregateTradeOrderByCondition(coinPairChoiceIds,tradeType);
+        return this.tradeOrderService.searchAggregateTradeOrderSumTradeCostByCondition(coinPairChoiceIds,tradeType);
+    }
+
+    @ApiOperation(value = " 多条件查询 订单 收益 总计 方法",httpMethod = "GET",nickname = "getTradeOrderTotalShellProfitByCondition")
+    @GetMapping("/total_shell_profit_by_condition")
+    public SumShellProfitAggregateVo getTotalShellProfitByCondition(@RequestParam("coinPairChoiceIds") @ApiParam(value = "多个 自选币 id 字符串 不可为空",required = true,type = "string",example = "1,2") String coinPairChoiceIds
+    ) {
+
+        return this.tradeOrderService.searchAggregateTradeOrderSumShellProfitByCondition(coinPairChoiceIds);
     }
 
     @ApiOperation(value = "根据 ID 把 tradeOrder 添加/更新 到openSearch",httpMethod = "PUT",nickname = "pushToOpenSearchById")

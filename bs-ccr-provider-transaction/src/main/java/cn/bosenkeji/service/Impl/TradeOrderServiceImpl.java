@@ -23,7 +23,9 @@ import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -43,7 +45,8 @@ import java.util.Optional;
 public class TradeOrderServiceImpl implements TradeOrderService {
 
 
-    private static final String appName = "bs_ccr_trade_dev";
+    @Value("${aliyun.open-search.app-name}")
+    private String appName;
     private static final String orderTable="trade_order";
 
     private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","is_end","end_type","trade_profit_price");
@@ -57,6 +60,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
     @Resource
     private OpenSearchClient openSearchClient;
+
+    //orderGroup 推送失败状态 3
+    private static final int SHELL_STATUS=2;
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
@@ -143,7 +149,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         String jsonList = JSON.toJSONString(list);
         System.out.println("jsonList = " + jsonList);
 
-
+            System.out.println("appname"+appName);
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
@@ -183,7 +189,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         //设置 自选币 条件
         String[] coin_ids = orderSearchRequestVo.getCoinPairChoiceIds().split(",");
         for (String coin_id : coin_ids) {
-            System.out.println("coin_id = " + coin_id);
+
             Integer integer = Integer.valueOf(coin_id);
             if(null != integer && integer>0) {
                 queryBuffer.append(" OR coin_pair_choice_id:'"+integer+"' ");
@@ -215,16 +221,16 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         }
 
         searchParams.setQuery(query);
-        System.out.println("the query is"+query);
+
         SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
 
         try{
             SearchResult execute = searcherClient.execute(searchParamsBuilder);
             String result = execute.getResult();
 
+            System.out.println("result = " + result);
 
             OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
-            System.out.println("openSearchExecuteResult = " + openSearchExecuteResult);
 
             List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
             List<TradeOrderLogVo> tradeOrderLogVos=new ArrayList<>();
@@ -267,7 +273,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     }
 
     @Override
-    public Object searchAggregateTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType) {
+    public SumTradeCostAggregateVo searchAggregateTradeOrderSumTradeCostByCondition(String coinPairChoiceIds, Integer tradeType) {
 
         SearcherClient searcherClient = new SearcherClient(openSearchClient);
 
@@ -287,7 +293,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         //设置 自选币 条件
         String[] coin_ids = coinPairChoiceIds.split(",");
         for (String coin_id : coin_ids) {
-            System.out.println("coin_id = " + coin_id);
+
             Integer integer = Integer.valueOf(coin_id);
             if(null != integer && integer>0) {
                 queryBuffer.append(" OR coin_pair_choice_id:'"+integer+"' ");
@@ -317,12 +323,12 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         searchParams.addToAggregates(aggregate);
 
 
-        System.out.println("the query is"+query);
         SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
 
         try{
             SearchResult execute = searcherClient.execute(searchParamsBuilder);
             String result = execute.getResult();
+
             OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
 
             List<OpenSearchFacet> facet = openSearchExecuteResult.getResult().getFacet();
@@ -331,16 +337,112 @@ public class TradeOrderServiceImpl implements TradeOrderService {
                 List<OpenSearchFacetItem> items = openSearchFacet.getItems();
                 for (OpenSearchFacetItem item : items) {
                     if(item.getValue().equals(String.valueOf(tradeType)))
-                        return item;
+                    {
+                        SumTradeCostAggregateVo sumTradeCostAggregateVo = new SumTradeCostAggregateVo();
+                        if(null != item.getCount())
+                            sumTradeCostAggregateVo.setCount(item.getCount());
+                        if(null != item.getSum())
+                            sumTradeCostAggregateVo.setTotalTradeCost(item.getSum());
+                        if(null != item.getValue())
+                            sumTradeCostAggregateVo.setValue(item.getValue());
+                        return sumTradeCostAggregateVo;
+                    }
                 }
 
             }
 
-            return new OpenSearchFacetItem("0","0","0","0","0");
+            return new SumTradeCostAggregateVo();
 
         }catch (Exception e) {
             e.printStackTrace();
-            return new OpenSearchFacetItem("0","0","0","0","0");
+            return new SumTradeCostAggregateVo();
+        }
+
+    }
+
+    @Override
+    public SumShellProfitAggregateVo searchAggregateTradeOrderSumShellProfitByCondition(String coinPairChoiceIds) {
+
+        SearcherClient searcherClient = new SearcherClient(openSearchClient);
+
+
+        if(org.apache.commons.lang.StringUtils.isBlank(coinPairChoiceIds))
+            return null;
+        Config config = new Config(Lists.newArrayList(appName));
+        config.setSearchFormat(SearchFormat.FULLJSON);
+        config.setStart(0);
+        config.setHits(1);
+        config.setFetchFields(openSearchFetchField);
+
+        SearchParams searchParams = new SearchParams(config);
+        StringBuffer otherBuffer = new StringBuffer();
+        StringBuffer queryBuffer = new StringBuffer();
+
+        //设置 自选币 条件
+        String[] coin_ids = coinPairChoiceIds.split(",");
+        for (String coin_id : coin_ids) {
+
+            Integer integer = Integer.valueOf(coin_id);
+            if(null != integer && integer>0) {
+                queryBuffer.append(" OR coin_pair_choice_id:'"+integer+"' ");
+            }
+        }
+        String query="("+queryBuffer.toString().replaceFirst("OR","")+")";
+
+
+        if(org.apache.commons.lang.StringUtils.isBlank(queryBuffer.toString())) {
+            return null;
+        }
+
+        //设置交易类型 只有卖出才有 收益 status为2
+        otherBuffer.append(" AND trade_type:'"+SHELL_STATUS+"' ");
+
+
+        if(StringUtils.isNotBlank(otherBuffer.toString())) {
+            query = query+otherBuffer.toString();
+        }
+
+        searchParams.setQuery(query);
+
+        Aggregate aggregate = new Aggregate();
+        aggregate.setGroupKey("trade_type");
+        aggregate.setAggFun("count()#sum(shell_profit)");
+        searchParams.addToAggregates(aggregate);
+
+
+        SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
+
+        try{
+            SearchResult execute = searcherClient.execute(searchParamsBuilder);
+            String result = execute.getResult();
+
+            OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
+
+            List<OpenSearchFacet> facet = openSearchExecuteResult.getResult().getFacet();
+            for (OpenSearchFacet openSearchFacet : facet) {
+
+                List<OpenSearchFacetItem> items = openSearchFacet.getItems();
+                for (OpenSearchFacetItem item : items) {
+                    if(item.getValue().equals(String.valueOf(SHELL_STATUS)))
+                    {
+                        SumShellProfitAggregateVo sumShellProfitAggregateVo = new SumShellProfitAggregateVo();
+                        if(null != item.getCount())
+                            sumShellProfitAggregateVo.setCount(item.getCount());
+                        if(null != item.getSum())
+                            sumShellProfitAggregateVo.setTotalShellProfit(item.getSum());
+                        if(null != item.getValue())
+                            sumShellProfitAggregateVo.setValue(item.getValue());
+                        return sumShellProfitAggregateVo;
+                    }
+                }
+
+            }
+
+            return new SumShellProfitAggregateVo();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new SumShellProfitAggregateVo();
         }
 
     }

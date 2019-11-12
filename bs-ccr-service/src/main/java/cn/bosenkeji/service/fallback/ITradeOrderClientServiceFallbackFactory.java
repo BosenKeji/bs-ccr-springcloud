@@ -3,9 +3,7 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.transaction.OpenSearchField;
-import cn.bosenkeji.vo.transaction.OpenSearchOrderVo;
-import cn.bosenkeji.vo.transaction.TradeOrder;
+import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -64,6 +62,24 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
                 page.setList(openSearchField);
                 return page;
 
+            }
+
+            @Override
+            public SumTradeCostAggregateVo getTotalTradeCostByCondition(String coinPairChoiceIds, Integer tradeType) {
+                SumTradeCostAggregateVo sumTradeCostAggregateVo = new SumTradeCostAggregateVo();
+                sumTradeCostAggregateVo.setValue("hystrix");
+                sumTradeCostAggregateVo.setTotalTradeCost("-1");
+                sumTradeCostAggregateVo.setCount("-1");
+                return sumTradeCostAggregateVo;
+            }
+
+            @Override
+            public SumShellProfitAggregateVo getTotalShellProfitByCondition(String coinPairChoiceIds) {
+                SumShellProfitAggregateVo sumShellProfitAggregateVo = new SumShellProfitAggregateVo();
+                sumShellProfitAggregateVo.setTotalShellProfit("-1");
+                sumShellProfitAggregateVo.setValue("hystrix");
+                sumShellProfitAggregateVo.setCount("-1");
+                return sumShellProfitAggregateVo;
             }
         };
     }
