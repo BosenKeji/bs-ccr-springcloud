@@ -50,11 +50,11 @@
     insert into trade_order (order_group_id, trade_average_price,
       trade_numbers, trade_cost, shell_profit, 
       trade_type, `status`, created_at, 
-      updated_at)
+      updated_at,extra_profit)
     values (#{orderGroupId,jdbcType=INTEGER}, #{tradeAveragePrice,jdbcType=INTEGER},
       #{tradeNumbers,jdbcType=INTEGER}, #{tradeCost,jdbcType=INTEGER}, #{shellProfit,jdbcType=INTEGER}, 
       #{tradeType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{updatedAt,jdbcType=TIMESTAMP}),#{extraProfit,jdbcType=INTEGER}
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.TradeOrder" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -87,6 +87,9 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
+      <if test="extraProfit != null">
+        extra_profit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderGroupId != null">
@@ -115,6 +118,9 @@
       </if>
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="extraProfit != null">
+        #{extraProfit,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -149,6 +155,9 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="extraProfit != null">
+        extra_profit = #{extraProfit,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER} and status = 1
   </update>
@@ -163,7 +172,8 @@
       trade_type = #{tradeType,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+    extra_profit = #{extraProfit,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER} and status = 1
   </update>
 </mapper>

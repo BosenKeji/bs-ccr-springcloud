@@ -17,8 +17,8 @@
     <association fetchType="lazy" property="coinPairChoice" javaType="cn.bosenkeji.vo.transaction.CoinPairChoice"
                  column="coin_pair_choice_id"
                  select="cn.bosenkeji.mapper.CoinPairChoiceMapper.selectByPrimaryKey"/>
-<!--    <collection property="tradeOrders" ofType="cn.bosenkeji.vo.transaction.TradeOrder" column="id"-->
-<!--                select="cn.bosenkeji.mapper.TradeOrderMapper.findAllByOrderGroupId"/>-->
+    <collection property="tradeOrders" ofType="cn.bosenkeji.vo.transaction.TradeOrder" column="id"
+                select="cn.bosenkeji.mapper.TradeOrderMapper.findAllByOrderGroupId"/>
   </resultMap>
 
   <resultMap id="OtherResultMap" type="cn.bosenkeji.vo.transaction.OrderGroupOther">
@@ -30,6 +30,11 @@
     <!--@mbg.generated-->
     id, `name`, coin_pair_choice_id, end_profit_ratio, is_end, end_type, `status`, created_at, updated_at
   </sql>
+
+  <select id="findAllByCoinPairChoiceIdAndIsEnd" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 1
+  </select>
 
   <select id="partFindByCoinPairChoiceIds" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>

@@ -4,6 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IOrderGroupClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.OrderGroupOverviewResult;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -36,4 +37,7 @@ public interface IOrderGroupClientService {
     public Result searchTradeRecordByCondition(@RequestParam(value = "startTime") Long startTime,
                                                @RequestParam(value = "endTime") Long endTime,
                                                @RequestParam("coinPairChoiceId") int coinPairChoiceId);
+
+    @GetMapping("/order_group/trade_overview")
+    public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId") int coinPairChoiceId);
 }

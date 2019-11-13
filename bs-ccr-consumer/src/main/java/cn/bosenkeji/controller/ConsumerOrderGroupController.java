@@ -4,6 +4,7 @@ import cn.bosenkeji.annotation.TokenUser;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.OrderGroupOverviewResult;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,5 +74,10 @@ public class ConsumerOrderGroupController {
                                                @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 ",required = true,type = "Long",example = "1") @Min(0) Long endTime,
                                                @RequestParam("coinPairChoiceId")@Min(1)@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
         return this.iOrderGroupClientService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId);
+    }
+    @ApiOperation(value = "根据 自选币ID 获取交易总览",httpMethod = "GET",nickname = "getCoinPairChoiceTradeOverview")
+    @GetMapping("/trade_overview")
+    public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1") int coinPairChoiceId){
+        return this.iOrderGroupClientService.getCoinPairChoiceTradeOverview(coinPairChoiceId);
     }
 }

@@ -81,13 +81,13 @@ public class OrderGroup implements Serializable {
     private int buildNumbers;
 
     @ApiModelProperty(hidden = true)
-    private double accumulateShell;
+    private double totalShell;
 
     @ApiModelProperty(hidden = true)
-    private double accumulateCast;
+    private double totalCast;
 
     @ApiModelProperty(hidden = true)
-    private double accumulateProfit;
+    private double totalProfit;
 
     public String getCoin_pair_choice() {
         return coin_pair_choice;
@@ -193,27 +193,27 @@ public class OrderGroup implements Serializable {
         this.buildNumbers = buildNumbers;
     }
 
-    public double getAccumulateShell() {
-        return accumulateShell;
+    public double getTotalShell() {
+        return totalShell;
     }
 
-    public void setAccumulateShell(double accumulateShell) {
-        this.accumulateShell = accumulateShell;
+    public void setTotalShell(double totalShell) {
+        this.totalShell = totalShell;
     }
 
-    public double getAccumulateCast() {
-        return accumulateCast;
+    public double getTotalCast() {
+        return totalCast;
     }
 
-    public void setAccumulateCast(double accumulateCast) {
-        this.accumulateCast = accumulateCast;
+    public void setTotalCast(double totalCast) {
+        this.totalCast = totalCast;
     }
 
-    public double getAccumulateProfit() {
-        return accumulateProfit;
+    public double getTotalProfit() {
+        return totalProfit;
     }
 
-    public void setAccumulateProfit(double accumulateProfit) {
-        this.accumulateProfit = accumulateProfit;
+    public void setTotalProfit(double totalProfit) {
+        this.totalProfit = totalProfit;
     }
 }

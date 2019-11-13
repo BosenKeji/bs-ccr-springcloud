@@ -5,6 +5,7 @@ import cn.bosenkeji.service.OrderGroupService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.OrderGroupOverviewResult;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -104,5 +105,9 @@ public class OrderGroupController {
         return new Result(this.orderGroupService.updateOpenSearchFromSql(id));
     }
 
-
+    @ApiOperation(value = "根据 自选币ID 获取交易总览",httpMethod = "GET",nickname = "getCoinPairChoiceTradeOverview")
+    @GetMapping("/trade_overview")
+    public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1") int coinPairChoiceId){
+        return this.orderGroupService.tradeOverview(coinPairChoiceId);
+    }
 }
