@@ -10,6 +10,7 @@
     <result column="trade_numbers" jdbcType="INTEGER" javaType="double" property="tradeNumbers" />
     <result column="trade_cost" jdbcType="INTEGER" javaType="double" property="tradeCost" />
     <result column="shell_profit" jdbcType="INTEGER"  javaType="double" property="shellProfit" />
+    <result column="extra_profit" jdbcType="INTEGER" javaType="double" property="extraProfit"/>
     <result column="trade_type" jdbcType="TINYINT" property="tradeType" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -18,7 +19,7 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, order_group_id, trade_average_price, trade_numbers, trade_cost,
-    shell_profit, trade_type, `status`, created_at, updated_at
+    shell_profit, trade_type, `status`, created_at, updated_at,extra_profit
   </sql>
 
   <select id="findAllByOrderGroupId" resultMap="BaseResultMap">
