@@ -1,17 +1,18 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.cdKey.CdKey;
-import cn.bosenkeji.vo.cdKey.CdKeyOther;
+import cn.bosenkeji.vo.cdKey.*;
 import com.github.pagehelper.PageInfo;
 
 public interface CdKeyService {
 
-    Result generateCdKeys(Integer num ,Integer productComboId, String prefix, String remark);
+    Result generateCdKeys(GenerateCdKeyParam param);
 
     PageInfo<CdKeyOther> getCdKeyByPage(Integer pageNum, Integer pageSize);
 
-    Result activate(Integer userId, String username, String key);
+    Result activate(ActivateCdKeyUserParam param);
 
-    Result renew(Integer userId, String username, Integer userProductComboId, String key);
+    Result renew(RenewCdKeyUserParam param);
+
+    PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed, Integer pageNum, Integer pageSize);
 }

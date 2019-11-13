@@ -34,6 +34,8 @@ public class ProductCombo implements Serializable {
 
     private int status;
 
+    private int isCustomized;
+
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
@@ -138,6 +140,14 @@ public class ProductCombo implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getIsCustomized() {
+        return isCustomized;
+    }
+
+    public void setIsCustomized(int isCustomized) {
+        this.isCustomized = isCustomized;
     }
 
     @Override

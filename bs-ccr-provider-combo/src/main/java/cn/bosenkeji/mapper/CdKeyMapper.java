@@ -22,4 +22,8 @@ public interface CdKeyMapper {
     CdKey getById(@Param("id") Integer id);
 
     List<CdKey> get();
+
+    List<CdKey> getBySearch(CdKey cdKey);
+
+    CdKey getByKeyAndStatus(@Param("key") String key,@Param("status") int status);
 }

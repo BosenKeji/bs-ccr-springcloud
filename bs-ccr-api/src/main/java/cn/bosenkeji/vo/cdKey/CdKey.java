@@ -14,7 +14,7 @@ public class CdKey {
 
     private String remark;
 
-    private int status;
+    private Integer status;
 
     private Timestamp createdAt;
 
@@ -22,8 +22,7 @@ public class CdKey {
 
     public CdKey() { }
 
-    public CdKey(String key, int productComboId, String username, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
-        this.id = id;
+    public CdKey(String key, int productComboId, String username, String remark, Integer status, Timestamp createdAt, Timestamp updatedAt) {
         this.key = key;
         this.productComboId = productComboId;
         this.username = username;
@@ -33,7 +32,7 @@ public class CdKey {
         this.updatedAt = updatedAt;
     }
 
-    public CdKey(int id, String key, int productComboId, String username, String remark, int status, Timestamp createdAt, Timestamp updatedAt) {
+    public CdKey(int id, String key, int productComboId, String username, String remark, Integer status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.key = key;
         this.productComboId = productComboId;
@@ -84,11 +83,11 @@ public class CdKey {
         this.remark = remark;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

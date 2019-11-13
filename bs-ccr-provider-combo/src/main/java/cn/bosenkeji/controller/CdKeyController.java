@@ -3,8 +3,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.service.CdKeyService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.ExcelUtil;
-import cn.bosenkeji.vo.cdKey.CdKey;
-import cn.bosenkeji.vo.cdKey.CdKeyOther;
+import cn.bosenkeji.vo.cdKey.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +28,33 @@ public class CdKeyController {
     private CdKeyService cdKeyService;
 
 
-    @GetMapping("/generation")
-    public Result getCdKeys(@RequestParam("num") Integer num, @RequestParam("productComboId") Integer productComboId,
-                            @RequestParam("prefix") String prefix, @RequestParam("remark") String remark) {
-        return cdKeyService.generateCdKeys(num, productComboId, prefix, remark);
+    @PostMapping("/generation")
+    public Result getCdKeys(@RequestBody GenerateCdKeyParam param) {
+        return cdKeyService.generateCdKeys(param);
     }
 
     @PostMapping("/activation")
-    public Result activation(@RequestParam("userId") Integer userId, @RequestParam("username") String username, @RequestParam("key") String key) {
-        return cdKeyService.activate(userId, username, key);
+    public Result activation(@RequestBody ActivateCdKeyUserParam param) {
+        return cdKeyService.activate(param);
     }
 
     @PostMapping("/renew")
-    public Result renew(@RequestParam("userId") Integer userId, @RequestParam("username") String username, @RequestParam("userProductComboId") Integer userProductComboId, @RequestParam("key") String key) {
-        return cdKeyService.renew(userId,username,userProductComboId,key);
+    public Result renew(@RequestBody RenewCdKeyUserParam param) {
+        return cdKeyService.renew(param);
     }
 
     @GetMapping("/")
     public PageInfo<CdKeyOther> getCdKeyByPage(@RequestParam(value = "pageNum",defaultValue = "1",required = false) Integer pageNum, @RequestParam(value = "pageSize",defaultValue = "10",required = false) Integer pageSize) {
         return cdKeyService.getCdKeyByPage(pageNum, pageSize);
+    }
+
+    @GetMapping("/search")
+    public PageInfo<CdKeyOther> getCdKeyBySelective(@RequestParam(value = "cdKey",required = false) String cdKey,
+                                                    @RequestParam(value = "username",required = false) String username,
+                                                    @RequestParam(value = "isUsed",required = false) Integer isUsed,
+                                                    @RequestParam("pageNum") Integer pageNum,
+                                                    @RequestParam("pageSize") Integer pageSize) {
+        return cdKeyService.getCdKeyBySearch(cdKey,username,isUsed,pageNum,pageSize);
     }
 
 }

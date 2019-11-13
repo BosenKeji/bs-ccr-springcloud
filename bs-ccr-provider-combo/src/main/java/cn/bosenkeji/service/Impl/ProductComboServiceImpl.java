@@ -85,4 +85,9 @@ public class ProductComboServiceImpl implements IProductComboService {
     public int checkExistByProductId(int productId) {
         return productComboMapper.checkExistByProductId(productId);
     }
+
+    @Override
+    public int addBySelective(ProductCombo productCombo) {
+        return productComboMapper.insertSelective(productCombo);
+    }
 }

@@ -9,13 +9,14 @@
     <result column="price" jdbcType="REAL" property="price" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_customized" jdbcType="TINYINT" property="isCustomized" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
     <!--<association property="product" column="product_id" javaType="cn.bosenkeji.vo.product.Product" select="cn.bosenkeji.mapper.ProductMapper.selectByPrimaryKey" />-->
   </resultMap>
   <sql id="Base_Column_List">
-    id, product_id, name, time, price, remark, status, created_at, updated_at
+    id, product_id, name, time, price, remark, status, is_customized, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -27,16 +28,16 @@
     delete from product_combo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
+  <insert id="insert" parameterType="cn.bosenkeji.vo.combo.ProductCombo" useGeneratedKeys="true" keyProperty="id">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into product_combo (product_id, name, time, 
-      price, remark, status, 
+      price, remark, status, is_customized,
       created_at, updated_at)
     values (#{productId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, 
-      #{price,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+      #{price,jdbcType=REAL}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{isCustomized,jdbcType=TINYINT}
+      , #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.bosenkeji.vo.combo.ProductCombo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -61,6 +62,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="isCustomized != null">
+        is_customized,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -87,6 +91,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isCustomized != null">
+        #{isCustomized,jdbcType=TINYINT}
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -117,6 +124,9 @@
       <if test="status != 0">
         status = #{status,jdbcType=TINYINT},
       </if>
+      <if test="isCustomized != null">
+        is_customized = #{isCustomized,jdbcType=TINYINT}
+      </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
       </if>
@@ -134,6 +144,7 @@
       price = #{price,jdbcType=REAL},
       remark = #{remark,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
+      is_customized = #{isCustomized,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

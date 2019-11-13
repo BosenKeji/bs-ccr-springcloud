@@ -16,6 +16,7 @@ public interface IProductComboService {
     PageInfo<ProductCombo> listByStatus(int pageNum, int pageSize, int status);
     ProductCombo get(int id);
     int add(ProductCombo productCombo);
+    int addBySelective(ProductCombo productCombo);
     int update(ProductCombo productCombo);
     int delete(int id);
     int checkExistByNameAndProductId(String name, int productId);

@@ -3,8 +3,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ICdKeyClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.vo.cdKey.CdKey;
-import cn.bosenkeji.vo.cdKey.CdKeyOther;
+import cn.bosenkeji.vo.cdKey.*;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class ICdKeyClientServiceFallbackFactory implements FallbackFactory<ICdKe
     public ICdKeyClientService create(Throwable throwable) {
         return new ICdKeyClientService() {
             @Override
-            public Result generateCdKeys(Integer num, Integer productComboId, String prefix, String remark) {
+            public Result generateCdKeys(GenerateCdKeyParam generateCdKeyParam) {
                 return new Result<>(0,"failed");
             }
 
@@ -34,13 +33,23 @@ public class ICdKeyClientServiceFallbackFactory implements FallbackFactory<ICdKe
             }
 
             @Override
-            public Result activate(Integer userId, String username, String key) {
-                return new Result();
+            public Result activate(ActivateCdKeyUserParam param) {
+                return new Result<>(0,"failed");
             }
 
             @Override
-            public Result renew(Integer userId, String username, Integer userProductComboId, String key) {
-                return null;
+            public Result renew(RenewCdKeyUserParam param) {
+                return new Result<>(0,"failed");
+            }
+
+            @Override
+            public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed, Integer pageNum, Integer pageSize) {
+                PageInfo<CdKeyOther> pageInfo = new PageInfo<>();
+                List<CdKeyOther> list = new ArrayList<>();
+                CdKeyOther cdKeyOther = new CdKeyOther();
+                cdKeyOther.setRemark("failed");
+                pageInfo.setList(list);
+                return pageInfo;
             }
         };
     }
