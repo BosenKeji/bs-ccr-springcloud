@@ -1,6 +1,7 @@
 package cn.bosenkeji.vo.transaction;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -47,6 +48,7 @@ public class OrderGroup implements Serializable {
     @ApiModelProperty("结单方式")
     private int endType;
 
+    @JsonIgnore
     @ApiModelProperty(hidden = true)
     private int status;
 
@@ -74,6 +76,18 @@ public class OrderGroup implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private List<TradeOrder> tradeOrders;
+
+    @ApiModelProperty(hidden = true)
+    private int buildNumbers;
+
+    @ApiModelProperty(hidden = true)
+    private double accumulateShell;
+
+    @ApiModelProperty(hidden = true)
+    private double accumulateCast;
+
+    @ApiModelProperty(hidden = true)
+    private double accumulateProfit;
 
     public String getCoin_pair_choice() {
         return coin_pair_choice;
@@ -169,5 +183,37 @@ public class OrderGroup implements Serializable {
 
     public void setTradeOrders(List<TradeOrder> tradeOrders) {
         this.tradeOrders = tradeOrders;
+    }
+
+    public int getBuildNumbers() {
+        return buildNumbers;
+    }
+
+    public void setBuildNumbers(int buildNumbers) {
+        this.buildNumbers = buildNumbers;
+    }
+
+    public double getAccumulateShell() {
+        return accumulateShell;
+    }
+
+    public void setAccumulateShell(double accumulateShell) {
+        this.accumulateShell = accumulateShell;
+    }
+
+    public double getAccumulateCast() {
+        return accumulateCast;
+    }
+
+    public void setAccumulateCast(double accumulateCast) {
+        this.accumulateCast = accumulateCast;
+    }
+
+    public double getAccumulateProfit() {
+        return accumulateProfit;
+    }
+
+    public void setAccumulateProfit(double accumulateProfit) {
+        this.accumulateProfit = accumulateProfit;
     }
 }

@@ -49,6 +49,13 @@ public class TradeOrder {
     private double shellProfit;
 
     /**
+     * 额外收益
+     */
+    @JSONField(name = "extra_profit")
+    @ApiModelProperty("额外收益")
+    private double extraProfit;
+
+    /**
     * 交易方式
     */
     @JSONField(name = "trade_type")
@@ -114,6 +121,14 @@ public class TradeOrder {
 
     public double getShellProfit() {
         return shellProfit;
+    }
+
+    public double getExtraProfit() {
+        return extraProfit;
+    }
+
+    public void setExtraProfit(double extraProfit) {
+        this.extraProfit = extraProfit;
     }
 
     public void setShellProfit(double shellProfit) {

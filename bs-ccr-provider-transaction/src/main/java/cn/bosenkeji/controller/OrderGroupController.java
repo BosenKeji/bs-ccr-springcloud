@@ -103,4 +103,6 @@ public class OrderGroupController {
     public Result<Integer> pushToOpenSearchById(@RequestParam("id") @ApiParam(value = "订单组id",required = true,type = "integer",example = "1") @Min(1) int id) {
         return new Result(this.orderGroupService.updateOpenSearchFromSql(id));
     }
+
+
 }

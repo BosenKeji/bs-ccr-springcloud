@@ -4,6 +4,7 @@ import cn.bosenkeji.interfaces.CommonResultNumberEnum;
 import cn.bosenkeji.mapper.OrderGroupMapper;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.OrderGroupService;
+import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.OpenSearchFormat;
 import cn.bosenkeji.vo.coin.CoinPair;
@@ -59,6 +60,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     OpenSearchClient openSearchClient;
 
+    @Resource
+    TradeOrderService tradeOrderService;
+
     @Value("${aliyun.open-search.app-name}")
     private String appName;
 
@@ -74,7 +78,12 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     public OrderGroup getOneById(int orderGroupId) {
         OrderGroup orderGroup = this.orderGroupMapper.selectByPrimaryKey(orderGroupId);
+
         if (orderGroup != null){
+            int buildNumbers = 0;
+            double accumulateShell = 0,accumulateCast = 0,accumulateProfit = 0;
+
+            orderGroup.setTradeOrders(tradeOrderService.listByOrderGroupId(orderGroup.getId()));
             double endProfitRatio = orderGroup.getEndProfitRatio() / CommonConstantUtil.ACCURACY;
 
             if (orderGroup.getCoinPairChoice() != null){
@@ -83,8 +92,23 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             }else {
                 return null;
             }
-
             orderGroup.setEndProfitRatio(endProfitRatio);
+            if (orderGroup.getTradeOrders().size() != 0){
+                List<TradeOrder> tradeOrders = orderGroup.getTradeOrders();
+                for (TradeOrder o : tradeOrders) {
+                    if (o.getTradeType() == 1){
+                        buildNumbers += 1;
+                        accumulateShell += o.getTradeNumbers();
+                        accumulateCast += o.getTradeCost();
+                    }else {
+                        accumulateProfit = o.getShellProfit();
+                    }
+                }
+            }
+            orderGroup.setBuildNumbers(buildNumbers);
+            orderGroup.setAccumulateCast(Math.abs(accumulateCast));
+            orderGroup.setAccumulateShell(accumulateShell);
+            orderGroup.setAccumulateProfit(accumulateProfit);
         }
         return orderGroup;
     }

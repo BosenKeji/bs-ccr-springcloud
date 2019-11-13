@@ -17,8 +17,8 @@
     <association fetchType="lazy" property="coinPairChoice" javaType="cn.bosenkeji.vo.transaction.CoinPairChoice"
                  column="coin_pair_choice_id"
                  select="cn.bosenkeji.mapper.CoinPairChoiceMapper.selectByPrimaryKey"/>
-    <collection property="tradeOrders" ofType="cn.bosenkeji.vo.transaction.TradeOrder" column="id"
-                select="cn.bosenkeji.mapper.TradeOrderMapper.findAllByOrderGroupId"/>
+<!--    <collection property="tradeOrders" ofType="cn.bosenkeji.vo.transaction.TradeOrder" column="id"-->
+<!--                select="cn.bosenkeji.mapper.TradeOrderMapper.findAllByOrderGroupId"/>-->
   </resultMap>
 
   <resultMap id="OtherResultMap" type="cn.bosenkeji.vo.transaction.OrderGroupOther">
