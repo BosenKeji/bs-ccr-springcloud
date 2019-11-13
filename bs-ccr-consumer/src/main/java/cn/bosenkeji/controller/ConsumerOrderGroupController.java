@@ -77,7 +77,7 @@ public class ConsumerOrderGroupController {
     }
     @ApiOperation(value = "根据 自选币ID 获取交易总览",httpMethod = "GET",nickname = "getCoinPairChoiceTradeOverview")
     @GetMapping("/trade_overview")
-    public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1") int coinPairChoiceId){
+    public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1")@Min(1) int coinPairChoiceId){
         return this.iOrderGroupClientService.getCoinPairChoiceTradeOverview(coinPairChoiceId);
     }
 }
