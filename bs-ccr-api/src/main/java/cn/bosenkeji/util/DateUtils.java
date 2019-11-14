@@ -6,6 +6,7 @@
  */
 package cn.bosenkeji.util;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -152,10 +153,22 @@ public class DateUtils {
 
 
     public static void main(String[] args) {
-        long currentDayBegin = getCurrentDayBegin();
+        /*long currentDayBegin = getCurrentDayBegin();
         System.out.println("currentDayBegin = " + currentDayBegin);
         long currentDayEnd = getCurrentDayEnd();
-        System.out.println("currentDayEnd = " + currentDayEnd);
+        System.out.println("currentDayEnd = " + currentDayEnd);*/
+
+        String s1 = "4.2";
+        String s2 = "1.6";
+
+        double d1 = Double.valueOf(s1);
+        double d2 = Double.valueOf(s2);
+        double dd = d1+d2;
+        BigDecimal b1 = new BigDecimal(s1);
+        BigDecimal b2 = new BigDecimal(s2);
+        double v = b1.add(b2).doubleValue();
+
+        System.out.println(v);
     }
 
 }

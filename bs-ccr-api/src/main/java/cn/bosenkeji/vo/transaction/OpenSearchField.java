@@ -11,4 +11,11 @@ public class OpenSearchField {
     public void setFields(OpenSearchOrderVo fields) {
         this.fields = fields;
     }
+
+    @Override
+    public String toString() {
+        return "OpenSearchField{" +
+                "fields=" + fields +
+                '}';
+    }
 }

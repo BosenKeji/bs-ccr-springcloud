@@ -68,17 +68,17 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
             public SumTradeCostAggregateVo getTotalTradeCostByCondition(String coinPairChoiceIds, Integer tradeType) {
                 SumTradeCostAggregateVo sumTradeCostAggregateVo = new SumTradeCostAggregateVo();
                 sumTradeCostAggregateVo.setValue("hystrix");
-                sumTradeCostAggregateVo.setTotalTradeCost("-1");
-                sumTradeCostAggregateVo.setCount("-1");
+                sumTradeCostAggregateVo.setTotalTradeCost(-1);
+                sumTradeCostAggregateVo.setCount(-1);
                 return sumTradeCostAggregateVo;
             }
 
             @Override
             public SumShellProfitAggregateVo getTotalShellProfitByCondition(String coinPairChoiceIds) {
                 SumShellProfitAggregateVo sumShellProfitAggregateVo = new SumShellProfitAggregateVo();
-                sumShellProfitAggregateVo.setTotalShellProfit("-1");
+                sumShellProfitAggregateVo.setTotalShellProfit(-1);
                 sumShellProfitAggregateVo.setValue("hystrix");
-                sumShellProfitAggregateVo.setCount("-1");
+                sumShellProfitAggregateVo.setCount(-1);
                 return sumShellProfitAggregateVo;
             }
         };
