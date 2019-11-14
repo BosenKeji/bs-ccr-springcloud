@@ -35,7 +35,7 @@ public class ConsumerCdKeyController {
     @PreAuthorize("hasAnyAuthority('USER')")
     @ApiOperation(value = "验证码激活",httpMethod = "POST",nickname = "activation")
     @PostMapping("/activation")
-    public Result activation( @RequestBody String key) {
+    public Result activation( @RequestParam("key") String key) {
         CustomUserDetailsImpl currentUser = getCurrentUser();
         ActivateCdKeyUserParam param = new ActivateCdKeyUserParam(currentUser.getId(),currentUser.getUsername(),key);
         return iCdKeyClientService.activate(param);
@@ -63,8 +63,8 @@ public class ConsumerCdKeyController {
     public PageInfo<CdKeyOther> getCdKeyBySearch(@RequestParam(value = "cdKey",required = false) String cdKey,
                                                     @RequestParam(value = "username",required = false) String username,
                                                     @RequestParam(value = "isUsed",required = false) Integer isUsed,
-                                                    @RequestParam("pageNum") Integer pageNum,
-                                                    @RequestParam("pageSize") Integer pageSize) {
+                                                    @RequestParam(value = "pageNum",required = false, defaultValue = "1") Integer pageNum,
+                                                    @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize) {
         return iCdKeyClientService.getCdKeyBySearch(cdKey,username,isUsed,pageNum,pageSize);
     }
 
