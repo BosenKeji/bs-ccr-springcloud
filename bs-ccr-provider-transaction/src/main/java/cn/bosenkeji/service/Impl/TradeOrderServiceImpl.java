@@ -86,7 +86,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     @Override
     public TradeOrder getById(int tradeOrderId) {
         TradeOrder tradeOrderResult =  this.tradeOrderMapper.selectByPrimaryKey(tradeOrderId);
-        reverseTransformNumericalValue(tradeOrderResult);
+        if (tradeOrderResult != null){
+            reverseTransformNumericalValue(tradeOrderResult);
+        }
         return tradeOrderResult;
     }
 
@@ -95,12 +97,14 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeNumbers = tradeOrder.getTradeNumbers()* CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost()* CommonConstantUtil.ACCURACY;
         double shellProfit = tradeOrder.getShellProfit()* CommonConstantUtil.ACCURACY;
+        double extraProfit = tradeOrder.getExtraProfit() * CommonConstantUtil.ACCURACY;
 
         tradeOrder.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);
         tradeOrder.setTradeCost(tradeCost);
         tradeOrder.setShellProfit(shellProfit);
+        tradeOrder.setExtraProfit(extraProfit);
         tradeOrder.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
     }
 
@@ -110,12 +114,13 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeNumbers = tradeOrder.getTradeNumbers() / CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost() / CommonConstantUtil.ACCURACY;
         double shellProfit = tradeOrder.getShellProfit() / CommonConstantUtil.ACCURACY;
-
+        double extraProfit = tradeOrder.getExtraProfit() / CommonConstantUtil.ACCURACY;
 
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);
         tradeOrder.setTradeCost(tradeCost);
         tradeOrder.setShellProfit(shellProfit);
+        tradeOrder.setExtraProfit(extraProfit);
     }
 
     @Override
