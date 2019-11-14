@@ -28,6 +28,8 @@ public interface OrderGroupMapper {
 
     List<OrderGroupOther> findAll(int coinPairChoiceId);
 
+    List<OrderGroup> findAllByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
+
     int checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 
     int checkExistById(int orderGroupId);

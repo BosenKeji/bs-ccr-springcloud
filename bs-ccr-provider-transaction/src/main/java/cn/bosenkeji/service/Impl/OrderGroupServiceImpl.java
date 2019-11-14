@@ -2,6 +2,7 @@ package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.interfaces.CommonResultNumberEnum;
 import cn.bosenkeji.mapper.OrderGroupMapper;
+import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.OrderGroupService;
 import cn.bosenkeji.service.TradeOrderService;
@@ -63,6 +64,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Resource
     TradeOrderService tradeOrderService;
 
+    @Resource
+    CoinPairChoiceService coinPairChoiceService;
+
     @Value("${aliyun.open-search.app-name}")
     private String appName;
 
@@ -106,9 +110,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 }
             }
             orderGroup.setBuildNumbers(buildNumbers);
-            orderGroup.setAccumulateCast(Math.abs(accumulateCast));
-            orderGroup.setAccumulateShell(accumulateShell);
-            orderGroup.setAccumulateProfit(accumulateProfit);
+            orderGroup.setTotalCast(Math.abs(accumulateCast));
+            orderGroup.setTotalShell(accumulateShell);
+            orderGroup.setTotalProfit(accumulateProfit);
         }
         return orderGroup;
     }
@@ -252,6 +256,34 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     @Override
     public Integer updateOpenSearchFromSql(int id) {
-        return pushToOpenSearch(id)==true? CommonResultNumberEnum.SUCCESS :CommonResultNumberEnum.FAIL;
+        return pushToOpenSearch(id) ? CommonResultNumberEnum.SUCCESS :CommonResultNumberEnum.FAIL;
+    }
+
+    @Override
+    public OrderGroupOverviewResult tradeOverview(int coinPairChoiceId) {
+        OrderGroupOverviewResult orderGroupOverviewResult = new OrderGroupOverviewResult();
+        List<OrderGroup> orderGroups = this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId);
+
+        if (!CollectionUtils.isEmpty(orderGroups)){
+            int endNumber = orderGroups.size();
+            double totalProfit = 0,trackProfit = 0;
+            String coinPairChoiceName = this.coinPairChoiceService.get(coinPairChoiceId).getCoinPair().getName();
+
+            for (OrderGroup o : orderGroups) {
+                List<TradeOrder> tradeOrders = o.getTradeOrders();
+                for (TradeOrder t :
+                        tradeOrders) {
+                    if (t.getTradeType() == 2 || t.getTradeType() == 3 ){
+                        totalProfit += t.getShellProfit();
+                        trackProfit += t.getExtraProfit();
+                    }
+                }
+            }
+            orderGroupOverviewResult.setCoinPairName(coinPairChoiceName);
+            orderGroupOverviewResult.setEndNumbers(endNumber);
+            orderGroupOverviewResult.setTotalProfit(totalProfit / CommonConstantUtil.ACCURACY);
+            orderGroupOverviewResult.setTrackProfit(trackProfit / CommonConstantUtil.ACCURACY);
+        }
+        return orderGroupOverviewResult;
     }
 }

@@ -4,6 +4,7 @@ import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import cn.bosenkeji.vo.transaction.OrderGroupOther;
+import cn.bosenkeji.vo.transaction.OrderGroupOverviewResult;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -56,6 +57,13 @@ public class IOrderGroupClientServiceFallbackFactory implements FallbackFactory<
             @Override
             public Result searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
                 return  new Result<>(-1,"hystrix");
+            }
+
+            @Override
+            public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(int coinPairChoiceId) {
+                OrderGroupOverviewResult o = new OrderGroupOverviewResult();
+                o.setCoinPairName("hystrix");
+                return o;
             }
         };
     }

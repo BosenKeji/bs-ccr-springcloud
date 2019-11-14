@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import cn.bosenkeji.vo.transaction.OrderGroupOpenSearchFormat;
 import cn.bosenkeji.vo.transaction.OrderGroupOther;
+import cn.bosenkeji.vo.transaction.OrderGroupOverviewResult;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -33,4 +34,6 @@ public interface OrderGroupService {
     List<OrderGroup> partFindByCoinPairChoiceIds(List<Integer> coinPairChoiceIds);
 
     Integer updateOpenSearchFromSql(int id);
+
+    OrderGroupOverviewResult tradeOverview(int coinPairChoiceId);
 }
