@@ -93,7 +93,7 @@
         #{status,jdbcType=TINYINT},
       </if>
       <if test="isCustomized != null">
-        #{isCustomized,jdbcType=TINYINT}
+        #{isCustomized,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -125,7 +125,7 @@
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="isCustomized != null">
-        is_customized = #{isCustomized,jdbcType=TINYINT}
+        is_customized = #{isCustomized,jdbcType=TINYINT},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
