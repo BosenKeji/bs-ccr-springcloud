@@ -33,10 +33,8 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingLong;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -87,7 +85,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             int buildNumbers = 0;
             double accumulateShell = 0,accumulateCast = 0,accumulateProfit = 0;
 
-            orderGroup.setTradeOrders(tradeOrderService.listByOrderGroupId(orderGroup.getId()));
+            orderGroup.setTradeOrders(tradeOrderService.listByOrderGroupId(orderGroup.getId()).stream().sorted(Comparator.comparing(TradeOrder::getCreatedAt).reversed()).collect(Collectors.toList()));
             double endProfitRatio = orderGroup.getEndProfitRatio() / CommonConstantUtil.ACCURACY;
 
             if (orderGroup.getCoinPairChoice() != null){
@@ -262,7 +260,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     public OrderGroupOverviewResult tradeOverview(int coinPairChoiceId) {
         OrderGroupOverviewResult orderGroupOverviewResult = new OrderGroupOverviewResult();
-        List<OrderGroup> orderGroups = this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId);
+        List<OrderGroup> orderGroups = this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,CommonConstantUtil.END);
 
         if (!CollectionUtils.isEmpty(orderGroups)){
             int endNumber = orderGroups.size();
@@ -285,5 +283,18 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             orderGroupOverviewResult.setTrackProfit(trackProfit / CommonConstantUtil.ACCURACY);
         }
         return orderGroupOverviewResult;
+    }
+
+    @Override
+    public OrderGroup getByCoinPairChoiceId(int coinPairChoiceId) {
+        if (coinPairChoiceId <= 0){
+            return null;
+        }
+        List<OrderGroup> orderGroups =
+                this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,CommonConstantUtil.NOT_END).stream().sorted(Comparator.comparing(OrderGroup::getCreatedAt).reversed()).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(orderGroups)){
+            return new OrderGroup();
+        }
+        return getOneById(orderGroups.get(0).getId());
     }
 }

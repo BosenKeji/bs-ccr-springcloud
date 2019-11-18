@@ -28,11 +28,12 @@ public interface OrderGroupMapper {
 
     List<OrderGroupOther> findAll(int coinPairChoiceId);
 
-    List<OrderGroup> findAllByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
+    List<OrderGroup> findAllByCoinPairChoiceIdAndIsEnd(@Param("coinPairChoiceId")int coinPairChoiceId,@Param("isEnd")int isEnd);
 
     int checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 
     int checkExistById(int orderGroupId);
 
     List<OrderGroup> partFindByCoinPairChoiceIds(@Param("coinPairChoiceIds")List<Integer> coinPairChoiceIds);
+
 }

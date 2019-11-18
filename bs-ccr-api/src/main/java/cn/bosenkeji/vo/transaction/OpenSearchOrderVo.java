@@ -115,4 +115,18 @@ public class OpenSearchOrderVo extends TradeOrder{
     public void setCreatedTime(Timestamp createdTime) {
         this.createdTime = createdTime;
     }
+
+    @Override
+    public String toString() {
+        return "OpenSearchOrderVo{" +
+                "name='" + name + '\'' +
+                ", coinPairChoiceId=" + coinPairChoiceId +
+                ", endProfitRatio=" + endProfitRatio +
+                ", isEnd=" + isEnd +
+                ", endType=" + endType +
+                ", createdTime=" + createdTime +
+                ", coinPairChoice=" + coinPairChoice +
+                ", coin_pair_choice='" + coin_pair_choice + '\'' +
+                '}';
+    }
 }

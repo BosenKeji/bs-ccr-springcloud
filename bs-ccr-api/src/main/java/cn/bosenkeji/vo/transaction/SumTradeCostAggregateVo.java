@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 public class SumTradeCostAggregateVo implements Serializable {
 
-    private String count;
-    private String totalTradeCost;
-    private String value;
+    private long count =0;
+    private double totalTradeCost =0;
+    private String value="0";
 
-    public String getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
-    public String getTotalTradeCost() {
+    public double getTotalTradeCost() {
         return totalTradeCost;
     }
 
-    public void setTotalTradeCost(String totalTradeCost) {
+    public void setTotalTradeCost(double totalTradeCost) {
         this.totalTradeCost = totalTradeCost;
     }
 

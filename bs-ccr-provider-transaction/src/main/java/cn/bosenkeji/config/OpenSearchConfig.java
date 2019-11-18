@@ -2,6 +2,7 @@ package cn.bosenkeji.config;
 
 import com.aliyun.opensearch.DocumentClient;
 import com.aliyun.opensearch.OpenSearchClient;
+import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.sdk.generated.OpenSearch;
 import com.aliyun.opensearch.sdk.generated.search.Config;
@@ -41,5 +42,11 @@ public class OpenSearchConfig {
     @DependsOn("openSearchClient")
     public DocumentClient documentClient(OpenSearchClient openSearchClient){
         return new DocumentClient(openSearchClient);
+    }
+
+    @Bean
+    @DependsOn("openSearchClient")
+    public SearcherClient searcherClient(OpenSearchClient openSearchClient) {
+        return new SearcherClient(openSearchClient);
     }
 }

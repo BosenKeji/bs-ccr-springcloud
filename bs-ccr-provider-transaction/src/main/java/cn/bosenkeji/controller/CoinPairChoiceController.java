@@ -7,6 +7,7 @@ import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.vo.transaction.CoinPairChoicePositionDetailResult;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -217,4 +218,11 @@ public class CoinPairChoiceController {
                                     @RequestParam("type") @ApiParam(value = "收益记录（'profit'）还是买入日志（'buy'）", required = true, type = "String") String type){
         return this.coinPairChoiceService.recordByPage(pageNum, pageSizeCommon, tradePlatformApiBindProductComboId, coinId, type);
     }
+
+    @ApiOperation(value = "根据自选货币对id查询有持仓详情",httpMethod = "GET",nickname = "getCoinPairChoicePositionDetails")
+    @GetMapping("/position_details")
+    public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") @Min(1)  @ApiParam(value = "自选币id", required = true, type = "integer",example = "1") int coinPairChoiceId){
+        return new Result<>(this.coinPairChoiceService.getCoinPairChoicePositionDetail(coinPairChoiceId));
+    }
+
 }

@@ -4,24 +4,33 @@ import java.io.Serializable;
 
 public class SumShellProfitAggregateVo implements Serializable {
 
-    private String count;
-    private String totalShellProfit;
-    private String value;
+    private long count = 0;
+    private double totalShellProfit = 0;
+    private double totalTrackProfit = 0;
+    private String value = "0";
 
-    public String getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
-    public String getTotalShellProfit() {
+    public double getTotalShellProfit() {
         return totalShellProfit;
     }
 
-    public void setTotalShellProfit(String totalShellProfit) {
+    public void setTotalShellProfit(double totalShellProfit) {
         this.totalShellProfit = totalShellProfit;
+    }
+
+    public double getTotalTrackProfit() {
+        return totalTrackProfit;
+    }
+
+    public void setTotalTrackProfit(double totalTrackProfit) {
+        this.totalTrackProfit = totalTrackProfit;
     }
 
     public String getValue() {

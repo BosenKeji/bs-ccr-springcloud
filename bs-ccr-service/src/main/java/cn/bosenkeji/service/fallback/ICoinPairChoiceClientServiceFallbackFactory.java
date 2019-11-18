@@ -79,6 +79,11 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
                 coinPairChoices.add(coinPairChoice);
                 return new PageInfo<>(coinPairChoices);
             }
+
+            @Override
+            public Result getCoinPairChoicePositionDetails(int coinPairChoiceId) {
+                return new Result<>(0,"hystrix fail");
+            }
         };
     }
 }

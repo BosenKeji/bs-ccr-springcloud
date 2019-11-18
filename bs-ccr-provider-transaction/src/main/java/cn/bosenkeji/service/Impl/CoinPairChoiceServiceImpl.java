@@ -6,9 +6,7 @@ import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
-import cn.bosenkeji.vo.transaction.CoinPairChoice;
-import cn.bosenkeji.vo.transaction.CoinPairChoiceShellOrBuyResult;
-import cn.bosenkeji.vo.transaction.OrderGroup;
+import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +57,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Autowired
     OrderGroupService orderGroupService;
+
 
 
     @Override
@@ -373,5 +372,25 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @Override
     public List<Integer> findAllCoinPartnerChoiceId() {
         return this.coinPairChoiceMapper.findAllCoinPairChoiceId();
+    }
+
+    @Override
+    public CoinPairChoicePositionDetailResult getCoinPairChoicePositionDetail(int coinPairChoiceId) {
+        CoinPairChoicePositionDetailResult result = new CoinPairChoicePositionDetailResult();
+        CoinPairChoice coinPairChoice = get(coinPairChoiceId);
+
+        if (coinPairChoice == null || coinPairChoice.getCoinPair() == null){
+            return null;
+        }
+
+        result.setCoinPairChoiceName(coinPairChoice.getCoinPair().getName());
+        try {
+            List<TradeOrder> tradeOrders = this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().stream().filter(tradeOrder -> tradeOrder.getTradeType() == 1).collect(Collectors.toList());
+            result.setTradeOrders(tradeOrders);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            return result;
+        }
     }
 }

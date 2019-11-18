@@ -33,7 +33,7 @@
 
   <select id="findAllByCoinPairChoiceIdAndIsEnd" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
-    from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 1
+    from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = #{isEnd,jdbcType=INTEGER}
   </select>
 
   <select id="partFindByCoinPairChoiceIds" resultMap="BaseResultMap">
