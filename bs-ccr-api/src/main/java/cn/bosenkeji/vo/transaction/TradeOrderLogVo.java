@@ -12,6 +12,8 @@ public class TradeOrderLogVo implements Serializable {
     private Double tradeCost;
     private Double shellProfit;
     private Double endProfitRatio;
+    //净收益比率 = 收益比 - 1
+    private Double netRatio;
 
     private int endType;
     private int tradeType;
@@ -104,5 +106,13 @@ public class TradeOrderLogVo implements Serializable {
 
     public void setCoinPairChoiceId(int coinPairChoiceId) {
         this.coinPairChoiceId = coinPairChoiceId;
+    }
+
+    public Double getNetRatio() {
+        return netRatio;
+    }
+
+    public void setNetRatio(Double netRatio) {
+        this.netRatio = netRatio;
     }
 }

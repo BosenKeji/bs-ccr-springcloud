@@ -13,10 +13,7 @@ import com.aliyun.opensearch.DocumentClient;
 import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchResult;
-import com.aliyun.opensearch.sdk.generated.search.Aggregate;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
-import com.aliyun.opensearch.sdk.generated.search.SearchParams;
+import com.aliyun.opensearch.sdk.generated.search.*;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
@@ -47,7 +44,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private static final String orderTable="trade_order";
 
     //查询字段
-    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","is_end","end_type","trade_profit_price");
+    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","profit_ratio","theoretical_build_price","is_end","end_type","trade_profit_price");
 
     private static final String addCmd = "ADD";
 
@@ -254,6 +251,10 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             query = query+otherBuffer.toString();
         }
 
+        Sort sort = new Sort();
+        sort.addToSortFields(new SortField("created_at",Order.DECREASE));
+        searchParams.setSort(sort);
+
         searchParams.setQuery(query);
 
         SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
@@ -263,6 +264,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
             List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
             List<TradeOrderLogVo> tradeOrderLogVos=new ArrayList<>();
+            BigDecimal oneDecimal = new BigDecimal("1.00");
             for (OpenSearchField item : items) {
 
                 if(null != item.getFields()) {
@@ -286,6 +288,11 @@ public class TradeOrderServiceImpl implements TradeOrderService {
                     orderLogVo.setEndType(item.getFields().getEndType());
                     orderLogVo.setEndProfitRatio(item.getFields().getEndProfitRatio());
                     orderLogVo.setTradeType(item.getFields().getTradeType());
+                    //净收益率 = 收益比 - 1
+                    BigDecimal bigDecimal = new BigDecimal(Double.toString(item.getFields().getProfitRatio()));
+                    double netRatio = bigDecimal.subtract(oneDecimal).doubleValue();
+                    orderLogVo.setNetRatio(netRatio);
+                    //System.err.println("profitRatio"+item.getFields().getProfitRatio()+"throeytical"+item.getFields().getTheoreticalBuildPrice());
                     tradeOrderLogVos.add(orderLogVo);
                 }
             }
