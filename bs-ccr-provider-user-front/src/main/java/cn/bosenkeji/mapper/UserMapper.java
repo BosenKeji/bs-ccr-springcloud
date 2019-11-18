@@ -3,6 +3,7 @@ package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.User;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public interface UserMapper {
     Map<Integer, User> getByIds(List<Integer> ids);
 
     List<User> list();
+
+    List<User> listBySearch(@Param("status") Integer status, @Param("tel") String tel);
 
     int checkExistById(Integer id);
 }

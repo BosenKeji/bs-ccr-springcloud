@@ -46,6 +46,16 @@ public class UserController {
         return this.userService.listByPage(pageNum,pageSize);
     }
 
+    @ApiOperation(value = "按查询条件获取用户列表接口 ",httpMethod = "GET",nickname = "listBySearch")
+    @GetMapping("/search")
+    public PageInfo listBySearch(@RequestParam(value = "status",required = false) Integer status,
+                                 @RequestParam(value = "tel",required = false) String tel,
+                                 @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
+                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize
+    ) {
+        return userService.listBySearch(status, tel, pageNum, pageSize);
+    }
+
     //@Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")

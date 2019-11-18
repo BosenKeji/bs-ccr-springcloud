@@ -105,6 +105,13 @@ public class UserServiceImpl implements UserService {
         return new PageInfo<>(this.list());
     }
 
+    @Override
+    public PageInfo<User> listBySearch(Integer status, String tel, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> users = userMapper.listBySearch(status,tel);
+        return new PageInfo<>(users);
+    }
+
     //同步缓存
     @Caching(
             evict = {

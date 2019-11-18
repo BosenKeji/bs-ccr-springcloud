@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +52,16 @@ public class ConsumerUserController {
         return this.iUserClientService.listByPage(pageNum,pageSize);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @ApiOperation(value = "按查询条件获取用户列表接口 ",httpMethod = "GET",nickname = "listBySearch")
+    @GetMapping("/search")
+    public PageInfo listBySearch(@RequestParam(value = "status",required = false) Integer status,
+                                 @RequestParam(value = "tel",required = false) String tel,
+                                 @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
+                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        return this.iUserClientService.listBySearch(status, tel, pageNum, pageSize);
+    }
+
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/get_by_username")
     @ApiOperation(value = "通过用户名获取单个用户接口", httpMethod = "GET", nickname = "getOneUserByUsername")
@@ -75,12 +86,16 @@ public class ConsumerUserController {
     }
 
     //@PreAuthorize("principal.username.equals(#user.username)")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口", httpMethod = "PUT", nickname = "updateUser")
     public Object update(@RequestBody @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
-        user.setId(this.getCurrentUser().getId());
+        CustomUserDetailsImpl currentUser = this.getCurrentUser();
+        if (currentUser != null) {
+            user.setId(currentUser.getId());
+        }
+
         return this.iUserClientService.updateUser(user);
     }
 
@@ -157,7 +172,12 @@ public class ConsumerUserController {
     @ApiOperation(value = "获取当前登录用户接口",httpMethod = "GET",nickname = "getCurrentUser")
     @GetMapping("/current_user")
     public CustomUserDetailsImpl getCurrentUser() {
-        CustomUserDetailsImpl principal = (CustomUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CustomUserDetailsImpl principal = null;
+
+        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (obj instanceof CustomUserDetailsImpl) {
+            principal = (CustomUserDetailsImpl) obj;
+        }
         return principal;
     }
 

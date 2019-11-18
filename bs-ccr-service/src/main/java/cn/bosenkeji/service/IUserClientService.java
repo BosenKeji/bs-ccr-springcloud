@@ -20,7 +20,7 @@ import java.util.Map;
  * @create 2019-07-31 19:16
  */
 @FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class
-        //,fallbackFactory = IUserClientServiceFallbackFactory.class
+        ,fallbackFactory = IUserClientServiceFallbackFactory.class
 )
 public interface IUserClientService {
 
@@ -66,6 +66,12 @@ public interface IUserClientService {
     @GetMapping("/user/")
     PageInfo listByPage(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize);
+
+    @GetMapping("/user/search")
+    PageInfo listBySearch(@RequestParam(value = "status",required = false) Integer status,
+                          @RequestParam(value = "tel",required = false) String tel,
+                          @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
+                          @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize);
 
     @PutMapping("/user/status")
     Result updateStatusById(@RequestParam("id") Integer id, @RequestParam("status") Integer status);
