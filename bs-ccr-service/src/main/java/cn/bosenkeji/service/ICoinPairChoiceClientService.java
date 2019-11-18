@@ -5,6 +5,7 @@ import cn.bosenkeji.service.fallback.ICoinPairChoiceClientServiceFallbackFactory
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
+import cn.bosenkeji.vo.transaction.CoinPairChoicePositionDetailResult;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -61,4 +62,8 @@ public interface ICoinPairChoiceClientService {
                                     @RequestParam("tradePlatformApiBindProductComboId")  int tradePlatformApiBindProductComboId,
                                     @RequestParam("coinId")  int coinId,
                                     @RequestParam("type")  String type);
-}
+
+    @GetMapping("/coin_pair_choice/position_details")
+    public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") int coinPairChoiceId);
+
+    }

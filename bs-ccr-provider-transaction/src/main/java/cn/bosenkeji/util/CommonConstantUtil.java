@@ -28,4 +28,7 @@ public class CommonConstantUtil {
     public static final int ORDER_GROUP_FORGET = 3;
     public static final int ORDER_GROUP_IS_END = 1;
 
+    public static final int END = 1;
+    public static final int NOT_END = 0;
+
 }

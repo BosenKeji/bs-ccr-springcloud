@@ -96,4 +96,10 @@ public class ConsumerCoinPairChoiceController {
                                     @RequestParam("type") @ApiParam(value = "收益记录（'profit'）还是买入日志（'buy'）", required = true, type = "String") @NotNull String type){
         return this.iCoinPairChoiceClientService.recordByCoinId(pageNum, pageSizeCommon, tradePlatformApiBindProductComboId, coinId, type);
     }
+
+    @ApiOperation(value = "根据自选货币对id查询有持仓详情",httpMethod = "GET",nickname = "getCoinPairChoicePositionDetails")
+    @GetMapping("/position_details")
+    public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") @Min(1)  @ApiParam(value = "自选币id", required = true, type = "integer",example = "1") int coinPairChoiceId){
+        return this.iCoinPairChoiceClientService.getCoinPairChoicePositionDetails(coinPairChoiceId);
+    }
 }

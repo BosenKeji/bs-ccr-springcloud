@@ -36,4 +36,6 @@ public interface OrderGroupService {
     Integer updateOpenSearchFromSql(int id);
 
     OrderGroupOverviewResult tradeOverview(int coinPairChoiceId);
+
+    OrderGroup getByCoinPairChoiceId (int coinPairChoiceId);
 }

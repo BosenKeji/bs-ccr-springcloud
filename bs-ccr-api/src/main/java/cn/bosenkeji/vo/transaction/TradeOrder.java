@@ -56,6 +56,20 @@ public class TradeOrder {
     private double extraProfit;
 
     /**
+     * 理论建仓价
+     */
+    @JSONField(name = "theoretical_build_price")
+    @ApiModelProperty("理论建仓价")
+    private double theoreticalBuildPrice;
+
+    /**
+     * 收益比
+     */
+    @JSONField(name = "profit_ratio")
+    @ApiModelProperty("收益比")
+    private double profitRatio;
+
+    /**
     * 交易方式
     */
     @JSONField(name = "trade_type")
@@ -125,6 +139,22 @@ public class TradeOrder {
 
     public double getExtraProfit() {
         return extraProfit;
+    }
+
+    public double getTheoreticalBuildPrice() {
+        return theoreticalBuildPrice;
+    }
+
+    public void setTheoreticalBuildPrice(double theoreticalBuildPrice) {
+        this.theoreticalBuildPrice = theoreticalBuildPrice;
+    }
+
+    public double getProfitRatio() {
+        return profitRatio;
+    }
+
+    public void setProfitRatio(double profitRatio) {
+        this.profitRatio = profitRatio;
     }
 
     public void setExtraProfit(double extraProfit) {

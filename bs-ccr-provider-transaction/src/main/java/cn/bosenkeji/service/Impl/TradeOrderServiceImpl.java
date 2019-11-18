@@ -109,6 +109,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeCost = tradeOrder.getTradeCost()* CommonConstantUtil.ACCURACY;
         double shellProfit = tradeOrder.getShellProfit()* CommonConstantUtil.ACCURACY;
         double extraProfit = tradeOrder.getExtraProfit() * CommonConstantUtil.ACCURACY;
+        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() * CommonConstantUtil.ACCURACY;
+        double profitRatio = tradeOrder.getProfitRatio() * CommonConstantUtil.ACCURACY;
 
         tradeOrder.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
@@ -116,6 +118,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         tradeOrder.setTradeCost(tradeCost);
         tradeOrder.setShellProfit(shellProfit);
         tradeOrder.setExtraProfit(extraProfit);
+        tradeOrder.setTheoreticalBuildPrice(theoreticalBuildPrice);
+        tradeOrder.setProfitRatio(profitRatio);
         tradeOrder.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
     }
 
@@ -126,12 +130,16 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeCost = tradeOrder.getTradeCost() / CommonConstantUtil.ACCURACY;
         double shellProfit = tradeOrder.getShellProfit() / CommonConstantUtil.ACCURACY;
         double extraProfit = tradeOrder.getExtraProfit() / CommonConstantUtil.ACCURACY;
+        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() / CommonConstantUtil.ACCURACY;
+        double profitRatio = tradeOrder.getProfitRatio() / CommonConstantUtil.ACCURACY;
 
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);
         tradeOrder.setTradeCost(tradeCost);
         tradeOrder.setShellProfit(shellProfit);
         tradeOrder.setExtraProfit(extraProfit);
+        tradeOrder.setTheoreticalBuildPrice(theoreticalBuildPrice);
+        tradeOrder.setProfitRatio(profitRatio);
     }
 
     @Override
