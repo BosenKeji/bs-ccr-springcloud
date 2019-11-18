@@ -232,6 +232,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
         cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
         cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
         return cdKeyOtherPageInfo;
 
     }
@@ -276,6 +278,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
         cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
         cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
         return cdKeyOtherPageInfo;
     }
 
