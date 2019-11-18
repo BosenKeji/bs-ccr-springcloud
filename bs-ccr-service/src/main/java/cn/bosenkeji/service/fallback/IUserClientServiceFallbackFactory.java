@@ -39,6 +39,15 @@ public class IUserClientServiceFallbackFactory implements FallbackFactory<IUserC
             }
 
             @Override
+            public PageInfo listBySearch(Integer status, String tel, int pageNum, int pageSize) {
+                User user=new User();
+                user.setUsername("hystrix");
+                List<User> list=new ArrayList<>();
+                list.add(user);
+                return new PageInfo<>(list);
+            }
+
+            @Override
             public Result updateStatusById(Integer id, Integer status) {
                 return new Result<>(0,"hystrix");
             }

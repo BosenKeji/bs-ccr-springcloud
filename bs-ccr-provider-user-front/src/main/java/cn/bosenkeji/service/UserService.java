@@ -23,6 +23,7 @@ public interface UserService {
 
     List<User> list();
     PageInfo<User> listByPage(int pageNum,int pageSize);
+    PageInfo<User> listBySearch(Integer status, String tel, int pageNum, int pageSize);
 
     void evictUser(int id);
 
