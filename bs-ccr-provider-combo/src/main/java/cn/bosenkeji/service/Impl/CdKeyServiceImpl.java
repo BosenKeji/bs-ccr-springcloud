@@ -296,6 +296,7 @@ public class CdKeyServiceImpl implements CdKeyService {
             productCombo.setTime(param.getTime());
             productCombo.setRemark(param.getRemark());
             productCombo.setIsCustomized(1);
+            productCombo.setStatus(DEFAULT_STATUS);
             productCombo.setProductId(param.getProductId());
             int result = iProductComboService.addBySelective(productCombo);
             if (result == 0) {
