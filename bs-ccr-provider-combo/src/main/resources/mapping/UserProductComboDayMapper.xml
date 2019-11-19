@@ -18,6 +18,10 @@
   <sql id="Base_Column_List">
     id, user_id, user_product_combo_id, type, number, status, created_at, updated_at
   </sql>
+
+  <sql id="Order_By_Created_At_Desc">
+    order by created_at desc
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -135,7 +139,7 @@
     select
     <include refid="Base_Column_List" />
     from user_product_combo_day
-    order by `id` DESC
+    <include refid="Order_By_Created_At_Desc" />
 
   </select>
 
@@ -145,6 +149,7 @@
     <include refid="Base_Column_List" />
     from user_product_combo_day
     where user_id=#{userId}
+    <include refid="Order_By_Created_At_Desc" />
   </select>
 
   <select id="selectByUserProductComboId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
@@ -152,6 +157,7 @@
     <include refid="Base_Column_List" />
     from user_product_combo_day
     where user_product_combo_id=#{userProductComboId}
+    <include refid="Order_By_Created_At_Desc" />
   </select>
 
 </mapper>
