@@ -14,6 +14,7 @@ import com.aliyun.oss.OSS;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -83,10 +85,12 @@ public class CdKeyServiceImpl implements CdKeyService {
 
             //时间
             LocalDateTime localDateTime = LocalDateTime.now(ZoneOffset.of("+8"));
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatLocalDateTime = dtf.format(localDateTime);
 
             cdKeys.forEach((k) -> {
                 cdKeyMap.put(k.getKey(), String.valueOf(k.getId()));
-                cdKeyOthers.add(new CdKeyOther(k.getId(), k.getKey(), localDateTime.toString(), param.getProductComboId(), product.getName(), productCombo.getName(), productCombo.getTime(), param.getPrefix(), param.getRemark(), 0, ""));
+                cdKeyOthers.add(new CdKeyOther(k.getId(), k.getKey(), formatLocalDateTime, param.getProductComboId(), product.getName(), productCombo.getName(), productCombo.getTime(), param.getPrefix(), param.getRemark(), 0, ""));
             });
 
             redisTemplate.opsForHash().putAll(CD_KEY_HASH, cdKeyMap); //cdKeys存入redis
@@ -232,6 +236,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
         cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
         cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
         return cdKeyOtherPageInfo;
 
     }
@@ -276,6 +282,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
         cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
         cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
         return cdKeyOtherPageInfo;
     }
 
@@ -292,6 +300,7 @@ public class CdKeyServiceImpl implements CdKeyService {
             productCombo.setTime(param.getTime());
             productCombo.setRemark(param.getRemark());
             productCombo.setIsCustomized(1);
+            productCombo.setStatus(DEFAULT_STATUS);
             productCombo.setProductId(param.getProductId());
             int result = iProductComboService.addBySelective(productCombo);
             if (result == 0) {
@@ -334,7 +343,11 @@ public class CdKeyServiceImpl implements CdKeyService {
     }
 
     private static String generateCdKey(String prefix) {
-        return prefix + "-" + RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8);
+        String s = RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8) + "-" + RandomStringUtils.randomAlphanumeric(8);
+        if (StringUtils.isNotBlank(prefix)) {
+            s = prefix + "-" + s;
+        }
+        return s;
     }
 
 

@@ -141,14 +141,17 @@ public class ConsumerUserController {
         return this.iUserClientService.updateUserTel(currentId,tel);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @ApiOperation(value = "用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
     @PutMapping("/update_binding")
-    public Result updateBinding(@RequestParam("id") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id) {
+    public Result updateBinding(@RequestParam(value = "id",required = false) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") Integer id,
+                                @RequestParam(value = "isBinding",required = false,defaultValue = "1") Integer isBinding) {
 
-        int currentId=this.getCurrentUser().getId();
-        int isBinding=1;
-        return iUserClientService.updateBinding(currentId,isBinding);
+        CustomUserDetailsImpl currentUser = this.getCurrentUser();
+        if (currentUser != null) {
+            id = currentUser.getId();
+        }
+        return iUserClientService.updateBinding(id,isBinding);
 
     }
 
