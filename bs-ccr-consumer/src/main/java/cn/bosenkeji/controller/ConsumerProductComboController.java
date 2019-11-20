@@ -1,6 +1,7 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductComboClientService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -47,17 +48,16 @@ public class ConsumerProductComboController {
                                              @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int productId,
                                              @RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status) {
 
-        return this.iProductComboClientService.listByProductIdAndStatus(pageNum,pageSize,productId,status);
+        return this.iProductComboClientService.listByProductIdAndStatusWithPage(pageNum,pageSize,productId,status);
     }
 
-    @ApiOperation(value ="根据产品id获取 未停用 的产品套餐列表",httpMethod = "GET",nickname = "getProductComboListByProductIdAndOpenWithPage")
+    @ApiOperation(value ="根据产品id获取 未停用 的产品套餐列表",httpMethod = "GET",nickname = "getProductComboListByProductIdAndOpen")
     @RequestMapping(value = "/list_by_product_id_and_open",method = RequestMethod.GET)
-    public PageInfo listByProductIdAndOpen(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                             @RequestParam(value="pageSize",defaultValue="15") int pageSize,
-                                             @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int productId) {
+    public Result listByProductIdAndOpen(
+                                         @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int productId) {
 
         int status=1;
-        return this.iProductComboClientService.listByProductIdAndStatus(pageNum,pageSize,productId,status);
+        return this.iProductComboClientService.listByProductIdAndStatus(productId,status);
     }
 
 

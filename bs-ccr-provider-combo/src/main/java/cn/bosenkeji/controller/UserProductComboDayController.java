@@ -9,7 +9,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.IUserProductComboDayService;
-import cn.bosenkeji.util.Result;
+import cn.bosenkeji.utils.ComboDOTransformToVOUtil;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -24,8 +24,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/user_product_combo_day")
@@ -58,16 +56,24 @@ public class UserProductComboDayController {
                               @RequestParam(value="pageNum",defaultValue="1") int pageNum,
                               @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
 
-        return this.iUserProductComboDayService.selectByUserTel(tel,pageNum,pageSize);
+        PageInfo userProductComboDayPageInfo = this.iUserProductComboDayService.selectByUserTel(tel, pageNum, pageSize);
+        if (null != userProductComboDayPageInfo.getList() && userProductComboDayPageInfo.getList().size() >0) {
+            userProductComboDayPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDayDOToVO(userProductComboDayPageInfo.getList()));
+        }
+        return userProductComboDayPageInfo;
 
     }
 
     @GetMapping("/")
     @ApiOperation(value = "获取用户套餐时长列表 接口",httpMethod = "GET",nickname = "getUserProductComboDayListWithPage")
-    public Object list(
+    public PageInfo list(
             @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
 
-        return this.iUserProductComboDayService.list(pageNum,pageSize);
+        PageInfo userProductComboDayPageInfo = this.iUserProductComboDayService.list(pageNum, pageSize);
+        if (null != userProductComboDayPageInfo.getList() && userProductComboDayPageInfo.getList().size() >0) {
+            userProductComboDayPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDayDOToVO(userProductComboDayPageInfo.getList()));
+        }
+        return userProductComboDayPageInfo;
 
     }
 
@@ -78,7 +84,11 @@ public class UserProductComboDayController {
                                              @RequestParam(value="pageNum",defaultValue="1") int pageNum,
                                              @RequestParam(value="pageSize",defaultValue="15") int pageSize) {
 
-        return this.iUserProductComboDayService.selectByUserProductComboId(userProductComboId,pageNum,pageSize);
+        PageInfo userProductComboDayPageInfo = this.iUserProductComboDayService.selectByUserProductComboId(userProductComboId, pageNum, pageSize);
+        if (null != userProductComboDayPageInfo.getList() && userProductComboDayPageInfo.getList().size() >0) {
+            userProductComboDayPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDayDOToVO(userProductComboDayPageInfo.getList()));
+        }
+        return userProductComboDayPageInfo;
 
     }
 

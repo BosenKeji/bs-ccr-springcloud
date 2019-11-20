@@ -12,7 +12,8 @@ import java.util.List;
 public interface IProductComboService {
     PageInfo<ProductCombo> list(int pageNum, int pageSize);
     PageInfo<ProductCombo> listByProductId(int pageNum, int pageSize, int productId);
-    PageInfo<ProductCombo> listByProductIdAndStauts(int pageNum, int pageSize, int productId, int status);
+    PageInfo<ProductCombo> listByProductIdAndStatusWithPage(int pageNum, int pageSize, int productId, int status);
+    List<ProductCombo> listByProductIdAndStatus(int productId,int status);
     PageInfo<ProductCombo> listByStatus(int pageNum, int pageSize, int status);
     ProductCombo get(int id);
     int add(ProductCombo productCombo);

@@ -136,7 +136,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public PageInfo<UserProductCombo> list(int pageNum,int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo<UserProductCombo>(userProductComboMapper.findAll());
+        List<UserProductCombo> all = userProductComboMapper.findAll();
+        getProductByPids(all);
+        return new PageInfo<UserProductCombo>(all);
     }
 
     /**
@@ -241,6 +243,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
+
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
 
         getProductByPids(userProductCombos);
@@ -277,12 +280,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //逐一设置套餐时间 并 收集id列表
         List<Integer> pids=new ArrayList<>();
+        List<Integer> userIds=new ArrayList<>();
+
         for (UserProductCombo userProductCombo : userProductCombos) {
 
             // 设置套餐时间
             setTimeForOneCombo(userProductCombo);
             //循环收集产品ID
             pids.add(userProductCombo.getProductCombo().getProductId());
+            //收集用户id
+            userIds.add(userProductCombo.getUserId());
         }
 
         //填充product 信息
@@ -290,11 +297,16 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
             //通过多个id获取产品的 map
             Map<Integer, Product> productMap=iProductClientService.listByPrimaryKeys(pids);
-            //循环把产品 映射到套餐中
+            Map<Integer, User> userMap = iUserClientService.listByIds(userIds);
+            //循环把产品 用户信息 映射到套餐中
             for (UserProductCombo userProductCombo:userProductCombos) {
                 Integer id=userProductCombo.getProductCombo().getProductId();
-                if(id!=null&&id>0&productMap.containsKey(id)) {
+                int userId = userProductCombo.getUserId();
+                if(id > 0 && productMap.containsKey(id)) {
                     userProductCombo.getProductCombo().setProduct(productMap.get(id));
+                }
+                if (userId >0 && userMap.containsKey(userId) ) {
+                    userProductCombo.setUser(userMap.get(userId));
                 }
             }
         }

@@ -11,6 +11,7 @@ import cn.bosenkeji.service.IProductComboService;
 import cn.bosenkeji.service.IUserClientService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.utils.ComboDOTransformToVOUtil;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -53,7 +54,11 @@ public class UserProductComboController {
     @RequestMapping(value="/",method = RequestMethod.GET)
     public PageInfo list(@RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize)
     {
-        return this.iUserProductComboService.list(pageNum,pageSize);
+        PageInfo userProductComboPageInfo = this.iUserProductComboService.list(pageNum, pageSize);
+        if(null != userProductComboPageInfo.getList() && userProductComboPageInfo.getList().size() > 0) {
+            userProductComboPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDOToVO(userProductComboPageInfo.getList()));
+        }
+        return userProductComboPageInfo;
     }
 
     @ApiOperation(value="获取用户套餐详情api接口",httpMethod = "GET",nickname = "getOneUserProductCombo")
@@ -88,16 +93,24 @@ public class UserProductComboController {
     @RequestMapping(value="/list_by_user_tel",method = RequestMethod.GET)
     public PageInfo listByUserTel(@RequestParam("userTel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String userTel,
                                   @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
-        //return this.iUserProductComboService.getByUserId(userId);
-        return this.iUserProductComboService.selectUserProductComboByUserTel(pageNum,pageSize,userTel);
+
+        PageInfo userProductComboPageInfo = this.iUserProductComboService.selectUserProductComboByUserTel(pageNum, pageSize, userTel);
+        if(null != userProductComboPageInfo.getList() && userProductComboPageInfo.getList().size() > 0) {
+            userProductComboPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDOToVO(userProductComboPageInfo.getList()));
+        }
+        return userProductComboPageInfo;
     }
 
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
     @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
     public PageInfo listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
                                   @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
-        //return this.iUserProductComboService.getByUserId(userId);
-        return this.iUserProductComboService.selectUserProductComboByUserId(pageNum,pageSize,userId);
+
+        PageInfo userProductComboPageInfo = this.iUserProductComboService.selectUserProductComboByUserId(pageNum, pageSize, userId);
+        if(null != userProductComboPageInfo.getList() && userProductComboPageInfo.getList().size() > 0) {
+            userProductComboPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDOToVO(userProductComboPageInfo.getList()));
+        }
+        return userProductComboPageInfo;
     }
 
     @GetMapping("/list_by_ids")
