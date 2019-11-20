@@ -72,14 +72,24 @@ public class ProductComboController {
     }
 
     @Cacheable(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_KEY,key = "#productId+'-'+#status+'-'+#pageNum+'-'+#pageSize")
-    @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListByProductIdAndStatusWithPage")
-    @RequestMapping(value = "/list_by_product_id_and_status",method = RequestMethod.GET)
-    public PageInfo listByProductIdAndStatus(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+    @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表 带分页",httpMethod = "GET",nickname = "getProductComboListByProductIdAndStatusWithPage")
+    @RequestMapping(value = "/list_by_product_id_and_status_with_page",method = RequestMethod.GET)
+    public PageInfo listByProductIdAndStatusWithPage(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
                                              @RequestParam(value="pageSize",defaultValue="15") int pageSize,
                                              @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int productId,
                                              @RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status)
     {
-        return this.iProductComboService.listByProductIdAndStauts(pageNum,pageSize,productId,status);
+        return this.iProductComboService.listByProductIdAndStatusWithPage(pageNum,pageSize,productId,status);
+    }
+
+
+    @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表",httpMethod = "GET",nickname = "getProductComboListByProductIdAndStatus")
+    @RequestMapping(value = "/list_by_product_id_and_status",method = RequestMethod.GET)
+    public Result listByProductIdAndStatus(
+                                             @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") int productId,
+                                             @RequestParam("status") @ApiParam(value = "产品状态",required = true,type = "integer",example = "1") int status)
+    {
+        return new Result<>(this.iProductComboService.listByProductIdAndStatus(productId,status));
     }
 
 
