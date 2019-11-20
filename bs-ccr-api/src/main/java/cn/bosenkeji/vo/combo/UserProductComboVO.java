@@ -18,6 +18,9 @@ public class UserProductComboVO implements Serializable {
     private Timestamp createdAt;
     private int remainTime;
 
+    private int userId;
+    private String tel;
+
     public int getId() {
         return id;
     }
@@ -80,5 +83,21 @@ public class UserProductComboVO implements Serializable {
 
     public void setRemainTime(int remainTime) {
         this.remainTime = remainTime;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }

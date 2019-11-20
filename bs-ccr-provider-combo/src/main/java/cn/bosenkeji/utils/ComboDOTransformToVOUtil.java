@@ -66,6 +66,10 @@ public class ComboDOTransformToVOUtil {
                     userProductComboVO.setProductName(userProductCombo.getProductCombo().getProduct().getName());
                     userProductComboVO.setProductVersionName(userProductCombo.getProductCombo().getProduct().getVersionName());
                 }
+                if (null != userProductCombo.getUser()) {
+                    userProductComboVO.setUserId(userProductCombo.getUserId());
+                    userProductComboVO.setTel(userProductCombo.getUser().getTel());
+                }
             }
 
             userProductComboVOS.add(userProductComboVO);
