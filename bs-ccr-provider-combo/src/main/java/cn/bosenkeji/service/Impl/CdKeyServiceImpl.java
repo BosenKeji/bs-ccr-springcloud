@@ -269,8 +269,16 @@ public class CdKeyServiceImpl implements CdKeyService {
      */
 
     @Override
-    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed,Integer sort, Integer pageNum, Integer pageSize) {
+
+        String orderBy = "created_at ";
+        if (sort == 1) {
+            orderBy = orderBy + "asc";
+        } else {
+            orderBy = orderBy + "desc";
+        }
+
+        PageHelper.startPage(pageNum,pageSize,orderBy);
         CdKey c = new CdKey();
         c.setKey(cdKey);
         c.setUsername(username);
@@ -279,12 +287,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKey> cdKeyPageInfo = new PageInfo<>(cdKeys);
 
         List<CdKeyOther> cdKeyOthers = convertToCdKeyOther(cdKeyPageInfo.getList());
-        PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
-        cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
-        cdKeyOtherPageInfo.setList(cdKeyOthers);
-        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
-        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
-        return cdKeyOtherPageInfo;
+
+        return convertPageInfo(cdKeyPageInfo, cdKeyOthers);
     }
 
 
@@ -359,6 +363,26 @@ public class CdKeyServiceImpl implements CdKeyService {
     private void clearCdKey(Integer cdKeyId, String username,String key) {
         cdKeyMapper.updateUsernameAndStatusById(cdKeyId,username,USED_STATUS);
         redisTemplate.opsForHash().delete(CD_KEY_HASH, key);
+    }
+
+    private PageInfo<CdKeyOther> convertPageInfo(PageInfo<CdKey> cdKeyPageInfo, List<CdKeyOther> cdKeyOthers) {
+
+        PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
+        cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
+        cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
+        cdKeyOtherPageInfo.setIsFirstPage(cdKeyPageInfo.isIsFirstPage());
+        cdKeyOtherPageInfo.setIsLastPage(cdKeyPageInfo.isIsLastPage());
+        cdKeyOtherPageInfo.setHasNextPage(cdKeyPageInfo.isHasNextPage());
+        cdKeyOtherPageInfo.setHasPreviousPage(cdKeyPageInfo.isHasPreviousPage());
+        cdKeyOtherPageInfo.setEndRow(cdKeyPageInfo.getEndRow());
+        cdKeyOtherPageInfo.setPages(cdKeyPageInfo.getPages());
+        cdKeyOtherPageInfo.setPrePage(cdKeyPageInfo.getPrePage());
+        cdKeyOtherPageInfo.setNextPage(cdKeyPageInfo.getNextPage());
+        cdKeyOtherPageInfo.setSize(cdKeyPageInfo.getSize());
+        cdKeyOtherPageInfo.setStartRow(cdKeyPageInfo.getStartRow());
+        return cdKeyOtherPageInfo;
     }
 
 

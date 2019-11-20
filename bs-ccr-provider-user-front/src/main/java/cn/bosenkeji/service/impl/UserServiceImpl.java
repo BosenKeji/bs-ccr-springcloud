@@ -106,8 +106,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<User> listBySearch(Integer status, String tel, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<User> listBySearch(Integer status, String tel,Integer sort, int pageNum, int pageSize) {
+        //排序处理，按照创建时间
+        String orderBy = "created_at ";
+        if (sort == 1) {
+            orderBy = orderBy + "asc";
+        } else {
+            orderBy = orderBy + "desc";
+        }
+
+        PageHelper.startPage(pageNum,pageSize,orderBy);
         List<User> users = userMapper.listBySearch(status,tel);
         return new PageInfo<>(users);
     }

@@ -63,9 +63,10 @@ public class ConsumerCdKeyController {
     public PageInfo<CdKeyOther> getCdKeyBySearch(@RequestParam(value = "cdKey",required = false) String cdKey,
                                                     @RequestParam(value = "username",required = false) String username,
                                                     @RequestParam(value = "isUsed",required = false) Integer isUsed,
+                                                    @RequestParam(value = "sort",required = false,defaultValue = "0") Integer sort,
                                                     @RequestParam(value = "pageNum",required = false, defaultValue = "1") Integer pageNum,
                                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize) {
-        return iCdKeyClientService.getCdKeyBySearch(cdKey,username,isUsed,pageNum,pageSize);
+        return iCdKeyClientService.getCdKeyBySearch(cdKey,username,isUsed,sort,pageNum,pageSize);
     }
 
     private CustomUserDetailsImpl getCurrentUser() {
