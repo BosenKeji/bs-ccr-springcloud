@@ -94,4 +94,12 @@ public class TradePlatformServiceImpl implements TradePlatformService {
     public Optional<Integer> checkExistByName(String name) {
         return Optional.ofNullable(this.tradePlatformMapper.checkExistByName(name));
     }
+
+    @Override
+    public TradePlatform getByName(String name) {
+        if (name.isEmpty()){
+            return new TradePlatform();
+        }
+        return this.tradePlatformMapper.selectByName(name);
+    }
 }

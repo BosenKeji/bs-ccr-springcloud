@@ -4,6 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ICoinPairCoinClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoinResult;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +35,7 @@ public interface ICoinPairCoinClientService {
 
     @DeleteMapping("/coin_pair_coin/")
     public Result deleteCoinPairCoin(@RequestParam("coinId") int coinId,@RequestParam("coinPairId") int coinPairId);
+
+    @GetMapping("/coin_pair_coin/base_coin")
+    public Result getBaseCoinByCoinPairName(@RequestParam("coinPairName") String coinPairName);
 }

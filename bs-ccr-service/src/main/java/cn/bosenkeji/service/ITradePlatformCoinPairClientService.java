@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformCoinPairClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -23,7 +24,7 @@ public interface ITradePlatformCoinPairClientService {
     public TradePlatformCoinPair getOneTradePlatformCoinPair(@PathVariable("id") int id);
 
     @PostMapping("/trade_platform_coin_pairs/")
-    public Result addOneTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);
+    public Result addOneTradePlatformCoinPair(@RequestBody CoinPair coinPair, @RequestParam("tradePlatformName") String tradePlatformName);
 
     @PutMapping("/trade_platform_coin_pairs/")
     public Result updateTradePlatformCoinPair(@RequestBody TradePlatformCoinPair tradePlatformCoinPair);

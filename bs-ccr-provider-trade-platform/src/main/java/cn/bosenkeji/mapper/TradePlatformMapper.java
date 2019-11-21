@@ -18,6 +18,8 @@ public interface TradePlatformMapper {
 
     TradePlatform selectByPrimaryKey(int id);
 
+    TradePlatform selectByName(String name);
+
     int updateByPrimaryKeySelective(TradePlatform record);
 
     int updateByPrimaryKey(TradePlatform record);

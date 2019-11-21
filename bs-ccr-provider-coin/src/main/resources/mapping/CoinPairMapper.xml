@@ -108,6 +108,9 @@
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="int" keyProperty="id" keyColumn="id" order="AFTER">
+      select  LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.coin.CoinPair">
     <!--@mbg.generated-->

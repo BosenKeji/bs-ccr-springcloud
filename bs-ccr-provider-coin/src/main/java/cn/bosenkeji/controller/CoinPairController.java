@@ -83,15 +83,20 @@ public class CoinPairController {
     @ApiOperation(value = "添加单个货币对接口",httpMethod = "POST",nickname = "addOneCoinPair")
     @PostMapping("/")
     public Result add(@RequestBody @Valid @ApiParam(value = "货币对实体", required = true, type = "String") CoinPair coinPair){
-
-        if (this.coinPairService.checkExistByName(coinPair.getName()).get()>=1){
-            return new Result<>(null,"货币对已存在");
+        if (coinPair.getName() == null){
+            return new Result<>(null,"货币对name为空");
         }
 
         coinPair.setStatus(1);
         coinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.coinPairService.add(coinPair));
+        Optional<Integer> result = this.coinPairService.add(coinPair);
+
+        if (result.get() <= -1){
+            return new Result<>(result.get(),"货币对已存在");
+        }
+
+        return new Result<>(result);
     }
 
     @Caching(

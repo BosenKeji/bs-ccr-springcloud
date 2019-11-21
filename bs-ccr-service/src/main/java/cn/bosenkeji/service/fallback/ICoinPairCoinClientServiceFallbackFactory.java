@@ -3,6 +3,7 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.ICoinPairCoinClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoinResult;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,11 @@ public class ICoinPairCoinClientServiceFallbackFactory implements FallbackFactor
 
             @Override
             public Result deleteCoinPairCoin(int coinId, int coinPairId) {
+                return new Result<>(0,"hystrix fail");
+            }
+
+            @Override
+            public Result getBaseCoinByCoinPairName(String coinPairName) {
                 return new Result<>(0,"hystrix fail");
             }
 
