@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 
@@ -26,7 +27,7 @@ public interface TradePlatformCoinPairService {
 
    TradePlatformCoinPair get(int id);
 
-    Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair);
+    Optional<Integer> add(CoinPair coinPair , String tradePlatformName);
 
     Optional<Integer> update(TradePlatformCoinPair tradePlatformCoinPair);
 

@@ -8,6 +8,7 @@ import cn.bosenkeji.exception.enums.TradePlatformCoinPairEnum;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.TradePlatformCoinPairService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -28,6 +29,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * add cache by xivin
@@ -74,16 +76,14 @@ public class TradePlatformCoinPairController {
     )
     @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
-    public Result add(@RequestBody @NotNull @Valid @ApiParam(value = "交易平台货币对实体", required = true, type = "string") TradePlatformCoinPair tradePlatformCoinPair){
+    public Result add(@RequestBody @ApiParam(value = "货币对实体", required = true, type = "string") CoinPair coinPair,
+                      @RequestParam("tradePlatformName") @ApiParam(value = "交易平台名字",required = true,type = "string") String tradePlatformName){
 
-        if (this.tradePlatformCoinPairService.checkByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId()).get() >= 1){
-            return new Result<>(null,"交易平台货币对已存在");
+        Optional<Integer> result = this.tradePlatformCoinPairService.add(coinPair,tradePlatformName);
+        if (result.isPresent() && result.get() == -1){
+            return new Result<>(null,"添加失败");
         }
-
-        tradePlatformCoinPair.setStatus(1);
-        tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(this.tradePlatformCoinPairService.add(tradePlatformCoinPair));
+        return new Result<>(result);
     }
 
     @Caching(

@@ -28,5 +28,7 @@ public interface CoinPairCoinMapper {
 
     List<CoinPairCoin> findAllByCoinId(Integer coinId);
 
+    List<CoinPairCoin> findAllByCoinPairId(int coinPairId);
+
     Integer checkByCoinIdAndCoinPairId(Integer coinId,Integer coinPairId);
 }

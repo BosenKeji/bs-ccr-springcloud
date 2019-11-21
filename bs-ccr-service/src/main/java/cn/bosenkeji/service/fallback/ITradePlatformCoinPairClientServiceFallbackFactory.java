@@ -2,6 +2,7 @@ package cn.bosenkeji.service.fallback;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -36,7 +37,7 @@ public class ITradePlatformCoinPairClientServiceFallbackFactory implements Fallb
             }
 
             @Override
-            public Result addOneTradePlatformCoinPair(TradePlatformCoinPair tradePlatformCoinPair) {
+            public Result addOneTradePlatformCoinPair(CoinPair coinPair, String tradePlatformName) {
                 return new Result<>(0,"hystrix fail");
             }
 

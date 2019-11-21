@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -48,8 +49,9 @@ public class ConsumerTradePlatformCoinPairController {
 
     @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
-    public Result addOneTradePlatformCoinPair(@RequestBody @ApiParam(value = "交易平台货币对实体", required = true, type = "string") @NotNull TradePlatformCoinPair tradePlatformCoinPair){
-        return this.iTradePlatformCoinPairClientService.addOneTradePlatformCoinPair(tradePlatformCoinPair);
+    public Result addOneTradePlatformCoinPair(@RequestBody @ApiParam(value = "货币对实体", required = true, type = "string") @NotNull CoinPair coinPair,
+                                              @RequestParam("tradePlatformName") @ApiParam(value = "交易平台名字",required = true,type = "string") @NotNull String tradePlatformName){
+        return this.iTradePlatformCoinPairClientService.addOneTradePlatformCoinPair(coinPair, tradePlatformName);
     }
 
     @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT",nickname = "updateTradePlatformCoinPair")
