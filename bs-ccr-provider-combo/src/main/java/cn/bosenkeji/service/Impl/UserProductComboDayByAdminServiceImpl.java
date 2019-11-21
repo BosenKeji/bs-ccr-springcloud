@@ -1,6 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import cn.bosenkeji.interfaces.CommonStatusEnum;
 import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
@@ -69,6 +70,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
      * @param userProductComboDayByAdmin
      * @return
      */
+    @BatchCacheRemove("ccr:comboDay:listByUpcId::+#userProductComboDay.userProductComboId+-")
     @Override
     public int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin) {
 

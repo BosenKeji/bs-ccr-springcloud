@@ -94,8 +94,7 @@ public class ProductController {
             evict = {
                     @CacheEvict(value = RedisInterface.PRODUCT_ID_KEY,key = "#id"),
                     @CacheEvict(value = RedisInterface.PRODUCT_LIST_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_IDS,allEntries = true)
+                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true)
             }
     )
     @ApiOperation(value="根据id删除产品api接口",httpMethod = "DELETE",nickname = "deleteOneProduct")
@@ -113,8 +112,7 @@ public class ProductController {
             evict = {
                     @CacheEvict(value = RedisInterface.PRODUCT_ID_KEY,key = "#product.id"),
                     @CacheEvict(value = RedisInterface.PRODUCT_LIST_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_IDS,allEntries = true)
+                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true)
             }
     )
     @ApiOperation(value="更新产品api接口",httpMethod = "PUT",nickname = "updateProduct")
@@ -128,8 +126,7 @@ public class ProductController {
             evict = {
                     @CacheEvict(value = RedisInterface.PRODUCT_ID_KEY,key = "#id"),
                     @CacheEvict(value = RedisInterface.PRODUCT_LIST_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_IDS,allEntries = true)
+                    @CacheEvict(value = RedisInterface.PRODUCT_LIST_STATUS_KEY,allEntries = true)
             }
     )
     @ApiOperation(value="启用、关闭产品api接口",httpMethod = "PUT",nickname = "updateProductStatus")
@@ -142,7 +139,6 @@ public class ProductController {
         product.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result(this.iProductService.updateStatus(product));
     }
-
 
 
 

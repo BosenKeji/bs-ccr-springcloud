@@ -22,7 +22,7 @@ public class IProductComboClientServiceFallbackFactory implements FallbackFactor
     public IProductComboClientService create(Throwable throwable) {
         return new IProductComboClientService() {
             @Override
-            public PageInfo listByProductId(int productId) {
+            public PageInfo listByProductId(int pageNum, int pageSize, int productId) {
                 List<ProductCombo> list=new ArrayList<>();
                 ProductCombo productCombo=new ProductCombo();
                 productCombo.setName("hystrixName");

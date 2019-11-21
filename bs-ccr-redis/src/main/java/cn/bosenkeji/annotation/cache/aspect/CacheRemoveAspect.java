@@ -1,6 +1,6 @@
 package cn.bosenkeji.annotation.cache.aspect;
 
-import cn.bosenkeji.annotation.cache.MyCacheRemove;
+import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,7 +14,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.lang.annotation.Documented;
 import java.lang.reflect.Method;
 import java.util.Set;
 
@@ -27,15 +26,25 @@ public class CacheRemoveAspect {
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
-    @AfterReturning("@annotation(cn.bosenkeji.annotation.cache.MyCacheRemove)")
+    @AfterReturning("@annotation(cn.bosenkeji.annotation.cache.BatchCacheRemove)")
     public void remove(JoinPoint point) {
 
         Method method = ((MethodSignature) point.getSignature()).getMethod();
-        MyCacheRemove annotation = method.getAnnotation(MyCacheRemove.class);
+        BatchCacheRemove annotation = method.getAnnotation(BatchCacheRemove.class);
         String[] keys=annotation.value();
         for (String key : keys) {
-            if(key.contains("#"))
-                key = parseKey(key,method,point.getArgs());
+            if(key.contains("#")) {
+                String[] split = key.split("\\+");
+                StringBuffer stringBuffer = new StringBuffer();
+                for (String s : split) {
+                    System.out.println("s = " + s);
+                    if (s.contains("#"))
+                        s = parseKey(s,method,point.getArgs());
+                    stringBuffer.append(s);
+                }
+                key = stringBuffer.append("*").toString().replaceAll("\\+","");
+                //key = split[0] + parseKey("#"+split[1], method, point.getArgs());
+            }
             Set deleteKey = redisTemplate.keys(key);
             redisTemplate.delete(deleteKey);
 

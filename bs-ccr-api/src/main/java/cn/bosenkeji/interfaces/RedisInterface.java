@@ -22,7 +22,9 @@ package cn.bosenkeji.interfaces;
         //产品套餐
         String PRODUCT_COMBO_ID_KEY="ccr:productCombo:id";
         String PRODUCT_COMBO_LIST_KEY="ccr:productCombo:list";
+        String PRODUCT_COMBO_LIST_PID_KEY = "ccr:productCombo:listByPid";
         String PRODUCT_COMBO_LIST_PID_STATUS_KEY="ccr:productCombo:listByPidAndStatus";
+        String PRODUCT_COMBO_LIST_PID_STATUS_PAGE_KEY="ccr:productCombo:listByPidAndStatusWithPage";
 
         //用户套餐
         String USER_COMBO_ID_KEY="ccr:userCombo:id";
@@ -86,7 +88,8 @@ package cn.bosenkeji.interfaces;
         String TRADE_PLATFORM_COIN_ID_KEY="ccr:tradePlatformCoinPair:id";
         String TRADE_PLATFORM_COIN_LIST_KEY="ccr:tradePlatformCoinPair:list";
 
-
+        String REASON_LIST_TYPE_KEY = "ccr:reason:listByType";
+        String REASON_ID_KEY = "ccr:reason:id";
 
 
 

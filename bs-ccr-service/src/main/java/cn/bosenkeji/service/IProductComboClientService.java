@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public interface IProductComboClientService {
 
     @GetMapping(value = "/product_combo/list_by_product_id/")
-    PageInfo listByProductId(@RequestParam("productId") int productId);
+    PageInfo listByProductId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
+                             @RequestParam(value="pageSize",defaultValue="15") int pageSize,
+                             @RequestParam("productId") int productId);
 
 
     @PostMapping("/product_combo/")

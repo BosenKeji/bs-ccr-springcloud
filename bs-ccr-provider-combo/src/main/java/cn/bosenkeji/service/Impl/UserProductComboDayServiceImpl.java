@@ -1,5 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
@@ -17,6 +18,7 @@ import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import cn.bosenkeji.vo.reason.Reason;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +53,6 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     @Resource
     private IAdminClientService iAdminClientService;
 
-    @Resource
-    private IReasonClientService iReasonClientService;
 
 
     @Override
@@ -117,6 +117,7 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
         return new PageInfo<>();
     }
 
+    @Cacheable(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,key = "#userProductComboId+'-'+#pageNum+'-'+#pageSize")
     @Override
     public PageInfo<UserProductComboDay> selectByUserProductComboId(int userProductComboId, int pageNum, int pageSize) {
 

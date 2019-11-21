@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.ReasonService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.reason.Reason;
@@ -8,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.omg.CORBA.INTERNAL;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class ReasonController {
         return this.reasonService.listWithPage(pageNum,pageSize);
     }
 
+    @Cacheable(value = RedisInterface.REASON_LIST_TYPE_KEY,key = "#reasonTypeId+'-'+#pageNum+'-'+#pageSize")
     @ApiOperation(value ="获取事由列表api",notes = "获取事由列表api",httpMethod = "GET",nickname = "getReasonByTypeListWithPage")
     @GetMapping(value = "/by_reason_type_id")
     public PageInfo listByReasonTypeId(@RequestParam(value = "reasonTypeId") @ApiParam(value = "事由类别id",required = true,type = "integer",example = "1") int reasonTypeId,
@@ -54,6 +57,7 @@ public class ReasonController {
         return new Result<Integer>(this.reasonService.checkExistById(id));
     }
 
+    @Cacheable(value = RedisInterface.REASON_ID_KEY,key = "#id")
     @ApiOperation(value = "获取单个事由接口",httpMethod = "GET",nickname = "getOneReason")
     @GetMapping("/{id}")
     public Reason get(@PathVariable("id") @Min(1) @ApiParam(value = "事由ID",required = true,type = "integer",example = "1") int id) {

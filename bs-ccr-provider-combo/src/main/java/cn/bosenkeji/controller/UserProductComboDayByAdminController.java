@@ -7,7 +7,7 @@ package cn.bosenkeji.controller;
  * @create 2019-07-15 11:15
  */
 
-import cn.bosenkeji.interfaces.RedisInterface;
+
 import cn.bosenkeji.service.IUserProductComboDayByAdminService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
@@ -16,10 +16,6 @@ import cn.bosenkeji.vo.combo.UserProductComboDayByAdmin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +31,6 @@ import java.time.LocalDateTime;
 @RequestMapping("/user_product_combo_day_by_admin")
 @Validated
 @Api(tags = "UserProductComboDayByAdmin 用户套餐时长操作相关接口",value="提供用户套餐时长操作相关的 Rest API")
-@CacheConfig(cacheNames = "ccr:comboDay")
 public class UserProductComboDayByAdminController {
 
     @Resource
@@ -55,14 +50,8 @@ public class UserProductComboDayByAdminController {
         return this.iUserProductComboDayByAdminService.get(id);
     }
 
-    //@NotNull @ApiParam(value = "用户套餐时长实体",required = true,type = "string")
-    //@NotNull @ApiParam(value = "管理员实体",required = true,type = "string")
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true)
-            }
-    )
+
+
     @ApiOperation(value="添加用户套餐时长操作信息api接口",httpMethod = "POST",nickname = "addUserProductComboDayByAdmin")
     @RequestMapping(value="/",method = RequestMethod.POST)
     public Result add(

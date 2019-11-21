@@ -38,7 +38,7 @@ public class ConsumerProductComboController {
                                   @RequestParam(value="pageSize",defaultValue="15") int pageSize,
                                   @RequestParam("productId") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int productId)
     {
-        return this.iProductComboClientService.listByProductId(productId);
+        return this.iProductComboClientService.listByProductId(pageNum,pageSize,productId);
     }
 
     @ApiOperation(value ="根据产品id获取未停用|停用的产品套餐列表",httpMethod = "GET",nickname = "getProductComboListByProductIdAndStatusWithPage")
