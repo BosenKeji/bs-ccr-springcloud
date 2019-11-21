@@ -64,4 +64,11 @@ public class ConsumerCoinPairCoinController {
                                                 @RequestParam("coinPairId") @Min(1) @ApiParam(value = "货币对ID", required = true, type = "integer",example = "1") int coinPairId){
         return iCoinPairCoinClientService.deleteCoinPairCoin(coinId, coinPairId);
     }
+
+    @ApiOperation(value = "根据货币对name获取基础货币与计价货币",nickname = "getBaseCoinByCoinPairName",httpMethod = "GET")
+    @GetMapping("/base_coin")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public Result getBaseCoinByCoinPairName(@RequestParam("coinPairName") @ApiParam(value = "货币对名字", required = true, type = "string") @NotNull String coinPairName){
+        return this.iCoinPairCoinClientService.getBaseCoinByCoinPairName(coinPairName);
+    }
 }

@@ -9,6 +9,7 @@ import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairCoinService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoinResult;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.cache.annotation.CacheConfig;
@@ -133,6 +134,12 @@ public class CoinPairCoinController {
     @ApiIgnore
     public Object discover(){
         return this.discoveryClient;
+    }
+
+    @ApiOperation(value = "根据货币对name获取基础货币与计价货币",nickname = "getBaseCoinByCoinPairName",httpMethod = "GET")
+    @GetMapping("/base_coin")
+    public Result getBaseCoinByCoinPairName(@RequestParam("coinPairName") @ApiParam(value = "货币对名字", required = true, type = "string") String coinPairName){
+        return new Result<>(this.coinPairCoinService.findBaseCoin(coinPairName));
     }
 
 }

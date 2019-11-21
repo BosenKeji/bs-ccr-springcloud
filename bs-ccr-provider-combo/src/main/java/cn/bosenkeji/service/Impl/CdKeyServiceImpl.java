@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -269,8 +270,16 @@ public class CdKeyServiceImpl implements CdKeyService {
      */
 
     @Override
-    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed,Integer sort, Integer pageNum, Integer pageSize) {
+
+        String orderBy = "created_at ";
+        if (sort == 1) {
+            orderBy = orderBy + "asc";
+        } else {
+            orderBy = orderBy + "desc";
+        }
+
+        PageHelper.startPage(pageNum,pageSize,orderBy);
         CdKey c = new CdKey();
         c.setKey(cdKey);
         c.setUsername(username);
@@ -279,12 +288,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageInfo<CdKey> cdKeyPageInfo = new PageInfo<>(cdKeys);
 
         List<CdKeyOther> cdKeyOthers = convertToCdKeyOther(cdKeyPageInfo.getList());
-        PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
-        cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
-        cdKeyOtherPageInfo.setList(cdKeyOthers);
-        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
-        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
-        return cdKeyOtherPageInfo;
+
+        return convertPageInfo(cdKeyPageInfo, cdKeyOthers);
     }
 
 
@@ -314,31 +319,35 @@ public class CdKeyServiceImpl implements CdKeyService {
 
     private List<CdKeyOther> convertToCdKeyOther(List<CdKey> cdKeys) {
         List<CdKeyOther> cdKeyOthers = new ArrayList<>();
-        List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
-        List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
-        List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
-        Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
-        Collection<Product> products = productMap.values();
-        cdKeys.forEach((k) -> {
-            Optional<Product> productOptional = Optional.empty();
-            Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
-            if (productComboOptional.isPresent()) {
-                productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
-            }
-            CdKeyOther cdKeyOther = new CdKeyOther();
-            cdKeyOther.setKey(k.getKey());
-            cdKeyOther.setProductComboId(k.getProductComboId());
-            cdKeyOther.setId(k.getId());
-            cdKeyOther.setCreateAt(k.getCreatedAt().toString());
-            cdKeyOther.setProductName(productOptional.get().getName());
-            cdKeyOther.setComboName(productComboOptional.get().getName());
-            cdKeyOther.setTime(productComboOptional.get().getTime());
-            cdKeyOther.setRemark(k.getRemark());
-            cdKeyOther.setIsUsed(k.getStatus());
-            cdKeyOther.setProfix(k.getKey().split("-")[0]);
-            cdKeyOther.setUsername(k.getUsername());
-            cdKeyOthers.add(cdKeyOther);
-        });
+        if (CollectionUtils.isEmpty(cdKeys)) {
+            return cdKeyOthers;
+        } else {
+            List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
+            List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
+            List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
+            Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
+            Collection<Product> products = productMap.values();
+            cdKeys.forEach((k) -> {
+                Optional<Product> productOptional = Optional.empty();
+                Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
+                if (productComboOptional.isPresent()) {
+                    productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
+                }
+                CdKeyOther cdKeyOther = new CdKeyOther();
+                cdKeyOther.setKey(k.getKey());
+                cdKeyOther.setProductComboId(k.getProductComboId());
+                cdKeyOther.setId(k.getId());
+                cdKeyOther.setCreateAt(k.getCreatedAt().toString());
+                cdKeyOther.setProductName(productOptional.get().getName());
+                cdKeyOther.setComboName(productComboOptional.get().getName());
+                cdKeyOther.setTime(productComboOptional.get().getTime());
+                cdKeyOther.setRemark(k.getRemark());
+                cdKeyOther.setIsUsed(k.getStatus());
+                cdKeyOther.setProfix(k.getKey().split("-")[0]);
+                cdKeyOther.setUsername(k.getUsername());
+                cdKeyOthers.add(cdKeyOther);
+            });
+        }
         return cdKeyOthers;
     }
 
@@ -359,6 +368,26 @@ public class CdKeyServiceImpl implements CdKeyService {
     private void clearCdKey(Integer cdKeyId, String username,String key) {
         cdKeyMapper.updateUsernameAndStatusById(cdKeyId,username,USED_STATUS);
         redisTemplate.opsForHash().delete(CD_KEY_HASH, key);
+    }
+
+    private PageInfo<CdKeyOther> convertPageInfo(PageInfo<CdKey> cdKeyPageInfo, List<CdKeyOther> cdKeyOthers) {
+
+        PageInfo<CdKeyOther> cdKeyOtherPageInfo = new PageInfo<>();
+        cdKeyOtherPageInfo.setTotal(cdKeyPageInfo.getTotal());
+        cdKeyOtherPageInfo.setList(cdKeyOthers);
+        cdKeyOtherPageInfo.setPageNum(cdKeyPageInfo.getPageNum());
+        cdKeyOtherPageInfo.setPageSize(cdKeyPageInfo.getPageSize());
+        cdKeyOtherPageInfo.setIsFirstPage(cdKeyPageInfo.isIsFirstPage());
+        cdKeyOtherPageInfo.setIsLastPage(cdKeyPageInfo.isIsLastPage());
+        cdKeyOtherPageInfo.setHasNextPage(cdKeyPageInfo.isHasNextPage());
+        cdKeyOtherPageInfo.setHasPreviousPage(cdKeyPageInfo.isHasPreviousPage());
+        cdKeyOtherPageInfo.setEndRow(cdKeyPageInfo.getEndRow());
+        cdKeyOtherPageInfo.setPages(cdKeyPageInfo.getPages());
+        cdKeyOtherPageInfo.setPrePage(cdKeyPageInfo.getPrePage());
+        cdKeyOtherPageInfo.setNextPage(cdKeyPageInfo.getNextPage());
+        cdKeyOtherPageInfo.setSize(cdKeyPageInfo.getSize());
+        cdKeyOtherPageInfo.setStartRow(cdKeyPageInfo.getStartRow());
+        return cdKeyOtherPageInfo;
     }
 
 

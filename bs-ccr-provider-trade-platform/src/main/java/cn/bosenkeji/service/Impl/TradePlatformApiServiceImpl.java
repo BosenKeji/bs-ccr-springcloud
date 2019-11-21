@@ -75,13 +75,13 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
         List<TradePlatformApi> tradePlatformApis = this.tradePlatformApiMapper.findAllByUserId(tradePlatformApi.getUserId());
 
         if (!CollectionUtils.isEmpty(tradePlatformApis)){
+            String keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
+            System.out.println(keyStr);
             for (TradePlatformApi t : tradePlatformApis) {
-                String keyStr , keyForDB;
-                keyStr = decryptSecretByPrivateKey(tradePlatformApi.getSecret());
                 if ("".equals(keyStr)){
                  return Optional.of(-2);
                 }
-                keyForDB = decryptSecretByPrivateKey(t.getSecret());
+                String keyForDB = decryptSecretByPrivateKey(t.getSecret());
                 System.out.println(keyForDB);
                 if (keyStr.equals(keyForDB)){
                     return Optional.of(-1);

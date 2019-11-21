@@ -1,13 +1,19 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.mapper.TradePlatformCoinPairMapper;
+import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.TradePlatformCoinPairService;
+import cn.bosenkeji.service.TradePlatformService;
+import cn.bosenkeji.vo.coin.CoinPair;
+import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +25,12 @@ import java.util.Optional;
 public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairService {
     @Resource
     TradePlatformCoinPairMapper tradePlatformCoinPairMapper;
+
+    @Resource
+    TradePlatformService tradePlatformService;
+
+    @Resource
+    ICoinPairClientService iCoinPairClientService;
 
     @Override
     public List<TradePlatformCoinPair> list() {
@@ -42,8 +54,29 @@ public class TradePlatformCoinPairServiceImpl implements TradePlatformCoinPairSe
     }
 
     @Override
-    public Optional<Integer> add(TradePlatformCoinPair tradePlatformCoinPair) {
-        return Optional.ofNullable(tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair));
+    public Optional<Integer> add(CoinPair coinPair , String tradePlatformName) {
+        TradePlatformCoinPair tradePlatformCoinPair = new TradePlatformCoinPair();
+        TradePlatform tradePlatform = this.tradePlatformService.getByName(tradePlatformName);
+        if (tradePlatform.getId() == 0 || tradePlatform == null || coinPair.getName() == null){
+            return Optional.of(-1);
+        }
+        tradePlatformCoinPair.setTradePlatformId(tradePlatform.getId());
+        int coinPairId = (int) this.iCoinPairClientService.addCoinPair(coinPair).getData();
+        coinPairId = Math.abs(coinPairId);
+        if (coinPairId <= 0){
+            return Optional.of(-1);
+        }
+
+        tradePlatformCoinPair.setCoinPairId(coinPairId);
+        tradePlatformCoinPair.setStatus(1);
+        tradePlatformCoinPair.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        tradePlatformCoinPair.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
+        if (this.tradePlatformCoinPairMapper.checkExistByTradePlatformIdAndCoinPairId(tradePlatformCoinPair.getTradePlatformId(),tradePlatformCoinPair.getCoinPairId()) >= 1){
+            return  Optional.of(-1);
+        }
+
+        return Optional.of(tradePlatformCoinPairMapper.insertSelective(tradePlatformCoinPair));
     }
 
     @Override

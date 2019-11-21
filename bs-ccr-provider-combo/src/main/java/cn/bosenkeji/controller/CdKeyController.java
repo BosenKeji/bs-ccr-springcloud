@@ -52,9 +52,10 @@ public class CdKeyController {
     public PageInfo<CdKeyOther> getCdKeyBySelective(@RequestParam(value = "cdKey",required = false) String cdKey,
                                                     @RequestParam(value = "username",required = false) String username,
                                                     @RequestParam(value = "isUsed",required = false) Integer isUsed,
-                                                    @RequestParam("pageNum") Integer pageNum,
-                                                    @RequestParam("pageSize") Integer pageSize) {
-        return cdKeyService.getCdKeyBySearch(cdKey,username,isUsed,pageNum,pageSize);
+                                                    @RequestParam(value = "sort",required = false,defaultValue = "0") Integer sort,
+                                                    @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+                                                    @RequestParam(value = "pageSize",required = false, defaultValue = "10") Integer pageSize) {
+        return cdKeyService.getCdKeyBySearch(cdKey,username,isUsed,sort,pageNum,pageSize);
     }
 
 }

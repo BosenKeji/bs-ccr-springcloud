@@ -57,9 +57,10 @@ public class ConsumerUserController {
     @GetMapping("/search")
     public PageInfo listBySearch(@RequestParam(value = "status",required = false) Integer status,
                                  @RequestParam(value = "tel",required = false) String tel,
+                                 @RequestParam(value = "sort",required = false,defaultValue = "0") Integer sort,
                                  @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
-        return this.iUserClientService.listBySearch(status, tel, pageNum, pageSize);
+        return this.iUserClientService.listBySearch(status, tel, sort, pageNum, pageSize);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")

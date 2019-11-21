@@ -34,7 +34,7 @@ public class CoinPairServiceImpl implements CoinPairService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(list());
+        return new PageInfo<>(list());
     }
 
     @Override
@@ -49,17 +49,29 @@ public class CoinPairServiceImpl implements CoinPairService {
 
     @Override
     public Optional<Integer> add(CoinPair coinPair) {
-        return Optional.ofNullable(coinPairMapper.insertSelective(coinPair));
+        String coinPairName = coinPair.getName();
+        if (coinPairName.contains("-")){
+            coinPairName = coinPairName.replaceAll("-","").trim();
+            coinPair.setName(coinPairName.toLowerCase());
+        }
+
+        if (this.coinPairMapper.checkExistByName(coinPairName) >= 1){
+            CoinPair coinPair1 = this.coinPairMapper.selectByName(coinPairName);
+            int coinPairId = coinPair1.getId();
+            return Optional.of(0-coinPairId);
+        }
+        coinPairMapper.insertSelective(coinPair);
+        return Optional.of(coinPair.getId());
     }
 
     @Override
     public Optional<Integer> update(CoinPair coinPair) {
-        return Optional.ofNullable(coinPairMapper.updateByPrimaryKeySelective(coinPair));
+        return Optional.of(coinPairMapper.updateByPrimaryKeySelective(coinPair));
     }
 
     @Override
     public Optional<Integer> delete(int id) {
-        return Optional.ofNullable(coinPairMapper.deleteByPrimaryKey(id));
+        return Optional.of(coinPairMapper.deleteByPrimaryKey(id));
     }
 
     @Override

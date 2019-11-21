@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformCoinPairClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformCoinPair;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -48,8 +49,15 @@ public class ConsumerTradePlatformCoinPairController {
 
     @ApiOperation(value = "添加平台货币对单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformCoinPair")
     @PostMapping("/")
-    public Result addOneTradePlatformCoinPair(@RequestBody @ApiParam(value = "交易平台货币对实体", required = true, type = "string") @NotNull TradePlatformCoinPair tradePlatformCoinPair){
-        return this.iTradePlatformCoinPairClientService.addOneTradePlatformCoinPair(tradePlatformCoinPair);
+    public Result addOneTradePlatformCoinPair(@RequestParam("coinPairName") @ApiParam(value = "货币名字",required = true,type = "string") @NotNull String coinPairName,
+                                              @RequestParam("isPopular") @ApiParam(value = "是否流行",required = true,type = "int",example = "1") @Min(0) int isPopular,
+                                              @RequestParam("isOfficialSet") @ApiParam(value = "是否官方推荐",required = true,type = "int",example = "1") @Min(0) int isOfficialSet,
+                                              @RequestParam("tradePlatformName") @ApiParam(value = "交易平台名字",required = true,type = "string") @NotNull String tradePlatformName){
+        CoinPair coinPair = new CoinPair();
+        coinPair.setName(coinPairName);
+        coinPair.setIsOfficialSet(isPopular);
+        coinPair.setIsOfficialSet(isOfficialSet);
+        return this.iTradePlatformCoinPairClientService.addOneTradePlatformCoinPair(coinPair, tradePlatformName);
     }
 
     @ApiOperation(value = "更新单个平台货币对接口",httpMethod = "PUT",nickname = "updateTradePlatformCoinPair")

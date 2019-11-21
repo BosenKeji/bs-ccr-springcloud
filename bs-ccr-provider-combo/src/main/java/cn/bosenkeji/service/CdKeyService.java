@@ -14,5 +14,5 @@ public interface CdKeyService {
 
     Result renew(RenewCdKeyUserParam param);
 
-    PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed, Integer pageNum, Integer pageSize);
+    PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed, Integer sort, Integer pageNum, Integer pageSize);
 }

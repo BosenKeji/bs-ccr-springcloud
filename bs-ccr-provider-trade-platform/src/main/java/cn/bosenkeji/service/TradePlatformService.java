@@ -30,4 +30,6 @@ public interface TradePlatformService {
     Optional<Integer> delete(int id);
 
     Optional<Integer> checkExistByName(String name);
+
+    TradePlatform getByName(String name);
 }

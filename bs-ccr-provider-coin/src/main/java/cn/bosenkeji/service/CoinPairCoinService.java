@@ -1,6 +1,7 @@
 package cn.bosenkeji.service;
 
 import cn.bosenkeji.vo.coin.CoinPairCoin;
+import cn.bosenkeji.vo.coin.CoinPairCoinResult;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -26,4 +27,7 @@ public interface CoinPairCoinService {
     Optional<Integer> delete(int coinId,int coinPairId);
 
     Optional<Integer> checkByCoinIdAndCoinPairId(int coinId,int coinPairId);
+
+    CoinPairCoinResult findBaseCoin(String coinPairName);
+
 }
