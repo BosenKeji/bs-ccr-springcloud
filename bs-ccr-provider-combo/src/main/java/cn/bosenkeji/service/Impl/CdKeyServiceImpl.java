@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -318,31 +319,35 @@ public class CdKeyServiceImpl implements CdKeyService {
 
     private List<CdKeyOther> convertToCdKeyOther(List<CdKey> cdKeys) {
         List<CdKeyOther> cdKeyOthers = new ArrayList<>();
-        List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
-        List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
-        List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
-        Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
-        Collection<Product> products = productMap.values();
-        cdKeys.forEach((k) -> {
-            Optional<Product> productOptional = Optional.empty();
-            Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
-            if (productComboOptional.isPresent()) {
-                productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
-            }
-            CdKeyOther cdKeyOther = new CdKeyOther();
-            cdKeyOther.setKey(k.getKey());
-            cdKeyOther.setProductComboId(k.getProductComboId());
-            cdKeyOther.setId(k.getId());
-            cdKeyOther.setCreateAt(k.getCreatedAt().toString());
-            cdKeyOther.setProductName(productOptional.get().getName());
-            cdKeyOther.setComboName(productComboOptional.get().getName());
-            cdKeyOther.setTime(productComboOptional.get().getTime());
-            cdKeyOther.setRemark(k.getRemark());
-            cdKeyOther.setIsUsed(k.getStatus());
-            cdKeyOther.setProfix(k.getKey().split("-")[0]);
-            cdKeyOther.setUsername(k.getUsername());
-            cdKeyOthers.add(cdKeyOther);
-        });
+        if (CollectionUtils.isEmpty(cdKeys)) {
+            return cdKeyOthers;
+        } else {
+            List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
+            List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
+            List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
+            Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
+            Collection<Product> products = productMap.values();
+            cdKeys.forEach((k) -> {
+                Optional<Product> productOptional = Optional.empty();
+                Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
+                if (productComboOptional.isPresent()) {
+                    productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
+                }
+                CdKeyOther cdKeyOther = new CdKeyOther();
+                cdKeyOther.setKey(k.getKey());
+                cdKeyOther.setProductComboId(k.getProductComboId());
+                cdKeyOther.setId(k.getId());
+                cdKeyOther.setCreateAt(k.getCreatedAt().toString());
+                cdKeyOther.setProductName(productOptional.get().getName());
+                cdKeyOther.setComboName(productComboOptional.get().getName());
+                cdKeyOther.setTime(productComboOptional.get().getTime());
+                cdKeyOther.setRemark(k.getRemark());
+                cdKeyOther.setIsUsed(k.getStatus());
+                cdKeyOther.setProfix(k.getKey().split("-")[0]);
+                cdKeyOther.setUsername(k.getUsername());
+                cdKeyOthers.add(cdKeyOther);
+            });
+        }
         return cdKeyOthers;
     }
 
