@@ -4,6 +4,7 @@ import cn.bosenkeji.vo.coin.CoinPair;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 
 @JsonIgnoreProperties(value = {"handler"})
-public class CoinPairChoice {
+public class CoinPairChoice implements Serializable {
     @ApiModelProperty("自选币 id")
     private int id;
 

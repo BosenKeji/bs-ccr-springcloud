@@ -83,14 +83,17 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
     @Override
     public PageInfo<UserProductComboDay> selectByUserTel(String tel, int pageNum, int pageSize) {
         User user=null;
+        user = iUserClientService.getOneUserByTel(tel);
+        return this.listByUserId(user,pageNum,pageSize);
+    }
 
-            user = iUserClientService.getOneUserByTel(tel);
-        if(null == user) {
-            return new PageInfo<>();
-        }
-        List<Integer> adminIds=new ArrayList<>();
-        List<Integer> byAdminId=new ArrayList<>();
+
+    public PageInfo<UserProductComboDay> listByUserId(User user, int pageNum, int pageSize) {
         if(user!=null) {
+
+            List<Integer> adminIds=new ArrayList<>();
+            List<Integer> byAdminId=new ArrayList<>();
+
             PageHelper.startPage(pageNum,pageSize);
             List<UserProductComboDay> userProductComboDays = userProductComboDayMapper.selectByUserId(user.getId());
             for (UserProductComboDay userProductComboDay : userProductComboDays) {
@@ -112,9 +115,8 @@ public class UserProductComboDayServiceImpl implements IUserProductComboDayServi
             }
             return new PageInfo<>(userProductComboDays);
         }
-
-
         return new PageInfo<>();
+
     }
 
     @Cacheable(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,key = "#userProductComboId+'-'+#pageNum+'-'+#pageSize")

@@ -57,19 +57,6 @@ public class TradePlatformApiBindProductComboController {
     public Result add(@RequestBody @NotNull @ApiParam(value = "交易谱平台api绑定用户套餐实体",required = true,type = "string") TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
         //判断该交易平台api是否未用户未绑定的
-       /* tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
-                tradePlatformApiBindProductCombo.getUserId()
-                , tradePlatformApiBindProductCombo.getTradePlatformApiId())
-                .filter((value)->value==1)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
-
-        //判断该套餐是否为用户为绑定的
-        /*tradePlatformApiBindProductComboService.checkExistByUserIdAndUserProductComboId(
-                tradePlatformApiBindProductCombo.getUserId()
-                ,tradePlatformApiBindProductCombo.getUserProductComboId())
-                .filter((value)->value==1)
-                .orElseThrow(()->new AddException(TradePlatformApiBindProductComboEnum.NAME));*/
-
         if(tradePlatformApiBindProductComboService.checkExistByComboId(tradePlatformApiBindProductCombo.getUserProductComboId())>=1) {
             return new Result(0,"机器人"+tradePlatformApiBindProductCombo.getUserProductComboId()+"已存在");
         }
@@ -99,22 +86,9 @@ public class TradePlatformApiBindProductComboController {
         if(tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)>=1)
             return new Result(0,"交易平台api已被绑定或不存在");
 
-
-        /* }filter((value)->value==1)
-                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));
-        tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(userId,tradePlatformApiId)
-                .filter((value)->value==0)
-                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));*/
-
-        //判断该交易平台api是否未用户未绑定的
-        /*tradePlatformApiBindProductComboService.checkExistByUserIdAndTradePlatformApiId(
-                userId
-                , tradePlatformApiId)
-                .filter((value)->value==1)
-                .orElseThrow(()->new UpdateException(TradePlatformApiBindProductComboEnum.NAME));*/
-
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setId(id);
+        tradePlatformApiBindProductCombo.setUserId(userId);
         tradePlatformApiBindProductCombo.setTradePlatformApiId(tradePlatformApiId);
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         return new Result<>(this.tradePlatformApiBindProductComboService.updateBindApi(tradePlatformApiBindProductCombo));
@@ -130,10 +104,7 @@ public class TradePlatformApiBindProductComboController {
         if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0)
             return new Result(0,"权限不足，不能执行删除操作");
 
-              /*  .filter((value)->value==1)
-                .orElseThrow(()->new DeleteException(TradePlatformApiBindProductComboEnum.NAME));*/
-
-        return new Result<>(this.tradePlatformApiBindProductComboService.removeBinding(id));
+        return new Result<>(this.tradePlatformApiBindProductComboService.removeBinding(id,userId));
     }
 
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")
@@ -158,8 +129,11 @@ public class TradePlatformApiBindProductComboController {
 
     @ApiOperation(value = "删除 绑定记录 接口",httpMethod = "DELETE",nickname = "realDeleteBind")
     @DeleteMapping("/real/{id}")
-    public Result realDelete(@PathVariable("id") @ApiParam(value = "绑定ID",required = true,type = "integer",example = "1") int id) {
-        return new Result(this.tradePlatformApiBindProductComboService.delete(id));
+    public Result realDelete(@PathVariable("id") @ApiParam(value = "绑定ID",required = true,type = "integer",example = "1") int id,
+                             @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+        if(tradePlatformApiBindProductComboService.checkExistByUserIdAndId(userId,id)==0)
+            return new Result(0,"权限不足，不能执行删除操作");
+        return new Result(this.tradePlatformApiBindProductComboService.delete(id,userId));
     }
 
     @ApiOperation(value = "通过套餐ID 删除 绑定记录 接口",httpMethod = "DELETE",nickname = "deleteByComboId")

@@ -1,18 +1,18 @@
 package cn.bosenkeji.service.impl;
 
-import cn.bosenkeji.annotation.cache.CacheWithHash;
+
+import cn.bosenkeji.annotation.cache.ZSetCacheEvict;
 import cn.bosenkeji.annotation.cache.ZSetCacheable;
-import cn.bosenkeji.interfaces.HashOperation;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.UserMapper;
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.vo.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
-    //@CacheWithHash(name = RedisInterface.USER_REDIS_ID_KEY+"copy",key = "#id",unless = "#result == null",operation = HashOperation.GET)
     @Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
     @Override
     public User get(int id) {
@@ -47,11 +46,48 @@ public class UserServiceImpl implements UserService {
         return userMapper.insertSelective(user);
     }
 
+    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#user.id",unless = "#result < 1")
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#user.id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true,condition = "#result > 0")
+            }
+    )
     @Override
     public Integer updateByPrimaryKeySelective(User user) {
+        if(user.getPassword() != null) {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
+    /**
+     * 选择性 更行用户信息 并且不会更新基本类型
+     * @param user
+     * @return
+     */
+    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#user.id",unless = "#result < 1")
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#user.id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true,condition = "#result > 0")
+            }
+    )
+    @Override
+    public Integer updateByPrimaryKeySelectiveExcludeBase(User user) {
+        if(user.getPassword() != null) {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
+        return userMapper.updateByPrimaryKeySelectiveExcludeBase(user);
+    }
+
+    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#id",unless = "#result < 1")
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true)
+            }
+    )
     @Override
     public Integer delete(int id) {
         return userMapper.deleteByPrimaryKey(id);
@@ -67,14 +103,18 @@ public class UserServiceImpl implements UserService {
         return userMapper.checkExistByTel(tel);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true,condition = "#result > 0")
+            }
+    )
     @Override
     public Integer updateBinding(int id, int isBinding) {
         return userMapper.updateBinding(id,isBinding);
     }
 
     @ZSetCacheable(key = RedisInterface.USER_REDIS_USERNAME_KEY,value = "#username",unless = "#result == null")
-    //@Cacheable(value = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",unless = "#result < 1")
-    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",unless = "#result==null", operation = HashOperation.GET)
     @Override
     public Integer getIdByUsername(String username) {
         User user = userMapper.selectByUsername(username);
@@ -83,6 +123,7 @@ public class UserServiceImpl implements UserService {
         }else
             return null;
     }
+
 
     @Override
     public Integer updatePasswordByTel(String tel, String password) {
@@ -124,8 +165,7 @@ public class UserServiceImpl implements UserService {
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true)
             }
     )
     @Override
@@ -138,6 +178,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.checkExistById(id);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true)
+            }
+    )
     @Override
     public Integer updateStatusById(Integer id,Integer status) {
         User user = new User();

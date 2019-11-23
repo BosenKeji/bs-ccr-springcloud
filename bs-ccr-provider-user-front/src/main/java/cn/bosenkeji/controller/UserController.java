@@ -1,7 +1,6 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.annotation.cache.ZSetCacheEvict;
-import cn.bosenkeji.interfaces.RedisInterface;
+
 import cn.bosenkeji.service.UserService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.User;
@@ -10,10 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +24,11 @@ import java.util.Map;
 @RequestMapping("/user")
 @Api(tags = "User 用户相关接口",value = "提供用户相关的 Rest API接口")
 @Validated
-@CacheConfig(cacheNames = "ccr:user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @ApiOperation(value = "获取用户列表接口 ",httpMethod = "GET",nickname = "getUserListWithPage")
     @GetMapping("/")
@@ -57,7 +49,7 @@ public class UserController {
         return userService.listBySearch(status, tel, sort, pageNum, pageSize);
     }
 
-    //@Cacheable(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id",unless = "#result==null")
+
     @GetMapping("/{id}")
     @ApiOperation(value = "获取单个用户接口", httpMethod = "GET", nickname = "getOneUser")
     public User get(@PathVariable("id") @Min(1) @ApiParam(value = "用户IID", required = true, type = "integer", example = "1") int id) {
@@ -72,7 +64,7 @@ public class UserController {
         Integer id=userService.getIdByUsername(username);
         if(id==null||id<1)
             return null;
-        return this.get(userService.getIdByUsername(username));
+        return this.get(id);
         //return userService.getByUsername(username);
     }
 
@@ -104,35 +96,16 @@ public class UserController {
         return new Result<>(userService.add(user));
     }
 
-    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#user.id")
-    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#user.username",value = "#user.id",unless = "#result == 0",operation = HashOperation.SET)
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#user.id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
+
     @PutMapping("/")
     @ApiOperation(value = "更新用户接口",httpMethod = "PUT",nickname = "updateUser")
     public Result update(@RequestBody @NotNull @ApiParam(value = "用户实体", required = true, type = "string") User user) {
 
 
-        user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
-
-        user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-
-        return new Result<>(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelectiveExcludeBase(user));
 
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
     @PutMapping("/update_password/{id}")
     @ApiOperation(value = "修改用户密码",httpMethod = "PUT",nickname = "updatePassword")
     public Result updatePassword(@PathVariable("id") @Min(1)
@@ -140,21 +113,11 @@ public class UserController {
                                  @RequestParam("password") @NotNull @ApiParam(value = "用户密码",required = true,type = "string",example = "123456") String password) {
         User user=new User();
         user.setId(id);
-        user.setPassword((new BCryptPasswordEncoder()).encode(password));
+        user.setPassword(password);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelectiveExcludeBase(user));
     }
 
-    @ZSetCacheEvict(key = RedisInterface.USER_REDIS_USERNAME_KEY,score = "#id")
-    //@CacheWithHash(name = RedisInterface.USER_REDIS_USERNAME_KEY,key = "#username",operation = HashOperation.REMOVE)
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    //@CacheEvict(value = RedisInterface.USER_REDIS_USERNAME_KEY,key = )
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
     @PutMapping("/update_username/{id}")
     @ApiOperation(value = "修改用户名",httpMethod = "PUT",nickname = "updateUsername")
     public Result updateUsername(@PathVariable("id") @Min(1)
@@ -166,16 +129,10 @@ public class UserController {
         user.setId(id);
         user.setUsername(username);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelectiveExcludeBase(user));
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
+
     @PutMapping("/update_tel/{id}")
     @ApiOperation(value = "修改电话号码",httpMethod = "PUT",nickname = "updateTel")
     public Result updateTel(@PathVariable("id") @Min(1)
@@ -187,16 +144,10 @@ public class UserController {
         user.setId(id);
         user.setTel(tel);
         user.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        return new Result<>(userService.updateByPrimaryKeySelective(user));
+        return new Result<>(userService.updateByPrimaryKeySelectiveExcludeBase(user));
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
+
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除单个用户接口",httpMethod = "DELETE",nickname = "deleteOneUser")
     public Result delete(@PathVariable("id") @Min(1)
@@ -205,13 +156,7 @@ public class UserController {
         return new Result<>(userService.delete(id));
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.USER_REDIS_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_UPC_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COMBO_DAY_LIST_TEL_KEY,allEntries = true)
-            }
-    )
+
     @ApiOperation(value = "更新用户绑定谷歌验证接口",httpMethod = "PUT",nickname = "updateUserBinding")
     @PutMapping("/update_binding")
     public Result updateBinding(@RequestParam("id") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int id,

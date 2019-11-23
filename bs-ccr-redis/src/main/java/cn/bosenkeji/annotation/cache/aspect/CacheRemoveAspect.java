@@ -1,8 +1,11 @@
 package cn.bosenkeji.annotation.cache.aspect;
 
 import cn.bosenkeji.annotation.cache.BatchCacheRemove;
+import cn.bosenkeji.util.SpelExpressionUtils;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -21,38 +24,65 @@ import java.util.Set;
 @Component
 public class CacheRemoveAspect {
 
+    private final static String RESULT_KEY="result";
+
     @Resource
     private RedisTemplate redisTemplate;
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
-    @AfterReturning("@annotation(cn.bosenkeji.annotation.cache.BatchCacheRemove)")
-    public void remove(JoinPoint point) {
+    @Around("@annotation(cn.bosenkeji.annotation.cache.BatchCacheRemove)")
+    public Object remove(ProceedingJoinPoint point) throws Throwable {
 
+        //执行操作，注意 只执行一次
+        Object proceed = point.proceed();
+        //Log.info("proceed is "+proceed);
         Method method = ((MethodSignature) point.getSignature()).getMethod();
         BatchCacheRemove annotation = method.getAnnotation(BatchCacheRemove.class);
-        String[] keys=annotation.value();
-        for (String key : keys) {
-            if(key.contains("#")) {
-                String[] split = key.split("\\+");
-                StringBuffer stringBuffer = new StringBuffer();
-                for (String s : split) {
-                    System.out.println("s = " + s);
-                    if (s.contains("#"))
-                        s = parseKey(s,method,point.getArgs());
-                    stringBuffer.append(s);
-                }
-                key = stringBuffer.append("*").toString().replaceAll("\\+","");
-                //key = split[0] + parseKey("#"+split[1], method, point.getArgs());
-            }
-            Set deleteKey = redisTemplate.keys(key);
-            redisTemplate.delete(deleteKey);
+        String[] keys = annotation.value();
+        String unless = annotation.unless();
+        String condition = annotation.condition();
+        boolean isNotCache = false;
+        boolean isCache = true;
 
-            Log.info("cache key:" +key+" deleted");
+
+        if (unless.contains("#")) {
+            isNotCache = SpelExpressionUtils.parseResult(unless, method, proceed, RESULT_KEY, point.getArgs());
+        }
+        if (condition.contains("#")) {
+            isCache = SpelExpressionUtils.parseResult(condition, method, proceed, RESULT_KEY, point.getArgs());
         }
 
+        //如果 不执行清空缓存的情况
+        if (isNotCache) {
+            Log.info("isNotCache is true");
+            return proceed;
+        }
+        if (!isCache) {
+            Log.info("isCache is false");
+            return proceed;
+        }
 
+        try {
+
+            return proceed;
+
+        }finally {
+
+
+            for (String key : keys) {
+                if (key.contains("#")) {
+                    key = parseKey(key, method, point.getArgs());
+                }
+                Set deleteKey = redisTemplate.keys(key + "*");
+                redisTemplate.delete(deleteKey);
+
+                Log.info("cache key:" + key + " deleted");
+            }
+
+        }
     }
+
 
     /**
      * parseKey for SPEL Expression
@@ -67,8 +97,10 @@ public class CacheRemoveAspect {
         SpelExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
 
+
         for(int i=0;i<parameterNames.length;i++) {
-            context.setVariable(parameterNames[i],args[i]);
+            if(null != args[i])
+                context.setVariable(parameterNames[i],args[i]);
         }
 
         return parser.parseExpression(key).getValue(context,String.class);

@@ -34,8 +34,8 @@ public interface TradePlatformApiBindProductComboService {
     //int checkExistByUserIdAndUserProductComboId(int userId,int userProductComboId);
     int checkExistByUserIdAndId(int userId,int id);
     int updateBindApi(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
-    int delete(int id);
-    int removeBinding(int id);
+    int delete(int id,int userId);
+    int removeBinding(int id, int userId);
 
     TradePlatformApiBindProductCombo getByUserIdAndComboId(int userId,int userProductComboId);
 

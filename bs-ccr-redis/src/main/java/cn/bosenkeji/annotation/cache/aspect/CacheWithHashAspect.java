@@ -27,7 +27,7 @@ import java.util.Set;
 @Aspect
 @Component
 @SuppressWarnings("all")
-public class CacheWithHashAspect extends CachedExpressionEvaluator {
+public class CacheWithHashAspect{
     
     private static final String RESULT="result";
 

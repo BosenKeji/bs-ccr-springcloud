@@ -30,6 +30,6 @@ public interface TradePlatformApiService {
 
     List<TradePlatformApi> findAll();
 
-    int updateIsBound(int id,int isBound);
+    int updateIsBound(int id,int isBound, int userId);
 
 }

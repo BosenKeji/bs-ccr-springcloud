@@ -97,6 +97,10 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bosenCCR</groupId>
+            <artifactId>bs-ccr-redis</artifactId>
+        </dependency>
 
     </dependencies>
 

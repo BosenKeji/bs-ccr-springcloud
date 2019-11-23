@@ -3,6 +3,7 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.UserComboRedisEnum;
 import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import cn.bosenkeji.interfaces.CommonStatusEnum;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
 import cn.bosenkeji.mapper.UserProductComboDayMapper;
@@ -58,7 +59,6 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
 
 
     private final int SUCCESS=1;
-    private final int FAIL=0;
 
     private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
@@ -70,7 +70,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
      * @param userProductComboDayByAdmin
      * @return
      */
-    @BatchCacheRemove("ccr:comboDay:listByUpcId::+#userProductComboDay.userProductComboId+-")
+    @BatchCacheRemove(value = {"'ccr:comboDay:listByUpcId::'+#userProductComboDay.userProductComboId+'-'"},condition = "#result > 0")
     @Override
     public int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin) {
 

@@ -1,13 +1,12 @@
 package cn.bosenkeji.controller;
 
-import cn.bosenkeji.annotation.cache.MyCacheRemove;
+import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
-import cn.bosenkeji.vo.transaction.CoinPairChoicePositionDetailResult;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,12 +95,7 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.get(id);
     }
 
-    @MyCacheRemove("'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-*'")
-    /*@Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
-            }
-    )*/
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-'",condition = "#result.data != null")
     @ApiOperation(value = "添加自选货币接口",httpMethod = "POST",nickname = "addOneCoinPairChoice")
     @PostMapping("/")
     public Result add(@RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
@@ -129,10 +123,11 @@ public class CoinPairChoiceController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#coinPairChoice.id"),
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#coinPairChoice.id",condition = "#result.data != null"),
+                    //@CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,condition = "#coinPairChoice.tradePlatformApiBindProductComboId>0",allEntries = true)
             }
     )
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result.data != null")
     @ApiOperation(value = "更新自选货币接口",httpMethod = "PUT",nickname = "updateOneCoinPairChoice")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "自选币实体", required = true, type = "string") CoinPairChoice coinPairChoice){
@@ -150,10 +145,11 @@ public class CoinPairChoiceController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id",condition = "#result.data != null"),
+                    //@CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
             }
     )
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-'",condition = "#result.data != null")
     @ApiOperation(value = "删除自选货币接口",httpMethod = "DELETE",nickname = "deleteOneCoinPairChoice")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int id,
@@ -172,10 +168,10 @@ public class CoinPairChoiceController {
     //删除多个如何保证缓存同步呢？
     @Caching(
            evict = {
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true,condition = "#result.data != null ")
             }
     )
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-'",condition = "#result.data != null")
     @ApiOperation(value = "批量删除自选货币接口",httpMethod = "DELETE",nickname = "batchDeleteOneCoinPairChoice")
     @DeleteMapping("/batch")
     public Result batchDelete(@RequestParam("coinPairChoiceIds") @ApiParam(value = "自选币ID字符串 ", required = true, type = "string") String coinPairChoiceIds,

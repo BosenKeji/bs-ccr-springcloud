@@ -31,6 +31,13 @@ public class ZSetCacheableAspect {
     @Pointcut("@annotation(cn.bosenkeji.annotation.cache.ZSetCacheable)")
     private void cacheable() {}
 
+    /**
+     * 先查询redis 缓存
+     * 在根据 unless 条件缓存
+     * @param point
+     * @return
+     * @throws Throwable
+     */
     @Around(value = "cacheable()")
     public Object cacheZset(ProceedingJoinPoint point) throws Throwable {
 
@@ -48,22 +55,25 @@ public class ZSetCacheableAspect {
         if (value.contains("#"))
             value = SpelExpressionUtils.parseKey(value,method,point.getArgs());
 
-        if(unless.contains("#")) {
-            notOperate = SpelExpressionUtils.parseResult(unless, method, point, RESULT_KEY);
-        }
 
         Double score = redisTemplate.opsForZSet().score(key, value);
 
         if(score !=null) {
             return score.intValue();
         }else {
+
             Integer result=0;
             try {
-               return result = (Integer) point.proceed();
+                result = (Integer) point.proceed();
+                if(unless.contains("#")) {
+                    notOperate = SpelExpressionUtils.parseResult(unless, method, result, RESULT_KEY,point.getArgs());
+                }
+                return result;
             }
             finally {
-                if(!notOperate)
+                if(!notOperate) {
                     redisTemplate.opsForZSet().add(key, value, result);
+                }
                 else {
                     Log.info("key:"+key+" is unless !!!");
                 }

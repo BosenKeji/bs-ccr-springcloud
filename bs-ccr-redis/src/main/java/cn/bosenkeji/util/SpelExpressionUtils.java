@@ -45,7 +45,7 @@ public class SpelExpressionUtils {
      * @return
      * @throws Throwable
      */
-    public static boolean parseResult(String unless, Method method, ProceedingJoinPoint point,String resultKey) throws Throwable {
+    public static boolean parseResult(String unless, Method method, ProceedingJoinPoint point,String resultKey, Object[] args) throws Throwable {
         LocalVariableTableParameterNameDiscoverer u = getParameterName();
 
         SpelExpressionParser parser = new SpelExpressionParser();
@@ -57,6 +57,38 @@ public class SpelExpressionUtils {
         catch (Exception e) {
             //不处理
         }
+        return parser.parseExpression(unless).getValue(context,Boolean.class);
+
+
+    }
+
+    public static boolean parseResult(String unless, Method method, Object proceed,String resultKey, Object[] args) throws Throwable {
+        LocalVariableTableParameterNameDiscoverer u = getParameterName();
+
+        SpelExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        //将执行结果 存进去
+        try {
+            context.setVariable(resultKey, proceed);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //不处理
+        }
+
+        /**
+         * 获取 方法传入参数 以 key value形式保存
+         */
+        try {
+            String[] parameterNames = u.getParameterNames(method);
+            for(int i=0;i<parameterNames.length;i++) {
+                context.setVariable(parameterNames[i],args[i]);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            //不处理
+        }
+
+        //System.out.println("this is prefer parse");
         return parser.parseExpression(unless).getValue(context,Boolean.class);
 
 

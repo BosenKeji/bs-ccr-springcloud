@@ -19,6 +19,7 @@ public interface UserService {
     Integer checkExistByTel(String tel);
     Integer updateBinding(int id,int isBinding);
     Integer updatePasswordByTel(String tel,String password);
+    Integer updateByPrimaryKeySelectiveExcludeBase(User user);
     Map<Integer,User> getByIds(List<Integer> ids);
 
     List<User> list();

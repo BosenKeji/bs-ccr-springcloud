@@ -33,6 +33,7 @@ package cn.bosenkeji.interfaces;
         String COMBO_DAY_ID_KEY="ccr:comboDay:id";
         String COMBO_DAY_LIST_UPC_ID_KEY="ccr:comboDay:listByUpcId";
         String COMBO_DAY_LIST_TEL_KEY="ccr:comboDay:listByTel";
+        String COMBO_DAY_LIST_USER_ID_KEY="ccr:comboDay:listByUserId";
 
         //策略相关
         String STRATEGY_ID_KEY="ccr:strategy:id";

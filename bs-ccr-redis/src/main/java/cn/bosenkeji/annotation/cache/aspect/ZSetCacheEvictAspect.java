@@ -32,6 +32,7 @@ public class ZSetCacheEvictAspect {
     @Around(value = "cacheEvict()")
     public Object evictZset(ProceedingJoinPoint point) throws Throwable {
 
+        Object proceed = point.proceed();
         Method method = ((MethodSignature) point.getSignature()).getMethod();
         Class<?> returnType = method.getReturnType();
         ZSetCacheEvict annotation = method.getAnnotation(ZSetCacheEvict.class);
@@ -46,10 +47,10 @@ public class ZSetCacheEvictAspect {
         Integer scoreInt =Integer.valueOf(score);
 
         ZSetCache zSetCache=new ZSetCache(key,value,unless,Integer.valueOf(score),false);
-        GenerateZSetCache.generationZSetCache(point,method,zSetCache);
+        GenerateZSetCache.generationZSetCache(point,method,zSetCache,proceed);
 
         try {
-            return point.proceed();
+            return proceed;
         }finally {
 
             if(!zSetCache.isNotOperate()) {

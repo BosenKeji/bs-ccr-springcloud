@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface BatchCacheRemove {
 
     String[] value() default {};
+    String unless() default "";
+    String condition() default "";
 }

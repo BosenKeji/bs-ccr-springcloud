@@ -71,8 +71,8 @@ public class ProductComboServiceImpl implements IProductComboService {
     }
 
 
-    @BatchCacheRemove({"ccr:productCombo:listByPidAndStatus::+#productCombo.productId+-","ccr:productCombo:listByPidAndStatusWithPage::+#productCombo.productId+-",
-            "ccr:productCombo:listByPid::+#productCombo.productId+-"})
+    @BatchCacheRemove(value = {"'ccr:productCombo:listByPidAndStatus::'+#productCombo.productId+'-'","'ccr:productCombo:listByPidAndStatusWithPage::'+#productCombo.productId+'-'",
+            "'ccr:productCombo:listByPid::'+#productCombo.productId+'-'"},condition = "#result > 0")
     @Override
     public int add(ProductCombo productCombo) {
         return this.productComboMapper.insertSelective(productCombo);
@@ -120,13 +120,9 @@ public class ProductComboServiceImpl implements IProductComboService {
         return productComboMapper.checkExistByProductId(productId);
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_KEY,allEntries = true)
-            }
-    )
-    @BatchCacheRemove({"ccr:productCombo:listByPidAndStatus::+#productCombo.productId+-","ccr:productCombo:listByPidAndStatusWithPage::+#productCombo.productId+-",
-            "ccr:productCombo:listByPid::+#productCombo.productId+-"})
+
+    @BatchCacheRemove({"'ccr:productCombo:listByPidAndStatus::'+#productCombo.productId+'-'","'ccr:productCombo:listByPidAndStatusWithPage::'+#productCombo.productId+'-'",
+            "'ccr:productCombo:listByPid::'+#productCombo.productId+'-'"})
     @Override
     public int addBySelective(ProductCombo productCombo) {
         return productComboMapper.insertSelective(productCombo);

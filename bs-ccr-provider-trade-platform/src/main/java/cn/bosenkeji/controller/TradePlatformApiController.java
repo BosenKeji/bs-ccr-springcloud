@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import cn.bosenkeji.exception.AddException;
 import cn.bosenkeji.exception.DeleteException;
 import cn.bosenkeji.exception.NotFoundException;
@@ -52,14 +53,6 @@ public class TradePlatformApiController {
     @Resource
     private DiscoveryClient client ;
 
-    /**
-     * 与  tradePlatform 关联查询
-     * @param pageNum
-     * @param pageSizeCommon
-     * @param userId
-     * @return
-     */
-    @Cacheable(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,key = "#userId+'-'+#pageNum+'-'+#pageSizeCommon")
     @ApiOperation(value = "获取交易平台api列表接口",notes = "交易平台api列表",httpMethod = "GET",nickname = "getListTradePlatformApiByPage")
     @GetMapping("/")
     public PageInfo list(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
@@ -68,24 +61,13 @@ public class TradePlatformApiController {
         return this.tradePlatformApiService.listByPage(pageNum,pageSizeCommon,userId);
     }
 
-    /**
-     * 与 tradePlatform 关联查询
-     * @param id
-     * @return
-     */
-    @Cacheable(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id",unless = "#result == null")
+
     @ApiOperation(value = "根据tradePlatformApiId获取交易平台api单个信息接口",notes = "交易平台api单个信息接口",httpMethod = "GET",nickname = "getOneTradePlatformApi")
     @GetMapping("/{id}")
     public TradePlatformApi get(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id){
         return this.tradePlatformApiService.get(id);
     }
 
-
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true)
-            }
-    )
     @ApiOperation(value = "添加交易平台api单个信息接口",notes = "添加交易平台api单个信息接口",httpMethod = "POST",nickname = "addOneTradePlatformApi")
     @PostMapping("/")
     public Result add(@RequestBody  @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
@@ -108,12 +90,7 @@ public class TradePlatformApiController {
         return new Result<>(result);
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#tradePlatformApi.id"),
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true)
-            }
-    )
+
     @ApiOperation(value = "更新交易平台api接口",notes = "更新交易平台api接口",httpMethod = "PUT",nickname = "updateOneTradePlatformApi")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
@@ -138,10 +115,10 @@ public class TradePlatformApiController {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_LIST_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.TRADE_PLATFORM_API_ID_KEY,key = "#id",condition = "#result.data != null")
             }
     )
+    @BatchCacheRemove(value = "'"+RedisInterface.TRADE_PLATFORM_API_LIST_KEY+"::'+#userId+'-*'",condition = "#result.data != null")
     @ApiOperation(value = "删除交易平台api接口",notes = "删除平台api接口",httpMethod = "DELETE",nickname = "deleteOneTradePlatformApi")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1) @ApiParam(value = "交易平台api id", required = true, type = "integer",example = "1") int id,

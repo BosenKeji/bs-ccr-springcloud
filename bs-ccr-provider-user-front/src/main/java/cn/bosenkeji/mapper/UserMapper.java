@@ -26,6 +26,7 @@ public interface UserMapper {
     User selectByTel(String  tel);
 
     int updateByPrimaryKeySelective(User record);
+    int updateByPrimaryKeySelectiveExcludeBase(User record);
 
     int updateByPrimaryKey(User record);
 
