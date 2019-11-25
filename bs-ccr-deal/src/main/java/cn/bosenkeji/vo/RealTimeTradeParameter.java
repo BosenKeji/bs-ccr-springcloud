@@ -17,6 +17,8 @@ public class RealTimeTradeParameter {
     private JSONArray buyDeep;
     private JSONArray sellDeep;
     private String symbol;
+    private String platFormName;
+    private String setKey;
 
     public RealTimeTradeParameter() { }
 
@@ -50,5 +52,21 @@ public class RealTimeTradeParameter {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public String getPlatFormName() {
+        return platFormName;
+    }
+
+    public void setPlatFormName(String platFormName) {
+        this.platFormName = platFormName;
+    }
+
+    public String getSetKey() {
+        return setKey;
+    }
+
+    public void setSetKey(String setKey) {
+        this.setKey = setKey;
     }
 }

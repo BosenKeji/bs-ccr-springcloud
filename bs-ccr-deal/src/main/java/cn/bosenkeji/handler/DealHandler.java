@@ -15,9 +15,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
@@ -28,17 +35,11 @@ import java.util.stream.Collectors;
 @RestController
 public class DealHandler {
 
-//    private static final int threadNum = Runtime.getRuntime().availableProcessors();
-//    private ThreadPoolExecutor threadPoolExecutor;
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
-    DealHandler() {
-//        threadPoolExecutor = new ThreadPoolExecutor(threadNum,threadNum*2,
-//                3, TimeUnit.SECONDS,
-//                new LinkedBlockingQueue<>(10),
-//                Executors.defaultThreadFactory(),
-//                new ThreadPoolExecutor.DiscardOldestPolicy());
-    }
+    private static final String OKEX_PLATFORM_NAME = "okex";
+
+    DealHandler() { }
 
     @Autowired
     private MySource source;
@@ -48,29 +49,32 @@ public class DealHandler {
 
     @StreamListener("input1")
     private void consumerMessage(String msg) {
-//        threadPoolExecutor.execute(() -> {
-//            handle(msg);
-//        });
-        handle(msg);
-    }
 
-    private void handle(String msg) {
-
-        //将json字符串转换为json对象
-        JSONObject jsonObject = JSON.parseObject(msg);
-
-        //获取实时价格
+        //1、参数处理
+        //mq实时报价
+        JSONObject jsonObject = JSON.parseObject(msg);  //json格式化
+        //mq参数解析
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
-        JSONArray buyDeep = realTimeTradeParameter.getBuyDeep();
-        JSONArray sellDeep = realTimeTradeParameter.getSellDeep();
-        String symbol = realTimeTradeParameter.getSymbol();
-
-        //mq参数不正确
-        if (CollectionUtils.isEmpty(buyDeep) || CollectionUtils.isEmpty(sellDeep) || symbol == null) {
-            return;
+        //mq参数检测
+        boolean b = checkReadTimeParameter(realTimeTradeParameter);
+        if (b) {
+            log.info("实时价格参数错误！");
         }
 
-        String setKey = symbol+"_zset";
+        //平台处理
+        String setKey = realTimeTradeParameter.getSymbol() + "_zset";
+        if (OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
+            setKey = OKEX_PLATFORM_NAME + "_" + setKey;
+        }
+        realTimeTradeParameter.setSetKey(setKey);
+
+
+        handle(realTimeTradeParameter);
+    }
+
+    private void handle(RealTimeTradeParameter realTimeTradeParameter) {
+
+        String setKey = realTimeTradeParameter.getSetKey();
 
         //获取redis中对应货币对的zset
         Set<String> keySet = redisTemplate.opsForZSet().rangeByScore(setKey, 1, 1);
@@ -82,9 +86,8 @@ public class DealHandler {
             String regExg = "^trade-condition_\\S+_\\S+_\\S+";
             Pattern p = Pattern.compile(regExg);
             Matcher m = p.matcher(s);
-            return s.contains(symbol) && !m.matches();
+            return s.contains(realTimeTradeParameter.getSymbol()) && !m.matches();
         }).collect(Collectors.toSet());
-
 
         if (CollectionUtils.isEmpty(filterSet)) {
             return;
@@ -97,7 +100,6 @@ public class DealHandler {
             if (CollectionUtils.isEmpty(trade)) {
                 return;
             }
-
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
 
             //判断是否交易
@@ -110,7 +112,7 @@ public class DealHandler {
 
             //计算实时收益比   判断买卖
             //实时收益比
-            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(buyDeep,
+            Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(realTimeTradeParameter.getBuyDeep(),
                     dealParameter.getPositionNum(),dealParameter.getPositionCost());
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.isNaN() ? "0.0" : realTimeEarningRatio.toString() ,redisTemplate);
@@ -155,6 +157,14 @@ public class DealHandler {
                 }
             }
         });
+    }
+
+
+    private boolean checkReadTimeParameter(RealTimeTradeParameter realTimeTradeParameter) {
+        return CollectionUtils.isEmpty(realTimeTradeParameter.getBuyDeep()) ||
+                CollectionUtils.isEmpty(realTimeTradeParameter.getSellDeep()) ||
+                StringUtils.isEmpty(realTimeTradeParameter.getSymbol()) ||
+                StringUtils.isEmpty(realTimeTradeParameter.getPlatFormName());
     }
 
 }
