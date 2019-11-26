@@ -76,5 +76,37 @@ services:
           - $homePath/.m2:/root/.m2
         working_dir: $currentProjectSourcePath/bs-ccr-security-jwt-auth-server
         command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
+    deal-huobi:
+        image: maven:3-jdk-8
+        container_name: deal-huobi
+        hostname: deal-huobi
+        network_mode: bridge
+        ports:
+          - "6101:6101"
+        external_links:
+          - mysql-dev:mysql-dev
+          - redis-dev:redis-dev
+          - nacos-dev:nacos-dev
+        volumes:
+          - $currentProjectSourcePath:$currentProjectSourcePath
+          - $homePath/.m2:/root/.m2
+        working_dir: $currentProjectSourcePath/bs-ccr-deal
+        command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
+    deal-okex:
+        image: maven:3-jdk-8
+        container_name: deal-huobi
+        hostname: deal-huobi
+        network_mode: bridge
+        ports:
+          - "6102:6102"
+        external_links:
+          - mysql-dev:mysql-dev
+          - redis-dev:redis-dev
+          - nacos-dev:nacos-dev
+        volumes:
+          - $currentProjectSourcePath:$currentProjectSourcePath
+          - $homePath/.m2:/root/.m2
+        working_dir: $currentProjectSourcePath/bs-ccr-deal-okex
+        command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
 
 EOF
