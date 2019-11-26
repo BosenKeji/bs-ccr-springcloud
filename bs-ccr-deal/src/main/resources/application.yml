@@ -1,5 +1,5 @@
 server:
-  port: 6101
+  port: 6100
 spring:
   application:
     name: bs-ccr-deal
