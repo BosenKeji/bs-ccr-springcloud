@@ -94,8 +94,8 @@ services:
         command: ["/bin/sh", "-c", "mvn clean spring-boot:run"]
     deal-okex:
         image: maven:3-jdk-8
-        container_name: deal-huobi
-        hostname: deal-huobi
+        container_name: deal-okex
+        hostname: deal-okex
         network_mode: bridge
         ports:
           - "6102:6102"
