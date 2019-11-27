@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -115,7 +116,7 @@ public class DealUtil {
      * @return 是否发送消息成功
      */
 
-    public static boolean sendMessage(DealParameter dealParameter, String type, MySource source) {
+    public static boolean sendMessage(DealParameter dealParameter,String platformName, String type, MySource source) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
         String symbol = dealParameter.getSymbol();
@@ -124,6 +125,7 @@ public class DealUtil {
         rocketMQResult.setSignId(signId);
         rocketMQResult.setType(type);
         rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
+        rocketMQResult.setPlantFormName(platformName);
 
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();

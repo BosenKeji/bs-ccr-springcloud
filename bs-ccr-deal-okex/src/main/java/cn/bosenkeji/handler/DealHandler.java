@@ -53,11 +53,7 @@ public class DealHandler {
             log.info("实时价格参数错误！");
         }
 
-        //平台处理
-        String setKey = realTimeTradeParameter.getSymbol() + "_zset";
-        if (OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
-            setKey = OKEX_PLATFORM_NAME + "_" + setKey;
-        }
+        String setKey = OKEX_PLATFORM_NAME + "_" +realTimeTradeParameter.getSymbol() + "_zset";
         realTimeTradeParameter.setSetKey(setKey);
 
 
@@ -74,19 +70,7 @@ public class DealHandler {
 
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
-        //过滤不是该货币对的key 和旧的key
-        Set<String> filterSet = keySet.stream().filter((s) -> {
-            String regExg = "^trade-condition_\\S+_\\S+_\\S+";
-            Pattern p = Pattern.compile(regExg);
-            Matcher m = p.matcher(s);
-            return s.contains(realTimeTradeParameter.getSymbol()) && !m.matches();
-        }).collect(Collectors.toSet());
-
-        if (CollectionUtils.isEmpty(filterSet)) {
-            return;
-        }
-
-        filterSet.parallelStream().forEach((s)->{
+        keySet.parallelStream().forEach((s)->{
 
             Map trade = redisTemplate.opsForHash().entries(s);
 
@@ -130,7 +114,7 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
-                    boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_SELL,source);
+                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_SELL,source);
                     log.info("sell : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
                 }
 
@@ -143,7 +127,7 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                     boolean isSend = DealUtil.sendMessage(dealParameter,DealUtil.TRADE_TYPE_BUY,source);
+                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
                      if (isBuy) {
                          log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
                      }

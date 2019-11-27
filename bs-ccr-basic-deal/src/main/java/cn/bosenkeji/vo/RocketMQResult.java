@@ -14,6 +14,7 @@ public class RocketMQResult {
     private String signId;
     private String type;
     private Integer finished_order;
+    private String plantFormName;
 
     public RocketMQResult() { }
 
@@ -47,5 +48,13 @@ public class RocketMQResult {
 
     public void setSignId(String signId) {
         this.signId = signId;
+    }
+
+    public String getPlantFormName() {
+        return plantFormName;
+    }
+
+    public void setPlantFormName(String plantFormName) {
+        this.plantFormName = plantFormName;
     }
 }
