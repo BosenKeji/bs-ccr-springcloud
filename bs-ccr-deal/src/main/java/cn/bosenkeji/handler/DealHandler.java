@@ -100,7 +100,7 @@ public class DealHandler {
             }
 
             //初始化或获取 java要操作redis的key和value
-            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter, redisTemplate);
+            RedisParameter redisParameter = DealUtil.javaRedisParameter(dealParameter,realTimeTradeParameter.getPlatFormName(), redisTemplate);
 
             //计算实时收益比   判断买卖
             //实时收益比

@@ -28,20 +28,36 @@ spring:
       bindings:
         input1:
           destination: MQ_INST_1782728101358463_Bbpg0jHs%bs-ccr-topic-symbol-price
-          group: MQ_INST_1782728101358463_Bbpg0jHs%GID-TCP-bs-ccr-consumer-symbol-price
+          group: MQ_INST_1782728101358463_BbCmhMPY%GID-TCP-bs-ccr-consumer-symbol-price
           content-type: application/json
 
         output1:
           destination: MQ_INST_1782728101358463_Bbpg0jHs%bs-ccr-topic-response-symbol-trade-info
-          group: MQ_INST_1782728101358463_Bbpg0jHs%GID-TCP-bs-ccr-consumer-response-symbol-trade-info
+          group: MQ_INST_1782728101358463_BbCmhMPY%GID-TCP-bs-ccr-consumer-response-symbol-trade-info
           content-type: application/json
+#      rocketmq:
+#        binder:
+#          name-server: MQ_INST_1782728101358463_BbCmhMPY.mq-internet-access.mq-internet.aliyuncs.com:80
+#          access-key: LTAISwQkitLFbG0t
+#          secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+
+#      bindings:
+#        input1:
+#          destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-symbol-price
+#          group: MQ_INST_1782728101358463_BbCmhMPY%GID-bs-ccr-consumer-symbol-price
+#          content-type: application/json
+#
+#        output1:
+#          destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-response-symbol-trade-info
+#          group: MQ_INST_1782728101358463_BbCmhMPY%GID-bs-ccr-consumer-response-symbol-trade-info
+#          content-type: application/json
 
   redis:
     database: 0
 #    host: inside-network.redis.rds.aliyuncs.com
 #    host: internal.redis.rds.aliyuncs.com
-#    host: 127.0.0.1
-    host: 47.112.210.29
+    host: 192.168.2.243
+#    host: 47.112.210.29
     port: 6379
     #password: AYbosenkj19
     password: 123zxc

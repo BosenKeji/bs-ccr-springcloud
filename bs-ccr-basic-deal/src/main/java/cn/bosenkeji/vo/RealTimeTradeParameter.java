@@ -66,4 +66,16 @@ public class RealTimeTradeParameter {
     public void setSetKey(String setKey) {
         this.setKey = setKey;
     }
+
+    @Override
+    public String toString() {
+        return "RealTimeTradeParameter{" +
+                "sellPrice=" + sellPrice +
+                ", buyDeep=" + buyDeep +
+                ", sellDeep=" + sellDeep +
+                ", symbol='" + symbol + '\'' +
+                ", platFormName='" + platFormName + '\'' +
+                ", setKey='" + setKey + '\'' +
+                '}';
+    }
 }

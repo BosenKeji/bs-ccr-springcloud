@@ -143,11 +143,15 @@ public class DealUtil {
      * @return parameter java 获取redis的结果集
      */
 
-    public static RedisParameter javaRedisParameter(DealParameter dealParameter, RedisTemplate redisTemplate) {
+    public static RedisParameter javaRedisParameter(DealParameter dealParameter, String platFormName, RedisTemplate redisTemplate) {
 
         RedisParameter parameter = new RedisParameter();
 
         String javaRedisKey = "trade-java_" + dealParameter.getSignId() + "_" + dealParameter.getSymbol();
+        if ("okex".equals(platFormName)) {
+            javaRedisKey = "okex-" + javaRedisKey;
+        }
+
 
 //        Object o = redisTemplate.opsForValue().get(javaRedisKey);
         Map entries = redisTemplate.opsForHash().entries(javaRedisKey);
