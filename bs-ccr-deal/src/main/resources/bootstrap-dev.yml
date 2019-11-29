@@ -8,45 +8,11 @@ spring:
         access-key : b0bb8f45c84d4b4284a3685cf9bc627a
         secret-key : aXekfxEib7WFZqseg29LpxeHbMo=
         file-extension : yml
-#        ext-config[0]:
-#          data-id: bs-ccr-page-size-config.yml
-#        ext-config[1]:
-#          data-id: bs-ccr-redis-config.yml
-#        ext-config[2]:
-#          data-id: bs-ccr-mq-config.yml
-#        ext-config[3]:
-#          data-id: bs-crr-common-config.yml
-#        group: 7f499ba6-9135-4e49-9a7c-
-#    stream:
-#      rocketmq:
-#        binder:
-#          name-server: MQ_INST_1782728101358463_BbCmhMPY.mq-internet-access.mq-internet.aliyuncs.com:80
-#          access-key: LTAISwQkitLFbG0t
-#          secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
-#
-#      bindings:
-#        input1:
-#          destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-symbol-price
-#          group: MQ_INST_1782728101358463_BbCmhMPY%GID-bs-ccr-consumer-symbol-price
-#          content-type: application/json
-#
-#        output1:
-#          destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-response-symbol-trade-info
-#          content-type: application/json
-
-  redis:
-    database: 1
-#    host: inside-network.redis.rds.aliyuncs.com
-#    host: internal.redis.rds.aliyuncs.com
-#    host: 127.0.0.1
-    host: 47.112.210.29
-    port: 6379
-    #password: AYbosenkj19
-    password: 123zxc
-    timeout: 5000ms
-    lettuce:
-      pool:
-        max-idle: 8
-        min-idle: 0
-        max-active: 8
-        max-wait: -1ms
+        ext-config[0]:
+          data-id: bs-ccr-page-size-config.yml
+        ext-config[1]:
+          data-id: bs-ccr-redis-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-mq-config.yml
+        ext-config[3]:
+          data-id: bs-crr-common-config.yml
