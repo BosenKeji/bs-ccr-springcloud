@@ -17,7 +17,6 @@
         <dependency>
             <groupId>bosenCCR</groupId>
             <artifactId>bs-ccr-basic-deal</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
