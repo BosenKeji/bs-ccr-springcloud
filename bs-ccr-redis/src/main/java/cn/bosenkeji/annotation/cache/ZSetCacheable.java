@@ -15,8 +15,27 @@ import java.lang.annotation.*;
 @Documented
 public @interface ZSetCacheable {
 
+    /**
+     * 对应的键 名称
+     * @return
+     */
     String key() default "";
+
+    /**
+     * 值
+     * @return
+     */
     String value() default "";
+
+    /**
+     * 分数
+     * @return
+     */
     String score() default "";
+
+    /**
+     * 不缓存条件
+     * @return
+     */
     String unless() default "";
 }

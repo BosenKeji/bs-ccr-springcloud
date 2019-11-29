@@ -80,10 +80,10 @@ public class ProductComboServiceImpl implements IProductComboService {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#productCombo.id"),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_PAGE_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#productCombo.id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_KEY,allEntries = true,condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_KEY,allEntries = true,condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_PAGE_KEY,allEntries = true,condition = "#result > 0")
             }
     )
     @Override
@@ -94,10 +94,10 @@ public class ProductComboServiceImpl implements IProductComboService {
 
     @Caching(
             evict = {
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id"),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_KEY,allEntries = true),
-                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_PAGE_KEY,allEntries = true)
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_ID_KEY,key = "#id",condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_KEY,allEntries = true,condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_KEY,allEntries = true,condition = "#result > 0"),
+                    @CacheEvict(value = RedisInterface.PRODUCT_COMBO_LIST_PID_STATUS_PAGE_KEY,allEntries = true,condition = "#result > 0")
             }
     )
     @Override

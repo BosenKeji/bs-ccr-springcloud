@@ -152,11 +152,11 @@ public class DateUtils {
     }
 
 
-    public static void main(String[] args) {
-        /*long currentDayBegin = getCurrentDayBegin();
+    /*public static void main(String[] args) {
+        *//*long currentDayBegin = getCurrentDayBegin();
         System.out.println("currentDayBegin = " + currentDayBegin);
         long currentDayEnd = getCurrentDayEnd();
-        System.out.println("currentDayEnd = " + currentDayEnd);*/
+        System.out.println("currentDayEnd = " + currentDayEnd);*//*
 
         String s1 = "4.2";
         String s2 = "1.6";
@@ -169,6 +169,11 @@ public class DateUtils {
         double v = b1.add(b2).doubleValue();
 
         System.out.println(v);
+    }*/
+
+
+    public static void main(String[] args) {
+        System.out.println("hello java!!!");
     }
 
 }

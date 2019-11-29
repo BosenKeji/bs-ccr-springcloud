@@ -72,7 +72,7 @@ public class CacheRemoveAspect {
 
             for (String key : keys) {
                 if (key.contains("#")) {
-                    key = parseKey(key, method, point.getArgs());
+                    key = SpelExpressionUtils.parseKey(key, method, point.getArgs());
                 }
                 Set deleteKey = redisTemplate.keys(key + "*");
                 redisTemplate.delete(deleteKey);
@@ -91,7 +91,7 @@ public class CacheRemoveAspect {
      * @param args
      * @return
      */
-    private String parseKey(String key,Method method,Object[] args) {
+    /*private String parseKey(String key,Method method,Object[] args) {
         LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
         String[] parameterNames = u.getParameterNames(method);
         SpelExpressionParser parser = new SpelExpressionParser();
@@ -104,5 +104,5 @@ public class CacheRemoveAspect {
         }
 
         return parser.parseExpression(key).getValue(context,String.class);
-    }
+    }*/
 }
