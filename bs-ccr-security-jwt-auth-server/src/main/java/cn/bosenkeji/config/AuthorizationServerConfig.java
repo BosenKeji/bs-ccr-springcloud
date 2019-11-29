@@ -1,6 +1,7 @@
 package cn.bosenkeji.config;
 
 import cn.bosenkeji.exception.CustomWebResponseExceptionTranslator;
+import cn.bosenkeji.service.impl.CustomTokenServices;
 import cn.bosenkeji.service.impl.CustomUserAuthenticationConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -67,7 +68,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        endpoints.userDetailsService(userService);
         endpoints.setClientDetailsService(clientDetails());
         //配置TokenServices参数
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        DefaultTokenServices tokenServices = new CustomTokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
