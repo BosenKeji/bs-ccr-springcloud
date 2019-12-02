@@ -57,4 +57,15 @@ public class RocketMQResult {
     public void setPlantFormName(String plantFormName) {
         this.plantFormName = plantFormName;
     }
+
+    @Override
+    public String toString() {
+        return "RocketMQResult{" +
+                "symbol='" + symbol + '\'' +
+                ", signId='" + signId + '\'' +
+                ", type='" + type + '\'' +
+                ", finished_order=" + finished_order +
+                ", plantFormName='" + plantFormName + '\'' +
+                '}';
+    }
 }

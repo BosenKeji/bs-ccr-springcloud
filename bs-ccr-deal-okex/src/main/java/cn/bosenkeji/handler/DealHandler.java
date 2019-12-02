@@ -68,13 +68,14 @@ public class DealHandler {
         //mq参数检测
         boolean b = checkReadTimeParameter(realTimeTradeParameter);
         if (b) {
-            log.info("实时价格参数错误！");
+            log.info("实时价格参数错误！" + realTimeTradeParameter);
             return;
         }
-
-        String setKey = OKEX_PLATFORM_NAME + "_" +realTimeTradeParameter.getSymbol() + "_zset";
+        String setKey = realTimeTradeParameter.getSymbol() + "_zset";
+        if (OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
+            setKey = OKEX_PLATFORM_NAME + "_" + setKey;
+        }
         realTimeTradeParameter.setSetKey(setKey);
-
 
         handle(realTimeTradeParameter);
     }
@@ -134,7 +135,7 @@ public class DealHandler {
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("sell : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
+                    log.info("sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
 
             }
@@ -146,10 +147,8 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
-                     if (isBuy) {
-                         log.info("buy : " + dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  " + dealParameter.getFinishedOrder());
-                     }
+                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
+                    log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }
         });
