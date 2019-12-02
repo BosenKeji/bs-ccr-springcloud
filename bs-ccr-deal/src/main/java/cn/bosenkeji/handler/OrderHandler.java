@@ -4,6 +4,7 @@ import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.OrderGroupIdMQResult;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.alibaba.fastjson.JSON;
@@ -38,17 +39,23 @@ public class OrderHandler {
     @StreamListener("order_group_input")
     public void consumerOrderGroupMsg(String msg){
         log.info(msg);
+        JSONObject jsonObject = JSON.parseObject(msg);
+        String redisKey = jsonObject.getString("key");
+        log.info(redisKey);
         OrderGroup orderGroup = JSONObject.parseObject(msg,OrderGroup.class);
         log.info(orderGroup.toString());
         int id = orderGroup.getId();
 
-        if (id <= 0){
+        if (id <= 0 && orderGroup.getCoinPairChoiceId() > 0){
             Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
             if (result.getData() == null){
                 log.info(result.getMsg());
-            }else if (sendGroupId(result)){
-                log.info(result.getMsg());
-                log.info("订单组id推送成功！");
+            }else{
+                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), (int) result.getData(),redisKey);
+                if (sendGroupId(orderGroupIdMQResult)){
+                    log.info(orderGroupIdMQResult.toString());
+                    log.info("订单组id推送成功！");
+                }
             }
         }else {
             Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
@@ -64,10 +71,9 @@ public class OrderHandler {
         log.info("添加订单信息："+result.toString());
     }
 
-    private boolean sendGroupId(Result result){
-        Message<Result> message = MessageBuilder.withPayload(result).build();
+    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult){
+        Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
         return this.source.groupIdOutPut().send(message);
     }
-
 
 }
