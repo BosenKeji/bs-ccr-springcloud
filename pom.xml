@@ -34,7 +34,7 @@
         <module>bs-ccr-aws-redis</module>
         <module>bs-ccr-message-rocketMQ</module>
         <module>bs-ccr-deal</module>
-        <module>bs-ccr-deal-empty</module>
+        <module>bs-ccr-deal-okex</module>
         <module>bs-ccr-provider-product-combo</module>
         <module>bs-ccr-provider-trade-basic-data</module>
         <module>bs-ccr-jwt</module>
@@ -44,6 +44,7 @@
         <module>bs-ccr-aws-deal</module>
         <module>bs-ccr-aws-sqs</module>
         <module>bs-ccr-provider-reason</module>
+        <module>bs-ccr-basic-deal</module>
 
     </modules>
 
@@ -359,6 +360,12 @@
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-provider-reason</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bosenCCR</groupId>
+                <artifactId>bs-ccr-basic-deal</artifactId>
+                <version>1.0.0</version>
             </dependency>
 
             <!--poi excel-->

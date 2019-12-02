@@ -1,8 +1,8 @@
 server:
-  port: 6101
+  port: 6102
 spring:
   application:
-    name: bs-ccr-deal
+    name: bs-ccr-deal-okex
   main:
     allow-bean-definition-overriding: true
   cloud:

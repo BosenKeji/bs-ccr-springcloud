@@ -6,13 +6,13 @@ spring:
           enabled: false
       config:
         server-addr: 127.0.0.1:8848
-        endpoint: addr-sz-internal.edas.aliyun.com
-        namespace : 3893fbec-c3c3-49d2-9843-ff20fdbc4219
+        endpoint: addr-us-east-1-internal.acm.aliyun.com
+        namespace : e4b0ee5f-627f-49ab-87af-1e5834a3e180
         file-extension : yml
         ext-config[0]:
           data-id: bs-ccr-page-size-config.yml
         ext-config[1]:
-          data-id: bs-ccr-database-config.yml
+          data-id: bs-ccr-redis-config.yml
         ext-config[2]:
           data-id: bs-ccr-mq-config.yml
         ext-config[3]:

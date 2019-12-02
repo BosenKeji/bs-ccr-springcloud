@@ -8,25 +8,23 @@ import cn.bosenkeji.utils.RealTimeTradeParameterParser;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
+import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,34 +37,49 @@ public class DealHandler {
 
     private static final String OKEX_PLATFORM_NAME = "okex";
 
-    DealHandler() { }
-
     @Autowired
     private MySource source;
 
     @Autowired
     private RedisTemplate redisTemplate;
 
+//    @RequestMapping("/send")
+//    public String send() {
+//        RocketMQResult rocketMQResult = new RocketMQResult();
+//        rocketMQResult.setSignId("13873693992");
+//        rocketMQResult.setSymbol("EOS-USDT");
+//        rocketMQResult.setPlantFormName("okex");
+//        rocketMQResult.setFinished_order(0);
+//        rocketMQResult.setType("buy");
+//        JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
+//        Message<String> build = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
+//        source.output1().send(build);
+//        return "end";
+//    }
+
     @StreamListener("input1")
     private void consumerMessage(String msg) {
 
         //1、参数处理
         //mq实时报价
-        JSONObject jsonObject = JSON.parseObject(msg);
+        JSONObject jsonObject = JSON.parseObject(msg);  //json格式化
         //mq参数解析
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
         //mq参数检测
         boolean b = checkReadTimeParameter(realTimeTradeParameter);
         if (b) {
-            log.info("实时价格参数错误！");
+            log.info("实时价格参数错误！" + realTimeTradeParameter);
+            return;
         }
         String setKey = realTimeTradeParameter.getSymbol() + "_zset";
-        if ("okex".equals(realTimeTradeParameter.getPlatFormName())) {
+        if (OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
             setKey = OKEX_PLATFORM_NAME + "_" + setKey;
         }
         realTimeTradeParameter.setSetKey(setKey);
+
         handle(realTimeTradeParameter);
     }
+
 
     private void handle(RealTimeTradeParameter realTimeTradeParameter) {
 
@@ -77,19 +90,7 @@ public class DealHandler {
 
         if (CollectionUtils.isEmpty(keySet)) { return; }
 
-        //过滤不是该货币对的key 和旧的key
-        Set<String> filterSet = keySet.stream().filter((s) -> {
-            String regExg = "^trade-condition_\\S+_\\S+_\\S+";
-            Pattern p = Pattern.compile(regExg);
-            Matcher m = p.matcher(s);
-            return s.contains(realTimeTradeParameter.getSymbol()) && !m.matches();
-        }).collect(Collectors.toSet());
-
-        if (CollectionUtils.isEmpty(filterSet)) {
-            return;
-        }
-
-        filterSet.parallelStream().forEach((s)->{
+        keySet.parallelStream().forEach((s)->{
 
             Map trade = redisTemplate.opsForHash().entries(s);
 
@@ -134,7 +135,7 @@ public class DealHandler {
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_SELL,source);
-                    log.info("sell-" + isSend + "  " + realTimeTradeParameter  + "  " + dealParameter);
+                    log.info("sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
 
             }
@@ -146,8 +147,8 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
-                     log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
+                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
+                    log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }
         });

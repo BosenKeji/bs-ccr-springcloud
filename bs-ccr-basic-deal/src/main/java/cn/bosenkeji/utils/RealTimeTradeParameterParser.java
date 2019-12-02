@@ -19,6 +19,7 @@ public class RealTimeTradeParameterParser {
     private static final String BUY_DEEP = "bids";
     private static final String SELL_DEEP = "asks";
     private static final String SYMBOL = "symbol";
+    private static final String PLATFORM_NAME = "plantFormName";
 
     public RealTimeTradeParameterParser() { }
 
@@ -29,9 +30,11 @@ public class RealTimeTradeParameterParser {
     public RealTimeTradeParameter getRealTimeTradeParameter() {
         RealTimeTradeParameter parameter = new RealTimeTradeParameter();
 
+        String platFormName = DealUtil.getString(jsonObject.get(PLATFORM_NAME));
         String symbol = DealUtil.getString(jsonObject.get(SYMBOL));
         Double sellPrice = DealUtil.getDouble(((JSONObject)jsonObject.get("price")).get(SELL_PRICE));
 
+        //买卖的深度
         JSONObject deep = (JSONObject)jsonObject.get("deep");
         JSONArray buyDeep = transformDeep(deep.get(BUY_DEEP));
         JSONArray sellDeep = transformDeep(deep.get(SELL_DEEP));
@@ -40,6 +43,9 @@ public class RealTimeTradeParameterParser {
         parameter.setBuyDeep(buyDeep);
         parameter.setSellDeep(sellDeep);
         parameter.setSymbol(symbol);
+        parameter.setPlatFormName(platFormName);
+
+
 
         return parameter;
     }

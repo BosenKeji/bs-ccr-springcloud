@@ -173,4 +173,27 @@ public class DealParameter {
     public void setTrade(Map<String, Object> trade) {
         this.trade = trade;
     }
+
+    @Override
+    public String toString() {
+        return "DealParameter{" +
+                "trade=" + trade +
+                ", symbol='" + symbol + '\'' +
+                ", signId='" + signId + '\'' +
+                ", tradeStatus=" + tradeStatus +
+                ", positionCost=" + positionCost +
+                ", positionNum=" + positionNum +
+                ", finishedOrder=" + finishedOrder +
+                ", maxTradeOrder=" + maxTradeOrder +
+                ", storeSplit=" + storeSplit +
+                ", buyVolume=" + buyVolume +
+                ", followLowerRatio=" + followLowerRatio +
+                ", followCallbackRatio=" + followCallbackRatio +
+                ", firstOrderPrice=" + firstOrderPrice +
+                ", targetProfitPrice=" + targetProfitPrice +
+                ", isStopProfitTrace=" + isStopProfitTrace +
+                ", turnDownRatio=" + turnDownRatio +
+                ", emitRatio=" + emitRatio +
+                '}';
+    }
 }
