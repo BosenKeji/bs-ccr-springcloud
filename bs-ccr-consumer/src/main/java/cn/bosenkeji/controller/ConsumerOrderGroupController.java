@@ -50,11 +50,11 @@ public class ConsumerOrderGroupController {
         return this.iOrderGroupClientService.getById(id);
     }
 
-    @ApiOperation(value = "添加单个订单组信息",httpMethod = "POST",nickname = "addOneOrderGroup")
-    @PostMapping("/")
-    public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单组", required = true, type = "string")@NotNull OrderGroup orderGroup){
-        return this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
-    }
+//    @ApiOperation(value = "添加单个订单组信息",httpMethod = "POST",nickname = "addOneOrderGroup")
+//    @PostMapping("/")
+//    public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单组", required = true, type = "string")@NotNull OrderGroup orderGroup){
+//        return this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
+//    }
 
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")

@@ -216,4 +216,26 @@ public class OrderGroup implements Serializable {
     public void setTotalProfit(double totalProfit) {
         this.totalProfit = totalProfit;
     }
+
+    @Override
+    public String toString() {
+        return "OrderGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", coinPairChoiceId=" + coinPairChoiceId +
+                ", endProfitRatio=" + endProfitRatio +
+                ", isEnd=" + isEnd +
+                ", endType=" + endType +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", coinPairChoice=" + coinPairChoice +
+                ", coin_pair_choice='" + coin_pair_choice + '\'' +
+                ", tradeOrders=" + tradeOrders +
+                ", buildNumbers=" + buildNumbers +
+                ", totalShell=" + totalShell +
+                ", totalCast=" + totalCast +
+                ", totalProfit=" + totalProfit +
+                '}';
+    }
 }

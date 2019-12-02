@@ -48,6 +48,10 @@
     select exists (SELECT 1 FROM order_group WHERE id = #{orderGroupId,jdbcType=INTEGER} and status = 1 LIMIT 1)
   </select>
 
+  <select id="checkExistByName" resultType="integer">
+    select exists (SELECT 1 FROM order_group WHERE name = #{name,jdbcType=VARCHAR} and status = 1 LIMIT 1)
+  </select>
+
   <select id="findAll" resultMap="OtherResultMap">
     select
     <include refid="Base_Column_List"/>
