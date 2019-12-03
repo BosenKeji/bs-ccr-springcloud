@@ -80,16 +80,22 @@ public class OrderHandler {
         TradeOrder order = new TradeOrder();
 
         JSONObject json = JSON.parseObject(msg);
-        int orderGroupId = json.getInteger("orderGroupId");
-        double theoreticalBuildPrice = Double.parseDouble(json.getString("theoreticalBuildPrice"));
-        double profitRatio = json.getDouble("profitRatio");
-        double tradeAveragePrice = json.getDouble("tradeAveragePrice");
-        double tradeNumbers = json.getDouble("tradeNumbers");
-        double tradeCost = json.getDouble("tradeCost");
-        int tradeType = json.getInteger("tradeType");
+
+        int orderGroupId = json.getIntValue("orderGroupId");
+        double theoreticalBuildPrice = json.getDoubleValue("theoreticalBuildPrice");
+        double profitRatio = json.getDoubleValue("profitRatio");
+        double tradeAveragePrice = json.getDoubleValue("tradeAveragePrice");
+        double tradeNumbers = json.getDoubleValue("tradeNumbers");
+        double tradeCost = json.getDoubleValue("tradeCost");
+        int tradeType = json.getIntValue("tradeType");
         Timestamp createdAt = json.getTimestamp("createdAt");
-        double shellProfit = json.getDouble("shellProfit");
-        double extraProfit = json.getDouble("extraProfit");
+        if (tradeType > 1){
+            double shellProfit = json.getDouble("shellProfit");
+            double extraProfit = json.getDouble("extraProfit");
+            order.setExtraProfit(extraProfit);
+            order.setShellProfit(shellProfit);
+        }
+
 
         order.setOrderGroupId(orderGroupId);
         order.setProfitRatio(profitRatio);
@@ -99,8 +105,6 @@ public class OrderHandler {
         order.setTradeNumbers(tradeNumbers);
         order.setTradeType(tradeType);
         order.setCreatedAt(createdAt);
-        order.setExtraProfit(extraProfit);
-        order.setShellProfit(shellProfit);
 
         return order;
     }
@@ -115,8 +119,8 @@ public class OrderHandler {
         OrderGroup orderGroup  = new OrderGroup();
 
         String name = jsonObject.getString("name");
-        int coinPairChoiceId = jsonObject.getInteger("coinPairChoiceId");
-        int isEnd = jsonObject.getInteger("isEnd");
+        int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
+        int isEnd = (int) jsonObject.get("isEnd");
         if (isEnd == 1){
             double endProfitRatio = jsonObject.getDouble("double endProfitRatio");
             int endType = jsonObject.getInteger("endType");
