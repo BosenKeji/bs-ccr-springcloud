@@ -11,5 +11,6 @@ public interface MySource {
     @Output("output1")
     MessageChannel output1();
 
-
+    @Output("group_id_output")
+    MessageChannel groupIdOutPut();
 }

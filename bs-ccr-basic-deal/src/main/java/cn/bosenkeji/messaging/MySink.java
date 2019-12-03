@@ -12,4 +12,9 @@ public interface MySink {
     @Input("input1")
     SubscribableChannel input1();
 
+    @Input("order_input")
+    SubscribableChannel orderInput();
+
+    @Input("order_group_input")
+    SubscribableChannel orderGroupInput();
 }

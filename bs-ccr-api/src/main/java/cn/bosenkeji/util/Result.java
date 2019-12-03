@@ -38,4 +38,12 @@ public class Result<T> implements Serializable {
         this.data = data;
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

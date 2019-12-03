@@ -51,13 +51,6 @@ public class ConsumerTradeOrderController {
         return this.iTradeOrderClientService.getById(id);
     }
 
-    @ApiOperation(value = "添加单个交易订单信息",httpMethod = "POST",nickname = "addOneTradeOrder")
-    @PostMapping("/")
-    public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") @NotNull TradeOrder tradeOrder){
-        return this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-    }
-
-
     @ApiOperation(value = "删除单个交易订单信息",httpMethod = "DELETE",nickname = "deleteTradeOrderById")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable("id") @Min(1)  @ApiParam(value = "交易订单id", required = true, type = "integer",example = "1") int id){

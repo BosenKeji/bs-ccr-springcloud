@@ -190,6 +190,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
+    public Optional<Integer> checkExistByGroupName(String name) {
+        return Optional.of(this.orderGroupMapper.checkExistByName(name));
+    }
+
+    @Override
     public List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
 
         List<OrderGroupOpenSearchFormat> orderGroupOpenSearchFormats = new ArrayList<>();

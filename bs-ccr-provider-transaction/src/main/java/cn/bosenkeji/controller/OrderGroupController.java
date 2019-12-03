@@ -69,6 +69,11 @@ public class OrderGroupController {
         }else {
             return new Result<>(null,"该自选币id不合法");
         }
+
+        if (this.orderGroupService.checkExistByGroupName(orderGroup.getName()).get() > 0){
+            return new Result<>(null,"订单组name已存在！");
+        }
+
         return new Result<>(this.orderGroupService.add(orderGroup));
     }
 
