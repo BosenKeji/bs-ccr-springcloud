@@ -42,6 +42,13 @@ public class OrderHandler {
         JSONObject jsonObject = JSON.parseObject(msg);
         String redisKey = jsonObject.getString("key");
         log.info("redisKey ==>"+redisKey);
+
+        String plantFormName = "";
+        if (jsonObject.get("plantFormName") != null){
+            plantFormName = jsonObject.getString("plantFormName");
+            log.info("plantFormName ==>"+plantFormName);
+        }
+
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
         log.info("orderGroup ==>"+orderGroup.toString());
         int id = orderGroup.getId();
@@ -52,10 +59,12 @@ public class OrderHandler {
                 log.info("result ==>" + result.getMsg());
             }else{
                 OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey);
-                if (sendGroupId(orderGroupIdMQResult)){
-                    log.info("result ==> " + result.toString());
-                    log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
-                    log.info("订单组id推送成功！");
+                if (!plantFormName.equals("")){
+                    if (sendGroupId(orderGroupIdMQResult,plantFormName)){
+                        log.info("result ==> " + result.toString());
+                        log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
+                        log.info("订单组id推送成功！");
+                    }
                 }
             }
         }else {
@@ -123,7 +132,7 @@ public class OrderHandler {
         return order;
     }
 
-    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult){
+    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult ,String plantFormName){
         Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
         return this.source.groupIdOutPut().send(message);
     }
