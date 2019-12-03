@@ -17,7 +17,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
+import java.sql.Timestamp;
 
 /**
  * @author CAJR
@@ -41,19 +41,19 @@ public class OrderHandler {
         log.info(msg);
         JSONObject jsonObject = JSON.parseObject(msg);
         String redisKey = jsonObject.getString("key");
-        log.info(redisKey);
-        OrderGroup orderGroup = JSONObject.parseObject(msg,OrderGroup.class);
-        log.info(orderGroup.toString());
+        log.info("redisKey ==>"+redisKey);
+        OrderGroup orderGroup = transformOrderGroup(jsonObject);
+        log.info("orderGroup ==>"+orderGroup.toString());
         int id = orderGroup.getId();
 
         if (id <= 0 && orderGroup.getCoinPairChoiceId() > 0){
             Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
             if (result.getData() == null){
-                log.info(result.getMsg());
+                log.info("result ==>" + result.getMsg());
             }else{
                 OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), (int) result.getData(),redisKey);
                 if (sendGroupId(orderGroupIdMQResult)){
-                    log.info(orderGroupIdMQResult.toString());
+                    log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
                     log.info("订单组id推送成功！");
                 }
             }
@@ -66,9 +66,43 @@ public class OrderHandler {
     @StreamListener("order_input")
     public void consumerTradeOrderMsg(String msg){
         log.info(msg);
-        TradeOrder tradeOrder = JSONObject.parseObject(msg,TradeOrder.class);
-        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-        log.info("添加订单信息："+result.toString());
+        TradeOrder tradeOrder = transformOrder(msg);
+        if (tradeOrder.getOrderGroupId() > 0){
+            Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+            log.info("添加订单信息："+result.toString());
+        }else {
+            log.info("订单组id不合法！添加订单失败！");
+        }
+
+    }
+
+    private TradeOrder transformOrder(String msg) {
+        TradeOrder order = new TradeOrder();
+
+        JSONObject json = JSON.parseObject(msg);
+        int orderGroupId = json.getInteger("orderGroupId");
+        double theoreticalBuildPrice = Double.parseDouble(json.getString("theoreticalBuildPrice"));
+        double profitRatio = json.getDouble("profitRatio");
+        double tradeAveragePrice = json.getDouble("tradeAveragePrice");
+        double tradeNumbers = json.getDouble("tradeNumbers");
+        double tradeCost = json.getDouble("tradeCost");
+        int tradeType = json.getInteger("tradeType");
+        Timestamp createdAt = json.getTimestamp("createdAt");
+        double shellProfit = json.getDouble("shellProfit");
+        double extraProfit = json.getDouble("extraProfit");
+
+        order.setOrderGroupId(orderGroupId);
+        order.setProfitRatio(profitRatio);
+        order.setTheoreticalBuildPrice(theoreticalBuildPrice);
+        order.setTradeCost(tradeCost);
+        order.setTradeAveragePrice(tradeAveragePrice);
+        order.setTradeNumbers(tradeNumbers);
+        order.setTradeType(tradeType);
+        order.setCreatedAt(createdAt);
+        order.setExtraProfit(extraProfit);
+        order.setShellProfit(shellProfit);
+
+        return order;
     }
 
     private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult){
@@ -76,4 +110,22 @@ public class OrderHandler {
         return this.source.groupIdOutPut().send(message);
     }
 
+
+    private OrderGroup transformOrderGroup(JSONObject jsonObject){
+        OrderGroup orderGroup  = new OrderGroup();
+
+        String name = jsonObject.getString("name");
+        int coinPairChoiceId = jsonObject.getInteger("coinPairChoiceId");
+        int isEnd = jsonObject.getInteger("isEnd");
+        if (isEnd == 1){
+            double endProfitRatio = jsonObject.getDouble("double endProfitRatio");
+            int endType = jsonObject.getInteger("endType");
+            orderGroup.setEndProfitRatio(endProfitRatio);
+            orderGroup.setEndType(endType);
+        }
+        orderGroup.setName(name);
+        orderGroup.setCoinPairChoiceId(coinPairChoiceId);
+
+        return orderGroup;
+    }
 }
