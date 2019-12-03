@@ -1,5 +1,7 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.annotation.cache.BatchCacheRemove;
+import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.CoinPairChoiceMapper;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.CommonConstantUtil;
@@ -10,6 +12,9 @@ import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +64,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     OrderGroupService orderGroupService;
 
 
-
+    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#tradePlatformApiBindProductComboId+'-'+#coinId+'-'+#pageNum+'-'+#pageSize")
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
@@ -220,6 +225,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return result;
     }
 
+    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id",unless = "#result == null")
     @Override
     public CoinPairChoice get(int id) {
         CoinPairChoice coinPairChoice = this.coinPairChoiceMapper.selectByPrimaryKey(id);
@@ -230,6 +236,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return coinPairChoice;
     }
 
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {
         Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
@@ -242,6 +249,12 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#coinPairChoice.id",condition = "#result != null")
+            }
+    )
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     public Optional<Integer> update(CoinPairChoice coinPairChoice) {
         return Optional.ofNullable(coinPairChoiceMapper.updateByPrimaryKeySelective(coinPairChoice));
@@ -296,6 +309,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return coinPairChoiceList;
     }
 
+    //删除多个如何保证缓存同步呢？
+    @Caching(
+            evict = {
+                    @CacheEvict(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,allEntries = true,condition = "#result != null ")
+            }
+    )
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     @Transactional(propagation= Propagation.REQUIRED,rollbackFor = Exception.class)
     public Optional<Integer> batchDelete(String idStr,int tradePlatformApiBindProductComboId) {

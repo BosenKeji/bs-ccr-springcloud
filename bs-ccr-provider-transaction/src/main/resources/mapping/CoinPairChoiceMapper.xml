@@ -12,11 +12,11 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="trade_platform_api_bind_product_combo_id" jdbcType="INTEGER" property="tradePlatformApiBindProductComboId"/>
 
-    <association fetchType="lazy" property="coinPairChoiceAttribute" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute"
+    <association property="coinPairChoiceAttribute" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute"
                  column="id"
                  select="cn.bosenkeji.mapper.CoinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId"/>
 
-    <association fetchType="lazy" property="coinPairChoiceAttributeCustom" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom"
+    <association property="coinPairChoiceAttributeCustom" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom"
                  column="id" select="cn.bosenkeji.mapper.CoinPairChoiceAttributeCustomMapper.selectByCoinPartnerChoiceId"/>
 
     <!--<association fetchType="lazy" property="coinPair" javaType="cn.bosenkeji.vo.coin.CoinPair"-->

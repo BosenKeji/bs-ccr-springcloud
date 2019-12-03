@@ -14,7 +14,7 @@ import java.util.List;
  * @create 2019/7/17 10:09
  */
 
-@JsonIgnoreProperties(value = {"handler"})
+//@JsonIgnoreProperties(value = {"handler"})  //初步判断对 缓存时序列化有影响
 public class CoinPairChoice implements Serializable {
     @ApiModelProperty("自选币 id")
     private int id;
