@@ -32,4 +32,6 @@ public interface TradeOrderService {
 
     SumTradeCostAggregateVo searchAggregateTradeOrderSumTradeCostByCondition(String coinPairChoiceIds, Integer tradeType);
     SumShellProfitAggregateVo searchAggregateTradeOrderSumShellProfitByCondition(String coinPairChoiceIds);
+
+    int getOrderNumberByGroupId(int orderGroupId);
 }

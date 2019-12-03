@@ -81,6 +81,11 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
                 sumShellProfitAggregateVo.setCount(-1);
                 return sumShellProfitAggregateVo;
             }
+
+            @Override
+            public Result getOrderNumberByGroupId(int orderGroupId) {
+                return new Result<>(-1,"hystrix");
+            }
         };
     }
 }

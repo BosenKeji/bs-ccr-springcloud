@@ -67,12 +67,18 @@ public class OrderHandler {
     public void consumerTradeOrderMsg(String msg){
         log.info(msg);
         TradeOrder tradeOrder = transformOrder(msg);
-        if (tradeOrder.getOrderGroupId() > 0){
-            Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-            log.info("添加订单信息："+result.toString());
-        }else {
-            log.info("订单组id不合法！添加订单失败！");
-        }
+        JSONObject jsonObject = JSON.parseObject(msg);
+        int finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"));
+
+            if (tradeOrder.getOrderGroupId() > 0){
+                int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
+                if (dbOrderNum > 0 && dbOrderNum < finishedOrderNumber){
+                    Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                    log.info("添加订单信息："+result.toString());
+                }
+            }else {
+                log.info("订单组id不合法或重复添加 添加订单失败！");
+            }
 
     }
 
