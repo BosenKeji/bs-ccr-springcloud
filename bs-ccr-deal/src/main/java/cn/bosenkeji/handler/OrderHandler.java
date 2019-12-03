@@ -72,7 +72,7 @@ public class OrderHandler {
 
             if (tradeOrder.getOrderGroupId() > 0){
                 int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
-                if (dbOrderNum > 0 && dbOrderNum < finishedOrderNumber){
+                if (dbOrderNum > 0 && dbOrderNum < (finishedOrderNumber+1)){
                     Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
                     log.info("添加订单信息："+result.toString());
                 }
