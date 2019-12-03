@@ -53,6 +53,7 @@ public class OrderHandler {
             }else{
                 OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey);
                 if (sendGroupId(orderGroupIdMQResult)){
+                    log.info("result ==> " + result.toString());
                     log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
                     log.info("订单组id推送成功！");
                 }
@@ -68,11 +69,17 @@ public class OrderHandler {
         log.info(msg);
         TradeOrder tradeOrder = transformOrder(msg);
         JSONObject jsonObject = JSON.parseObject(msg);
-        int finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"));
+        int finishedOrderNumber = -1;
+        if (jsonObject.get("finished_order") != null){
+            finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
+            log.info("finishedOrderNum ==>" + finishedOrderNumber);
+        }
 
             if (tradeOrder.getOrderGroupId() > 0){
                 int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
-                if (dbOrderNum > 0 && dbOrderNum < (finishedOrderNumber+1)){
+                log.info("dbOrderNum ==>" + dbOrderNum);
+
+                if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
                     Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
                     log.info("添加订单信息："+result.toString());
                 }
