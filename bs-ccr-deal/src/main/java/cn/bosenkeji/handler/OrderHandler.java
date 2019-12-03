@@ -42,6 +42,11 @@ public class OrderHandler {
         JSONObject jsonObject = JSON.parseObject(msg);
         String redisKey = jsonObject.getString("key");
         log.info("redisKey ==>"+redisKey);
+        String orderId = "";
+        if (jsonObject.get("orderId") != null){
+            orderId = jsonObject.getString("orderId");
+            log.info("orderId ==>" + orderId);
+        }
 
         String plantFormName = "";
         if (jsonObject.get("plantFormName") != null){
@@ -58,7 +63,7 @@ public class OrderHandler {
             if (result.getData() == null){
                 log.info("result ==>" + result.getMsg());
             }else{
-                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey);
+                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey,orderId);
                 if (!plantFormName.equals("")){
                     if (sendGroupId(orderGroupIdMQResult,plantFormName)){
                         log.info("result ==> " + result.toString());
@@ -134,7 +139,15 @@ public class OrderHandler {
 
     private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult ,String plantFormName){
         Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
-        return this.source.groupIdOutPut().send(message);
+        if ("huobi".equals(plantFormName)){
+            return this.source.groupIdOutPutHB().send(message);
+        }
+        if ("okex".equals(plantFormName)){
+            return this.source.groupIdOutPutOK().send(message);
+        }
+
+        log.info("plantFormName 不合法！");
+        return false;
     }
 
 
