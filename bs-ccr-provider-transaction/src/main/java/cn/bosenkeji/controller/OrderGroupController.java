@@ -60,7 +60,8 @@ public class OrderGroupController {
     @PostMapping("/")
     public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单组", required = true, type = "string") OrderGroup orderGroup){
         if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
-            return new Result<>(null,"该自选币有未结单的订单组，创建订单组失败！");
+            int existedGroupId = this.orderGroupService.resultNotEndGroupId(orderGroup.getCoinPairChoiceId()).get();
+            return new Result<>(0-existedGroupId,"该自选币有未结单的订单组，创建订单组失败！");
         }
         if (orderGroup.getCoinPairChoiceId() != 0){
             if (coinPairChoiceService.get(orderGroup.getCoinPairChoiceId()) == null){

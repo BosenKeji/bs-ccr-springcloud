@@ -51,7 +51,8 @@ public class OrderHandler {
             if (result.getData() == null){
                 log.info("result ==>" + result.getMsg());
             }else{
-                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), (int) result.getData(),redisKey);
+
+                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey);
                 if (sendGroupId(orderGroupIdMQResult)){
                     log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
                     log.info("订单组id推送成功！");
@@ -90,12 +91,13 @@ public class OrderHandler {
         int tradeType = json.getIntValue("tradeType");
         Timestamp createdAt = json.getTimestamp("createdAt");
         if (tradeType > 1){
-            double shellProfit = json.getDouble("shellProfit");
-            double extraProfit = json.getDouble("extraProfit");
-            order.setExtraProfit(extraProfit);
-            order.setShellProfit(shellProfit);
+            if(json.get("shell") != null && json.get("extraProfit") != null) {
+                double shellProfit = json.getDouble("shellProfit");
+                double extraProfit = json.getDouble("extraProfit");
+                order.setExtraProfit(extraProfit);
+                order.setShellProfit(shellProfit);
+            }
         }
-
 
         order.setOrderGroupId(orderGroupId);
         order.setProfitRatio(profitRatio);
@@ -120,13 +122,16 @@ public class OrderHandler {
 
         String name = jsonObject.getString("name");
         int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
-        int isEnd = (int) jsonObject.get("isEnd");
-        if (isEnd == 1){
-            double endProfitRatio = jsonObject.getDouble("double endProfitRatio");
-            int endType = jsonObject.getInteger("endType");
-            orderGroup.setEndProfitRatio(endProfitRatio);
-            orderGroup.setEndType(endType);
+        if (jsonObject.get("isEnd") != null){
+            int isEnd = jsonObject.getIntValue("isEnd");
+            if (isEnd == 1){
+                double endProfitRatio = jsonObject.getDouble("endProfitRatio");
+                int endType = jsonObject.getInteger("endType");
+                orderGroup.setEndProfitRatio(endProfitRatio);
+                orderGroup.setEndType(endType);
+            }
         }
+
         orderGroup.setName(name);
         orderGroup.setCoinPairChoiceId(coinPairChoiceId);
 

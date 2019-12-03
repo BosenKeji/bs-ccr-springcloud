@@ -11,7 +11,7 @@ public class OrderGroupIdMQResult {
 
     private String key;
 
-    public OrderGroupIdMQResult(int orderGroupId, int coinPairChoiceId, String key) {
+    public OrderGroupIdMQResult( int coinPairChoiceId,int orderGroupId, String key) {
         this.orderGroupId = orderGroupId;
         this.coinPairChoiceId = coinPairChoiceId;
         this.key = key;

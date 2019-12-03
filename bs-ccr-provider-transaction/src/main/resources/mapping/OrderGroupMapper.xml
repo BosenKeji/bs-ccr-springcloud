@@ -31,6 +31,10 @@
     id, `name`, coin_pair_choice_id, end_profit_ratio, is_end, end_type, `status`, created_at, updated_at
   </sql>
 
+  <select id="resultNotEndGroupId" resultType="int">
+    select id from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 0;
+  </select>
+
   <select id="findAllByCoinPairChoiceIdAndIsEnd" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = #{isEnd,jdbcType=INTEGER}
