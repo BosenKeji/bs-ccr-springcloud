@@ -202,16 +202,16 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }
             if (type.equals(CommonConstantUtil.RECORD_BUY)){
                 orderGroups.forEach(orderGroup -> {
-                    resultCoinPairChoices.add(orderGroup.getCoinPairChoice());
+                    if (orderGroup.getCoinPairChoice() != null){
+                        resultCoinPairChoices.add(orderGroup.getCoinPairChoice());
+                    }
                 });
             }
         }
 
         //去重
         List<CoinPairChoice> unique =  resultCoinPairChoices.stream().collect(
-                collectingAndThen(
-                        toCollection(() -> new TreeSet<>(comparingLong(CoinPairChoice::getId))), ArrayList::new)
-        );
+                collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(CoinPairChoice::getId))), ArrayList::new));
 
         List<Integer> uniqueIdResult = new ArrayList<>();
         unique.forEach(coinPairChoice -> uniqueIdResult.add(coinPairChoice.getId()));

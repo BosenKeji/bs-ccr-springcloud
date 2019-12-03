@@ -11,13 +11,10 @@ spring:
     nacos:
       discovery:
         server-addr: nacos-dev:8848
-
-aliyun:
-  access-key: LTAI4FipRPK3htsT54j4ahZa
-  secret-key: Oz9fRDjndnfTWMlBCcw8mVkm2Z0xQV
-  open-search:
-    host: http://opensearch-cn-shenzhen.aliyuncs.com
-    app-name: bs_ccr_search_trade_dev
+feign:
+  httpclient:
+    connection-timeout: 6000
+    connection-timer-repeat: 6000
 
 
 #org:

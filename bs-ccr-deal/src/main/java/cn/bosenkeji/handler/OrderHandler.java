@@ -51,7 +51,6 @@ public class OrderHandler {
             if (result.getData() == null){
                 log.info("result ==>" + result.getMsg());
             }else{
-
                 OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey);
                 if (sendGroupId(orderGroupIdMQResult)){
                     log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
