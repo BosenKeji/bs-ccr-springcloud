@@ -1,8 +1,10 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.CoinSortService;
+import cn.bosenkeji.service.ITradePlatformClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.coin.CoinSort;
+import cn.bosenkeji.vo.tradeplatform.TradePlatform;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +31,9 @@ public class CoinSortController {
     CoinSortService coinSortService;
 
     @Resource
+    ITradePlatformClientService iTradePlatformClientService;
+
+    @Resource
     DiscoveryClient discoveryClient;
 
     @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
@@ -42,11 +47,23 @@ public class CoinSortController {
 
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
-    public Result add(@RequestBody @ApiParam(value = "货币排序实体", required = true, type = "String" ) CoinSort coinSort){
-        if (this.coinSortService.checkByTradePlatformIdAndCoinId(coinSort.getTradePlatformId(),coinSort.getCoinId()).get() >= 1){
-            return new Result(null,"货币排序实体已存在");
+    public Result add(@RequestParam("tradePlatformName") @ApiParam(value = "交易平台名字", required = true, type = "string") String tradePlatformName,
+                      @RequestParam( value="coinId") @ApiParam(value = "货币id", required = true, type = "integer" ,example = "1") int coinId,
+                      @RequestParam( value="type") @ApiParam(value = "货币类型，1:计价 2: 交易", required = true, type = "integer" ,example = "1") int type){
+        TradePlatform tradePlatform = this.iTradePlatformClientService.getTradePlatformByName(tradePlatformName);
+        if (tradePlatform.getId() == 0){
+            return new Result<>(null,"平台不存在！");
+        }
+        int tradePlatformId = tradePlatform.getId();
+        if (this.coinSortService.checkByTradePlatformIdAndCoinId(tradePlatformId,coinId).get() >= 1){
+            return new Result<>(null,"货币排序实体已存在");
         }
 
+        CoinSort coinSort = new CoinSort();
+        coinSort.setTradePlatformId(tradePlatformId);
+        coinSort.setCoinId(coinId);
+        coinSort.setSortNum(coinId);
+        coinSort.setType(type);
         coinSort.setStatus(1);
         coinSort.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -58,7 +75,7 @@ public class CoinSortController {
     public Result update(@RequestBody @ApiParam(value = "货币排序实体", required = true, type = "String" ) CoinSort coinSort){
 
         if (this.coinSortService.get(coinSort.getId()) == null){
-            return new Result(null,"货币排序实体不存在");
+            return new Result<>(null,"货币排序实体不存在");
         }
 
         coinSort.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -71,7 +88,7 @@ public class CoinSortController {
                          @RequestParam("coinId") @ApiParam(value = "货币id", required = true, type = "integer" ,example = "1") int coinId){
 
         if (this.coinSortService.checkByTradePlatformIdAndCoinId(tradePlatformId,coinId).get() < 1){
-            return new Result(null,"货币排序实体不存在");
+            return new Result<>(null,"货币排序实体不存在");
         }
 
         return new Result<>(this.coinSortService.delete(tradePlatformId, coinId));

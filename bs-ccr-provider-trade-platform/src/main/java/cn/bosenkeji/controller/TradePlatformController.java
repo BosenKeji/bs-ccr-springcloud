@@ -102,4 +102,10 @@ public class TradePlatformController {
     public Object discover() { // 直接返回发现服务信息
         return this.client ;
     }
+
+
+    @GetMapping("/by_name")
+    public TradePlatform getTradePlatformByName(@RequestParam("name") String name){
+        return this.tradePlatformService.getByName(name);
+    }
 }

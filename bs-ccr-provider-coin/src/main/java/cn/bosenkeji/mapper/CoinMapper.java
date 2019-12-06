@@ -19,6 +19,8 @@ public interface CoinMapper {
 
     Coin selectByPrimaryKey(Integer id);
 
+    Coin selectByName(String name);
+
     Integer checkExistByName(String name);
 
     int updateByPrimaryKeySelective(Coin record);

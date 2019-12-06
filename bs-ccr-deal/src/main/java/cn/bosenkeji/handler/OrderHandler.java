@@ -25,7 +25,7 @@ import java.sql.Timestamp;
  */
 @RestController
 public class OrderHandler {
-    public static final Logger log = LoggerFactory.getLogger(OrderHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(OrderHandler.class);
 
     @Autowired
     private MySource source;

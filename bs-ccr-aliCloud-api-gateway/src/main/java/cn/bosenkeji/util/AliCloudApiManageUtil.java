@@ -88,6 +88,13 @@ public class AliCloudApiManageUtil {
         return client.getAcsResponse(request);
     }
 
+    /**
+     * TODO 分页查询api信息
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     * @throws ClientException
+     */
     public DescribeApisResponse describeApis(int pageNumber, int pageSize) throws ClientException {
         DescribeApisRequest describeApisRequest = new DescribeApisRequest();
         describeApisRequest.setPageSize(pageSize);
@@ -108,9 +115,9 @@ public class AliCloudApiManageUtil {
 
             for (int i=1; i<=loopNum; i++){
                 DescribeApisResponse describeApisResponseLoop  = this.describeApis(i, 30);
-                List<DescribeApisResponse.ApiSummary> apiSummarys = describeApisResponseLoop.getApiSummarys();
-                if (!apiSummarys.isEmpty()){
-                    for (DescribeApisResponse.ApiSummary apiSummary : apiSummarys){
+                List<DescribeApisResponse.ApiSummary> amiSummaries = describeApisResponseLoop.getApiSummarys();
+                if (!amiSummaries.isEmpty()){
+                    for (DescribeApisResponse.ApiSummary apiSummary : amiSummaries){
                         apiIds.add(apiSummary.getApiId());
                     }
                 }
@@ -261,7 +268,12 @@ public class AliCloudApiManageUtil {
 
     /**
      * TODO 提供request实体来创建api
-     * @param request CreateApiRequest
+     * @param request
+     * @param requestConfig
+     * @param serviceConfig
+     * @param requestParameters
+     * @param serviceParameters
+     * @param serviceParameterMaps
      * @return
      * @throws ClientException
      */

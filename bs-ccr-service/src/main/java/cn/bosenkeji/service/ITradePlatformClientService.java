@@ -30,4 +30,7 @@ public interface ITradePlatformClientService {
     @DeleteMapping("/trade_platform/{id}")
     public Result deleteOneTradePlatform(@PathVariable("id") int id);
 
+    @GetMapping("/trade_platform/by_name")
+    public TradePlatform getTradePlatformByName(@RequestParam("name") String name);
+
 }

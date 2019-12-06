@@ -33,7 +33,7 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
             }
 
             @Override
-            public Result addCoinSort(CoinSort coinSort) {
+            public Result addCoinSort(String tradePlatformName, int coinId, int type) {
                 return new Result<>(0,"hystrix fail");
             }
 

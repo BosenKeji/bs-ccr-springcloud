@@ -14,6 +14,12 @@
     id, `name`, `status`, created_at, updated_at
   </sql>
 
+  <select id="selectByName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from coin
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -78,6 +84,9 @@
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </trim>
+    <selectKey resultType="int" keyProperty="id" keyColumn="id" order="AFTER">
+      select  LAST_INSERT_ID()
+    </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.bosenkeji.vo.coin.Coin">
     <!--@mbg.generated-->
