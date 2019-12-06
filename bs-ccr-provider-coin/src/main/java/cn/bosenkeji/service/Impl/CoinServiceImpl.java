@@ -44,7 +44,7 @@ public class CoinServiceImpl implements CoinService {
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(list());
+        return new PageInfo<>(list());
     }
 
     @Override
@@ -58,6 +58,11 @@ public class CoinServiceImpl implements CoinService {
         return coinMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public Coin getByName(String name) {
+        return this.coinMapper.selectByName(name);
+    }
+
     @Caching(
             evict = {
                     @CacheEvict(value = RedisInterface.COIN_LIST_KEY,allEntries = true,condition = "#result != null && #result > 0"),
@@ -66,7 +71,8 @@ public class CoinServiceImpl implements CoinService {
     )
     @Override
     public Optional<Integer> add(Coin coin) {
-        return Optional.ofNullable(coinMapper.insert(coin));
+        this.coinMapper.insert(coin);
+        return Optional.of(coin.getId());
     }
 
     @Caching(

@@ -51,6 +51,13 @@ public class ITradePlatformClientServiceFallbackFactory implements FallbackFacto
                 return new Result<>(0,"hystrix fail");
             }
 
+            @Override
+            public TradePlatform getTradePlatformByName(String name) {
+                TradePlatform tradePlatform=new TradePlatform();
+                tradePlatform.setName("hystrix provider-tradePlatform");
+                return tradePlatform;
+            }
+
 
         };
     }

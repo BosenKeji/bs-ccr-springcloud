@@ -51,7 +51,7 @@ public class CoinController {
     public Result add(@RequestBody @Valid @NotNull @ApiParam(value = "币种实体", required = true, type = "string") Coin coin) {
 
         if (this.coinService.checkExistByName(coin.getName()).get() >= 1){
-            return new Result<>(null,"币种已存在");
+            return new Result<>(this.coinService.getByName(coin.getName()).getId(),"币种已存在");
         }
 
         coin.setStatus(1);

@@ -85,19 +85,15 @@ public class AliCloudApiManageController {
     @ApiOperation(value = "导入consumer中全部接口的api",httpMethod = "GET")
     @GetMapping("/import_consumer_api")
     public Result importAllConsumerApi() throws ClientException {
-
         Documentation documentation = documentationCache.documentationByGroup(docket.getGroupName());
-
         DescribeApiResponse.RequestConfig requestConfig = new DescribeApiResponse.RequestConfig();
         DescribeApiResponse.ServiceConfig serviceConfig = new DescribeApiResponse.ServiceConfig();
 
         Swagger swagger = mapper.mapDocumentation(documentation);
         Map<String, Path> map = swagger.getPaths();
-
         if (!map.isEmpty()) {
             for (Map.Entry<String, Path> entry : map.entrySet()) {
                 CreateApiRequest request = new CreateApiRequest();
-
                 request.setDescription(String.valueOf(swagger.getInfo()));
 
                 /*把路径的'{}'替换成'[]'*/
@@ -157,7 +153,7 @@ public class AliCloudApiManageController {
     }
 
     /**
-     * TODO 创建api设置api参数
+     * TODO 设置api参数
      * @param parameters
      * @param requestConfig
      * @param requestParametersName
@@ -292,19 +288,13 @@ public class AliCloudApiManageController {
         List<String> describeApisId = aliCloudApiManageUtil.getDescribeApisId();
         int size = describeApisId.size();
         System.out.println(size);
+//        api id队列
         ConcurrentLinkedQueue<String> describeApisIdQueue = new ConcurrentLinkedQueue<>(describeApisId);
 
         if (!describeApisIdQueue.isEmpty()){
-
             //需要改造成多线程操作
             ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(nThreads,nThreads+5,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>());
             for (int i=0;i<nThreads;i++) {
-//                final List<String> suList ;
-//                if (size-size/nThreads*(i+1) < size/nThreads){
-//                    suList= describeApisId.subList(size/nThreads*i,size);
-//                }else {
-//                    suList = describeApisId.subList(size/nThreads*i,size/nThreads*(i+1));
-//                }
                 threadPoolExecutor.execute(()->{
                     try {
                         while (!describeApisIdQueue.isEmpty()){
@@ -329,8 +319,6 @@ public class AliCloudApiManageController {
                 e.printStackTrace();
             }
         }
-
-
         return new Result<>(1);
     }
 

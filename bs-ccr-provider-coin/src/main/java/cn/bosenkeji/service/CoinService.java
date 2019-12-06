@@ -23,6 +23,8 @@ public interface CoinService {
 
     Coin get(int id);
 
+    Coin getByName(String name);
+
     Optional<Integer> add(Coin coin);
 
     Optional<Integer> update(Coin coin);
