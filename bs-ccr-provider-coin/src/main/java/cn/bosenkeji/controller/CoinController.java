@@ -54,6 +54,7 @@ public class CoinController {
             return new Result<>(this.coinService.getByName(coin.getName()).getId(),"币种已存在");
         }
 
+        coin.setName(coin.getName().toLowerCase());
         coin.setStatus(1);
         coin.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coin.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
