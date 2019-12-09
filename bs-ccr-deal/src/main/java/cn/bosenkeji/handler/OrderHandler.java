@@ -58,24 +58,27 @@ public class OrderHandler {
         log.info("orderGroup ==>"+orderGroup.toString());
         int id = orderGroup.getId();
 
-        if (id <= 0 && orderGroup.getCoinPairChoiceId() > 0){
-            Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
-            if (result.getData() == null){
-                log.info("result ==>" + result.getMsg());
-            }else{
-                OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey,orderId);
-                if (!plantFormName.equals("")){
-                    if (sendGroupId(orderGroupIdMQResult,plantFormName)){
-                        log.info("result ==> " + result.toString());
-                        log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
-                        log.info("订单组id推送成功！");
+        synchronized (this) {
+            if (id <= 0 && orderGroup.getCoinPairChoiceId() > 0){
+                Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
+                if (result.getData() == null){
+                    log.info("result ==>" + result.getMsg());
+                }else{
+                    OrderGroupIdMQResult orderGroupIdMQResult = new OrderGroupIdMQResult(orderGroup.getCoinPairChoiceId(), Math.abs((int) result.getData()),redisKey,orderId);
+                    if (!plantFormName.equals("")){
+                        if (sendGroupId(orderGroupIdMQResult,plantFormName)){
+                            log.info("result ==> " + result.toString());
+                            log.info("orderGroupIdMQResult ==> " + orderGroupIdMQResult.toString());
+                            log.info("订单组id推送成功！");
+                        }
                     }
                 }
+            }else {
+                Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
+                log.info(updateResult.toString());
             }
-        }else {
-            Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
-            log.info(updateResult.toString());
         }
+
     }
 
     @StreamListener("order_input")
