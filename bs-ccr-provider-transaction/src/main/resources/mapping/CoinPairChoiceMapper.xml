@@ -160,13 +160,14 @@
     where id = #{id,jdbcType=INTEGER} and status = 1
   </update>
 
-  <update id="updateStatusByPrimaryKey" >
+  <update id="logicDelete" >
     update coin_pair_choice
     set `status` = #{param3,jdbcType=INTEGER},
+    is_start = 1,
     updated_at = #{param2,jdbcType=TIMESTAMP}
     where id = #{param1,jdbcType=INTEGER}
   </update>
-  <update id="batchUpdateStatusByPrimaryKey" >
+  <update id="batchLogicDelete" >
     update coin_pair_choice
     set `status` = 0,
     updated_at = #{param2,jdbcType=TIMESTAMP}

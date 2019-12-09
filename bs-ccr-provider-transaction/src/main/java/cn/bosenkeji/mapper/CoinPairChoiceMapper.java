@@ -15,11 +15,11 @@ import java.util.List;
 public interface CoinPairChoiceMapper {
     int deleteByPrimaryKey(int id);
 
-    int updateStatusByPrimaryKey(int id, Timestamp updatedAt,int status);
+    int logicDelete(int id, Timestamp updatedAt,int status);
 
     int batchDelete(List<Integer> id);
 
-    int batchUpdateStatusByPrimaryKey(@Param("list")List<Integer> id, Timestamp updatedAt);
+    int batchLogicDelete(@Param("list")List<Integer> id, Timestamp updatedAt);
 
     int insert(CoinPairChoice record);
 

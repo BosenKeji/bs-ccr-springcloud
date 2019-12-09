@@ -242,11 +242,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
         if (coinPairChoiceId != null){
             if (coinPairChoiceId >0){
-                return Optional.ofNullable(this.coinPairChoiceMapper.updateStatusByPrimaryKey(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
+                return Optional.of(this.coinPairChoiceMapper.logicDelete(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
             }
         }
 
-        return Optional.ofNullable(coinPairChoiceMapper.insertSelective(coinPairChoice));
+        return Optional.of(coinPairChoiceMapper.insertSelective(coinPairChoice));
     }
 
     @Caching(
@@ -257,7 +257,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     public Optional<Integer> update(CoinPairChoice coinPairChoice) {
-        return Optional.ofNullable(coinPairChoiceMapper.updateByPrimaryKeySelective(coinPairChoice));
+        return Optional.of(coinPairChoiceMapper.updateByPrimaryKeySelective(coinPairChoice));
     }
 
     @Override
@@ -272,7 +272,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(id);
             }
 
-            coinPairChoiceMapper.updateStatusByPrimaryKey(id,Timestamp.valueOf(LocalDateTime.now()), CommonConstantUtil.DELETE_STATUS);
+            coinPairChoiceMapper.logicDelete(id,Timestamp.valueOf(LocalDateTime.now()), CommonConstantUtil.DELETE_STATUS);
         }catch (Exception e){
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -379,7 +379,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }
         }else{
             try{
-                this.coinPairChoiceMapper.batchUpdateStatusByPrimaryKey(coinPairChoiceIds,Timestamp.valueOf(LocalDateTime.now()));
+                this.coinPairChoiceMapper.batchLogicDelete(coinPairChoiceIds,Timestamp.valueOf(LocalDateTime.now()));
             }catch (Exception e){
                 e.printStackTrace();
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
