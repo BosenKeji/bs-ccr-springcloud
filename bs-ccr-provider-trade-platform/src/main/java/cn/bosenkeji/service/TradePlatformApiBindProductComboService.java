@@ -3,9 +3,11 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author xivin
@@ -44,6 +46,8 @@ public interface TradePlatformApiBindProductComboService {
     int checkExistByComboId(int userProductComboId);
 
     List findAll();
+
+    List<TradePlatformApiBindProductComboVo> listHasBindByUserProductComboIds(Set<Integer> ids);
 
     int getUserIdById(int id);
 

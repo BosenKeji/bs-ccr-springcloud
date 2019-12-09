@@ -10,8 +10,10 @@ import cn.bosenkeji.service.TradePlatformApiService;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xivin
@@ -306,5 +306,37 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     @Override
     public int getUserIdById(int id) {
         return 0;
+    }
+
+    /**
+     * 通过 userProductComboIds 查询 已经绑定api的 robot信息，包含 api 信息
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<TradePlatformApiBindProductComboVo> listHasBindByUserProductComboIds(Set<Integer> ids) {
+        List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos = this.tradePlatformApiBindProductComboMapper.selectByComboIds(ids);
+        List<TradePlatformApiBindProductComboVo> list = new ArrayList<>();
+        Iterator<TradePlatformApiBindProductCombo> iterator = tradePlatformApiBindProductCombos.iterator();
+        while (iterator.hasNext()) {
+            TradePlatformApiBindProductCombo next = iterator.next();
+
+            // 过滤掉没有绑定的 机器人
+            if(next.getTradePlatformApi() == null) {
+                iterator.remove();
+            }
+            else if(StringUtils.isBlank(next.getTradePlatformApi().getSign())) {
+                iterator.remove();
+            }else {
+                TradePlatformApiBindProductComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboVo();
+                tradePlatformApiBindProductComboVo.setApiBindRobotId(next.getId());
+                tradePlatformApiBindProductComboVo.setTradePlatformApiId(next.getTradePlatformApiId());
+                tradePlatformApiBindProductComboVo.setTradePlatformId(next.getTradePlatformApi().getTradePlatformId());
+                tradePlatformApiBindProductComboVo.setSign(next.getTradePlatformApi().getSign());
+                tradePlatformApiBindProductComboVo.setUserId(next.getUserId());
+                list.add(tradePlatformApiBindProductComboVo);
+            }
+        }
+        return list;
     }
 }

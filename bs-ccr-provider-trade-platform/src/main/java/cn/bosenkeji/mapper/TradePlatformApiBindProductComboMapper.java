@@ -3,6 +3,7 @@ package cn.bosenkeji.mapper;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TradePlatformApiBindProductComboMapper {
     int deleteByPrimaryKey(Integer id);
@@ -44,5 +45,6 @@ public interface TradePlatformApiBindProductComboMapper {
     int getUserIdById(int id);
 
     TradePlatformApiBindProductCombo selectByComboId(Integer comboId);
+    List<TradePlatformApiBindProductCombo> selectByComboIds(Set<Integer> collection);
 
 }

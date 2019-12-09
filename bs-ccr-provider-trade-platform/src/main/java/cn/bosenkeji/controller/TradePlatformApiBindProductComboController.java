@@ -3,6 +3,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  *  暂时未加缓存
@@ -71,6 +73,12 @@ public class TradePlatformApiBindProductComboController {
     public List list() {
 
         return tradePlatformApiBindProductComboService.findAll();
+    }
+
+    @GetMapping("/bound_by_combo_ids")
+    @ApiOperation(value = "",httpMethod = "GET",nickname = "listHasBoundByUserProductComboIds")
+    public List<TradePlatformApiBindProductComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds) {
+        return this.tradePlatformApiBindProductComboService.listHasBindByUserProductComboIds(userProductComboIds);
     }
 
     @PutMapping("/{id}")
