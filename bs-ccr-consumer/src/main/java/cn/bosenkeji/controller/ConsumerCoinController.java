@@ -46,7 +46,7 @@ public class ConsumerCoinController {
     @ApiOperation(value = "获取货币列表接口", httpMethod = "GET",nickname = "getOneCoin")
     @GetMapping("/")
     public PageInfo list(@RequestParam(value="pageNum",defaultValue="1") @Min(1)int pageNum) {
-        return iCoinClientService.list(pageNum, pageSizeCommon);
+        return iCoinClientService.list(pageNum, 1000);
     }
 
     @ApiOperation(value = "添加单个货币信息接口", httpMethod = "POST",nickname = "addCoin")
