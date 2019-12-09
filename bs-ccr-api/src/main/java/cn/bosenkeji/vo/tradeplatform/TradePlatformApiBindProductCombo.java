@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(value = {"handler"})
 public class TradePlatformApiBindProductCombo implements Serializable {
     private int id;
 
@@ -17,6 +16,9 @@ public class TradePlatformApiBindProductCombo implements Serializable {
     private int tradePlatformApiId;
 
     private int userProductComboId;
+
+    @ApiModelProperty(hidden = true)
+    private Integer status;
 
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
@@ -34,6 +36,14 @@ public class TradePlatformApiBindProductCombo implements Serializable {
 
     public TradePlatformApiBindProductCombo() {
         super();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public TradePlatformApi getTradePlatformApi() {

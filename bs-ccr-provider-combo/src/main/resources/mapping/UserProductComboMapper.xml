@@ -216,36 +216,6 @@
     </foreach>
   </select>
 
-  <!--<update id="updateRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
-    update user_product_combo
-    set
-    redis_key = #{redisKey,jdbcType=VARCHAR}
-    where
-    id = #{id,jdbcType=INTEGER}
-  </update>
-
-  <update id="updateSomeRedisKey" parameterType="cn.bosenkeji.vo.combo.UserProductCombo">
-    update user_product_combo
-    set
-    redis_key = #{redisKey,jdbcType=VARCHAR}
-    where
-    id = #{id,jdbcType=INTEGER}
-  </update>
-
-  <update id="updateRedisKeyAll" parameterType="java.lang.String">
-    update user_product_combo
-    set
-    redis_key = #{redisKey,jdbcType=VARCHAR}
-
-  </update>-->
-
-  <!--<select id="selectRedisByGroup" resultType="java.lang.String">
-    select
-    redis_key
-    from
-    user_product_combo
-    GROUP BY redis_key
-  </select>-->
 
   <select id="checkExistById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select
@@ -261,6 +231,17 @@
     exists (
     select 1 from user_product_combo
     where product_combo_id = #{productComboId,jdbcType=INTEGER}
+    limit 1
+    )
+  </select>
+
+  <select id="checkExistByIdAndUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    exists (
+    select 1 from user_product_combo
+    where
+     id = #{id,jdbcType=INTEGER}
+     and user_id = #{userId,jdbcType=INTEGER}
     limit 1
     )
   </select>

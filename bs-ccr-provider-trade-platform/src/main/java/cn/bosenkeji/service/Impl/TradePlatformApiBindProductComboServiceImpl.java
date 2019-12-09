@@ -1,15 +1,19 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.interfaces.CommonResultNumberEnum;
+import cn.bosenkeji.interfaces.CommonStatusEnum;
 import cn.bosenkeji.interfaces.TradePlatformApiBoundStatus;
 import cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.service.TradePlatformApiService;
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboVO;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -85,14 +89,17 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     }
 
 
-    //@Hmily(confirmMethod = "addConfirm",cancelMethod = "addCancel")
+
     @Transactional
     @Override
     public int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
 
-        //int i=1/0;
+
+        tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        tradePlatformApiBindProductCombo.setStatus(1);
         int result=tradePlatformApiBindProductComboMapper.insertSelective(tradePlatformApiBindProductCombo);
-        //int i=1/0;
+
         return result;
     }
 
@@ -109,6 +116,150 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         return -2;
     }
 
+    /**
+     * 根据userId查询 机器人列表方法
+     * 先查询 userProductCombo
+     * 再查询 绑定的 tradePlatformApi
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public PageInfo<TradePlatformApiBindProductComboVo> findBindUserProductComboByUserId(int userId, int pageNum, int pageSize) {
+        PageInfo pageInfo = iUserProductComboClientService.listByUserId(userId, pageNum, pageSize);
+        List<UserProductComboVO> userProductCombos = pageInfo.getList();
+
+        Set<Integer> userProductComboIds = new HashSet<>();
+        userProductCombos.forEach(userProductCombo -> {
+            userProductComboIds.add(userProductCombo.getId());
+        });
+
+        if(userProductComboIds.size() < 1)
+            return new PageInfo<>();
+        Map<Integer, TradePlatformApiBindProductCombo> tradePlatformApiBindProductComboMap = tradePlatformApiBindProductComboMapper.selectByComboIdsForMap(userProductComboIds);
+
+        userProductCombos.forEach(userProductCombo -> {
+            if(tradePlatformApiBindProductComboMap.containsKey(userProductCombo.getId())) {
+                userProductCombo.setTradePlatformApiBindProductCombo(tradePlatformApiBindProductComboMap.get(userProductCombo.getId()));
+            }
+        });
+
+        List<TradePlatformApiBindProductComboVo> result = new ArrayList<>();
+        userProductCombos.forEach(userProductCombo -> {
+            TradePlatformApiBindProductComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboVo();
+
+            tradePlatformApiBindProductComboVo.setUserProductComboId(userProductCombo.getId());
+            tradePlatformApiBindProductComboVo.setUserId(userProductCombo.getUserId());
+            tradePlatformApiBindProductComboVo.setRemainTime(userProductCombo.getRemainTime());
+            final TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = userProductCombo.getTradePlatformApiBindProductCombo();
+            //填充 tradePlatformApi相关信息
+            if(tradePlatformApiBindProductCombo != null) {
+                tradePlatformApiBindProductComboVo.setTradePlatformApiBindProductComboId(tradePlatformApiBindProductCombo.getId());
+                if(tradePlatformApiBindProductCombo.getTradePlatformApi() != null) {
+                    tradePlatformApiBindProductComboVo.setTradePlatformApiId(tradePlatformApiBindProductCombo.getTradePlatformApiId());
+                    tradePlatformApiBindProductComboVo.setTradePlatformApiNickname(tradePlatformApiBindProductCombo.getTradePlatformApi().getNickname());
+                    tradePlatformApiBindProductComboVo.setTradePlatformApiSign(tradePlatformApiBindProductCombo.getTradePlatformApi().getSign());
+                    tradePlatformApiBindProductComboVo.setTradePlatformApiSecret(tradePlatformApiBindProductCombo.getTradePlatformApi().getSecret());
+
+                    if(tradePlatformApiBindProductCombo.getTradePlatformApi().getTradePlatform() != null) {
+                        tradePlatformApiBindProductComboVo.setTradePlatformId(tradePlatformApiBindProductCombo.getTradePlatformApi().getTradePlatformId());
+                        tradePlatformApiBindProductComboVo.setTradePlatformName(tradePlatformApiBindProductCombo.getTradePlatformApi().getTradePlatform().getName());
+                        tradePlatformApiBindProductComboVo.setTradePlatformLogo(tradePlatformApiBindProductCombo.getTradePlatformApi().getTradePlatform().getLogo());
+                    }
+                }
+            }
+
+            //填充product|combo 相关信息
+
+            tradePlatformApiBindProductComboVo.setProductComboId(userProductCombo.getProductComboId());
+            tradePlatformApiBindProductComboVo.setProductComboName(userProductCombo.getProductComboName());
+
+            tradePlatformApiBindProductComboVo.setProductId(userProductCombo.getProductId());
+            tradePlatformApiBindProductComboVo.setProductName(userProductCombo.getProductName());
+            tradePlatformApiBindProductComboVo.setProductLogo(userProductCombo.getProductLogo());
+            tradePlatformApiBindProductComboVo.setProductVersionName(userProductCombo.getProductVersionName());
+            result.add(tradePlatformApiBindProductComboVo);
+
+        });
+
+
+        return new PageInfo<>(result);
+    }
+
+    /**
+     * 判断原来是否有绑定
+     * 有绑定则把原来的绑定 逻辑删除
+     * 绑定： 新增b绑定记录
+     *       把 逻辑删除的记录 更新为1 未删除
+     * @param userProductComboId
+     * @param tradePlatformApiId
+     * @return
+     */
+    @Transactional
+    @Override
+    public Result<Integer> apiBindCombo(int userId,int userProductComboId, int tradePlatformApiId) {
+
+        try{
+            //判断用户操作是否合法
+            Result<Integer> checkExistByUserId = iUserProductComboClientService.checkExistByIdAndUserId(userProductComboId,userId);
+            if(checkExistByUserId.getData() < 1)
+                return new Result<>(CommonResultNumberEnum.FAIL,"用户套餐不存在！");
+            if(tradePlatformApiMapper.checkExistByIdAndUserId(tradePlatformApiId,userId) <1) {
+                return new Result<>(CommonResultNumberEnum.FAIL,"用户 交易平台api不存在");
+            }
+            TradePlatformApiBindProductCombo byTradePlatformApiId = tradePlatformApiBindProductComboMapper.selectByComboAndApi(null, tradePlatformApiId, CommonStatusEnum.NORMAL);
+            if (byTradePlatformApiId !=null && byTradePlatformApiId.getUserProductComboId() != userProductComboId) {
+                return new Result<>(CommonResultNumberEnum.FAIL,"此api 已绑定其他机器人");
+            }
+
+            //原来的绑定
+            TradePlatformApiBindProductCombo oldBind = tradePlatformApiBindProductComboMapper.selectByComboAndApi(userProductComboId, null, CommonStatusEnum.NORMAL);
+
+            //查询当前绑定记录
+            TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = tradePlatformApiBindProductComboMapper.selectByComboAndApi(userProductComboId, tradePlatformApiId, null);
+
+            if(tradePlatformApiBindProductCombo == null) {
+                //创建新的 绑定记录
+                TradePlatformApiBindProductCombo newTradePlatformApiBindCombo = new TradePlatformApiBindProductCombo();
+                newTradePlatformApiBindCombo.setUserProductComboId(userProductComboId);
+                newTradePlatformApiBindCombo.setTradePlatformApiId(tradePlatformApiId);
+                newTradePlatformApiBindCombo.setUserId(userId);
+
+                int addResult = this.add(newTradePlatformApiBindCombo);
+                if(oldBind != null) {
+                    //把原来的绑定状态设为0 删除
+                    tradePlatformApiBindProductComboMapper.updateStatusById(oldBind.getId(),CommonStatusEnum.DELETE);
+                    tradePlatformApiService.updateIsBound(oldBind.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND,oldBind.getUserId());
+
+                }
+                tradePlatformApiService.updateIsBound(tradePlatformApiId, TradePlatformApiBoundStatus.EXIST_BOUND,userId);
+
+                logger.info("api绑定机器人 新增了 绑定记录！");
+                return new Result<>(addResult);
+
+            }else if(tradePlatformApiBindProductCombo.getStatus() == 1) {
+                //绑定自己 不用处理
+                return new Result<>(CommonResultNumberEnum.FAIL,"当前绑定已存在！");
+            }else {
+                //更新 把逻辑删除的 绑定记录 状态设为1 逻辑添加
+                int result = tradePlatformApiBindProductComboMapper.updateStatusById(tradePlatformApiBindProductCombo.getId(), CommonStatusEnum.NORMAL);
+                if(oldBind != null) {
+                    //把原来的绑定状态设为0 删除
+                    tradePlatformApiBindProductComboMapper.updateStatusById(oldBind.getId(),CommonStatusEnum.DELETE);
+                    tradePlatformApiService.updateIsBound(oldBind.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND,oldBind.getUserId());
+
+                }
+                tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.EXIST_BOUND,tradePlatformApiBindProductCombo.getUserId());
+                logger.info("api 绑定 机器人 从逻辑删除中更新为 正常状态！");
+                return new Result<>(result);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new Result<>(CommonResultNumberEnum.FAIL,e.getMessage());
+        }
+    }
 
     /**
      * 查询没有绑定的交易平台api列表 通过用户ID
@@ -260,12 +411,15 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
             // 先修改api  的 isBound 状态
             TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = tradePlatformApiBindProductComboMapper.selectByPrimaryKey(id);
-            if (null != tradePlatformApiBindProductCombo && tradePlatformApiBindProductCombo.getTradePlatformApiId() > 0) {
+            if(tradePlatformApiBindProductCombo == null || tradePlatformApiBindProductCombo.getStatus() == 0) {
+                return 0;
+            }
+            if (tradePlatformApiBindProductCombo.getTradePlatformApiId() > 0) {
                 tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND,tradePlatformApiBindProductCombo.getUserId());
             }
 
             //解除 绑定
-            int result = tradePlatformApiBindProductComboMapper.updateApiIdByPrimaryKey(id, 0);
+            int result = tradePlatformApiBindProductComboMapper.updateStatusById(id, CommonStatusEnum.DELETE);
 
             return result;
 
@@ -314,9 +468,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
      * @return
      */
     @Override
-    public List<TradePlatformApiBindProductComboVo> listHasBindByUserProductComboIds(Set<Integer> ids) {
+    public List<TradePlatformApiBindProductComboNoComboVo> listHasBindByUserProductComboIds(Set<Integer> ids) {
         List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos = this.tradePlatformApiBindProductComboMapper.selectByComboIds(ids);
-        List<TradePlatformApiBindProductComboVo> list = new ArrayList<>();
+        List<TradePlatformApiBindProductComboNoComboVo> list = new ArrayList<>();
         Iterator<TradePlatformApiBindProductCombo> iterator = tradePlatformApiBindProductCombos.iterator();
         while (iterator.hasNext()) {
             TradePlatformApiBindProductCombo next = iterator.next();
@@ -328,7 +482,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
             else if(StringUtils.isBlank(next.getTradePlatformApi().getSign())) {
                 iterator.remove();
             }else {
-                TradePlatformApiBindProductComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboVo();
+                TradePlatformApiBindProductComboNoComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboNoComboVo();
                 tradePlatformApiBindProductComboVo.setApiBindRobotId(next.getId());
                 tradePlatformApiBindProductComboVo.setTradePlatformApiId(next.getTradePlatformApiId());
                 tradePlatformApiBindProductComboVo.setTradePlatformId(next.getTradePlatformApi().getTradePlatformId());

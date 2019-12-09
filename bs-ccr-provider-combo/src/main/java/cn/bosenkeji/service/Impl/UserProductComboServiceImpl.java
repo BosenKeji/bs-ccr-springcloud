@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -68,16 +69,12 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
     /**
-     * 涉及分布式事务，要注意各个操作的顺序
-     *
-     * 用户套餐部署完后，马上生成机器人的绑定记录
-     * 即往 userProductCombo插入一条数据，同是往tradePlatformBindProductCombo 插入一条数据
+     * 添加用户套餐接口
      * @param userProductCombo
      * @return
      */
 
-    //@Transactional
-
+    @Transactional
     @Override
     public int add(UserProductCombo userProductCombo) {
 
@@ -97,35 +94,17 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //int i=1/0;
         //用户端机器人
-        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
+        /*TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
         tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
         tradePlatformApiBindProductCombo.setUserId(userProductCombo.getUserId());
         tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int userResult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();
+        int userResult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();*/
 
         //int i=1/0;
         return SUCCESS;
 
     }
-
-    public int addConfirm(UserProductCombo userProductCombo) {
-
-        Log.info(userProductCombo.getId()+"机器人部署确认成功");
-        return SUCCESS;
-    }
-
-
-    public int addCancel(UserProductCombo userProductCombo) {
-        Log.error(userProductCombo.getId()+"机器人部署失败，进入cancel"+userProductCombo);
-
-        //if(userProductCombo.getId()!=null)
-        //删除机器人
-        userProductComboMapper.deleteByPrimaryKey(userProductCombo.getId());
-
-        return FAIL;
-    }
-
 
 
     @Override
@@ -173,6 +152,12 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
     @Override
     public int deleteByIds(List<Integer> ids) {
         return 0;
+    }
+
+    @Override
+    public int checkExistByIdAndUserId(int id,int userId) {
+        int result = this.userProductComboMapper.checkExistByIdAndUserId(id,userId);
+        return result;
     }
 
     //多表查询

@@ -2,6 +2,7 @@ package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.ProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,6 +57,9 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private List<UserProductComboDay> userProductComboDays;
 
+    @ApiModelProperty(hidden = true)
+    private TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo;
+
     public User getUser() {
         return user;
     }
@@ -64,6 +68,13 @@ public class UserProductCombo implements Serializable {
         this.user = user;
     }
 
+    public TradePlatformApiBindProductCombo getTradePlatformApiBindProductCombo() {
+        return tradePlatformApiBindProductCombo;
+    }
+
+    public void setTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+        this.tradePlatformApiBindProductCombo = tradePlatformApiBindProductCombo;
+    }
 
     public ProductCombo getProductCombo() {
         return productCombo;

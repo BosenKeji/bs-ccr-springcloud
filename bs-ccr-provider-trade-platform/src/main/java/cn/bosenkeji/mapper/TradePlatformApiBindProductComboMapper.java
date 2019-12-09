@@ -1,8 +1,11 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface TradePlatformApiBindProductComboMapper {
@@ -46,5 +49,11 @@ public interface TradePlatformApiBindProductComboMapper {
 
     TradePlatformApiBindProductCombo selectByComboId(Integer comboId);
     List<TradePlatformApiBindProductCombo> selectByComboIds(Set<Integer> collection);
+
+    @MapKey("userProductComboId")
+    Map<Integer,TradePlatformApiBindProductCombo> selectByComboIdsForMap(Set<Integer> comboIds);
+
+    TradePlatformApiBindProductCombo selectByComboAndApi(@Param("userProductComboId") Integer userProductComboId,@Param("tradePlatformApiId") Integer tradePlatformApiId,@Param("status") Integer status);
+    int updateStatusById(@Param("id") int id,@Param("status") int status);
 
 }

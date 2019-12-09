@@ -2,6 +2,9 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.impl.CustomUserDetailsImpl;
+import cn.bosenkeji.util.Result;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -82,5 +85,25 @@ public class ConsumerTradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListBWithPage")
     public List findAll() {
         return this.iTradePlatformApiBindProductComboClientService.findAll();
+    }
+
+    @PostMapping("/binding")
+    @ApiOperation(value = "机器人绑定api接口",httpMethod = "POST",nickname = "apiBindUserProductCombo")
+    public Result<Integer> apiBindCombo(
+                                        @RequestParam("userProductComboId") @ApiParam(value = "用户套餐",required = true,type = "integer",example = "1") int userProductComboId,
+                                        @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api",required = true,type = "integer",example = "1") int tradePlatformApiId) {
+        int currentUserId=this.getCurrentUser().getId();
+        return this.iTradePlatformApiBindProductComboClientService.apiBindCombo(currentUserId,userProductComboId,tradePlatformApiId);
+    }
+
+    @GetMapping("/by_user_id")
+    @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getProductComboListWithBindByUserId")
+    public PageInfo<TradePlatformApiBindProductComboVo> getProductComboListWithBindByUserId(
+                                                                                             @RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                                                            @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
+
+        int currentUserId=this.getCurrentUser().getId();
+        return iTradePlatformApiBindProductComboClientService.getProductComboListWithBindByUserId(currentUserId,pageNum,pageSize);
     }
 }

@@ -64,6 +64,7 @@ public class ComboDOTransformToVOUtil {
                 if (null != userProductCombo.getProductCombo().getProduct()) {
                     userProductComboVO.setProductId(userProductCombo.getProductCombo().getProductId());
                     userProductComboVO.setProductName(userProductCombo.getProductCombo().getProduct().getName());
+                    userProductComboVO.setProductLogo(userProductCombo.getProductCombo().getProduct().getLogo());
                     userProductComboVO.setProductVersionName(userProductCombo.getProductCombo().getProduct().getVersionName());
                 }
                 if (null != userProductCombo.getUser()) {

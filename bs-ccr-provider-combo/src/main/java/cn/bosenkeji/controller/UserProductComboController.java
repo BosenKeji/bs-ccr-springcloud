@@ -13,6 +13,7 @@ import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.ComboDOTransformToVOUtil;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +21,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import scala.Int;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
@@ -91,8 +93,8 @@ public class UserProductComboController {
 
     @ApiOperation(value="根据用户电话查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelWithPage")
     @RequestMapping(value="/list_by_user_tel",method = RequestMethod.GET)
-    public PageInfo listByUserTel(@RequestParam("userTel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String userTel,
-                                  @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+    public PageInfo<UserProductComboVO> listByUserTel(@RequestParam("userTel") @ApiParam(value = "用户电话",required = true,type = "string",example = "13556559840") String userTel,
+                                                      @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
 
         PageInfo userProductComboPageInfo = this.iUserProductComboService.selectUserProductComboByUserTel(pageNum, pageSize, userTel);
         if(null != userProductComboPageInfo.getList() && userProductComboPageInfo.getList().size() > 0) {
@@ -103,7 +105,7 @@ public class UserProductComboController {
 
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
     @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
-    public PageInfo listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+    public PageInfo<UserProductComboVO> listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
                                   @RequestParam(value="pageNum",defaultValue = "1") int pageNum, @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
 
         PageInfo userProductComboPageInfo = this.iUserProductComboService.selectUserProductComboByUserId(pageNum, pageSize, userId);
@@ -131,11 +133,12 @@ public class UserProductComboController {
         return new Result(this.iUserProductComboService.flushAllComboDay());
     }
 
-    /*@ApiOperation(value = "刷新 批量 用户套餐时长",httpMethod = "PUT",nickname = "flushSomeComboDay")
-    @PutMapping("/flush_some_combo_day")
-    public Result flushSomeComboDay(@RequestParam("ids") List<Integer> ids) {
-        return new Result(this.iUserProductComboService.flushSomeComboDay(ids));
-    }*/
+    @ApiOperation(value = "根据userId检查 套餐是否存在",httpMethod = "GET",nickname = "checkExistByUserId")
+    @GetMapping("/exist_by_id_and_user_id")
+    public Result<Integer> checkExistByUserId(@RequestParam("id") int id,
+                                              @RequestParam("userId") int userId) {
+        return new Result<>(this.iUserProductComboService.checkExistByIdAndUserId(id,userId));
+    }
 
     //获取单个用户套餐交易平台api接口
 

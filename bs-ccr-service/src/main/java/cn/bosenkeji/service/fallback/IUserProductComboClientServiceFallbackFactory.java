@@ -3,6 +3,7 @@ package cn.bosenkeji.service.fallback;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboVO;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -29,12 +30,12 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public PageInfo listByUserTel(String userTel, int pageNum, int pageSize) {
-                List<UserProductCombo> list=new ArrayList<>();
-                UserProductCombo userProductCombo=new UserProductCombo();
-                userProductCombo.setRemark("hystrixName");
+            public PageInfo<UserProductComboVO> listByUserTel(String userTel, int pageNum, int pageSize) {
+                List<UserProductComboVO> list=new ArrayList<>();
+                UserProductComboVO userProductCombo=new UserProductComboVO();
+                userProductCombo.setProductName("hystrixName");
                 list.add(userProductCombo);
-                return new PageInfo<>(list);
+                return new PageInfo(list);
             }
 
             @Override
@@ -45,12 +46,11 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
-            public PageInfo listByUserId(int userId, int pageNum, int pageSize) {
+            public PageInfo<UserProductComboVO> listByUserId(int userId, int pageNum, int pageSize) {
 
-                UserProductCombo userProductCombo=new UserProductCombo();
-                userProductCombo.setOrderNumber("hystrix");
-                userProductCombo.setRemark("hystrix");
-                List list=new ArrayList();
+                List<UserProductComboVO> list=new ArrayList<>();
+                UserProductComboVO userProductCombo=new UserProductComboVO();
+                userProductCombo.setProductName("hystrixName");
                 list.add(userProductCombo);
                 return new PageInfo(list);
             }
@@ -80,6 +80,11 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
                 List list=new ArrayList();
                 list.add(userProductCombo);
                 return new PageInfo(list);
+            }
+
+            @Override
+            public Result<Integer> checkExistByIdAndUserId(int id, int userId) {
+                return new Result<>(-1,"hystrix");
             }
         };
     }

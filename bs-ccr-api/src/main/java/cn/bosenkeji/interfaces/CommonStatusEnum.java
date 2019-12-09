@@ -5,4 +5,6 @@ public interface CommonStatusEnum {
     int NORMAL=1;
     int CLOSE=2;
 
+    int DELETE = 0;
+
 }

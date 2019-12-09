@@ -4,44 +4,59 @@ import java.io.Serializable;
 
 public class TradePlatformApiBindProductComboVo implements Serializable {
 
-    private String sign;
-    private int type;
-    private int apiBindRobotId;
-    private int tradePlatformApiId;
-    private int tradePlatformId;
+    private int userProductComboId;
+    private int remainTime;
     private int userId;
 
+    private int tradePlatformApiBindProductComboId;
 
-    public String getSign() {
-        return sign;
+    private int tradePlatformId;
+    private String tradePlatformName;
+    private String tradePlatformLogo;
+
+    private int tradePlatformApiId;
+    private String tradePlatformApiSign;
+    private String tradePlatformApiSecret;
+    private String tradePlatformApiNickname;
+
+    private int productId;
+    private String productName;
+    private String productVersionName;
+    private String productLogo;
+
+    private int productComboId;
+    private String productComboName;
+
+    public int getUserProductComboId() {
+        return userProductComboId;
     }
 
-    public void setSign(String sign) {
-        this.sign = sign;
+    public void setUserProductComboId(int userProductComboId) {
+        this.userProductComboId = userProductComboId;
     }
 
-    public int getType() {
-        return type;
+    public int getRemainTime() {
+        return remainTime;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setRemainTime(int remainTime) {
+        this.remainTime = remainTime;
     }
 
-    public int getApiBindRobotId() {
-        return apiBindRobotId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setApiBindRobotId(int apiBindRobotId) {
-        this.apiBindRobotId = apiBindRobotId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getTradePlatformApiId() {
-        return tradePlatformApiId;
+    public int getTradePlatformApiBindProductComboId() {
+        return tradePlatformApiBindProductComboId;
     }
 
-    public void setTradePlatformApiId(int tradePlatformApiId) {
-        this.tradePlatformApiId = tradePlatformApiId;
+    public void setTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId) {
+        this.tradePlatformApiBindProductComboId = tradePlatformApiBindProductComboId;
     }
 
     public int getTradePlatformId() {
@@ -52,11 +67,99 @@ public class TradePlatformApiBindProductComboVo implements Serializable {
         this.tradePlatformId = tradePlatformId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getTradePlatformName() {
+        return tradePlatformName;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setTradePlatformName(String tradePlatformName) {
+        this.tradePlatformName = tradePlatformName;
+    }
+
+    public String getTradePlatformLogo() {
+        return tradePlatformLogo;
+    }
+
+    public void setTradePlatformLogo(String tradePlatformLogo) {
+        this.tradePlatformLogo = tradePlatformLogo;
+    }
+
+    public int getTradePlatformApiId() {
+        return tradePlatformApiId;
+    }
+
+    public void setTradePlatformApiId(int tradePlatformApiId) {
+        this.tradePlatformApiId = tradePlatformApiId;
+    }
+
+    public String getTradePlatformApiSign() {
+        return tradePlatformApiSign;
+    }
+
+    public void setTradePlatformApiSign(String tradePlatformApiSign) {
+        this.tradePlatformApiSign = tradePlatformApiSign;
+    }
+
+    public String getTradePlatformApiSecret() {
+        return tradePlatformApiSecret;
+    }
+
+    public void setTradePlatformApiSecret(String tradePlatformApiSecret) {
+        this.tradePlatformApiSecret = tradePlatformApiSecret;
+    }
+
+    public String getTradePlatformApiNickname() {
+        return tradePlatformApiNickname;
+    }
+
+    public void setTradePlatformApiNickname(String tradePlatformApiNickname) {
+        this.tradePlatformApiNickname = tradePlatformApiNickname;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductVersionName() {
+        return productVersionName;
+    }
+
+    public void setProductVersionName(String productVersionName) {
+        this.productVersionName = productVersionName;
+    }
+
+    public String getProductLogo() {
+        return productLogo;
+    }
+
+    public void setProductLogo(String productLogo) {
+        this.productLogo = productLogo;
+    }
+
+    public int getProductComboId() {
+        return productComboId;
+    }
+
+    public void setProductComboId(int productComboId) {
+        this.productComboId = productComboId;
+    }
+
+    public String getProductComboName() {
+        return productComboName;
+    }
+
+    public void setProductComboName(String productComboName) {
+        this.productComboName = productComboName;
     }
 }

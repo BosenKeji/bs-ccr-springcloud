@@ -3,6 +3,7 @@ package cn.bosenkeji.controller;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -49,6 +50,24 @@ public class TradePlatformApiBindProductComboController {
         return tradePlatformApiBindProductComboService.findByUserIdWithPage(userId,pageNum,pageSize);
     }
 
+    @PostMapping("/binding")
+    @ApiOperation(value = "机器人绑定api接口",httpMethod = "POST",nickname = "apiBindUserProductCombo")
+    public Result<Integer> apiBindCombo(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+                                        @RequestParam("userProductComboId") @ApiParam(value = "用户套餐",required = true,type = "integer",example = "1") int userProductComboId,
+                                        @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api",required = true,type = "integer",example = "1") int tradePlatformApiId) {
+        return this.tradePlatformApiBindProductComboService.apiBindCombo(userId,userProductComboId,tradePlatformApiId);
+    }
+
+    @GetMapping("/by_user_id")
+    @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
+            ,httpMethod = "GET",nickname = "getProductComboListWithBindByUserId")
+    public PageInfo<TradePlatformApiBindProductComboVo> getProductComboListWithBindByUserId(@RequestParam("userId") @Min(1) @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,
+                                                                                            @RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                                                            @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
+
+        return tradePlatformApiBindProductComboService.findBindUserProductComboByUserId(userId,pageNum,pageSize);
+    }
+
     public TradePlatformApiBindProductCombo getByUserIdAndComboId(@RequestParam("userId") int userId,@RequestParam("userProductComboId") int userProductComboId) {
         return this.tradePlatformApiBindProductComboService.getByUserIdAndComboId(userId,userProductComboId);
     }
@@ -77,7 +96,7 @@ public class TradePlatformApiBindProductComboController {
 
     @GetMapping("/bound_by_combo_ids")
     @ApiOperation(value = "",httpMethod = "GET",nickname = "listHasBoundByUserProductComboIds")
-    public List<TradePlatformApiBindProductComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds) {
+    public List<TradePlatformApiBindProductComboNoComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds) {
         return this.tradePlatformApiBindProductComboService.listHasBindByUserProductComboIds(userProductComboIds);
     }
 

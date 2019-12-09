@@ -3,6 +3,7 @@ package cn.bosenkeji.mapper;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -39,5 +40,7 @@ public interface UserProductComboMapper {
     int checkExistById(Integer id);
 
     int checkExistByProductComboId(Integer productComboId);
+
+    int checkExistByIdAndUserId(@Param("id") int id,@Param("userId") Integer userId);
 
 }

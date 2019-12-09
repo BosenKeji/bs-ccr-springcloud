@@ -4,6 +4,7 @@ import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -82,6 +83,25 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             @Override
             public int getUserIdById(int id) {
                 return 0;
+            }
+
+            @Override
+            public Result<Integer> apiBindCombo(int userId, int userProductComboId, int tradePlatformApiId) {
+                return new Result<>(-1,"hystrix");
+            }
+
+            @Override
+            public PageInfo<TradePlatformApiBindProductComboVo> getProductComboListWithBindByUserId(int pageNum, int pageSize, int userId) {
+
+                TradePlatformApiBindProductComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboVo();
+                tradePlatformApiBindProductComboVo.setUserProductComboId(-1);
+                tradePlatformApiBindProductComboVo.setRemainTime(-1);
+                tradePlatformApiBindProductComboVo.setProductLogo("hystrix");
+                List<TradePlatformApiBindProductComboVo> list = new ArrayList<>();
+                list.add(tradePlatformApiBindProductComboVo);
+
+                return new PageInfo<>(list);
+
             }
         };
     }

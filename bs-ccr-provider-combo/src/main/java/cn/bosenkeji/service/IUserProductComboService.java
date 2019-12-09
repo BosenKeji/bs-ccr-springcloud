@@ -42,5 +42,7 @@ public interface IUserProductComboService {
 
     int checkExistByProductComboId(int productComboId);
 
+    int checkExistByIdAndUserId(int id,int userId);
+
 
 }

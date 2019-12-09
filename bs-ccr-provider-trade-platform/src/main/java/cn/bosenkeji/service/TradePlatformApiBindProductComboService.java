@@ -1,8 +1,10 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 
@@ -18,6 +20,7 @@ import java.util.Set;
 public interface TradePlatformApiBindProductComboService {
 
     PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId,int pageNum,int pageSize);
+    PageInfo<TradePlatformApiBindProductComboVo> findBindUserProductComboByUserId(int userId, int pageNum, int pageSize);
 
     int add(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo);
 
@@ -47,7 +50,9 @@ public interface TradePlatformApiBindProductComboService {
 
     List findAll();
 
-    List<TradePlatformApiBindProductComboVo> listHasBindByUserProductComboIds(Set<Integer> ids);
+    List<TradePlatformApiBindProductComboNoComboVo> listHasBindByUserProductComboIds(Set<Integer> ids);
+
+    Result<Integer> apiBindCombo(int userId,int userProductComboId,int tradePlatformApiId);
 
     int getUserIdById(int id);
 

@@ -4,6 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiBindProductComboClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,16 @@ public interface ITradePlatformApiBindProductComboClientService {
     public PageInfo getNoBindTradePlatformApiListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
                                     @RequestParam(value="pageSize",defaultValue="10") int pageSize,
                                     @RequestParam("userId") int userId);
-   /* @GetMapping("/trade_platform_api_bind_product_combo/get_no_bind_user_product_combo_list_by_user_id/")
-    public PageInfo getNoBindUserProductComboListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                    @RequestParam(value="pageSize",defaultValue="10") int pageSize,
-                                    @RequestParam("userId") int userId);*/
+
+    @PostMapping("/trade_platform_api_bind_product_combo/binding")
+    Result<Integer> apiBindCombo(@RequestParam("userId") int userId,
+                                        @RequestParam("userProductComboId") int userProductComboId,
+                                        @RequestParam("tradePlatformApiId") int tradePlatformApiId);
+
+    @GetMapping("/trade_platform_api_bind_product_combo/by_user_id")
+    PageInfo<TradePlatformApiBindProductComboVo> getProductComboListWithBindByUserId(@RequestParam("userId")  int userId,
+                                                                                     @RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize);
 
 
     @PostMapping("/trade_platform_api_bind_product_combo/")

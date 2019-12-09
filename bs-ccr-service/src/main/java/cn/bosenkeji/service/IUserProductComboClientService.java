@@ -4,6 +4,7 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IUserProductComboClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
+import cn.bosenkeji.vo.combo.UserProductComboVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,10 @@ public interface IUserProductComboClientService {
     Result add(@RequestBody UserProductCombo userProductCombo);
 
     @GetMapping("/user_product_combo/list_by_user_tel/")
-    PageInfo listByUserTel(@RequestParam("userTel") String userTel,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
+    PageInfo<UserProductComboVO> listByUserTel(@RequestParam("userTel") String userTel, @RequestParam(value="pageNum") int pageNum, @RequestParam(value="pageSize") int pageSize);
 
     @GetMapping("/user_product_combo/list_by_user_id/")
-    PageInfo listByUserId(@RequestParam("userId") int userId,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
+    PageInfo<UserProductComboVO> listByUserId(@RequestParam("userId") int userId,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
 
     @GetMapping("/user_product_combo/{id}")
     UserProductCombo getUserProductCombo(@PathVariable("id") int id);
@@ -43,4 +44,8 @@ public interface IUserProductComboClientService {
 
     @GetMapping("/user_product_combo/")
     PageInfo listByPage(@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
+
+    @GetMapping("/user_product_combo/exist_by_id_and_user_id")
+    Result<Integer> checkExistByIdAndUserId(@RequestParam("id") int id, @RequestParam("userId") int userId);
+
 }

@@ -1,6 +1,8 @@
 package cn.bosenkeji.vo.combo;
 
-import javax.sql.rowset.serial.SerialArray;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -11,6 +13,7 @@ public class UserProductComboVO implements Serializable {
     private int productId;
     private String productName;
     private String productVersionName;
+    private String productLogo;
 
     private int productComboId;
     private String productComboName;
@@ -20,6 +23,24 @@ public class UserProductComboVO implements Serializable {
 
     private int userId;
     private String tel;
+
+    public String getProductLogo() {
+        return productLogo;
+    }
+
+    public void setProductLogo(String productLogo) {
+        this.productLogo = productLogo;
+    }
+
+    private TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo;
+
+    public TradePlatformApiBindProductCombo getTradePlatformApiBindProductCombo() {
+        return tradePlatformApiBindProductCombo;
+    }
+
+    public void setTradePlatformApiBindProductCombo(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
+        this.tradePlatformApiBindProductCombo = tradePlatformApiBindProductCombo;
+    }
 
     public int getId() {
         return id;
