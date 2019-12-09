@@ -24,7 +24,8 @@ public interface ICoinSortClientService {
                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_sort/")
-    public Result addCoinSort(@RequestBody CoinSort coinSort) ;
+    public Result addCoinSort(@RequestParam("tradePlatformName") String tradePlatformName,
+                              @RequestParam( value="coinId")int coinId, @RequestParam( value="type") int type) ;
 
     @PutMapping("/coin_sort/")
     public Result updateCoinSort(@RequestBody CoinSort coinSort);

@@ -29,8 +29,7 @@ public class ApiGatewayConfig {
     @Bean
     public IAcsClient setClient(){
         DefaultProfile profile = DefaultProfile.getProfile(regionId,accessKeyId,accessSecret);
-        IAcsClient client = new DefaultAcsClient(profile);
-        return client;
+        return new DefaultAcsClient(profile);
     }
 
 }

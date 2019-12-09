@@ -8,9 +8,15 @@ import org.springframework.messaging.MessageChannel;
  * @create 2019/7/26 15:39
  */
 public interface MySource {
-    @Output("output1")
-    MessageChannel output1();
+    @Output("huobi_output")
+    MessageChannel huobiOutput();
 
-    @Output("group_id_output")
-    MessageChannel groupIdOutPut();
+    @Output("okex_output")
+    MessageChannel okexOutput();
+
+    @Output("group_id_output_huobi")
+    MessageChannel groupIdOutPutHB();
+
+    @Output("group_id_output_okex")
+    MessageChannel groupIdOutPutOK();
 }

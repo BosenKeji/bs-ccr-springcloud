@@ -185,6 +185,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
+    public Optional<Integer> resultNotEndGroupId(int coinPairChoiceId) {
+        return Optional.of(this.orderGroupMapper.resultNotEndGroupId(coinPairChoiceId));
+    }
+
+    @Override
     public Optional<Integer> checkExistByID(int orderGroupId) {
         return Optional.of(this.orderGroupMapper.checkExistById(orderGroupId));
     }

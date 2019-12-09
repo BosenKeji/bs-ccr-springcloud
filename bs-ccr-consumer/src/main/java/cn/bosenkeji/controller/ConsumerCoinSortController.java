@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -45,9 +46,11 @@ public class ConsumerCoinSortController {
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
     @PostMapping("/")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public Result addCoin(@RequestBody @ApiParam(value = "货币排序id", required = true, type = "String" )@NotNull CoinSort coinSort) {
+    public Result addCoin(@RequestParam("tradePlatformName")@NotNull @ApiParam(value = "交易平台名字", required = true, type = "string") String tradePlatformName,
+                          @RequestParam( value="coinId")@Min(1) @ApiParam(value = "货币id", required = true, type = "integer" ,example = "1") int coinId,
+                          @RequestParam( value="type") @Min(1) @Max(2) @ApiParam(value = "货币类型，1:计价 2: 交易", required = true, type = "integer" ,example = "1") int type) {
 
-        return iCoinSortClientService.addCoinSort(coinSort);
+        return iCoinSortClientService.addCoinSort(tradePlatformName, coinId, type);
     }
 
     @ApiOperation(value = "更新货币排序接口",httpMethod = "PUT",nickname = "updateCoinSort")

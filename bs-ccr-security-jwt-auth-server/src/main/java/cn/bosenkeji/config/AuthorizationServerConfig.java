@@ -3,11 +3,13 @@ package cn.bosenkeji.config;
 import cn.bosenkeji.exception.CustomWebResponseExceptionTranslator;
 import cn.bosenkeji.service.impl.CustomTokenServices;
 import cn.bosenkeji.service.impl.CustomUserAuthenticationConverter;
+import cn.bosenkeji.utils.RedisLockUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -42,6 +44,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private RedisLockUtil redisLockUtil;
+
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
@@ -54,8 +59,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     @Primary
-    public DefaultTokenServices tokenServices() {
-        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+    DefaultTokenServices tokenServices() {
+        final DefaultTokenServices defaultTokenServices = new CustomTokenServices(redisLockUtil);
         defaultTokenServices.setTokenStore(tokenStore());
         defaultTokenServices.setSupportRefreshToken(true);
         return defaultTokenServices;
@@ -68,12 +73,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //        endpoints.userDetailsService(userService);
         endpoints.setClientDetailsService(clientDetails());
         //配置TokenServices参数
-        DefaultTokenServices tokenServices = new CustomTokenServices();
+        DefaultTokenServices tokenServices = tokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 1天
+
         endpoints.tokenServices(tokenServices);
         endpoints.exceptionTranslator(webResponseExceptionTranslator());
 

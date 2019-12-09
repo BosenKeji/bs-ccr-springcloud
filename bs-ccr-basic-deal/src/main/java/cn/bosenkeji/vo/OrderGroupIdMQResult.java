@@ -11,10 +11,13 @@ public class OrderGroupIdMQResult {
 
     private String key;
 
-    public OrderGroupIdMQResult(int orderGroupId, int coinPairChoiceId, String key) {
+    private String orderId;
+
+    public OrderGroupIdMQResult( int coinPairChoiceId,int orderGroupId, String key,String orderId) {
         this.orderGroupId = orderGroupId;
         this.coinPairChoiceId = coinPairChoiceId;
         this.key = key;
+        this.orderId = orderId;
     }
 
     public int getOrderGroupId() {
@@ -39,6 +42,14 @@ public class OrderGroupIdMQResult {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     @Override

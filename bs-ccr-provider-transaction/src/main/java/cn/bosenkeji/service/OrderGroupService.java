@@ -27,6 +27,8 @@ public interface OrderGroupService {
 
     Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 
+    Optional<Integer> resultNotEndGroupId(int coinPairChoiceId);
+
     Optional<Integer> checkExistByID(int orderGroupId);
 
     Optional<Integer> checkExistByGroupName(String name);

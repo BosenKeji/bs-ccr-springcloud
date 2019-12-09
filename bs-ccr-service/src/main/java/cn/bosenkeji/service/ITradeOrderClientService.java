@@ -51,4 +51,7 @@ public interface ITradeOrderClientService {
 
     @GetMapping("/trade_order/total_shell_profit_by_condition")
     SumShellProfitAggregateVo getTotalShellProfitByCondition(@RequestParam("coinPairChoiceIds") String coinPairChoiceIds);
+
+    @GetMapping("/trade_order/order_number")
+    public Result getOrderNumberByGroupId(@RequestParam("orderGroupId") int orderGroupId);
 }

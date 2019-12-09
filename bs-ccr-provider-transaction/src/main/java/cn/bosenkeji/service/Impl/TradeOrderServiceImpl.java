@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -523,6 +524,18 @@ public class TradeOrderServiceImpl implements TradeOrderService {
             return sumShellProfitAggregateVo;
         }
 
+    }
+
+    @Override
+    public int getOrderNumberByGroupId(int orderGroupId) {
+        List<TradeOrder> tradeOrders = this.tradeOrderMapper.findAllByOrderGroupId(orderGroupId);
+        int num;
+        if (tradeOrders.isEmpty()){
+            num = 0;
+        }else {
+            num = tradeOrders.size();
+        }
+        return num;
     }
 
     @Override

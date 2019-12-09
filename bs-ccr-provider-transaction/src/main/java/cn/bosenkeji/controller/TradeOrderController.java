@@ -99,6 +99,12 @@ public class TradeOrderController {
     @ApiOperation(value = "根据 ID 把 tradeOrder 添加/更新 到openSearch",httpMethod = "PUT",nickname = "pushToOpenSearchById")
     @PutMapping("/to_open_search_by_id")
     public Result<Integer> pushToOpenSearchById(@RequestParam("id") @ApiParam(value = "订单id",required = true,type = "integer",example = "1") @Min(1) int id) {
-        return new Result(this.tradeOrderService.updateOpenSearchFromSql(id));
+        return new Result<>(this.tradeOrderService.updateOpenSearchFromSql(id));
+    }
+
+    @GetMapping("/order_number")
+    public Result getOrderNumberByGroupId(@RequestParam("orderGroupId") int orderGroupId){
+        int num =  this.tradeOrderService.getOrderNumberByGroupId(orderGroupId);
+        return new Result<>(num);
     }
 }
