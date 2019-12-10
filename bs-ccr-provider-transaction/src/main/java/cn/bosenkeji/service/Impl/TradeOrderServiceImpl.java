@@ -365,7 +365,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
         searchParams.setQuery(query);
 
-        System.out.println("the query is :"+query);
+        //System.out.println("the query is :"+query);
 
         Aggregate aggregate = setOpenSearchAggregate(tradeTypeGroupKey, sumTotalTradeCostAggFun);
         searchParams.addToAggregates(aggregate);
@@ -453,7 +453,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
         searchParams.setQuery(query);
 
-        System.out.println("the query is :"+query);
+        //System.out.println("the query is :"+query);
 
         //聚合搜索 合计盈利
         Aggregate aggregate = setOpenSearchAggregate(tradeTypeGroupKey, sumTotalShellProfitAggFun);
@@ -568,9 +568,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private OpenSearchExecuteResult executeOpenSearch(SearcherClient searcherClient,SearchParamsBuilder searchParamsBuilder) throws Exception{
         SearchResult execute = searcherClient.execute(searchParamsBuilder);
         String result = execute.getResult();
-        System.out.println("result = " + result);
+        //System.out.println("result = " + result);
         OpenSearchExecuteResult openSearchExecuteResult = com.alibaba.fastjson.JSONObject.parseObject(result, OpenSearchExecuteResult.class);
-        System.out.println("openSearchExecuteResult = " + openSearchExecuteResult);
+        //System.out.println("openSearchExecuteResult = " + openSearchExecuteResult);
         return openSearchExecuteResult;
     }
 }

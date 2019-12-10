@@ -145,9 +145,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         list.add(format);
 
         String jsonList = JSON.toJSONString(list);
-        System.out.println("jsonList = " + jsonList);
+        //System.out.println("jsonList = " + jsonList);
 
-            System.out.println("APPNAME"+appName);
+            //System.out.println("APPNAME"+appName);
             OpenSearchResult pushResult = documentClient.push(jsonList, appName, orderGroupTable);
             if(pushResult.getResult().equalsIgnoreCase("true")) {
                 System.out.println("pushResult = " + pushResult+"推送成功");
