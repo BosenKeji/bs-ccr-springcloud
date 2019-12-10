@@ -126,8 +126,8 @@ public class OrderHandler {
         int tradeType = DealUtil.getInteger(json.get("tradeType"));
         Timestamp createdAt = json.getTimestamp("createdAt");
         if (tradeType > 1){
-            if(json.get("shell") != null && json.get("extraProfit") != null) {
-                double sellProfit = DealUtil.getDouble(json.getDouble("shellProfit"));
+            if(json.get("sellProfit") != null && json.get("extraProfit") != null) {
+                double sellProfit = DealUtil.getDouble(json.getDouble("sellProfit"));
                 double extraProfit = DealUtil.getDouble(json.getDouble("extraProfit"));
                 order.setExtraProfit(extraProfit);
                 order.setSellProfit(sellProfit);

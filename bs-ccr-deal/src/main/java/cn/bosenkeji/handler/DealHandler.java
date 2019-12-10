@@ -52,13 +52,19 @@ public class DealHandler {
 
         //1、参数处理
         //mq实时报价
-        JSONObject jsonObject = JSON.parseObject(msg);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSON.parseObject(msg);
+        } catch (Exception e) {
+            log.info("实时价格参数错误" + msg);
+            return;
+        }
         //mq参数解析
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
         //mq参数检测
         boolean b = checkReadTimeParameter(realTimeTradeParameter);
         if (b) {
-            log.info("实时价格参数错误！");
+            log.info("实时价格参数错误！" + realTimeTradeParameter);
         }
         String setKey = realTimeTradeParameter.getSymbol() + "_zset";
         if ("okex".equals(realTimeTradeParameter.getPlatFormName())) {
