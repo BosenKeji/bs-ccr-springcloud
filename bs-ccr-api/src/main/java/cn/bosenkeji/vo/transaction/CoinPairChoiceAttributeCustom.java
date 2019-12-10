@@ -15,7 +15,7 @@ public class CoinPairChoiceAttributeCustom {
     private int id;
 
     @ApiModelProperty("货币对 id")
-    private int coinPartnerChoiceId;
+    private int coinPairChoiceId;
 
     @ApiModelProperty("止盈方式  1追踪止盈  2固定止盈")
     private int stopProfitType;
@@ -48,12 +48,12 @@ public class CoinPairChoiceAttributeCustom {
         this.id = id;
     }
 
-    public int getCoinPartnerChoiceId() {
-        return coinPartnerChoiceId;
+    public int getCoinPairChoiceId() {
+        return coinPairChoiceId;
     }
 
-    public void setCoinPartnerChoiceId(int coinPartnerChoiceId) {
-        this.coinPartnerChoiceId = coinPartnerChoiceId;
+    public void setCoinPairChoiceId(int coinPairChoiceId) {
+        this.coinPairChoiceId = coinPairChoiceId;
     }
 
     public int getStopProfitType() {
@@ -124,7 +124,7 @@ public class CoinPairChoiceAttributeCustom {
     public String toString() {
         return "CoinPairChoiceAttributeCustom{" +
                 "id=" + id +
-                ", coinPartnerChoiceId=" + coinPartnerChoiceId +
+                ", coinPartnerChoiceId=" + coinPairChoiceId +
                 ", stopProfitType=" + stopProfitType +
                 ", stopProfitMoney=" + stopProfitMoney +
                 ", stopProfitTraceTriggerRate=" + stopProfitTraceTriggerRate +

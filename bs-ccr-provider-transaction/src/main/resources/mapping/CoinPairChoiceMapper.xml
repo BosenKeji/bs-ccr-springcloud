@@ -4,8 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.CoinPairChoice">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="coin_partner_id" jdbcType="INTEGER" property="coinPartnerId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="coin_pair_id" jdbcType="INTEGER" property="coinPairId" />
     <result column="is_start" jdbcType="TINYINT" property="isStart" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -20,19 +19,19 @@
                  column="id" select="cn.bosenkeji.mapper.CoinPairChoiceAttributeCustomMapper.selectByCoinPartnerChoiceId"/>
 
     <!--<association fetchType="lazy" property="coinPair" javaType="cn.bosenkeji.vo.coin.CoinPair"-->
-                 <!--column="coin_partner_id" select="cn.bosenkeji.mapper.CoinPairMapper.selectByPrimaryKey"/>-->
+                 <!--column="coin_pair_id" select="cn.bosenkeji.mapper.CoinPairMapper.selectByPrimaryKey"/>-->
 
   </resultMap>
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, coin_partner_id, user_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
+    id, coin_pair_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
   </sql>
   <select id="selectIdByCoinPartnerIdAndRobotIdAndStatus" resultType="integer">
-    select id from coin_pair_choice where coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id = #{param2} and status = 0
+    select id from coin_pair_choice where coin_pair_id = #{param1} and trade_platform_api_bind_product_combo_id = #{param2} and status = 0
   </select>
   <select id="checkExistByCoinPartnerIdAndRobotIdAndStatus" resultType="integer">
-    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_partner_id = #{param1} and trade_platform_api_bind_product_combo_id =#{param2}  and status = 1 LIMIT 1)
+    select exists (SELECT 1 FROM coin_pair_choice WHERE coin_pair_id = #{param1} and trade_platform_api_bind_product_combo_id =#{param2}  and status = 1 LIMIT 1)
   </select>
   <select id="findAllCoinPairChoiceId" resultType="integer">
     select id from coin_pair_choice  where status = 1
@@ -78,10 +77,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into coin_pair_choice (coin_partner_id, user_id, is_start,
+    insert into coin_pair_choice (coin_pair_id, is_start,
       `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
       )
-    values (#{coinPartnerId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{isStart,jdbcType=TINYINT}, 
+    values (#{coinPairId,jdbcType=INTEGER}, #{isStart,jdbcType=TINYINT},
       #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
       )
   </insert>
@@ -89,8 +88,7 @@
     <!--@mbg.generated-->
     insert into coin_pair_choice
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      coin_partner_id,
-      user_id,
+      coin_pair_id,
       is_start,
       `status`,
       <if test="createdAt != null">
@@ -104,8 +102,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      #{coinPartnerId,jdbcType=INTEGER},
-      #{userId,jdbcType=INTEGER},
+      #{coinPairId,jdbcType=INTEGER},
       #{isStart,jdbcType=TINYINT},
       #{status,jdbcType=TINYINT},
       <if test="createdAt != null">
@@ -123,11 +120,8 @@
     <!--@mbg.generated-->
     update coin_pair_choice
     <set>
-      <if test="coinPartnerId > 0">
-        coin_partner_id = #{coinPartnerId,jdbcType=INTEGER},
-      </if>
-      <if test="userId > 0">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="coinPairId > 0">
+        coin_pair_id = #{coinPairId,jdbcType=INTEGER},
       </if>
       <if test="isStart > 0">
         is_start = #{isStart,jdbcType=TINYINT},
@@ -150,8 +144,7 @@
   <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice">
     <!--@mbg.generated-->
     update coin_pair_choice
-    set coin_partner_id = #{coinPartnerId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
+    set coin_pair_id = #{coinPairId,jdbcType=INTEGER},
       is_start = #{isStart,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},

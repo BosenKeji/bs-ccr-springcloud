@@ -125,8 +125,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         coinPairChoices = fillByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId,status);
         if (!coinPairChoices.isEmpty()){
             for (CoinPairChoice c : coinPairChoices) {
-                if (coinPairMap.containsKey(c.getCoinPartnerId())){
-                    c.setCoinPair(coinPairMap.get(c.getCoinPartnerId()));
+                if (coinPairMap.containsKey(c.getCoinPairId())){
+                    c.setCoinPair(coinPairMap.get(c.getCoinPairId()));
                 }
             }
             //把货币对不为空的数据填充
@@ -230,7 +230,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     public CoinPairChoice get(int id) {
         CoinPairChoice coinPairChoice = this.coinPairChoiceMapper.selectByPrimaryKey(id);
         if (coinPairChoice != null){
-            CoinPair coinPair = this.iCoinPairClientService.getCoinPair(coinPairChoice.getCoinPartnerId());
+            CoinPair coinPair = this.iCoinPairClientService.getCoinPair(coinPairChoice.getCoinPairId());
             coinPairChoice.setCoinPair(coinPair);
         }
         return coinPairChoice;
@@ -239,7 +239,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {
-        Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPartnerId(),coinPairChoice.getTradePlatformApiBindProductComboId());
+        Integer coinPairChoiceId = coinPairChoiceMapper.selectIdByCoinPartnerIdAndRobotIdAndStatus(coinPairChoice.getCoinPairId(),coinPairChoice.getTradePlatformApiBindProductComboId());
         if (coinPairChoiceId != null){
             if (coinPairChoiceId >0){
                 return Optional.of(this.coinPairChoiceMapper.logicDelete(coinPairChoiceId,Timestamp.valueOf(LocalDateTime.now()),CommonConstantUtil.ACTIVATE_STATUS));
@@ -302,7 +302,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         List<CoinPair> coinPairList = coinPairClientService.findAll();
         if (!CollectionUtils.isEmpty(coinPairChoiceList) && !CollectionUtils.isEmpty(coinPairList)) {
             for (CoinPairChoice c : coinPairChoiceList) {
-                Optional<CoinPair> first = coinPairList.stream().filter((v) -> v.getId() == c.getCoinPartnerId()).findFirst();
+                Optional<CoinPair> first = coinPairList.stream().filter((v) -> v.getId() == c.getCoinPairId()).findFirst();
                 c.setCoinPair(first.get());
             }
         }

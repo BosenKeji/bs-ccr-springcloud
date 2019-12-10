@@ -28,13 +28,13 @@ public interface CoinPairChoiceAttributeMapper {
 
     int updateByPrimaryKey(CoinPairChoiceAttribute record);
 
-    CoinPairChoiceAttribute selectByCoinPartnerChoiceId(int coinPartnerChoiceId);
+    CoinPairChoiceAttribute selectByCoinPartnerChoiceId(int coinPairChoiceId);
 
-    Integer checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
+    Integer checkByCoinPartnerChoiceId(int coinPairChoiceId);
 
     List<Integer> findAllCoinPartnerChoiceId();
 
-    List<CoinPairChoiceAttribute> findSectionCoinPairChoiceAttributeByCoinPartnerChoiceIds(List<Integer> coinPartnerChoiceIds);
+    List<CoinPairChoiceAttribute> findSectionCoinPairChoiceAttributeByCoinPartnerChoiceIds(List<Integer> coinPairChoiceIds);
 
     List<Integer> findAllCoinPairChoiceId();
 }

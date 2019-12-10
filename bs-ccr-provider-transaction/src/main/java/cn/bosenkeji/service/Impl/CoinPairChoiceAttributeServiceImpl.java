@@ -121,7 +121,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
             notExistedCoinPairChoiceIds.forEach((coinPairChoiceId)->{
                 CoinPairChoiceAttribute coinPairChoiceAttribute = new CoinPairChoiceAttribute();
 
-                coinPairChoiceAttribute.setCoinPartnerChoiceId(coinPairChoiceId);
+                coinPairChoiceAttribute.setCoinPairChoiceId(coinPairChoiceId);
                 coinPairChoiceAttribute.setExpectMoney(expectMoney);
                 coinPairChoiceAttribute.setStrategyId(strategyId);
                 coinPairChoiceAttribute.setIsCustom(isCustom);

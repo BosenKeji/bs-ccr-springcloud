@@ -66,10 +66,10 @@ public class CoinPairChoiceAttributeCustomController {
     @PostMapping("/")
     public Result settingParameters(@RequestBody @Valid @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
 
-        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()) == null){
+        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return new Result<>(null,"自选币不存在");
         }
-        if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()).get() >=1){
+        if (this.coinPairChoiceAttributeCustomService.checkByCoinPartnerChoiceId(coinPairChoiceAttributeCustom.getCoinPairChoiceId()).get() >=1){
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             Optional<Integer> result = this.coinPairChoiceAttributeCustomService.updateByCoinPairChoiceId(coinPairChoiceAttributeCustom);
             if (result.get() > 0){
@@ -95,7 +95,7 @@ public class CoinPairChoiceAttributeCustomController {
     @PutMapping("/")
     public Result update(@RequestBody  @ApiParam(value = "自选币自定义属性实体", required = true, type = "string") CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom){
 
-        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()) == null){
+        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return new Result<>(null,"自选币不存在");
         }
         if (this.coinPairChoiceAttributeCustomService.get(coinPairChoiceAttributeCustom.getId()) == null){

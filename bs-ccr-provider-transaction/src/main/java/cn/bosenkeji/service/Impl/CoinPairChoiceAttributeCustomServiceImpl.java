@@ -40,7 +40,7 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
     @Override
     public Optional<Integer> update(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
-        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()) == null){
+        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return Optional.of(FAIL);
         }
 
@@ -70,7 +70,7 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
 
     @Override
     public Optional<Integer> add(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
-        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPartnerChoiceId()) == null){
+        if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return Optional.of(FAIL);
         }
 

@@ -109,7 +109,7 @@ public class CoinPairChoiceController {
         CoinPairChoice coinPairChoice =new CoinPairChoice();
 //        coinPairChoice.setUserId(userId);
         coinPairChoice.setTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
-        coinPairChoice.setCoinPartnerId(coinPairId);
+        coinPairChoice.setCoinPairId(coinPairId);
         coinPairChoice.setStatus(1);
         coinPairChoice.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

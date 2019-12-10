@@ -89,7 +89,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             double endProfitRatio = orderGroup.getEndProfitRatio() / CommonConstantUtil.ACCURACY;
 
             if (orderGroup.getCoinPairChoice() != null){
-                CoinPair coinPair = this.iCoinPairClientService.getCoinPair(orderGroup.getCoinPairChoice().getCoinPartnerId());
+                CoinPair coinPair = this.iCoinPairClientService.getCoinPair(orderGroup.getCoinPairChoice().getCoinPairId());
                 orderGroup.getCoinPairChoice().setCoinPair(coinPair);
             }else {
                 return null;
@@ -103,7 +103,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                         accumulateShell += o.getTradeNumbers();
                         accumulateCast += o.getTradeCost();
                     }else {
-                        accumulateProfit = o.getShellProfit();
+                        accumulateProfit = o.getSellProfit();
                     }
                 }
             }
@@ -282,7 +282,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 for (TradeOrder t :
                         tradeOrders) {
                     if (t.getTradeType() == 2 || t.getTradeType() == 3 ){
-                        totalProfit += t.getShellProfit();
+                        totalProfit += t.getSellProfit();
                         trackProfit += t.getExtraProfit();
                     }
                 }

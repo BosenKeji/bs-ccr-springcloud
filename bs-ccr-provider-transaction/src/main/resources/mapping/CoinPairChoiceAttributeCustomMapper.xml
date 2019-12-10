@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="coin_partner_choice_id" jdbcType="INTEGER" property="coinPartnerChoiceId" />
+    <result column="coin_pair_choice_id" jdbcType="INTEGER" property="coinPairChoiceId" />
     <result column="stop_profit_type" jdbcType="TINYINT" property="stopProfitType" />
     <result column="stop_profit_money" jdbcType="INTEGER" property="stopProfitMoney" />
     <result column="stop_profit_trace_trigger_rate" jdbcType="FLOAT" property="stopProfitTraceTriggerRate" />
@@ -16,18 +16,18 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, coin_partner_choice_id, stop_profit_type, stop_profit_money, stop_profit_trace_trigger_rate,
+    id, coin_pair_choice_id, stop_profit_type, stop_profit_money, stop_profit_trace_trigger_rate,
     stop_profit_trace_drop_rate, stop_profit_fixed_rate, `status`, created_at, updated_at
   </sql>
   <select id="checkByCoinPartnerChoiceId" resultType="integer">
-    SELECT EXISTS(SELECT 1 FROM coin_pair_choice_attribute_custom WHERE coin_partner_choice_id = #{coinPartnerChoiceId}  LIMIT 1)
+    SELECT EXISTS(SELECT 1 FROM coin_pair_choice_attribute_custom WHERE coin_pair_choice_id = #{coinPairChoiceId}  LIMIT 1)
   </select>
 
   <select id="selectByCoinPartnerChoiceId" parameterType="integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from coin_pair_choice_attribute_custom
-    where coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -44,12 +44,12 @@
   <delete id="deleteByCoinPairChoiceId" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice_attribute_custom
-    where coin_partner_choice_id = #{id,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{id,jdbcType=INTEGER}
   </delete>
 
   <delete id="batchDelete" parameterType="list">
     delete from coin_pair_choice_attribute_custom
-    where coin_partner_choice_id in
+    where coin_pair_choice_id in
     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
       #{item,jdbcType=INTEGER}
     </foreach>
@@ -57,12 +57,12 @@
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into coin_pair_choice_attribute_custom (coin_partner_choice_id, stop_profit_type,
+    insert into coin_pair_choice_attribute_custom (coin_pair_choice_id, stop_profit_type,
       stop_profit_money, stop_profit_trace_trigger_rate, 
       stop_profit_trace_drop_rate, stop_profit_fixed_rate, 
       `status`, created_at, updated_at
       )
-    values (#{coinPartnerChoiceId,jdbcType=INTEGER}, #{stopProfitType,jdbcType=TINYINT},
+    values (#{coinPairChoiceId,jdbcType=INTEGER}, #{stopProfitType,jdbcType=TINYINT},
       #{stopProfitMoney,jdbcType=INTEGER}, #{stopProfitTraceTriggerRate,jdbcType=FLOAT}, 
       #{stopProfitTraceDropRate,jdbcType=FLOAT}, #{stopProfitFixedRate,jdbcType=FLOAT}, 
       #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
@@ -72,7 +72,7 @@
     <!--@mbg.generated-->
     insert into coin_pair_choice_attribute_custom
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      coin_partner_choice_id,
+      coin_pair_choice_id,
       stop_profit_type,
       stop_profit_money,
       <if test="stopProfitTraceTriggerRate >= 0">
@@ -93,7 +93,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      #{coinPartnerChoiceId,jdbcType=INTEGER},
+      #{coinPairChoiceId,jdbcType=INTEGER},
       #{stopProfitType,jdbcType=TINYINT},
       #{stopProfitMoney,jdbcType=INTEGER},
       <if test="stopProfitTraceTriggerRate != null">
@@ -118,8 +118,8 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute_custom
     <set>
-      <if test="coinPartnerChoiceId >= 0">
-        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+      <if test="coinPairChoiceId >= 0">
+        coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
       </if>
       <if test="stopProfitType >= 1">
         stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
@@ -181,13 +181,13 @@
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom">
     <!--@mbg.generated-->
     update coin_pair_choice_attribute_custom
-    set coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+    set coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
       stop_profit_type = #{stopProfitType,jdbcType=TINYINT},
       stop_profit_money = #{stopProfitMoney,jdbcType=INTEGER},
       stop_profit_trace_trigger_rate = #{stopProfitTraceTriggerRate,jdbcType=FLOAT},

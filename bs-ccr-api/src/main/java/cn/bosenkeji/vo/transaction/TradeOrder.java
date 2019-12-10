@@ -44,9 +44,9 @@ public class TradeOrder {
     /**
     * 卖出收益
     */
-    @JSONField(name = "shell_profit")
+    @JSONField(name = "sell_profit")
     @ApiModelProperty("卖出收益")
-    private double shellProfit;
+    private double sellProfit;
 
     /**
      * 额外收益
@@ -133,10 +133,6 @@ public class TradeOrder {
         this.tradeCost = tradeCost;
     }
 
-    public double getShellProfit() {
-        return shellProfit;
-    }
-
     public double getExtraProfit() {
         return extraProfit;
     }
@@ -159,14 +155,6 @@ public class TradeOrder {
 
     public void setExtraProfit(double extraProfit) {
         this.extraProfit = extraProfit;
-    }
-
-    public void setShellProfit(double shellProfit) {
-        this.shellProfit = shellProfit;
-    }
-
-    public void setShellProfit(Double shellProfit) {
-        this.shellProfit = shellProfit;
     }
 
     public int getTradeType() {
@@ -199,5 +187,13 @@ public class TradeOrder {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public double getSellProfit() {
+        return sellProfit;
+    }
+
+    public void setSellProfit(double sellProfit) {
+        this.sellProfit = sellProfit;
     }
 }

@@ -20,10 +20,7 @@ public class CoinPairChoice implements Serializable {
     private int id;
 
     @ApiModelProperty("货币对 id")
-    private int coinPartnerId;
-
-    @ApiModelProperty(value = "用户id",hidden = true)
-    private int userId;
+    private int coinPairId;
 
     @ApiModelProperty("机器人id")
     private int tradePlatformApiBindProductComboId;
@@ -41,10 +38,13 @@ public class CoinPairChoice implements Serializable {
     private Timestamp updatedAt;
 
     /**非数据库字段*/
+    @ApiModelProperty(hidden = true)
     private CoinPair coinPair;
 
+    @ApiModelProperty(hidden = true)
     private CoinPairChoiceAttribute coinPairChoiceAttribute;
 
+    @ApiModelProperty(hidden = true)
     private CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom;
 
     public int getId() {
@@ -55,20 +55,20 @@ public class CoinPairChoice implements Serializable {
         this.id = id;
     }
 
-    public int getCoinPartnerId() {
-        return coinPartnerId;
+    public int getCoinPairId() {
+        return coinPairId;
     }
 
-    public void setCoinPartnerId(int coinPartnerId) {
-        this.coinPartnerId = coinPartnerId;
+    public void setCoinPairId(int coinPairId) {
+        this.coinPairId = coinPairId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getTradePlatformApiBindProductComboId() {
+        return tradePlatformApiBindProductComboId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId) {
+        this.tradePlatformApiBindProductComboId = tradePlatformApiBindProductComboId;
     }
 
     public int getIsStart() {
@@ -103,6 +103,14 @@ public class CoinPairChoice implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public CoinPair getCoinPair() {
+        return coinPair;
+    }
+
+    public void setCoinPair(CoinPair coinPair) {
+        this.coinPair = coinPair;
+    }
+
     public CoinPairChoiceAttribute getCoinPairChoiceAttribute() {
         return coinPairChoiceAttribute;
     }
@@ -117,21 +125,5 @@ public class CoinPairChoice implements Serializable {
 
     public void setCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         this.coinPairChoiceAttributeCustom = coinPairChoiceAttributeCustom;
-    }
-
-    public CoinPair getCoinPair() {
-        return coinPair;
-    }
-
-    public void setCoinPair(CoinPair coinPair) {
-        this.coinPair = coinPair;
-    }
-
-    public int getTradePlatformApiBindProductComboId() {
-        return tradePlatformApiBindProductComboId;
-    }
-
-    public void setTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId) {
-        this.tradePlatformApiBindProductComboId = tradePlatformApiBindProductComboId;
     }
 }

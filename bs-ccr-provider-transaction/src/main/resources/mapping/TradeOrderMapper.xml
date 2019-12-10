@@ -9,7 +9,7 @@
     <result column="trade_average_price" jdbcType="INTEGER" javaType="double" property="tradeAveragePrice" />
     <result column="trade_numbers" jdbcType="INTEGER" javaType="double" property="tradeNumbers" />
     <result column="trade_cost" jdbcType="INTEGER" javaType="double" property="tradeCost" />
-    <result column="shell_profit" jdbcType="INTEGER"  javaType="double" property="shellProfit" />
+    <result column="sell_profit" jdbcType="INTEGER"  javaType="double" property="sellProfit" />
     <result column="extra_profit" jdbcType="INTEGER" javaType="double" property="extraProfit"/>
     <result column="theoretical_build_price" jdbcType="INTEGER" javaType="double" property="theoreticalBuildPrice"/>
     <result column="profit_ratio" jdbcType="INTEGER" javaType="double" property="profitRatio"/>
@@ -21,7 +21,7 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, order_group_id, trade_average_price, trade_numbers, trade_cost,
-    shell_profit, trade_type, `status`, created_at, updated_at,extra_profit,theoretical_build_price,profit_ratio
+    sell_profit, trade_type, `status`, created_at, updated_at,extra_profit,theoretical_build_price,profit_ratio
   </sql>
 
   <select id="findAllByOrderGroupId" resultMap="BaseResultMap">
@@ -50,11 +50,11 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.TradeOrder" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into trade_order (order_group_id, trade_average_price,
-      trade_numbers, trade_cost, shell_profit, 
+      trade_numbers, trade_cost, sell_profit,
       trade_type, `status`, created_at, 
       updated_at,extra_profit,theoretical_build_price,profit_ratio)
     values (#{orderGroupId,jdbcType=INTEGER}, #{tradeAveragePrice,jdbcType=INTEGER},
-      #{tradeNumbers,jdbcType=INTEGER}, #{tradeCost,jdbcType=INTEGER}, #{shellProfit,jdbcType=INTEGER}, 
+      #{tradeNumbers,jdbcType=INTEGER}, #{tradeCost,jdbcType=INTEGER}, #{sellProfit,jdbcType=INTEGER},
       #{tradeType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP}),#{extraProfit,jdbcType=INTEGER},#{theoreticalBuildPrice,jdbcType=INTEGER},#{profitRatio,jdbcType=INTEGER}
   </insert>
@@ -74,8 +74,8 @@
       <if test="tradeCost != null">
         trade_cost,
       </if>
-      <if test="shellProfit != null">
-        shell_profit,
+      <if test="sellProfit != null">
+        sell_profit,
       </if>
       <if test="tradeType != null">
         trade_type,
@@ -112,8 +112,8 @@
       <if test="tradeCost != null">
         #{tradeCost,jdbcType=INTEGER},
       </if>
-      <if test="shellProfit != null">
-        #{shellProfit,jdbcType=INTEGER},
+      <if test="sellProfit != null">
+        #{sellProfit,jdbcType=INTEGER},
       </if>
       <if test="tradeType != null">
         #{tradeType,jdbcType=TINYINT},
@@ -154,8 +154,8 @@
       <if test="tradeCost != null">
         trade_cost = #{tradeCost,jdbcType=INTEGER},
       </if>
-      <if test="shellProfit != null">
-        shell_profit = #{shellProfit,jdbcType=INTEGER},
+      <if test="sellProfit != null">
+        sell_profit = #{sellProfit,jdbcType=INTEGER},
       </if>
       <if test="tradeType != null">
         trade_type = #{tradeType,jdbcType=TINYINT},
@@ -188,7 +188,7 @@
       trade_average_price = #{tradeAveragePrice,jdbcType=INTEGER},
       trade_numbers = #{tradeNumbers,jdbcType=INTEGER},
       trade_cost = #{tradeCost,jdbcType=INTEGER},
-      shell_profit = #{shellProfit,jdbcType=INTEGER},
+      sell_profit = #{sellProfit,jdbcType=INTEGER},
       trade_type = #{tradeType,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},

@@ -105,7 +105,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeAveragePrice = tradeOrder.getTradeAveragePrice()* CommonConstantUtil.ACCURACY;
         double tradeNumbers = tradeOrder.getTradeNumbers()* CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost()* CommonConstantUtil.ACCURACY;
-        double shellProfit = tradeOrder.getShellProfit()* CommonConstantUtil.ACCURACY;
+        double shellProfit = tradeOrder.getSellProfit()* CommonConstantUtil.ACCURACY;
         double extraProfit = tradeOrder.getExtraProfit() * CommonConstantUtil.ACCURACY;
         double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() * CommonConstantUtil.ACCURACY;
         double profitRatio = tradeOrder.getProfitRatio() * CommonConstantUtil.ACCURACY;
@@ -114,7 +114,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);
         tradeOrder.setTradeCost(tradeCost);
-        tradeOrder.setShellProfit(shellProfit);
+        tradeOrder.setSellProfit(shellProfit);
         tradeOrder.setExtraProfit(extraProfit);
         tradeOrder.setTheoreticalBuildPrice(theoreticalBuildPrice);
         tradeOrder.setProfitRatio(profitRatio);
@@ -126,7 +126,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeAveragePrice = tradeOrder.getTradeAveragePrice() / CommonConstantUtil.ACCURACY;
         double tradeNumbers = tradeOrder.getTradeNumbers() / CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost() / CommonConstantUtil.ACCURACY;
-        double shellProfit = tradeOrder.getShellProfit() / CommonConstantUtil.ACCURACY;
+        double shellProfit = tradeOrder.getSellProfit() / CommonConstantUtil.ACCURACY;
         double extraProfit = tradeOrder.getExtraProfit() / CommonConstantUtil.ACCURACY;
         double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() / CommonConstantUtil.ACCURACY;
         double profitRatio = tradeOrder.getProfitRatio() / CommonConstantUtil.ACCURACY;
@@ -134,7 +134,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);
         tradeOrder.setTradeCost(tradeCost);
-        tradeOrder.setShellProfit(shellProfit);
+        tradeOrder.setSellProfit(shellProfit);
         tradeOrder.setExtraProfit(extraProfit);
         tradeOrder.setTheoreticalBuildPrice(theoreticalBuildPrice);
         tradeOrder.setProfitRatio(profitRatio);
@@ -275,7 +275,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
                         coinPairChoice = JSONObject.parseObject(item.getFields().getCoin_pair_choice(), CoinPairChoice.class);
 
                         orderLogVo.setCoinPairName(coinPairChoice.getCoinPair().getName());
-                        orderLogVo.setCoinPairId(coinPairChoice.getCoinPartnerId());
+                        orderLogVo.setCoinPairId(coinPairChoice.getCoinPairId());
                         orderLogVo.setCoinPairChoiceId(coinPairChoice.getId());
 
                     } catch (Exception e) {
@@ -284,7 +284,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
                     orderLogVo.setId(item.getFields().getId());
                     orderLogVo.setCreateAt(item.getFields().getCreatedAt());
                     orderLogVo.setTradeNumbers(item.getFields().getTradeNumbers());
-                    orderLogVo.setShellProfit(item.getFields().getShellProfit());
+                    orderLogVo.setShellProfit(item.getFields().getSellProfit());
                     orderLogVo.setTradeCost(item.getFields().getTradeCost());
                     orderLogVo.setEndType(item.getFields().getEndType());
                     orderLogVo.setEndProfitRatio(item.getFields().getEndProfitRatio());

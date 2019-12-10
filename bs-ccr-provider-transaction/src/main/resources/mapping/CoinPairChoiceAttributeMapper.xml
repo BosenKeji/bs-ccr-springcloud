@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute">
     <!--@mbg.generated-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="coin_partner_choice_id" jdbcType="INTEGER" property="coinPartnerChoiceId" />
+    <result column="coin_pair_choice_id" jdbcType="INTEGER" property="coinPairChoiceId" />
     <result column="expect_money" jdbcType="INTEGER" property="expectMoney" />
     <result column="strategy_id" jdbcType="INTEGER" property="strategyId" />
     <result column="is_custom" jdbcType="TINYINT" property="isCustom" />
@@ -14,34 +14,34 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, coin_partner_choice_id, expect_money, strategy_id, is_custom, `status`, created_at,
+    id, coin_pair_choice_id, expect_money, strategy_id, is_custom, `status`, created_at,
     updated_at
   </sql>
 <select id="findAllCoinPartnerChoiceId" resultType="integer">
-  select coin_partner_choice_id from coin_pair_choice_attribute
+  select coin_pair_choice_id from coin_pair_choice_attribute
 </select>
   <select id="findSectionCoinPairChoiceAttributeByCoinPartnerChoiceIds" parameterType="list" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice_attribute
-   where coin_partner_choice_id in
+   where coin_pair_choice_id in
    <foreach collection="list" index="index" item="item"  open="(" separator="," close=")">
      #{item,jdbcType=INTEGER}
    </foreach>
   </select>
 
   <select id="findAllCoinPairChoiceId" resultType="integer">
-    select coin_partner_choice_id from coin_pair_choice_attribute
+    select coin_pair_choice_id from coin_pair_choice_attribute
   </select>
 
   <select id="checkByCoinPartnerChoiceId" resultType="integer">
-    select exists (select 1 from coin_pair_choice_attribute where coin_partner_choice_id =#{coinPartnerChoiceId} limit 1)
+    select exists (select 1 from coin_pair_choice_attribute where coin_pair_choice_id =#{coinPairChoiceId} limit 1)
   </select>
   <select id="selectByCoinPartnerChoiceId" parameterType="int" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_pair_choice_attribute
-   where coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER}
+   where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -58,7 +58,7 @@
 
   <delete id="batchDelete" parameterType="list">
     delete from coin_pair_choice_attribute
-    where coin_partner_choice_id in
+    where coin_pair_choice_id in
     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
       #{item,jdbcType=INTEGER}
     </foreach>
@@ -67,14 +67,14 @@
   <delete id="deleteByCoinPairChoiceId" parameterType="int">
     <!--@mbg.generated-->
     delete from coin_pair_choice_attribute
-    where coin_partner_choice_id = #{id,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into coin_pair_choice_attribute (coin_partner_choice_id, expect_money,
+    insert into coin_pair_choice_attribute (coin_pair_choice_id, expect_money,
       strategy_id, is_custom, `status`, 
       created_at, updated_at)
-    values (#{coinPartnerChoiceId,jdbcType=INTEGER}, #{expectMoney,jdbcType=INTEGER},
+    values (#{coinPairChoiceId,jdbcType=INTEGER}, #{expectMoney,jdbcType=INTEGER},
       #{strategyId,jdbcType=INTEGER}, #{isCustom,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
@@ -82,7 +82,7 @@
     <!--@mbg.generated-->
     insert into coin_pair_choice_attribute
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      coin_partner_choice_id,
+      coin_pair_choice_id,
       expect_money,
       strategy_id,
       is_custom,
@@ -96,7 +96,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
-      #{coinPartnerChoiceId,jdbcType=INTEGER},
+      #{coinPairChoiceId,jdbcType=INTEGER},
       #{expectMoney,jdbcType=INTEGER},
       #{strategyId,jdbcType=INTEGER},
       #{isCustom,jdbcType=TINYINT},
@@ -113,8 +113,8 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute
     <set>
-      <if test="coinPartnerChoiceId > 0">
-        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+      <if test="coinPairChoiceId > 0">
+        coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
       </if>
       <if test="expectMoney >= 0">
         expect_money = #{expectMoney,jdbcType=INTEGER},
@@ -142,8 +142,8 @@
     <!--@mbg.generated-->
     update coin_pair_choice_attribute
     <set>
-      <if test="coinPartnerChoiceId > 0">
-        coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+      <if test="coinPairChoiceId > 0">
+        coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
       </if>
       <if test="expectMoney > 0">
         expect_money = #{expectMoney,jdbcType=INTEGER},
@@ -164,19 +164,19 @@
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where coin_partner_choice_id = #{id,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{id,jdbcType=INTEGER}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute">
     <!--@mbg.generated-->
     update coin_pair_choice_attribute
-    set coin_partner_choice_id = #{coinPartnerChoiceId,jdbcType=INTEGER},
+    set coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER},
       expect_money = #{expectMoney,jdbcType=INTEGER},
       strategy_id = #{strategyId,jdbcType=INTEGER},
       is_custom = #{isCustom,jdbcType=TINYINT},
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
-    where coin_partner_choice_id = #{id,jdbcType=INTEGER}
+    where coin_pair_choice_id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

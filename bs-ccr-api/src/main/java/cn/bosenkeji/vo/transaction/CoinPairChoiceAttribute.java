@@ -15,7 +15,7 @@ public class CoinPairChoiceAttribute {
     private int id;
 
     @ApiModelProperty("货币对 id")
-    private int coinPartnerChoiceId;
+    private int coinPairChoiceId;
 
     @ApiModelProperty("预算")
     private int expectMoney;
@@ -42,12 +42,12 @@ public class CoinPairChoiceAttribute {
         this.id = id;
     }
 
-    public int getCoinPartnerChoiceId() {
-        return coinPartnerChoiceId;
+    public int getCoinPairChoiceId() {
+        return coinPairChoiceId;
     }
 
-    public void setCoinPartnerChoiceId(int coinPartnerChoiceId) {
-        this.coinPartnerChoiceId = coinPartnerChoiceId;
+    public void setCoinPairChoiceId(int coinPairChoiceId) {
+        this.coinPairChoiceId = coinPairChoiceId;
     }
 
     public int getExpectMoney() {
