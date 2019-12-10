@@ -201,11 +201,11 @@ public class DealUtil {
 
 
 
-    static String getString(Object o) {
+    public static String getString(Object o) {
         return o == null ? "" : o.toString();
     }
 
-    static Integer getInteger(Object o) {
+    public static Integer getInteger(Object o) {
         Integer temp = 0;
         if (o != null) {
             temp = Integer.valueOf(o.toString());
@@ -213,7 +213,7 @@ public class DealUtil {
         return temp;
     }
 
-    static Double getDouble(Object o) {
+    public static Double getDouble(Object o) {
         Double temp;
         temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
         return temp;

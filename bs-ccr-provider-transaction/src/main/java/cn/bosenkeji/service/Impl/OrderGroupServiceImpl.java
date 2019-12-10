@@ -307,4 +307,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         }
         return getOneById(orderGroups.get(0).getId());
     }
+
+    @Override
+    public int getGroupIdByName(String name) {
+        return this.orderGroupMapper.getIdByName(name);
+    }
 }

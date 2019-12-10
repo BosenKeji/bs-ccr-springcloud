@@ -65,6 +65,11 @@ public class IOrderGroupClientServiceFallbackFactory implements FallbackFactory<
                 o.setCoinPairName("hystrix");
                 return o;
             }
+
+            @Override
+            public int getIdByName(String name) {
+                return 0;
+            }
         };
     }
 }

@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -115,5 +116,11 @@ public class OrderGroupController {
     @GetMapping("/trade_overview")
     public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type = "integer",example = "1") int coinPairChoiceId){
         return this.orderGroupService.tradeOverview(coinPairChoiceId);
+    }
+
+    @ApiIgnore
+    @GetMapping("/name")
+    public int getIdByName(@RequestParam("name") String name){
+        return this.orderGroupService.getGroupIdByName(name);
     }
 }

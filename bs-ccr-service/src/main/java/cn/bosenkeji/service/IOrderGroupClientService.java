@@ -40,4 +40,7 @@ public interface IOrderGroupClientService {
 
     @GetMapping("/order_group/trade_overview")
     public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId") int coinPairChoiceId);
+
+    @GetMapping("/name")
+    public int getIdByName(@RequestParam("name") String name);
 }

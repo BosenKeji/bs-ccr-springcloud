@@ -42,4 +42,6 @@ public interface OrderGroupService {
     OrderGroupOverviewResult tradeOverview(int coinPairChoiceId);
 
     OrderGroup getByCoinPairChoiceId (int coinPairChoiceId);
+
+    int getGroupIdByName(String name);
 }

@@ -38,6 +38,8 @@ public interface OrderGroupMapper {
 
     int checkExistByName(String name);
 
+    int getIdByName(String name);
+
     List<OrderGroup> partFindByCoinPairChoiceIds(@Param("coinPairChoiceIds")List<Integer> coinPairChoiceIds);
 
 }

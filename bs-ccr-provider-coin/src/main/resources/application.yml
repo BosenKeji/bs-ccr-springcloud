@@ -12,3 +12,34 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://47.112.210.29:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: 123zxc
+  redis:
+      database: 0
+      host: redis-dev
+      port: 6379
+      password: 123zxc
+      timeout: 1000ms
+      lettuce:
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: -1ms
+  cache:
+      type: redis
+      redis:
+        time-to-live: 200000ms
+        cache-null-values: false
+
+  # spring:
+  #     datasource:
+  #         type: com.alibaba.druid.pool.DruidDataSource
+  #         driver-class-name: com.mysql.cj.jdbc.Driver
+  #         url: jdbc:mysql://rm-wz93eqok6i4e3q4ni.mysql.rds.aliyuncs.com:3306/bs-ccr?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+  #         username: bosen_follow
+  #         password: AYbosenkj19
