@@ -78,6 +78,12 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
+    public Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId,int isEnd) {
+        return Optional.of(this.orderGroupMapper.checkExistByCoinPairChoiceIdAndIsEnd1(coinPairChoiceId,isEnd));
+    }
+
+
+    @Override
     public OrderGroup getOneById(int orderGroupId) {
         OrderGroup orderGroup = this.orderGroupMapper.selectByPrimaryKey(orderGroupId);
 

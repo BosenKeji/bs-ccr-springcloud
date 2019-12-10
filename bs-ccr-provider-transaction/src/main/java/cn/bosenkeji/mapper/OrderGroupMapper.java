@@ -32,6 +32,8 @@ public interface OrderGroupMapper {
 
     int checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId);
 
+    int checkExistByCoinPairChoiceIdAndIsEnd1(@Param("coinPairChoiceId")int coinPairChoiceId,@Param("isEnd")int isEnd);
+
     int resultNotEndGroupId(int coinPairChoiceId);
 
     int checkExistById(int orderGroupId);

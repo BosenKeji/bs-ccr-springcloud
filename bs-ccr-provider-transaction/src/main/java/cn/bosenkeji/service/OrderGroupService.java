@@ -17,6 +17,8 @@ public interface OrderGroupService {
 
     PageInfo listByPage(int pageNum, int pageSize,int coinPairChoiceId);
 
+    Optional<Integer> checkExistByCoinPairChoiceIdAndIsEnd(int coinPairChoiceId,int isEnd);
+
     OrderGroup getOneById(int orderGroupId);
 
     Optional<Integer> add(OrderGroup orderGroup);

@@ -54,30 +54,26 @@ public class OrderHandler {
         log.info("sign ==> "+ sign);
 
         if (sign == GROUP_PLUS_ORDER_SIGN){
-            synchronized (this) {
-                consumerGroupPlusOrderMsg(msg,jsonObject);
-            }
+            consumerGroupPlusOrderMsg(msg,jsonObject,groupName);
         }
         else if (sign == ONLY_ORDER_SIGN){
-            synchronized (this) {
-                consumerOnlyOrderMsg(msg,jsonObject,groupName);
-            }
+            consumerOnlyOrderMsg(msg,jsonObject,groupName);
         }
         else {
             log.info("队列消息不合法！");
         }
     }
 
-    private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject){
+    private synchronized void  consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
         log.info("orderGroup ==>"+orderGroup.toString());
         int groupId = orderGroup.getId();
-        if (groupId <= 0 && orderGroup.getCoinPairChoiceId() > 0){
+        if (orderGroup.getCoinPairChoiceId() > 0){
             Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
             if (result.getData() == null){
                 log.info("result ==>" + result.getMsg());
             }else{
-                groupId = Math.abs(Integer.parseInt(result.getData().toString()));
+                groupId = Integer.parseInt(result.getData().toString());
                 log.info("订单组创建 ==>" + result.getMsg());
             }
             TradeOrder order = this.transformOrder(msg);
@@ -85,18 +81,14 @@ public class OrderHandler {
                 order.setOrderGroupId(groupId);
                 createOrder(order);
             }else {
-                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
+                orderGroup.setId(Math.abs(groupId));
+                Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
+                log.info("更新订单组成功 ==>"+updateResult.toString());
+                order.setOrderGroupId(Math.abs(groupId));
+                createOrder(order);
             }
         }else {
-            Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
-            log.info("更新订单组成功 ==>"+updateResult.toString());
-            TradeOrder order = this.transformOrder(msg);
-            if (groupId > 0){
-                order.setOrderGroupId(groupId);
-                createOrder(order);
-            }else {
-                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
-            }
+            log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());
         }
 
     }
@@ -110,7 +102,7 @@ public class OrderHandler {
         }
     }
 
-    private void consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
+    private synchronized void  consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
         TradeOrder tradeOrder = transformOrder(msg);
         int groupId = this.iOrderGroupClientService.getIdByName(groupName);
         if (groupId > 0){
@@ -190,6 +182,7 @@ public class OrderHandler {
         int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
         if (jsonObject.get("isEnd") != null){
             int isEnd = DealUtil.getInteger(jsonObject.get("isEnd"));
+            orderGroup.setIsEnd(isEnd);
             if (isEnd == 1){
                 double endProfitRatio = DealUtil.getDouble(jsonObject.get("endProfitRatio"));
                 int endType = DealUtil.getInteger(jsonObject.getInteger("endType"));

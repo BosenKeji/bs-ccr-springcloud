@@ -70,6 +70,10 @@
     select exists (SELECT 1 FROM order_group WHERE coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 0 and status = 1 LIMIT 1)
   </select>
 
+  <select id="checkExistByCoinPairChoiceIdAndIsEnd1" resultType="integer">
+    select exists (SELECT 1 FROM order_group WHERE coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = #{isEnd,jdbcType=INTEGER} and status = 1 LIMIT 1)
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
