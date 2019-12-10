@@ -169,18 +169,18 @@ public class OrderHandler {
         return order;
     }
 
-    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult ,String plantFormName){
-        Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
-        if ("huobi".equals(plantFormName.toLowerCase())){
-            return this.source.groupIdOutPutHB().send(message);
-        }
-        if ("okex".equals(plantFormName.toLowerCase())){
-            return this.source.groupIdOutPutOK().send(message);
-        }
-
-        log.info("plantFormName 不合法！");
-        return false;
-    }
+//    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult ,String plantFormName){
+//        Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
+//        if ("huobi".equals(plantFormName.toLowerCase())){
+//            return this.source.groupIdOutPutHB().send(message);
+//        }
+//        if ("okex".equals(plantFormName.toLowerCase())){
+//            return this.source.groupIdOutPutOK().send(message);
+//        }
+//
+//        log.info("plantFormName 不合法！");
+//        return false;
+//    }
 
 
     private OrderGroup transformOrderGroup(JSONObject jsonObject){

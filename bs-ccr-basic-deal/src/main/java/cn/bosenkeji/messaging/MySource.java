@@ -14,9 +14,9 @@ public interface MySource {
     @Output("okex_output")
     MessageChannel okexOutput();
 
-    @Output("group_id_output_huobi")
-    MessageChannel groupIdOutPutHB();
-
-    @Output("group_id_output_okex")
-    MessageChannel groupIdOutPutOK();
+//    @Output("group_id_output_huobi")
+//    MessageChannel groupIdOutPutHB();
+//
+//    @Output("group_id_output_okex")
+//    MessageChannel groupIdOutPutOK();
 }
