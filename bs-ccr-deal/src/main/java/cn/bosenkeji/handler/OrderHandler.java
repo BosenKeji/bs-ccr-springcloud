@@ -61,10 +61,12 @@ public class OrderHandler {
         if (sign == GROUP_PLUS_ORDER_SIGN){
             consumerGroupPlusOrderMsg(msg,jsonObject);
         }
-        if (sign == ONLY_ORDER_SIGN){
+        else if (sign == ONLY_ORDER_SIGN){
             consumerOnlyOrderMsg(msg,jsonObject,groupName);
         }
-        log.info("队列消息不合法！");
+        else {
+            log.info("队列消息不合法！");
+        }
     }
 
     private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject){
@@ -94,43 +96,46 @@ public class OrderHandler {
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
+                }else {
+                    log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
                 }
-                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
             }
         }
     }
 
-    private boolean createOrder(TradeOrder order){
+    private void createOrder(TradeOrder order){
         Result result = this.iTradeOrderClientService.addOneOrderGroup(order);
         if (Integer.parseInt(result.getData().toString()) == 1){
             log.info("首次或尾次订单创建成功！"+result.getMsg());
-            return true;
+        }else {
+            log.info("首次或尾次订单创建失败！"+result.getMsg());
         }
-        log.info("首次或尾次订单创建失败！"+result.getMsg());
-        return false;
     }
 
     private void consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
         TradeOrder tradeOrder = transformOrder(msg);
         int groupId = this.iOrderGroupClientService.getIdByName(groupName);
-        if (groupId > 0){
-            tradeOrder.setOrderGroupId(groupId);
-            int finishedOrderNumber = -1;
-            if (jsonObject.get("finished_order") != null){
-                finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
-                log.info("finishedOrderNum ==>" + finishedOrderNumber);
-            }
 
-            if (tradeOrder.getOrderGroupId() > 0){
-                int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
-                log.info("dbOrderNum ==>" + dbOrderNum);
-
-                if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
-                    Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-                    log.info("添加订单信息："+result.toString());
+        synchronized (this){
+            if (groupId > 0){
+                tradeOrder.setOrderGroupId(groupId);
+                int finishedOrderNumber = -1;
+                if (jsonObject.get("finished_order") != null){
+                    finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
+                    log.info("finishedOrderNum ==>" + finishedOrderNumber);
                 }
-            }else {
-                log.info("订单组id不合法或重复添加 添加订单失败！");
+
+                if (tradeOrder.getOrderGroupId() > 0){
+                    int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
+                    log.info("dbOrderNum ==>" + dbOrderNum);
+
+                    if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                        log.info("添加订单信息："+result.toString());
+                    }
+                }else {
+                    log.info("订单组id不合法或重复添加 添加订单失败！");
+                }
             }
         }
     }
