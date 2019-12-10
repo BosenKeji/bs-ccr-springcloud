@@ -50,19 +50,18 @@ public class OrderHandler {
         log.info(msg);
         JSONObject jsonObject = JSON.parseObject(msg);
         int sign = DealUtil.getInteger(jsonObject.get("sign"));
-        String orderId = DealUtil.getString(jsonObject.get("orderId"));
-        String plantFormName = DealUtil.getString(jsonObject.get("plantFormName"));
         String groupName = DealUtil.getString(jsonObject.get("name"));
         log.info("sign ==> "+ sign);
-        log.info("orderId ==>" + orderId);
-        log.info("plantFormName ==>"+plantFormName);
-        log.info("groupName ==>"+groupName);
 
         if (sign == GROUP_PLUS_ORDER_SIGN){
-            consumerGroupPlusOrderMsg(msg,jsonObject);
+            synchronized (this) {
+                consumerGroupPlusOrderMsg(msg,jsonObject);
+            }
         }
         else if (sign == ONLY_ORDER_SIGN){
-            consumerOnlyOrderMsg(msg,jsonObject,groupName);
+            synchronized (this) {
+                consumerOnlyOrderMsg(msg,jsonObject,groupName);
+            }
         }
         else {
             log.info("队列消息不合法！");
@@ -73,34 +72,33 @@ public class OrderHandler {
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
         log.info("orderGroup ==>"+orderGroup.toString());
         int groupId = orderGroup.getId();
-
-        synchronized (this) {
-            if (groupId <= 0 && orderGroup.getCoinPairChoiceId() > 0){
-                Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
-                if (result.getData() == null){
-                    log.info("result ==>" + result.getMsg());
-                }else{
-                    groupId = Integer.parseInt(result.getData().toString());
-                    log.info("订单组创建 ==>" + result.getMsg());
-                }
-                TradeOrder order = this.transformOrder(msg);
-                if (groupId > 0){
-                    order.setOrderGroupId(groupId);
-                    createOrder(order);
-                }
-                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
+        if (groupId <= 0 && orderGroup.getCoinPairChoiceId() > 0){
+            Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
+            if (result.getData() == null){
+                log.info("result ==>" + result.getMsg());
+            }else{
+                groupId = Math.abs(Integer.parseInt(result.getData().toString()));
+                log.info("订单组创建 ==>" + result.getMsg());
+            }
+            TradeOrder order = this.transformOrder(msg);
+            if (groupId > 0){
+                order.setOrderGroupId(groupId);
+                createOrder(order);
             }else {
-                Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
-                log.info("更新订单组成功 ==>"+updateResult.toString());
-                TradeOrder order = this.transformOrder(msg);
-                if (groupId > 0){
-                    order.setOrderGroupId(groupId);
-                    createOrder(order);
-                }else {
-                    log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
-                }
+                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
+            }
+        }else {
+            Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
+            log.info("更新订单组成功 ==>"+updateResult.toString());
+            TradeOrder order = this.transformOrder(msg);
+            if (groupId > 0){
+                order.setOrderGroupId(groupId);
+                createOrder(order);
+            }else {
+                log.info("首次或尾次订单创建失败！订单组id ==>"+groupId);
             }
         }
+
     }
 
     private void createOrder(TradeOrder order){
@@ -115,27 +113,24 @@ public class OrderHandler {
     private void consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
         TradeOrder tradeOrder = transformOrder(msg);
         int groupId = this.iOrderGroupClientService.getIdByName(groupName);
+        if (groupId > 0){
+            tradeOrder.setOrderGroupId(groupId);
+            int finishedOrderNumber = -1;
+            if (jsonObject.get("finished_order") != null){
+                finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
+                log.info("finishedOrderNum ==>" + finishedOrderNumber);
+            }
 
-        synchronized (this){
-            if (groupId > 0){
-                tradeOrder.setOrderGroupId(groupId);
-                int finishedOrderNumber = -1;
-                if (jsonObject.get("finished_order") != null){
-                    finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
-                    log.info("finishedOrderNum ==>" + finishedOrderNumber);
+            if (tradeOrder.getOrderGroupId() > 0){
+                int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
+                log.info("dbOrderNum ==>" + dbOrderNum);
+
+                if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                    Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                    log.info("添加订单信息："+result.toString());
                 }
-
-                if (tradeOrder.getOrderGroupId() > 0){
-                    int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
-                    log.info("dbOrderNum ==>" + dbOrderNum);
-
-                    if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
-                        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-                        log.info("添加订单信息："+result.toString());
-                    }
-                }else {
-                    log.info("订单组id不合法或重复添加 添加订单失败！");
-                }
+            }else {
+                log.info("订单组id不合法或重复添加 添加订单失败！");
             }
         }
     }
