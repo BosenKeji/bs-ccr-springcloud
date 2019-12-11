@@ -1,5 +1,7 @@
 package cn.bosenkeji.handler;
 
+import cn.bosenkeji.lock.DistributedLock;
+import cn.bosenkeji.lock.impl.RedisDistributedLock;
 import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.service.ITradeOrderClientService;
@@ -31,6 +33,7 @@ public class OrderHandler {
     private static final Logger log = LoggerFactory.getLogger(OrderHandler.class);
     private static final int GROUP_PLUS_ORDER_SIGN = 1;
     private static final int ONLY_ORDER_SIGN = 2;
+    private static final String LOCK_KEY = "order-lock";
 
 
     @Autowired
@@ -64,40 +67,60 @@ public class OrderHandler {
         }
     }
 
-    private synchronized void  consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
+    private void  consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
         log.info("orderGroup ==>"+orderGroup.toString());
         int groupId = orderGroup.getId();
-        if (orderGroup.getCoinPairChoiceId() > 0){
-            Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
-            if (result.getData() == null){
-                log.info("result ==>" + result.getMsg());
-            }else{
-                groupId = Integer.parseInt(result.getData().toString());
-                log.info("订单组创建 ==>" + result.getMsg());
-            }
-            TradeOrder order = this.transformOrder(msg);
-            if (groupId > 0){
-                order.setOrderGroupId(groupId);
-                createOrder(order);
+        DistributedLock distributedLock = new RedisDistributedLock(redisTemplate,LOCK_KEY,60);
+        String lockLogo = "";
+        try {
+            //获取锁
+            do {
+                lockLogo = distributedLock.acquireLock();
+            } while (lockLogo == null);
+
+            if (orderGroup.getCoinPairChoiceId() > 0){
+                Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
+                if (result.getData() == null){
+                    log.info("result ==>" + result.getMsg());
+                }else{
+                    groupId = Integer.parseInt(result.getData().toString());
+                    log.info("订单组创建 ==>" + result.getMsg());
+                }
+                TradeOrder order = this.transformOrder(msg);
+                if (groupId > 0){
+                    order.setOrderGroupId(groupId);
+                    createOrder(order);
+                }else {
+                    orderGroup.setId(Math.abs(groupId));
+                    Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
+                    log.info("更新订单组 ==>"+updateResult.toString());
+                    order.setOrderGroupId(Math.abs(groupId));
+                    createOrder(order);
+                }
             }else {
-                orderGroup.setId(Math.abs(groupId));
-                Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
-                log.info("更新订单组成功 ==>"+updateResult.toString());
-                order.setOrderGroupId(Math.abs(groupId));
-                createOrder(order);
+                log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());
             }
-        }else {
-            log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());
+        }finally {
+            log.info("lockLogo ==>"+lockLogo);
+            while(true){
+                boolean isUnLock = distributedLock.releaseLock(lockLogo);
+                if (isUnLock){
+                    break;
+                }
+            }
         }
+
 
     }
 
     private void createOrder(TradeOrder order){
         Result result = this.iTradeOrderClientService.addOneOrderGroup(order);
-        if (Integer.parseInt(result.getData().toString()) == 1){
-            log.info("首次或尾次订单创建成功！"+result.getMsg());
-        }else {
+        if (result.getData() != null){
+            if (Integer.parseInt(result.getData().toString()) == 1){
+                log.info("首次或尾次订单创建成功！"+result.getMsg());
+            }
+        } else {
             log.info("首次或尾次订单创建失败！"+result.getMsg());
         }
     }
@@ -105,26 +128,44 @@ public class OrderHandler {
     private synchronized void  consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
         TradeOrder tradeOrder = transformOrder(msg);
         int groupId = this.iOrderGroupClientService.getIdByName(groupName);
-        if (groupId > 0){
-            tradeOrder.setOrderGroupId(groupId);
-            int finishedOrderNumber = -1;
-            if (jsonObject.get("finished_order") != null){
-                finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
-                log.info("finishedOrderNum ==>" + finishedOrderNumber);
-            }
+        DistributedLock distributedLock = new RedisDistributedLock(redisTemplate,LOCK_KEY,60);
+        String lockLogo = "";
+        try {
+            //获取锁
+            do {
+                lockLogo = distributedLock.acquireLock();
+            } while (lockLogo == null);
 
-            if (tradeOrder.getOrderGroupId() > 0){
-                int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
-                log.info("dbOrderNum ==>" + dbOrderNum);
-
-                if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
-                    Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
-                    log.info("添加订单信息："+result.toString());
+            if (groupId > 0){
+                tradeOrder.setOrderGroupId(groupId);
+                int finishedOrderNumber = -1;
+                if (jsonObject.get("finished_order") != null){
+                    finishedOrderNumber = Integer.parseInt(jsonObject.getString("finished_order"))+1;
+                    log.info("finishedOrderNum ==>" + finishedOrderNumber);
                 }
-            }else {
-                log.info("订单组id不合法或重复添加 添加订单失败！");
+
+                if (tradeOrder.getOrderGroupId() > 0){
+                    int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
+                    log.info("dbOrderNum ==>" + dbOrderNum);
+
+                    if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                        log.info("添加订单信息："+result.toString());
+                    }
+                }else {
+                    log.info("订单组id不合法或重复添加 添加订单失败！");
+                }
+            }
+        }finally {
+            log.info("lockLogo ==>"+lockLogo);
+            while(true){
+                boolean isUnLock = distributedLock.releaseLock(lockLogo);
+                if (isUnLock){
+                    break;
+                }
             }
         }
+
     }
 
     private TradeOrder transformOrder(String msg) {
@@ -194,6 +235,7 @@ public class OrderHandler {
         orderGroup.setName(name);
         orderGroup.setCoinPairChoiceId(coinPairChoiceId);
 
+        log.info("填充了数据之后的订单组 ==>"+orderGroup.toString());
         return orderGroup;
     }
 }

@@ -105,10 +105,10 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeAveragePrice = tradeOrder.getTradeAveragePrice()* CommonConstantUtil.ACCURACY;
         double tradeNumbers = tradeOrder.getTradeNumbers()* CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost()* CommonConstantUtil.ACCURACY;
-        double shellProfit = tradeOrder.getSellProfit()* CommonConstantUtil.ACCURACY;
-        double extraProfit = tradeOrder.getExtraProfit() * CommonConstantUtil.ACCURACY;
-        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() * CommonConstantUtil.ACCURACY;
-        double profitRatio = tradeOrder.getProfitRatio() * CommonConstantUtil.ACCURACY;
+        double shellProfit = tradeOrder.getSellProfit()* CommonConstantUtil.ACCURACY_RATIO;
+        double extraProfit = tradeOrder.getExtraProfit() * CommonConstantUtil.ACCURACY_RATIO;
+        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() * CommonConstantUtil.ACCURACY_RATIO;
+        double profitRatio = tradeOrder.getProfitRatio() * CommonConstantUtil.ACCURACY_RATIO;
 
         tradeOrder.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
@@ -126,10 +126,10 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         double tradeAveragePrice = tradeOrder.getTradeAveragePrice() / CommonConstantUtil.ACCURACY;
         double tradeNumbers = tradeOrder.getTradeNumbers() / CommonConstantUtil.ACCURACY;
         double tradeCost = tradeOrder.getTradeCost() / CommonConstantUtil.ACCURACY;
-        double shellProfit = tradeOrder.getSellProfit() / CommonConstantUtil.ACCURACY;
-        double extraProfit = tradeOrder.getExtraProfit() / CommonConstantUtil.ACCURACY;
-        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() / CommonConstantUtil.ACCURACY;
-        double profitRatio = tradeOrder.getProfitRatio() / CommonConstantUtil.ACCURACY;
+        double shellProfit = tradeOrder.getSellProfit() / CommonConstantUtil.ACCURACY_RATIO;
+        double extraProfit = tradeOrder.getExtraProfit() / CommonConstantUtil.ACCURACY_RATIO;
+        double theoreticalBuildPrice = tradeOrder.getTheoreticalBuildPrice() / CommonConstantUtil.ACCURACY_RATIO;
+        double profitRatio = tradeOrder.getProfitRatio() / CommonConstantUtil.ACCURACY_RATIO;
 
         tradeOrder.setTradeAveragePrice(tradeAveragePrice);
         tradeOrder.setTradeNumbers(tradeNumbers);

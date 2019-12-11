@@ -124,7 +124,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     public Optional<Integer> add(OrderGroup orderGroup) {
 
-        double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY;
+        double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY_RATIO;
 
         orderGroup.setEndProfitRatio(endProfitRatio);
         orderGroup.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
@@ -172,7 +172,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     @Override
     public Optional<Integer> update(OrderGroup orderGroup) {
-            double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY;
+            double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY_RATIO;
 
             orderGroup.setEndProfitRatio(endProfitRatio);
             Integer result = this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup);

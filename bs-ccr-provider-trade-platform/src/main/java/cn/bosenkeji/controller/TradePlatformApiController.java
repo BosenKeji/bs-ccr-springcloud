@@ -74,6 +74,9 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
+        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
+            return new Result<>(null,"该用户的sign已存在，添加失败！");
+        }
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -103,6 +106,11 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0
                 && !ExistTradePlatformApi.getNickname().equals(tradePlatformApi.getNickname())){
             return new Result<>(null,"该用户的nickName已存在");
+        }
+        if (tradePlatformApi.getSign() != null){
+            if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
+                return new Result<>(null,"该用户的sign已存在更新失败！");
+            }
         }
 
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));

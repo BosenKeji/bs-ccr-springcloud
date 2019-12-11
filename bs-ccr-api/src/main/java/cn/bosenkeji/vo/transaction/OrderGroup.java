@@ -225,17 +225,6 @@ public class OrderGroup implements Serializable {
                 ", coinPairChoiceId=" + coinPairChoiceId +
                 ", endProfitRatio=" + endProfitRatio +
                 ", isEnd=" + isEnd +
-                ", endType=" + endType +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", coinPairChoice=" + coinPairChoice +
-                ", coin_pair_choice='" + coin_pair_choice + '\'' +
-                ", tradeOrders=" + tradeOrders +
-                ", buildNumbers=" + buildNumbers +
-                ", totalShell=" + totalShell +
-                ", totalCast=" + totalCast +
-                ", totalProfit=" + totalProfit +
-                '}';
+                ", endType=" + endType+"}";
     }
 }

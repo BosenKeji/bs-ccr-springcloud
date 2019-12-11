@@ -51,6 +51,9 @@ public class TradeOrderController {
     @ApiOperation(value = "添加单个交易订单信息",httpMethod = "POST",nickname = "addOneTradeOrder")
     @PostMapping("/")
     public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string") TradeOrder tradeOrder){
+        if (tradeOrder.getOrderGroupId() <= 0){
+            return new Result<>(null,"订单组id不合法！");
+        }
         return new Result<>(this.tradeOrderService.add(tradeOrder));
     }
 
