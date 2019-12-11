@@ -83,8 +83,8 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public Result getOrderNumberByGroupId(int orderGroupId) {
-                return new Result<>(-1,"hystrix");
+            public int getOrderNumberByGroupId(int orderGroupId) {
+                return -1;
             }
         };
     }

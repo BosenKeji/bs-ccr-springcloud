@@ -106,8 +106,8 @@ public class TradeOrderController {
     }
 
     @GetMapping("/order_number")
-    public Result getOrderNumberByGroupId(@RequestParam("orderGroupId") int orderGroupId){
+    public int getOrderNumberByGroupId(@RequestParam("orderGroupId") int orderGroupId){
         int num =  this.tradeOrderService.getOrderNumberByGroupId(orderGroupId);
-        return new Result<>(num);
+        return num;
     }
 }

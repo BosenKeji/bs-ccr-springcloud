@@ -37,9 +37,6 @@ public class OrderHandler {
 
 
     @Autowired
-    private MySource source;
-
-    @Autowired
     IOrderGroupClientService iOrderGroupClientService;
 
     @Autowired
@@ -96,7 +93,24 @@ public class OrderHandler {
                     Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
                     log.info("更新订单组 ==>"+updateResult.toString());
                     order.setOrderGroupId(Math.abs(groupId));
-                    createOrder(order);
+                    //防止重复接收到重复的消息
+                    //已完成订单数
+                    int finishedOrderNumber = -1;
+                    if (!DealUtil.getString(jsonObject.getString("finished_order")).equals("")){
+                        finishedOrderNumber = Integer.parseInt(DealUtil.getString(jsonObject.getString("finished_order")))+1;
+                    }
+                    log.info("finishedOrderNum ==>" + finishedOrderNumber);
+
+                    //该订单组id下的数据库订单数
+                    int dbOrderNum = this.iTradeOrderClientService.getOrderNumberByGroupId(Math.abs(groupId));
+                    log.info("dbOrderNum ==>" + dbOrderNum);
+
+                    //如果数据库单数等于0并小于mq发来的已完成订单数
+                    if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                        createOrder(order);
+                    }else {
+                        log.error("订单消息重复！");
+                    }
                 }
             }else {
                 log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());
@@ -145,7 +159,7 @@ public class OrderHandler {
                 }
 
                 if (tradeOrder.getOrderGroupId() > 0){
-                    int dbOrderNum = (int) this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId()).getData();
+                    int dbOrderNum = this.iTradeOrderClientService.getOrderNumberByGroupId(tradeOrder.getOrderGroupId());
                     log.info("dbOrderNum ==>" + dbOrderNum);
 
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
@@ -201,20 +215,6 @@ public class OrderHandler {
 
         return order;
     }
-
-//    private boolean sendGroupId(OrderGroupIdMQResult orderGroupIdMQResult ,String plantFormName){
-//        Message<OrderGroupIdMQResult> message = MessageBuilder.withPayload(orderGroupIdMQResult).build();
-//        if ("huobi".equals(plantFormName.toLowerCase())){
-//            return this.source.groupIdOutPutHB().send(message);
-//        }
-//        if ("okex".equals(plantFormName.toLowerCase())){
-//            return this.source.groupIdOutPutOK().send(message);
-//        }
-//
-//        log.info("plantFormName 不合法！");
-//        return false;
-//    }
-
 
     private OrderGroup transformOrderGroup(JSONObject jsonObject){
         OrderGroup orderGroup  = new OrderGroup();
