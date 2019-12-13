@@ -143,6 +143,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     @Override
     public Optional<Integer> add(TradeOrder tradeOrder) {
         transformNumericalValue(tradeOrder);
+        tradeOrder.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         Optional<Integer> integer = Optional.of(this.tradeOrderMapper.insertSelective(tradeOrder));
         pushToOpenSearch(tradeOrder.getId());
         return integer;

@@ -105,7 +105,7 @@ public class OrderHandler {
                     int dbOrderNum = this.iTradeOrderClientService.getOrderNumberByGroupId(Math.abs(groupId));
                     log.info("dbOrderNum ==>" + dbOrderNum);
 
-                    //如果数据库单数等于0并小于mq发来的已完成订单数
+                    //如果数据库单数大于等于0并小于mq发来的已完成订单数+1
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
                         createOrder(order);
                     }else {

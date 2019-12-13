@@ -128,6 +128,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
         orderGroup.setEndProfitRatio(endProfitRatio);
         orderGroup.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
+        orderGroup.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+        orderGroup.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         this.orderGroupMapper.insertSelective(orderGroup);
         pushToOpenSearch(orderGroup.getId());
         return Optional.of(orderGroup.getId());
@@ -175,6 +177,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY_RATIO;
 
             orderGroup.setEndProfitRatio(endProfitRatio);
+            orderGroup.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             Integer result = this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup);
             pushToOpenSearch(orderGroup.getId());
             return Optional.of(result);
