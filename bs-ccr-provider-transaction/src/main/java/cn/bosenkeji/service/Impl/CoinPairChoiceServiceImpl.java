@@ -193,6 +193,17 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         }
 
         if (!type.isEmpty() && !orderGroups.isEmpty()){
+            //填充订单组中空的
+            orderGroups.forEach(orderGroup -> {
+                if (orderGroup.getCoinPairChoice() == null){
+                    coinPairChoices.forEach(coinPairChoice -> {
+                        if (coinPairChoice.getId() == orderGroup.getCoinPairChoiceId()){
+                            orderGroup.setCoinPairChoice(coinPairChoice);
+                        }
+                    });
+                }
+            });
+
             if (type.equals(CommonConstantUtil.RECORD_PROFIT)){
                 orderGroups.forEach(orderGroup -> {
                     if (orderGroup.getIsEnd() == CommonConstantUtil.ORDER_GROUP_IS_END && orderGroup.getEndType() != CommonConstantUtil.ORDER_GROUP_FORGET){
@@ -209,6 +220,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             }
         }
 
+
+
         //去重
         List<CoinPairChoice> unique =  resultCoinPairChoices.stream().collect(
                 collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(CoinPairChoice::getId))), ArrayList::new));
@@ -221,8 +234,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                 result.add(coinPairChoice);
             }
         });
-
         return result;
+
     }
 
     @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ID_KEY,key = "#id",unless = "#result == null")
