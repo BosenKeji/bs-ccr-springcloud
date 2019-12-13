@@ -148,10 +148,9 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public Optional<Integer> checkExistByKeyAndStatus(int userId,String sign,int status) {
+    public Optional<Integer> checkExistBySignAndStatus(int userId,String sign,int status) {
         return Optional.of(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,sign, status));
     }
-
 
     @Override
     public Optional<Integer> checkExistByUserIdAndNickName(int userId, String nickName) {

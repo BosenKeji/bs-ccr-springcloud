@@ -74,7 +74,7 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
+        if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
             return new Result<>(null,"该用户的sign已存在，添加失败！");
         }
         tradePlatformApi.setStatus(1);
@@ -97,18 +97,19 @@ public class TradePlatformApiController {
     @ApiOperation(value = "更新交易平台api接口",notes = "更新交易平台api接口",httpMethod = "PUT",nickname = "updateOneTradePlatformApi")
     @PutMapping("/")
     public Result update(@RequestBody @NotNull @ApiParam(value = "交易平台API实体", required = true, type = "string") TradePlatformApi tradePlatformApi){
-        TradePlatformApi ExistTradePlatformApi = this.tradePlatformApiService.get(tradePlatformApi.getId());
+        TradePlatformApi existTradePlatformApi = this.tradePlatformApiService.get(tradePlatformApi.getId());
 
-        if (ExistTradePlatformApi == null){
+        if (existTradePlatformApi == null){
             return new Result<>(null,"交易平台API不存在");
         }
 
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() > 0
-                && !ExistTradePlatformApi.getNickname().equals(tradePlatformApi.getNickname())){
+                && !existTradePlatformApi.getNickname().equals(tradePlatformApi.getNickname())){
             return new Result<>(null,"该用户的nickName已存在");
         }
         if (tradePlatformApi.getSign() != null){
-            if (this.tradePlatformApiService.checkExistByKeyAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
+            if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1
+            && !existTradePlatformApi.getSign().equals(tradePlatformApi.getSign())){
                 return new Result<>(null,"该用户的sign已存在更新失败！");
             }
         }
