@@ -64,7 +64,7 @@ public class OrderHandler {
         }
     }
 
-    private void  consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
+    private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
         log.info("orderGroup ==>"+orderGroup.toString());
         int groupId = orderGroup.getId();
@@ -139,7 +139,7 @@ public class OrderHandler {
         }
     }
 
-    private synchronized void  consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
+    private void consumerOnlyOrderMsg(String msg,JSONObject jsonObject,String groupName){
         TradeOrder tradeOrder = transformOrder(msg);
         int groupId = this.iOrderGroupClientService.getIdByName(groupName);
         DistributedLock distributedLock = new RedisDistributedLock(redisTemplate,LOCK_KEY,60);
