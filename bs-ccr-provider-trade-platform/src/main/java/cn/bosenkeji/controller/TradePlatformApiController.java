@@ -110,7 +110,7 @@ public class TradePlatformApiController {
         if (tradePlatformApi.getSign() != null){
             if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1
             && !existTradePlatformApi.getSign().equals(tradePlatformApi.getSign())){
-                return new Result<>(null,"该用户的sign已存在更新失败！");
+                return new Result<>(null,"该API的账号已经绑定了机器人，在取消绑定之前，请勿重复绑定！");
             }
         }
 
