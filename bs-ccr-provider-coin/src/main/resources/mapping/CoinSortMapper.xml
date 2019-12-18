@@ -22,11 +22,11 @@
     select  exists (select 1 from coin_sort where coin_sort.trade_platform_id=#{param1} and coin_sort.coin_id=#{param2} limit 1 )
   </select>
 
-  <select id="findAllByTradePlatformId" parameterType="int" resultMap="BaseResultMap">
+  <select id="findAllByTradePlatformIdAndType" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
    from coin_sort
-   where trade_platform_id =#{tradePlatformId,jdbcType=INTEGER}
+   where coin_sort.trade_platform_id =#{param1,jdbcType=INTEGER} and coin_sort.type = #{param2,jdbcType=INTEGER}
   </select>
 
   <select id="findAll" resultMap="BaseResultMap">

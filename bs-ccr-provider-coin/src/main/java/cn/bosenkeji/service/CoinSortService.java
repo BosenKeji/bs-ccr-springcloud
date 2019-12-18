@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface CoinSortService {
 
-    PageInfo listByTradePlatformId(int tradePlatformId,int pageNum, int pageSize);
+    PageInfo listByTradePlatformId(int tradePlatformId,int type,int pageNum, int pageSize);
 
     Optional<Integer> add(CoinSort coinSort);
 

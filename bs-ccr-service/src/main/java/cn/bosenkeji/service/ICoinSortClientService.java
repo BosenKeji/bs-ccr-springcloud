@@ -18,10 +18,11 @@ import java.util.Optional;
 @FeignClient( name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class,fallbackFactory = ICoinSortClientServiceFallbackFactory.class)
 public interface ICoinSortClientService {
 
-    @GetMapping("/coin_sort/{tradePlatformId}")
-    public PageInfo listCoinSortByTradePlatformId(@PathVariable("tradePlatformId") int tradePlatformId,
-                                 @RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                                 @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
+    @GetMapping("/coin_sort/")
+    public PageInfo listCoinSortByTradePlatformId(@RequestParam("tradePlatformId") int tradePlatformId,
+                                                  @RequestParam( value="type") int type,
+                                                  @RequestParam( value="pageNum",defaultValue="1") int pageNum,
+                                                  @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon) ;
 
     @PostMapping("/coin_sort/")
     public Result addCoinSort(@RequestParam("tradePlatformName") String tradePlatformName,

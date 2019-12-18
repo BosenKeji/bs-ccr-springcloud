@@ -36,11 +36,11 @@ public class CoinSortServiceImpl implements CoinSortService {
      * cache 与coin货币表有关联查询
      *
      */
-    @Cacheable(value = RedisInterface.COIN_SORT_LIST_TPID_KEY,key = "#tradePlatformId+'-'+#pageNum+'-'+#pageSize")
+    @Cacheable(value = RedisInterface.COIN_SORT_LIST_TPID_KEY,key = "#tradePlatformId+'-'+#type+'-'+#pageNum+'-'+#pageSize")
     @Override
-    public PageInfo listByTradePlatformId(int tradePlatformId,int pageNum, int pageSize) {
+    public PageInfo listByTradePlatformId(int tradePlatformId,int type,int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo(this.coinSortMapper.findAllByTradePlatformId(tradePlatformId));
+        return new PageInfo<>(this.coinSortMapper.findAllByTradePlatformIdAndType(tradePlatformId,type));
     }
 
 

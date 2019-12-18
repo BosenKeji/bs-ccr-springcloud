@@ -23,13 +23,13 @@ public class ICoinSortClientServiceFallbackFactory implements FallbackFactory<IC
         return new ICoinSortClientService() {
 
             @Override
-            public PageInfo listCoinSortByTradePlatformId(int tradePlatformId, int pageNum, int pageSizeCommon) {
+            public PageInfo listCoinSortByTradePlatformId(int tradePlatformId, int type,int pageNum, int pageSizeCommon) {
                 PageHelper.startPage(pageNum,pageSizeCommon);
                 List<CoinSort> coinSorts=new ArrayList<>();
                 CoinSort coinSort=new CoinSort();
                 coinSort.setId(0);
                 coinSorts.add(coinSort);
-                return new PageInfo(coinSorts);
+                return new PageInfo<>(coinSorts);
             }
 
             @Override

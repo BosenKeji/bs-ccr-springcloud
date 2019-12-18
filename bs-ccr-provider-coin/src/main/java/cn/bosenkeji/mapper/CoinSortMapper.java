@@ -1,6 +1,7 @@
 package cn.bosenkeji.mapper;
 
 import cn.bosenkeji.vo.coin.CoinSort;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface CoinSortMapper {
 
     List<CoinSort> findAll();
 
-    List<CoinSort> findAllByTradePlatformId(Integer tradePlatformId);
+    List<CoinSort> findAllByTradePlatformIdAndType(Integer tradePlatformId,int type);
 
     Integer checkByTradePlatformIdAndCoinId(Integer tradePlatformId,Integer coinId);
 }

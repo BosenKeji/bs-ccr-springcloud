@@ -37,11 +37,12 @@ public class CoinSortController {
     DiscoveryClient discoveryClient;
 
     @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getCoinSortByTradePlatformId")
-    @GetMapping("/{tradePlatformId}")
-    public PageInfo listCoinSortByTradePlatformId(@PathVariable( value="tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+    @GetMapping("/")
+    public PageInfo listCoinSortByTradePlatformId(@RequestParam( value="tradePlatformId") @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+                                                  @RequestParam("type") @ApiParam(value = "货币类型 1是计价 2是基础", required = true, type = "integer" ,example = "1")int type,
                                                   @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                                   @RequestParam(value = "pageSizeCommon",defaultValue = "10") int pageSizeCommon){
-        return this.coinSortService.listByTradePlatformId(tradePlatformId, pageNum, pageSizeCommon);
+        return this.coinSortService.listByTradePlatformId(tradePlatformId,type,pageNum, pageSizeCommon);
     }
 
 

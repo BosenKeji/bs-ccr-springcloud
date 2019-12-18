@@ -37,10 +37,12 @@ public class ConsumerCoinSortController {
     private int pageSizeCommon;
 
     @ApiOperation(value = "根据交易平台id获取货币排序列表接口",httpMethod = "GET",nickname = "getOneCoinSort")
-    @GetMapping("/{tradePlatformId}")
-    public PageInfo listProduct(@PathVariable( value="tradePlatformId")@Min(1) @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+    @GetMapping("/")
+    public PageInfo listProduct(@RequestParam( value="tradePlatformId")@Min(1) @ApiParam(value = "交易平台id", required = true, type = "integer" ,example = "1") int tradePlatformId,
+                                @RequestParam("type") @ApiParam(value = "货币类型 1是计价 2是基础", required = true, type = "integer" ,example = "1")int type,
                                 @RequestParam( value="pageNum",defaultValue="1")@Min(1) int pageNum) {
-        return iCoinSortClientService.listCoinSortByTradePlatformId(tradePlatformId,pageNum, pageSizeCommon);
+        pageSizeCommon = 20;
+        return iCoinSortClientService.listCoinSortByTradePlatformId(tradePlatformId,type,pageNum, pageSizeCommon);
     }
 
     @ApiOperation(value = "添加单个货币排序接口",httpMethod = "POST",nickname = "addOneCoinSort")
