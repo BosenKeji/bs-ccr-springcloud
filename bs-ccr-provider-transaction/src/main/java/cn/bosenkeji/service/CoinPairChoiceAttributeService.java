@@ -25,7 +25,7 @@ public interface CoinPairChoiceAttributeService {
 
     Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
 
-    Optional<Integer> setting(String coinPairChoiceIdStr,int strategyId,int money ,int isCustom);
+    Optional<Integer> setting(String coinPairChoiceIdStr,int strategyId,double money ,int isCustom);
 
     List<Integer> findAllCoinPartnerChoiceId();
 

@@ -18,7 +18,7 @@ public class CoinPairChoiceAttribute {
     private int coinPairChoiceId;
 
     @ApiModelProperty("预算")
-    private int expectMoney;
+    private double expectMoney;
 
     @ApiModelProperty("策略 id")
     private int strategyId;
@@ -50,11 +50,11 @@ public class CoinPairChoiceAttribute {
         this.coinPairChoiceId = coinPairChoiceId;
     }
 
-    public int getExpectMoney() {
+    public double getExpectMoney() {
         return expectMoney;
     }
 
-    public void setExpectMoney(int expectMoney) {
+    public void setExpectMoney(double expectMoney) {
         this.expectMoney = expectMoney;
     }
 
@@ -96,5 +96,19 @@ public class CoinPairChoiceAttribute {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "CoinPairChoiceAttribute{" +
+                "id=" + id +
+                ", coinPairChoiceId=" + coinPairChoiceId +
+                ", expectMoney=" + expectMoney +
+                ", strategyId=" + strategyId +
+                ", isCustom=" + isCustom +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

@@ -3,6 +3,7 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.mapper.CoinPairChoiceAttributeCustomMapper;
 import cn.bosenkeji.service.CoinPairChoiceAttributeCustomService;
 import cn.bosenkeji.service.CoinPairChoiceService;
+import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 import org.springframework.stereotype.Service;
 
@@ -29,17 +30,27 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
 
     @Override
     public CoinPairChoiceAttributeCustom get(int id) {
-        return this.coinPairChoiceAttributeCustomMapper.selectByPrimaryKey(id);
+        CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom = this.coinPairChoiceAttributeCustomMapper.selectByPrimaryKey(id);
+        if (coinPairChoiceAttributeCustom != null){
+            coinPairChoiceAttributeCustom.setStopProfitMoney(coinPairChoiceAttributeCustom.getStopProfitMoney() / CommonConstantUtil.ACCURACY);
+        }
+        return coinPairChoiceAttributeCustom;
     }
 
     @Override
     public CoinPairChoiceAttributeCustom getByCoinPartnerChoiceId(int coinPartnerChoiceId) {
-        return this.coinPairChoiceAttributeCustomMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
+        CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom = this.coinPairChoiceAttributeCustomMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
+        if (coinPairChoiceAttributeCustom != null){
+            coinPairChoiceAttributeCustom.setStopProfitMoney(coinPairChoiceAttributeCustom.getStopProfitMoney() / CommonConstantUtil.ACCURACY);
+        }
+        return coinPairChoiceAttributeCustom;
     }
 
     @Override
     public Optional<Integer> update(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         int stopProfitType= coinPairChoiceAttributeCustom.getStopProfitType();
+        coinPairChoiceAttributeCustom.setStopProfitMoney(coinPairChoiceAttributeCustom.getStopProfitMoney() * CommonConstantUtil.ACCURACY);
+
         if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return Optional.of(FAIL);
         }
@@ -65,11 +76,13 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
 
     @Override
     public Optional<Integer> updateByCoinPairChoiceId(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
+        coinPairChoiceAttributeCustom.setStopProfitMoney(coinPairChoiceAttributeCustom.getStopProfitMoney() * CommonConstantUtil.ACCURACY);
         return Optional.ofNullable(this.coinPairChoiceAttributeCustomMapper.updateByCoinPartnerChoiceId(coinPairChoiceAttributeCustom));
     }
 
     @Override
     public Optional<Integer> add(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
+        coinPairChoiceAttributeCustom.setStopProfitMoney(coinPairChoiceAttributeCustom.getStopProfitMoney() * CommonConstantUtil.ACCURACY);
         if (this.coinPairChoiceService.get(coinPairChoiceAttributeCustom.getCoinPairChoiceId()) == null){
             return Optional.of(FAIL);
         }

@@ -75,7 +75,7 @@ public class CoinPairChoiceAttributeController {
     @PostMapping("/")
     public Result add(@RequestParam(value = "coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串 ", required = true, type = "string") String coinPairChoiceIdStr,
                       @RequestParam("strategyId") @Min(1) @ApiParam(value = "策略id'", required = true, type = "integer" ,example = "1") int strategyId,
-                      @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") int money ,
+                      @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "double" ,example = "1") double money ,
                       @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") int isCustom){
         if (coinPairChoiceIdStr.length() == 0){
             return new Result<>(-1,"fail");

@@ -6,7 +6,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="coin_pair_choice_id" jdbcType="INTEGER" property="coinPairChoiceId" />
     <result column="stop_profit_type" jdbcType="TINYINT" property="stopProfitType" />
-    <result column="stop_profit_money" jdbcType="INTEGER" property="stopProfitMoney" />
+    <result column="stop_profit_money" jdbcType="INTEGER" javaType="double" property="stopProfitMoney" />
     <result column="stop_profit_trace_trigger_rate" jdbcType="FLOAT" property="stopProfitTraceTriggerRate" />
     <result column="stop_profit_trace_drop_rate" jdbcType="FLOAT" property="stopProfitTraceDropRate" />
     <result column="stop_profit_fixed_rate" jdbcType="FLOAT" property="stopProfitFixedRate" />

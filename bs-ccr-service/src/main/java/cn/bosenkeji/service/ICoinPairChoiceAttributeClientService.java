@@ -22,7 +22,7 @@ public interface ICoinPairChoiceAttributeClientService {
     @PostMapping("/coin_pair_choice_attribute/")
     public Result addOneCoinPairChoiceAttribute(@RequestParam(value = "coinPairChoiceIdStr") String coinPairChoiceIdStr,
                                                 @RequestParam("strategyId") int strategyId,
-                                                @RequestParam("money") int money ,
+                                                @RequestParam("money") double money ,
                                                 @RequestParam("isCustom")  int isCustom);
 
 

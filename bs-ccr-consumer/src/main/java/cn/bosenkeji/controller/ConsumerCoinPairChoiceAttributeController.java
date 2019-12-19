@@ -39,7 +39,7 @@ public class ConsumerCoinPairChoiceAttributeController {
     @PostMapping("/")
     public Result addOneCoinPairChoiceAttribute(@RequestParam("coinPairChoiceIdStr") @ApiParam(value = "多选框获取多个自选币的id 字符串,每个id之间用,隔开", required = true, type = "string") @NotNull String coinPairChoiceIdStr,
                                                 @RequestParam("strategyId") @ApiParam(value = "策略id'", required = true, type = "integer" ,example = "1")@Min(1) int strategyId,
-                                                @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "integer" ,example = "1") @Min(0) int money ,
+                                                @RequestParam("money") @ApiParam(value = "预算'", required = true, type = "double" ,example = "1") @Min(0) double money ,
                                                 @RequestParam("isCustom") @ApiParam(value = "是否为自定义属性'", required = true, type = "integer" ,example = "1") @Min(0) int isCustom){
 
         return this.iCoinPairChoiceAttributeClientService.addOneCoinPairChoiceAttribute(coinPairChoiceIdStr,strategyId,money,isCustom);

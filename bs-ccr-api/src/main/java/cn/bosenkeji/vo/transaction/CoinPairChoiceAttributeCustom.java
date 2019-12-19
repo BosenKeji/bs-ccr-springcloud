@@ -21,7 +21,7 @@ public class CoinPairChoiceAttributeCustom {
     private int stopProfitType;
 
     @ApiModelProperty("止盈金额")
-    private int stopProfitMoney;
+    private double stopProfitMoney;
 
     @ApiModelProperty("追踪止盈触发比例")
     private Double stopProfitTraceTriggerRate;
@@ -64,11 +64,11 @@ public class CoinPairChoiceAttributeCustom {
         this.stopProfitType = stopProfitType;
     }
 
-    public int getStopProfitMoney() {
+    public double getStopProfitMoney() {
         return stopProfitMoney;
     }
 
-    public void setStopProfitMoney(int stopProfitMoney) {
+    public void setStopProfitMoney(double stopProfitMoney) {
         this.stopProfitMoney = stopProfitMoney;
     }
 

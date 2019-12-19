@@ -37,32 +37,42 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
 
     @Override
     public CoinPairChoiceAttribute getByCoinPartnerChoiceId(int coinPartnerChoiceId) {
-        return this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
+        CoinPairChoiceAttribute coinPairChoiceAttribute = this.coinPairChoiceAttributeMapper.selectByCoinPartnerChoiceId(coinPartnerChoiceId);
+        if (coinPairChoiceAttribute != null){
+            double money = coinPairChoiceAttribute.getExpectMoney()/CommonConstantUtil.ACCURACY;
+            coinPairChoiceAttribute.setExpectMoney(money);
+        }
+        return coinPairChoiceAttribute;
     }
 
     @Override
     public CoinPairChoiceAttribute get(int id) {
-        return this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
+        CoinPairChoiceAttribute coinPairChoiceAttribute = this.coinPairChoiceAttributeMapper.selectByPrimaryKey(id);
+        if (coinPairChoiceAttribute != null){
+            coinPairChoiceAttribute.setExpectMoney(coinPairChoiceAttribute.getExpectMoney() / CommonConstantUtil.ACCURACY);
+        }
+        return coinPairChoiceAttribute;
     }
 
     @Override
     public Optional<Integer> update(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute));
+        coinPairChoiceAttribute.setExpectMoney(coinPairChoiceAttribute.getExpectMoney() * CommonConstantUtil.ACCURACY);
+        return Optional.of(this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute));
     }
 
     @Override
     public Optional<Integer> add(CoinPairChoiceAttribute coinPairChoiceAttribute) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute));
+        return Optional.of(this.coinPairChoiceAttributeMapper.insertSelective(coinPairChoiceAttribute));
     }
 
     @Override
     public Optional<Integer> delete(int coinPairChoiceId) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.deleteByCoinPairChoiceId(coinPairChoiceId));
+        return Optional.of(this.coinPairChoiceAttributeMapper.deleteByCoinPairChoiceId(coinPairChoiceId));
     }
 
     @Override
     public Optional<Integer> batchDelete(List<Integer> coinPartnerChoiceIds) {
-        return Optional.ofNullable(this.coinPairChoiceAttributeMapper.batchDelete(coinPartnerChoiceIds));
+        return Optional.of(this.coinPairChoiceAttributeMapper.batchDelete(coinPartnerChoiceIds));
     }
 
     @Override
@@ -71,7 +81,7 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
     }
 
     @Override
-    public Optional<Integer> setting(String coinPairChoiceIdStr, int strategyId, int money, int isCustom) {
+    public Optional<Integer> setting(String coinPairChoiceIdStr, int strategyId, double money, int isCustom) {
         //字符串切割
         String [] coinPairChoiceIdStrings = coinPairChoiceIdStr.split(",");
 
@@ -83,7 +93,8 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
         /*根据strategyId查询StrategyOther*/
         StrategyOther strategyOther = this.iStrategyService.getStrategy(strategyId);
         int lever = strategyOther.getLever();
-        int expectMoney=(money*lever)/coinPairChoiceIds.length;
+        double expectMoney=((money*lever)/coinPairChoiceIds.length)*CommonConstantUtil.ACCURACY;
+        System.out.println(expectMoney);
 
         /*查询所有自选币id*/
         List<Integer> dbAllCoinPairChoiceIds = this.coinPairChoiceService.findAllCoinPartnerChoiceId();
@@ -143,7 +154,8 @@ public class CoinPairChoiceAttributeServiceImpl implements CoinPairChoiceAttribu
                     coinPairChoiceAttribute.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
                     /*更新已有自选币的属性*/
-                    update(coinPairChoiceAttribute);
+                    System.out.println(coinPairChoiceAttribute.toString());
+                    this.coinPairChoiceAttributeMapper.updateByPrimaryKeySelective(coinPairChoiceAttribute);
                 });
             }
         }
