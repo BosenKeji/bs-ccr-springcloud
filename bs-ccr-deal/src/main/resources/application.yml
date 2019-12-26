@@ -5,10 +5,7 @@ spring:
     name: bs-ccr-deal
   main:
     allow-bean-definition-overriding: true
-  cloud:
-    nacos:
-      discovery:
-        server-addr: nacos-dev:8848
+
 #feign:
 #  hystrix:
 #    enabled: true
