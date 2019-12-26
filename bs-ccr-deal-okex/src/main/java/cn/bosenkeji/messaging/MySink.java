@@ -9,7 +9,7 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface MySink {
 
-    @Input("input1")
-    SubscribableChannel input1();
+    @Input("okex_input")
+    SubscribableChannel okexInput();
 
 }
