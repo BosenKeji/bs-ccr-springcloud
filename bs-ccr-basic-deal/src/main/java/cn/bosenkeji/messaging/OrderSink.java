@@ -4,12 +4,10 @@ import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
 
 /**
- * @Author CAJR
- * @create 2019/7/26 15:46
+ * @author CAJR
+ * @date 2019/12/26 7:40 下午
  */
-public interface MySink {
-
-    @Input("input1")
-    SubscribableChannel input1();
-
+public interface OrderSink {
+    @Input("order_group_input")
+    SubscribableChannel orderGroupInput();
 }
