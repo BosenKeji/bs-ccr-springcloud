@@ -1,4 +1,4 @@
-package cn.bosenkeji.messaging;
+package cn.bosenkeji.message;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
