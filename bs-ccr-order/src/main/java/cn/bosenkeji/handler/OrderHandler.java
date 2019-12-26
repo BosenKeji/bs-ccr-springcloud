@@ -5,7 +5,7 @@ import cn.bosenkeji.lock.impl.RedisDistributedLock;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
-import cn.bosenkeji.utils.DealUtil;
+import cn.bosenkeji.utils.MqMessageUtil;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import cn.bosenkeji.vo.transaction.TradeOrder;
 import com.alibaba.fastjson.JSON;
@@ -45,8 +45,8 @@ public class OrderHandler {
     public void consumerOrderGroupMsg(String msg){
         log.info(msg);
         JSONObject jsonObject = JSON.parseObject(msg);
-        int sign = DealUtil.getInteger(jsonObject.get("sign"));
-        String groupName = DealUtil.getString(jsonObject.get("name"));
+        int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
+        String groupName = MqMessageUtil.getString(jsonObject.get("name"));
         log.info("sign ==> "+ sign);
 
         if (sign == GROUP_PLUS_ORDER_SIGN){
@@ -92,8 +92,8 @@ public class OrderHandler {
                     //防止重复接收到重复的消息
                     //已完成订单数
                     int finishedOrderNumber = -1;
-                    if (!DealUtil.getString(jsonObject.getString("finished_order")).equals("")){
-                        finishedOrderNumber = Integer.parseInt(DealUtil.getString(jsonObject.getString("finished_order")))+1;
+                    if (!MqMessageUtil.getString(jsonObject.getString("finished_order")).equals("")){
+                        finishedOrderNumber = Integer.parseInt(MqMessageUtil.getString(jsonObject.getString("finished_order")))+1;
                     }
                     log.info("finishedOrderNum ==>" + finishedOrderNumber);
 
@@ -183,18 +183,18 @@ public class OrderHandler {
 
         JSONObject json = JSON.parseObject(msg);
 
-        int orderGroupId = DealUtil.getInteger(json.get("orderGroupId"));
-        double theoreticalBuildPrice = DealUtil.getDouble(json.get("theoreticalBuildPrice"));
-        double profitRatio = DealUtil.getDouble(json.get("profitRatio"));
-        double tradeAveragePrice = DealUtil.getDouble(json.get("tradeAveragePrice"));
-        double tradeNumbers = DealUtil.getDouble(json.get("tradeNumbers"));
-        double tradeCost = DealUtil.getDouble(json.get("tradeCost"));
-        int tradeType = DealUtil.getInteger(json.get("tradeType"));
+        int orderGroupId = MqMessageUtil.getInteger(json.get("orderGroupId"));
+        double theoreticalBuildPrice = MqMessageUtil.getDouble(json.get("theoreticalBuildPrice"));
+        double profitRatio = MqMessageUtil.getDouble(json.get("profitRatio"));
+        double tradeAveragePrice = MqMessageUtil.getDouble(json.get("tradeAveragePrice"));
+        double tradeNumbers = MqMessageUtil.getDouble(json.get("tradeNumbers"));
+        double tradeCost = MqMessageUtil.getDouble(json.get("tradeCost"));
+        int tradeType = MqMessageUtil.getInteger(json.get("tradeType"));
         Timestamp createdAt = json.getTimestamp("createdAt");
         if (tradeType > 1){
             if(json.get("sellProfit") != null && json.get("extraProfit") != null) {
-                double sellProfit = DealUtil.getDouble(json.getDouble("sellProfit"));
-                double extraProfit = DealUtil.getDouble(json.getDouble("extraProfit"));
+                double sellProfit = MqMessageUtil.getDouble(json.getDouble("sellProfit"));
+                double extraProfit = MqMessageUtil.getDouble(json.getDouble("extraProfit"));
                 order.setExtraProfit(extraProfit);
                 order.setSellProfit(sellProfit);
             }
@@ -215,14 +215,14 @@ public class OrderHandler {
     private OrderGroup transformOrderGroup(JSONObject jsonObject){
         OrderGroup orderGroup  = new OrderGroup();
 
-        String name = DealUtil.getString(jsonObject.get("name"));
+        String name = MqMessageUtil.getString(jsonObject.get("name"));
         int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
         if (jsonObject.get("isEnd") != null){
-            int isEnd = DealUtil.getInteger(jsonObject.get("isEnd"));
+            int isEnd = MqMessageUtil.getInteger(jsonObject.get("isEnd"));
             orderGroup.setIsEnd(isEnd);
             if (isEnd == 1){
-                double endProfitRatio = DealUtil.getDouble(jsonObject.get("endProfitRatio"));
-                int endType = DealUtil.getInteger(jsonObject.getInteger("endType"));
+                double endProfitRatio = MqMessageUtil.getDouble(jsonObject.get("endProfitRatio"));
+                int endType = MqMessageUtil.getInteger(jsonObject.getInteger("endType"));
                 orderGroup.setEndProfitRatio(endProfitRatio);
                 orderGroup.setEndType(endType);
             }

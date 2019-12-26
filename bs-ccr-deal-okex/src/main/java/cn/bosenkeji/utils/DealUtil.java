@@ -130,14 +130,7 @@ public class DealUtil {
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
 
-        boolean b;
-        if ("okex".equals(platformName)) {
-            b = source.okexOutput().send(jsonMessage);
-        } else {
-            b = source.huobiOutput().send(jsonMessage);
-        }
-
-        return b;
+        return source.okexOutput().send(jsonMessage);
     }
 
 
