@@ -6,5 +6,5 @@ COPY . .
 RUN  mvn clean package -nsu
 
 VOLUME /tmp
-EXPOSE 9100
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","target/bs-ccr-deal-1.0.0.jar"]
+EXPOSE 6102
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","target/bs-ccr-deal-okex-1.0.0.jar"]
