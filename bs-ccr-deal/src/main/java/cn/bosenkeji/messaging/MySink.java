@@ -10,6 +10,6 @@ import org.springframework.messaging.SubscribableChannel;
 public interface MySink {
 
     @Input("huobi_input")
-    SubscribableChannel buobiInput();
+    SubscribableChannel huobiInput();
 
 }
