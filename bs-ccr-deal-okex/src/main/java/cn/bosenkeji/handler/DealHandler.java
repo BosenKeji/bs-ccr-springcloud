@@ -1,5 +1,6 @@
 package cn.bosenkeji.handler;
 
+import cn.bosenkeji.enums.DealEnum;
 import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.utils.DealCalculator;
 import cn.bosenkeji.utils.DealParameterParser;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.Message;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,34 +30,18 @@ public class DealHandler {
 
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
 
-    private static final String OKEX_PLATFORM_NAME = "okex";
-
     @Autowired
     private MySource source;
 
     @Autowired
     private RedisTemplate redisTemplate;
 
-//    @RequestMapping("/send")
-//    public String send() {
-//        RocketMQResult rocketMQResult = new RocketMQResult();
-//        rocketMQResult.setSignId("13873693992");
-//        rocketMQResult.setSymbol("EOS-USDT");
-//        rocketMQResult.setPlantFormName("okex");
-//        rocketMQResult.setFinished_order(0);
-//        rocketMQResult.setType("buy");
-//        JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
-//        Message<String> build = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
-//        source.output1().send(build);
-//        return "end";
-//    }
-
     @StreamListener("okex_input")
     private void consumerMessage(String msg) {
 
         //1、参数处理
         //mq实时报价
-        JSONObject jsonObject = JSON.parseObject(msg);  //json格式化
+        JSONObject jsonObject = JSON.parseObject(msg);
         //mq参数解析
         RealTimeTradeParameter realTimeTradeParameter = new RealTimeTradeParameterParser(jsonObject).getRealTimeTradeParameter();
         //mq参数检测
@@ -65,8 +51,8 @@ public class DealHandler {
             return;
         }
         String setKey = realTimeTradeParameter.getSymbol() + "_zset";
-        if (OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
-            setKey = OKEX_PLATFORM_NAME + "_" + setKey;
+        if (DealEnum.OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
+            setKey = DealEnum.OKEX_PLATFORM_NAME + "_" + setKey;
         }
         realTimeTradeParameter.setSetKey(setKey);
 
@@ -93,7 +79,7 @@ public class DealHandler {
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
 
             //判断是否交易
-            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 3) {
+            if (dealParameter.getTradeStatus() != 1 && !DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
                 return;
             }
 
@@ -126,7 +112,8 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
-                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_SELL,source);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    boolean isSend = source.okexOutput().send(messageObject);
                     log.info("sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
 
@@ -139,7 +126,8 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    boolean isSend = source.okexOutput().send(messageObject);
                     log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }

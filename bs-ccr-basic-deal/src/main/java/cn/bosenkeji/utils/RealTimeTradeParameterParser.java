@@ -1,5 +1,6 @@
 package cn.bosenkeji.utils;
 
+import cn.bosenkeji.enums.DealEnum;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -15,12 +16,6 @@ public class RealTimeTradeParameterParser {
 
     private JSONObject jsonObject;
 
-    private static final String SELL_PRICE = "sell";
-    private static final String BUY_DEEP = "bids";
-    private static final String SELL_DEEP = "asks";
-    private static final String SYMBOL = "symbol";
-    private static final String PLATFORM_NAME = "plantFormName";
-
     public RealTimeTradeParameterParser() { }
 
     public RealTimeTradeParameterParser(JSONObject jsonObject) {
@@ -30,14 +25,14 @@ public class RealTimeTradeParameterParser {
     public RealTimeTradeParameter getRealTimeTradeParameter() {
         RealTimeTradeParameter parameter = new RealTimeTradeParameter();
 
-        String platFormName = DealUtil.getString(jsonObject.get(PLATFORM_NAME));
-        String symbol = DealUtil.getString(jsonObject.get(SYMBOL));
-        Double sellPrice = DealUtil.getDouble(((JSONObject)jsonObject.get("price")).get(SELL_PRICE));
+        String platFormName = DealUtil.getString(jsonObject.get(DealEnum.PLATFORM_NAME));
+        String symbol = DealUtil.getString(jsonObject.get(DealEnum.SYMBOL));
+        Double sellPrice = DealUtil.getDouble(((JSONObject)jsonObject.get("price")).get(DealEnum.SELL_PRICE));
 
         //买卖的深度
         JSONObject deep = (JSONObject)jsonObject.get("deep");
-        JSONArray buyDeep = transformDeep(deep.get(BUY_DEEP));
-        JSONArray sellDeep = transformDeep(deep.get(SELL_DEEP));
+        JSONArray buyDeep = transformDeep(deep.get(DealEnum.BUY_DEEP));
+        JSONArray sellDeep = transformDeep(deep.get(DealEnum.SELL_DEEP));
 
         parameter.setSellPrice(sellPrice);
         parameter.setBuyDeep(buyDeep);

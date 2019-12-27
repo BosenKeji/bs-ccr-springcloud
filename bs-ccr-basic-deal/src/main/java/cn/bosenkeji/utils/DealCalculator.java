@@ -1,12 +1,11 @@
 package cn.bosenkeji.utils;
 
+import cn.bosenkeji.enums.DealEnum;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -18,8 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 
 public class DealCalculator {
-
-    private static final Logger log = LoggerFactory.getLogger(DealCalculator.class);
 
     /**
      * 计算持仓均价
@@ -123,8 +120,8 @@ public class DealCalculator {
      */
     public static boolean isSell(DealParameter dealParameter, RealTimeTradeParameter realTimeTradeParameter,
                                  RedisParameter redisParameter, RedisTemplate redisTemplate) {
-
-        Integer isStopProfitTrace = dealParameter.getIsStopProfitTrace(); //是否启用追踪止盈
+        //是否启用追踪止盈
+        Integer isStopProfitTrace = dealParameter.getIsStopProfitTrace();
         Double stopProfitPrice = dealParameter.getTargetProfitPrice();
         Double callBackRatio = dealParameter.getTurnDownRatio();
 
@@ -151,14 +148,14 @@ public class DealCalculator {
 
                 //记录 标志进入追踪止盈
                 if (isTriggerTraceStopProfit == 0) {
-                    updateRedisHashValue(javaRedisKey,DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
-                    updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
+                    updateRedisHashValue(javaRedisKey, DealEnum.IS_TRIGGER_TRACE_STOP_PROFIT,"1",redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealEnum.TRIGGER_STOP_PROFIT_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                     return false;
                 }
 
                 //记录实时收益比的最高数值
                 if (historyMaxBenefitRatio == 0 || historyMaxBenefitRatio - realTimeEarningRatio < 0) {
-                    updateRedisHashValue(javaRedisKey,DealUtil.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
+                    updateRedisHashValue(javaRedisKey,DealEnum.HISTORY_MAX_BENEFIT_RATIO,realTimeEarningRatio.toString(),redisTemplate);
                 }
             }
             //
@@ -248,14 +245,14 @@ public class DealCalculator {
         if (averagePrice - lowerAveragePrice <= 0) {
             //标志已触发追踪建仓
             if (isFollowBuild == 0) {
-                updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"1",redisTemplate);
-                updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
+                updateRedisHashValue(javaRedisKey,DealEnum.IS_FOLLOW_BUILD,"1",redisTemplate);
+                updateRedisHashValue(javaRedisKey,DealEnum.TRIGGER_FOLLOW_BUILD_ORDER,dealParameter.getFinishedOrder().toString(),redisTemplate);
                 return false;
             }
 
             //记录最小拟买入均价
             if (minAveragePrice - averagePrice > 0) {
-                updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
+                updateRedisHashValue(javaRedisKey,DealEnum.MIN_AVERAGE_PRICE,averagePrice.toString(),redisTemplate);
             }
 
             //拟买入均价是否大于等于回调均价？ 是则确定买入
@@ -263,9 +260,9 @@ public class DealCalculator {
 
         } else {
             //不在追踪建仓范围，取消追踪建仓标志
-            updateRedisHashValue(javaRedisKey,DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
-            updateRedisHashValue(javaRedisKey,DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
-            updateRedisHashValue(javaRedisKey,DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealEnum.IS_FOLLOW_BUILD,"0",redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealEnum.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
+            updateRedisHashValue(javaRedisKey,DealEnum.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
         }
         return isBuy;
     }
