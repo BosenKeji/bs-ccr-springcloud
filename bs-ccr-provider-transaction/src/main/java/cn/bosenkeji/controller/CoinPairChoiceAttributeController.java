@@ -58,7 +58,6 @@ public class CoinPairChoiceAttributeController {
     DiscoveryClient client;
 
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_ATTRIBUTE_ID_KEY,key = "#")
     @ApiOperation(value = "获取单个自选货币属性接口",httpMethod = "GET",nickname = "getOneCoinPairChoiceAttributeByCoinPartnerChoiceID")
     @GetMapping("/{coinPartnerChoiceId}")
     public CoinPairChoiceAttribute getByCoinPartnerChoiceId(@PathVariable("coinPartnerChoiceId") @Min(1) @ApiParam(value = "自选币ID'", required = true, type = "integer" ,example = "1") int coinPartnerChoiceId){
