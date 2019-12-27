@@ -1,7 +1,7 @@
 spring:
   redis:
     database: 0
-    host: inside-network.redis.rds.aliyuncs.com  #内网地址
+    host: r-t4nrfvp20g0nw7rn3w.redis.singapore.rds.aliyuncs.com  #内网地址
 #    host: internal.redis.rds.aliyuncs.com  #外网地址
     port: 6379
     password: AYbosenkj19
@@ -16,17 +16,14 @@ spring:
     stream:
       rocketmq:
         binder:
-          name-server: MQ_INST_1782728101358463_BbRT1x5s.us-east-1.mq-internal.aliyuncs.com:8080
+          name-server: MQ_INST_1782728101358463_BbtxLt90.ap-southeast-1.mq-internal.aliyuncs.com:8080
           access-key: LTAISwQkitLFbG0t
           secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
-
       bindings:
-        input1:
-          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-symbol-price
-          group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-symbol-price
+        okex_output:
+          destination: MQ_INST_1782728101358463_BbtxLt90%bs-ccr-topic-response-symbol-trade-info
           content-type: application/json
-
-        output1:
-          destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info
-          group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-response-symbol-trade-info
+        okex_input:
+          destination: MQ_INST_1782728101358463_BbtxLt90%bs-ccr-topic-symbol-price
           content-type: application/json
+          group: MQ_INST_1782728101358463_BbtxLt90%GID-TCP-bs-ccr-consumer-symbol-price

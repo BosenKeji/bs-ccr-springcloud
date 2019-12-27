@@ -8,7 +8,6 @@ import cn.bosenkeji.utils.RealTimeTradeParameterParser;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
-import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -16,18 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -57,7 +50,7 @@ public class DealHandler {
 //        return "end";
 //    }
 
-    @StreamListener("input1")
+    @StreamListener("okex_input")
     private void consumerMessage(String msg) {
 
         //1、参数处理
@@ -116,14 +109,13 @@ public class DealHandler {
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
-                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) return;
+                if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) {return;}
             }
 
             //是否清除 触发追踪建仓标志
             if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {
                 if (redisParameter.getIsFollowBuild() == 1) {
-                    if (DealUtil.isClearTriggerFollowBuild(dealParameter, redisParameter, realTimeTradeParameter, redisTemplate))
-                        return;
+                    if (DealUtil.isClearTriggerFollowBuild(dealParameter, redisParameter, realTimeTradeParameter, redisTemplate)) {return;}
                 }
             }
 

@@ -9,12 +9,7 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface MySink {
 
-    @Input("input1")
-    SubscribableChannel input1();
+    @Input("huobi_input")
+    SubscribableChannel huobiInput();
 
-//    @Input("order_input")
-//    SubscribableChannel orderInput();
-
-    @Input("order_group_input")
-    SubscribableChannel orderGroupInput();
 }
