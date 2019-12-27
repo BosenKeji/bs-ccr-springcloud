@@ -1,5 +1,6 @@
 package cn.bosenkeji.handler;
 
+import cn.bosenkeji.enums.DealEnum;
 import cn.bosenkeji.messaging.MySource;
 import cn.bosenkeji.utils.DealCalculator;
 import cn.bosenkeji.utils.DealParameterParser;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.Message;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +31,6 @@ import java.util.stream.Collectors;
 public class DealHandler {
 
     private static final Logger log = LoggerFactory.getLogger(DealHandler.class);
-
-    private static final String OKEX_PLATFORM_NAME = "okex";
 
     DealHandler() { }
 
@@ -60,8 +60,8 @@ public class DealHandler {
             log.info("实时价格参数错误！" + realTimeTradeParameter);
         }
         String setKey = realTimeTradeParameter.getSymbol() + "_zset";
-        if ("okex".equals(realTimeTradeParameter.getPlatFormName())) {
-            setKey = OKEX_PLATFORM_NAME + "_" + setKey;
+        if (DealEnum.OKEX_PLATFORM_NAME.equals(realTimeTradeParameter.getPlatFormName())) {
+            setKey = DealEnum.OKEX_PLATFORM_NAME + "_" + setKey;
         }
         realTimeTradeParameter.setSetKey(setKey);
         handle(realTimeTradeParameter);
@@ -98,7 +98,7 @@ public class DealHandler {
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
 
             //判断是否交易
-            if (dealParameter.getTradeStatus() != 1 && dealParameter.getTradeStatus() != 3) {
+            if (dealParameter.getTradeStatus() != 1 && !DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
                 return;
             }
 
@@ -131,21 +131,23 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
-                    boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_SELL,source);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    boolean isSend = source.huobiOutput().send(messageObject);
                     log.info("sell-" + isSend + "  " + realTimeTradeParameter  + "  " + dealParameter);
                 }
 
             }
-
-            if (dealParameter.getTradeStatus() != 3) {  //交易状态为3 停止买入 正常买出
+            //交易状态为3 停止买入 正常买出
+            if (DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
                 //判断买
                 boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isBuy) {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                     boolean isSend = DealUtil.sendMessage(dealParameter,realTimeTradeParameter.getPlatFormName(),DealUtil.TRADE_TYPE_BUY,source);
-                     log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    boolean isSend = source.huobiOutput().send(messageObject);
+                    log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }
         });
