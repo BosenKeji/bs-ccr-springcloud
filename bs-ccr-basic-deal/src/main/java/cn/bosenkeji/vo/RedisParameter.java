@@ -10,16 +10,27 @@ public class RedisParameter {
 
     private String redisKey;
 
-    private Double historyMaxBenefitRatio; //历史最高收益比
-    private Integer isTriggerTraceStopProfit; //是否触发追踪止盈
+    /**
+     * historyMaxBenefitRatio：历史最高收益比
+     * isTriggerTraceStopProfit：是否触发追踪止盈
+     *
+     * isFollowBuild：是否触发追踪建仓
+     * minAveragePrice：最小交易均价
+     * realTimeEarningRatio：实时收益比
+     *
+     * triggerStopProfitOrder：触发追踪止盈的单数
+     * triggerFollowBuildOrder：触发追踪建仓的单数
+     */
 
-    private Integer isFollowBuild; //是否触发追踪建仓
-    private Double minAveragePrice; //最小交易均价
-    private Double realTimeEarningRatio;  //实时收益比
+    private Double historyMaxBenefitRatio;
+    private Integer isTriggerTraceStopProfit;
 
+    private Integer isFollowBuild;
+    private Double minAveragePrice;
+    private Double realTimeEarningRatio;
 
-    private Integer triggerStopProfitOrder; //触发追踪止盈的单数
-    private Integer triggerFollowBuildOrder; //触发追踪建仓的单数
+    private Integer triggerStopProfitOrder;
+    private Integer triggerFollowBuildOrder;
 
     public RedisParameter() { }
 

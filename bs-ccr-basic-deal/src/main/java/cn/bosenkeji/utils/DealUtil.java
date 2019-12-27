@@ -1,13 +1,11 @@
 package cn.bosenkeji.utils;
 
-import cn.bosenkeji.messaging.MySource;
+import cn.bosenkeji.enums.DealEnum;
 import cn.bosenkeji.vo.DealParameter;
 import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -25,21 +23,6 @@ import java.util.Map;
 
 public class DealUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(DealUtil.class);
-
-    public static final String TRADE_TYPE_BUY = "buy";
-    public static final String TRADE_TYPE_SELL = "sell";
-
-
-    static final String IS_TRIGGER_TRACE_STOP_PROFIT = "is_trigger_trace_stop_profit";  //是否触发追踪止盈
-    static final String IS_FOLLOW_BUILD = "is_follow_build";  //是否触发追踪建仓
-
-    static final String MIN_AVERAGE_PRICE = "min_average_price"; //最小拟买入均价
-    static final String HISTORY_MAX_BENEFIT_RATIO = "history_max_benefit_ratio"; //历史最高收益比
-    private static final String REAL_TIME_EARNING_RATIO = "real_time_earning_ratio"; //实时收益比
-
-    static final String TRIGGER_FOLLOW_BUILD_ORDER = "trigger_follow_build_order"; //触发追踪建仓的单数
-    static final String TRIGGER_STOP_PROFIT_ORDER = "trigger_stop_profit_order"; //触发追踪止盈的单数
 
     /**
      *
@@ -60,14 +43,14 @@ public class DealUtil {
         Double lowerAveragePrice = DealCalculator.countLowerAveragePrice(averagePosition,dealParameter.getStoreSplit(),dealParameter.getFollowLowerRatio());
 
 
-        if (
-                (averagePrice - lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()) ||
-                        !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
-                        (dealParameter.getTradeStatus() == 3)
-        ) {
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_FOLLOW_BUILD,"0",redisTemplate);
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
+        boolean isClearTriggerFollowBuild = (averagePrice - lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder()) ||
+                !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) ||
+                (dealParameter.getTradeStatus() == 3);
+
+        if (isClearTriggerFollowBuild) {
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(), DealEnum.IS_FOLLOW_BUILD,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
             return true;
         }
         return false;
@@ -81,14 +64,16 @@ public class DealUtil {
      * @param redisTemplate  操作redis
      */
     public static Boolean isClearTriggerStopProfit(DealParameter dealParameter, RedisParameter redisParameter, RedisTemplate redisTemplate) {
-        if (
-                (redisParameter.getRealTimeEarningRatio() < 1 && redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
-                        !(redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder())) ||
-                        (dealParameter.getTradeStatus() == 3)
-        ) {
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.TRIGGER_STOP_PROFIT_ORDER,"0",redisTemplate);
-            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealUtil.HISTORY_MAX_BENEFIT_RATIO,"0",redisTemplate);
+        boolean isRealTimeEarningRatio = redisParameter.getRealTimeEarningRatio() < 1;
+        boolean isUniformOrder = redisParameter.getTriggerStopProfitOrder().equals(dealParameter.getFinishedOrder());
+        boolean isTradeStatus = dealParameter.getTradeStatus() == 3;
+
+        boolean isCleanTriggerStopProfit = (isRealTimeEarningRatio && isUniformOrder) || !isUniformOrder || isTradeStatus;
+
+        if (isCleanTriggerStopProfit) {
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.TRIGGER_STOP_PROFIT_ORDER,"0",redisTemplate);
+            DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.HISTORY_MAX_BENEFIT_RATIO,"0",redisTemplate);
             return true;
         }
         return false;
@@ -102,7 +87,7 @@ public class DealUtil {
      * @param redisTemplate redisTemplate
      */
     public static void recordRealTimeEarningRatio(String redisKey, String hashValue, RedisTemplate redisTemplate) {
-        redisTemplate.opsForHash().put(redisKey,DealUtil.REAL_TIME_EARNING_RATIO,hashValue);
+        redisTemplate.opsForHash().put(redisKey,DealEnum.REAL_TIME_EARNING_RATIO,hashValue);
     }
 
 
@@ -112,11 +97,10 @@ public class DealUtil {
      *
      * @param dealParameter 消息体的数据
      * @param type 买或卖的类型
-     * @param source mq发送
-     * @return 是否发送消息成功
+     * @return 需要发送消息的对象
      */
 
-    public static boolean sendMessage(DealParameter dealParameter,String platformName, String type, MySource source) {
+    public static Message<String> createMessageObject(DealParameter dealParameter, String platformName, String type) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
         String symbol = dealParameter.getSymbol();
@@ -130,7 +114,7 @@ public class DealUtil {
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
 
-        return source.okexOutput().send(jsonMessage);
+        return jsonMessage;
     }
 
 
@@ -148,23 +132,21 @@ public class DealUtil {
         RedisParameter parameter = new RedisParameter();
 
         String javaRedisKey = "trade-java_" + dealParameter.getSignId() + "_" + dealParameter.getSymbol();
-        if ("okex".equals(platFormName)) {
-            javaRedisKey = "okex-" + javaRedisKey;
+        if (DealEnum.OKEX_PLATFORM_NAME.equals(platFormName)) {
+            javaRedisKey = DealEnum.OKEX_PLATFORM_NAME + "-" + javaRedisKey;
         }
 
-
-//        Object o = redisTemplate.opsForValue().get(javaRedisKey);
         Map entries = redisTemplate.opsForHash().entries(javaRedisKey);
         if (CollectionUtils.isEmpty(entries)) {
             //初始化数据
             Map<String,Object> map = new LinkedHashMap<>();
-            map.put(IS_FOLLOW_BUILD,"0");
-            map.put(IS_TRIGGER_TRACE_STOP_PROFIT,"0");
-            map.put(MIN_AVERAGE_PRICE,"1000000.0");
-            map.put(HISTORY_MAX_BENEFIT_RATIO,"0.0");
-            map.put(REAL_TIME_EARNING_RATIO,"0.0");
-            map.put(TRIGGER_FOLLOW_BUILD_ORDER,"0");
-            map.put(TRIGGER_STOP_PROFIT_ORDER,"0");
+            map.put(DealEnum.IS_FOLLOW_BUILD,"0");
+            map.put(DealEnum.IS_TRIGGER_TRACE_STOP_PROFIT,"0");
+            map.put(DealEnum.MIN_AVERAGE_PRICE,"1000000.0");
+            map.put(DealEnum.HISTORY_MAX_BENEFIT_RATIO,"0.0");
+            map.put(DealEnum.REAL_TIME_EARNING_RATIO,"0.0");
+            map.put(DealEnum.TRIGGER_FOLLOW_BUILD_ORDER,"0");
+            map.put(DealEnum.TRIGGER_STOP_PROFIT_ORDER,"0");
 
             redisTemplate.opsForHash().putAll(javaRedisKey,map);
 
@@ -180,13 +162,13 @@ public class DealUtil {
         } else {
             //获取数据
             parameter.setRedisKey(javaRedisKey);
-            parameter.setIsTriggerTraceStopProfit(DealUtil.getInteger(entries.get(IS_TRIGGER_TRACE_STOP_PROFIT)));
-            parameter.setIsFollowBuild(DealUtil.getInteger(entries.get(IS_FOLLOW_BUILD)));
-            parameter.setMinAveragePrice(DealUtil.getDouble(entries.get(MIN_AVERAGE_PRICE)));
-            parameter.setHistoryMaxBenefitRatio(DealUtil.getDouble(entries.get(HISTORY_MAX_BENEFIT_RATIO)));
-            parameter.setRealTimeEarningRatio(DealUtil.getDouble(entries.get(REAL_TIME_EARNING_RATIO)));
-            parameter.setTriggerFollowBuildOrder(DealUtil.getInteger(entries.get(TRIGGER_FOLLOW_BUILD_ORDER)));
-            parameter.setTriggerStopProfitOrder(DealUtil.getInteger(entries.get(TRIGGER_STOP_PROFIT_ORDER)));
+            parameter.setIsTriggerTraceStopProfit(DealUtil.getInteger(entries.get(DealEnum.IS_TRIGGER_TRACE_STOP_PROFIT)));
+            parameter.setIsFollowBuild(DealUtil.getInteger(entries.get(DealEnum.IS_FOLLOW_BUILD)));
+            parameter.setMinAveragePrice(DealUtil.getDouble(entries.get(DealEnum.MIN_AVERAGE_PRICE)));
+            parameter.setHistoryMaxBenefitRatio(DealUtil.getDouble(entries.get(DealEnum.HISTORY_MAX_BENEFIT_RATIO)));
+            parameter.setRealTimeEarningRatio(DealUtil.getDouble(entries.get(DealEnum.REAL_TIME_EARNING_RATIO)));
+            parameter.setTriggerFollowBuildOrder(DealUtil.getInteger(entries.get(DealEnum.TRIGGER_FOLLOW_BUILD_ORDER)));
+            parameter.setTriggerStopProfitOrder(DealUtil.getInteger(entries.get(DealEnum.TRIGGER_STOP_PROFIT_ORDER)));
         }
         return parameter;
     }
@@ -194,11 +176,11 @@ public class DealUtil {
 
 
 
-    public static String getString(Object o) {
+    static String getString(Object o) {
         return o == null ? "" : o.toString();
     }
 
-    public static Integer getInteger(Object o) {
+    static Integer getInteger(Object o) {
         Integer temp = 0;
         if (o != null) {
             temp = Integer.valueOf(o.toString());
@@ -206,7 +188,7 @@ public class DealUtil {
         return temp;
     }
 
-    public static Double getDouble(Object o) {
+    static Double getDouble(Object o) {
         Double temp;
         temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
         return temp;

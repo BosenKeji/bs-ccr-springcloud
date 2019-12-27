@@ -17,6 +17,8 @@ spring:
           data-id: bs-ccr-mq-config.yml
         ext-config[3]:
           data-id: bs-crr-common-config.yml
+        ext-config[4]:
+          data-id: bs-ccr-open-search-config.yml
 logging:
   level:
     com:

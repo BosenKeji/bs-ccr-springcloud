@@ -16,25 +16,45 @@ public class DealParameter {
     private String symbol;
     private String signId;
 
-    private Integer tradeStatus; //是否给node端发送消息
-    private Double positionCost; //持仓费用
-    private Double positionNum; //持仓数量
+    /**
+     *
+     * tradeStatus：交易状态，用于判断是否需要走交易流程
+     * positionCost：持仓费用
+     * positionNum：持仓数量
+     *
+     * finishedOrder：已做单数
+     * maxTradeOrder：最大交易单数
+     * storeSplit：建仓间隔
+     *
+     * buyVolume：买入量
+     * followLowerRatio：追踪下调比
+     * followCallbackRatio：追踪回调比
+     * firstOrderPrice：首单现价
+     */
+    private Integer tradeStatus;
+    private Double positionCost;
+    private Double positionNum;
 
-    //买需要的参数
-    private Integer finishedOrder; //已做单数
-    private Integer maxTradeOrder; //最大交易单数
-    private Double storeSplit; //建仓间隔
+    private Integer finishedOrder;
+    private Integer maxTradeOrder;
+    private Double storeSplit;
 
-    private JSONObject buyVolume; //买入量
-    private Double followLowerRatio; //追踪下调比
-    private Double followCallbackRatio; //追踪回调比
-    private Double firstOrderPrice; //首单现价
+    private JSONObject buyVolume;
+    private Double followLowerRatio;
+    private Double followCallbackRatio;
+    private Double firstOrderPrice;
 
-    //卖需要的参数
-    private Double targetProfitPrice; //止盈金额
-    private Integer isStopProfitTrace;  //是否使用追踪止盈
-    private Double turnDownRatio; //追踪止盈触发比例
-    private Double emitRatio; //追踪止盈回调比例
+    /**
+     * targetProfitPrice：止盈金额
+     * isStopProfitTrace：是否使用追踪止盈
+     * turnDownRatio：追踪止盈触发比例
+     * emitRatio：追踪止盈回调比例
+     */
+
+    private Double targetProfitPrice;
+    private Integer isStopProfitTrace;
+    private Double turnDownRatio;
+    private Double emitRatio;
 
     public DealParameter() { }
 
