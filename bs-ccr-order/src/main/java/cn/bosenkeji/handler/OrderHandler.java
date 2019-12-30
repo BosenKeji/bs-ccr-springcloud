@@ -43,6 +43,10 @@ public class OrderHandler {
 
     @StreamListener("order_group_input")
     public void consumerOrderGroupMsg(String msg){
+        if (msg == null){
+            log.info("队列消息不合法！");
+            return;
+        }
         log.info(msg);
         JSONObject jsonObject = JSON.parseObject(msg);
         int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
