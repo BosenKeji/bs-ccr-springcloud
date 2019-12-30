@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsImpl implements UserDetails {
 
+    private static final long serialVersionUID = 9071400194641435956L;
+
     private transient RoleService roleService;
 
     private transient PermissionGroupService permissionGroupService;

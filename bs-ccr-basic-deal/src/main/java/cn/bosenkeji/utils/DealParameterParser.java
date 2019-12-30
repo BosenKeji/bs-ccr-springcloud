@@ -70,6 +70,10 @@ public class DealParameterParser {
         parameter.setTurnDownRatio(DealUtil.getDouble(trade.get(DealEnum.TURN_DOWN_RATIO)));
         parameter.setEmitRatio(DealUtil.getDouble(trade.get(DealEnum.EMIT_RATIO)));
 
+        Object lastBuildPriceObject = trade.get(DealEnum.LAST_BUILD_PRICE);
+        if (lastBuildPriceObject != null) {
+            parameter.setLastBuildPrice(DealUtil.getDouble(lastBuildPriceObject));
+        }
         return parameter;
     }
 
