@@ -1,0 +1,49 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: bs-ccr-aliCloud-api-gateway
+  main:
+    allow-bean-definition-overriding: true
+
+
+api:
+  #  地区id
+  regionId: cn-shenzhen
+
+  #  api分组id
+  groupId: 447efa99d88d4696ab480fb1fcfa442e
+
+  # appId
+  appId: 110565671
+
+  #  阿里云accessKeyId
+  accessKeyId: LTAISwQkitLFbG0t
+
+  #  阿里云accessSecret
+  accessSecret: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+
+  #  api是否公开
+  visibility: PRIVATE
+
+  #  后端服务返回应答的格式
+  resultType: JSON
+
+  #  API安全认证类型
+  authType: APP
+
+  #  API 支持的协议类型，可以多选，多选情况下以英文逗号隔开
+  protocol: HTTP
+
+  serviceTimeout: 1000
+
+  serviceAddress: https://www.aliyun.com
+
+  bodyFormat: STREAM
+
+  #vpcConfig mock
+  vpcConfig:
+    vpcId: vpc-wz9yjesffaen2f2dcvpru
+    instanceId: lb-wz9v115urnvdiz3y63oef
+    name: bs-ccr-test
