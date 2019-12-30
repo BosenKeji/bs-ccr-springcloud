@@ -44,47 +44,47 @@
                 </executions>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <dependencies>-->
-<!--                    &lt;!&ndash; spring热部署 &ndash;&gt;-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.springframework</groupId>-->
-<!--                        <artifactId>springloaded</artifactId>-->
-<!--                        <version>1.2.6.RELEASE</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--                &lt;!&ndash; 设置入口类 &ndash;&gt;-->
-<!--                <configuration>-->
-<!--                    <mainClass>cn.bosenkeji.DealApp</mainClass>-->
-<!--                </configuration>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <dependencies>
+                    <!-- spring热部署 -->
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>springloaded</artifactId>
+                        <version>1.2.6.RELEASE</version>
+                    </dependency>
+                </dependencies>
+                <!-- 设置入口类 -->
+                <configuration>
+                    <mainClass>cn.bosenkeji.DealApp</mainClass>
+                </configuration>
 
-<!--            </plugin>-->
+            </plugin>
 
 
             <!-- Docker maven plugin -->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.12</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>${project.artifactId}-${project.version}</repository>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--                <version>1.4.12</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>default</id>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <repository>${project.artifactId}-${project.version}</repository>-->
+<!--                    <buildArgs>-->
+<!--                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
+<!--                    </buildArgs>-->
 
-                </configuration>
-            </plugin>
+<!--                </configuration>-->
+<!--            </plugin>-->
             <!-- Docker maven plugin -->
         </plugins>
     </build>
