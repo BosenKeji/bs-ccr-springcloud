@@ -47,6 +47,7 @@ public class DealEnum {
     public static final String FOLLOW_LOWER_RATIO = "follow_lower_ratio";
     public static final String FOLLOW_CALLBACK_RATIO = "follow_callback_ratio";
     public static final String FIRST_ORDER_PRICE = "first_order_price";
+    public static final String LAST_BUILD_PRICE =  "lastBuildPrice";
 
     /**
      * 卖需要的参数

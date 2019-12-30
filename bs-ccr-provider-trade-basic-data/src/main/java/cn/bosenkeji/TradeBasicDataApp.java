@@ -44,6 +44,8 @@ public class TradeBasicDataApp {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else {
+            RsaUtils.downloadPrivateKeyByOSS();
         }
     }
 }

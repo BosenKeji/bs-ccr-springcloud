@@ -56,6 +56,8 @@ public class DealParameter {
     private Double turnDownRatio;
     private Double emitRatio;
 
+    private Double lastBuildPrice;
+
     public DealParameter() { }
 
     public String getSymbol() {
@@ -194,6 +196,14 @@ public class DealParameter {
         this.trade = trade;
     }
 
+    public Double getLastBuildPrice() {
+        return lastBuildPrice;
+    }
+
+    public void setLastBuildPrice(Double lastBuildPrice) {
+        this.lastBuildPrice = lastBuildPrice;
+    }
+
     @Override
     public String toString() {
         return "DealParameter{" +
@@ -214,6 +224,7 @@ public class DealParameter {
                 ", isStopProfitTrace=" + isStopProfitTrace +
                 ", turnDownRatio=" + turnDownRatio +
                 ", emitRatio=" + emitRatio +
+                ", lastBuildPrice=" + lastBuildPrice +
                 '}';
     }
 }

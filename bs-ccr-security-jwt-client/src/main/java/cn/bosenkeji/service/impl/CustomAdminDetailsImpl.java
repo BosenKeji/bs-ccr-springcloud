@@ -20,6 +20,8 @@ import java.util.List;
  **/
 public class CustomAdminDetailsImpl implements UserDetails {
 
+    private static final long serialVersionUID = -4139135931771626303L;
+
     private transient RoleService roleService;
 
     private transient PermissionGroupService permissionGroupService;

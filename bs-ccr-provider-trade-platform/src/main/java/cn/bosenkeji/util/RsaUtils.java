@@ -366,7 +366,7 @@ public class RsaUtils {
     /**
      * 检查文件是否为空
      * @param fileName 文件名
-     * @return 空 false  不空 true
+     * @return 空 true  不空 false
      */
     public static boolean checkFileIsNull(String fileName){
         boolean isNull = false;
