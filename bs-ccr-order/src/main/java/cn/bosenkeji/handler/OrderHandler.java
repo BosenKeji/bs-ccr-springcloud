@@ -48,20 +48,25 @@ public class OrderHandler {
             return;
         }
         log.info(msg);
-        JSONObject jsonObject = JSON.parseObject(msg);
-        int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
-        String groupName = MqMessageUtil.getString(jsonObject.get("name"));
-        log.info("sign ==> "+ sign);
+        try {
+            JSONObject jsonObject = JSON.parseObject(msg);
+            int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
+            String groupName = MqMessageUtil.getString(jsonObject.get("name"));
+            log.info("sign ==> "+ sign);
 
-        if (sign == GROUP_PLUS_ORDER_SIGN){
-            consumerGroupPlusOrderMsg(msg,jsonObject,groupName);
+            if (sign == GROUP_PLUS_ORDER_SIGN){
+                consumerGroupPlusOrderMsg(msg,jsonObject,groupName);
+            }
+            else if (sign == ONLY_ORDER_SIGN){
+                consumerOnlyOrderMsg(msg,jsonObject,groupName);
+            }
+            else {
+                log.info("队列消息不合法！");
+            }
+        }catch (Exception e){
+            log.error("队列消息不合法！");
         }
-        else if (sign == ONLY_ORDER_SIGN){
-            consumerOnlyOrderMsg(msg,jsonObject,groupName);
-        }
-        else {
-            log.info("队列消息不合法！");
-        }
+
     }
 
     private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
