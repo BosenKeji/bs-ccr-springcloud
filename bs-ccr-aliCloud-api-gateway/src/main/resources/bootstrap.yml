@@ -14,4 +14,6 @@ spring:
           data-id: bs-ccr-page-size-config.yml
         ext-config[1]:
           data-id: bs-ccr-database-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-aliyun-api-config.yml
 
