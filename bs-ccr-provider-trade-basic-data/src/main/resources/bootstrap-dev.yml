@@ -13,7 +13,7 @@ spring:
         ext-config[1]:
           data-id: bs-ccr-database-config.yml
         ext-config[2]:
-          data-id: bs-ccr-mq-config.yml
+          data-id: bs-ccr-mq-order-config.yml
         ext-config[3]:
           data-id: bs-crr-common-config.yml
         ext-config[4]:
