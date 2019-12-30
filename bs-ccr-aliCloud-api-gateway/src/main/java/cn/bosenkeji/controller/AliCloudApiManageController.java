@@ -71,7 +71,7 @@ public class AliCloudApiManageController {
 
         if (!splitApiIdsList.isEmpty()){
             for (List<String> splitApiIds : splitApiIdsList){
-                aliCloudApiManageUtil.setAppsAuthoritiesResponse(appId,
+                aliCloudApiManageUtil.setApisAuthoritiesResponse(appId,
                         splitApiIds.stream().collect(Collectors.joining(",")));
 
             }

@@ -331,7 +331,7 @@ public class AliCloudApiManageUtil {
     }
 
 
-    public SetApisAuthoritiesResponse setAppsAuthoritiesResponse(Long appId, String apiIds) throws ClientException {
+    public SetApisAuthoritiesResponse setApisAuthoritiesResponse(Long appId, String apiIds) throws ClientException {
         SetApisAuthoritiesRequest setApisAuthoritiesRequest = new SetApisAuthoritiesRequest();
         setApisAuthoritiesRequest.setApiIds(apiIds);
         setApisAuthoritiesRequest.setAppId(appId);
