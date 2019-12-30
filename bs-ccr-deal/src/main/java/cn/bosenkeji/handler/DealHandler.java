@@ -145,7 +145,7 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_BUY);
                     boolean isSend = source.huobiOutput().send(messageObject);
                     log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
