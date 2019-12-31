@@ -6,6 +6,8 @@ import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -17,6 +19,8 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 
 public class DealCalculator {
+
+    private static final Logger log = LoggerFactory.getLogger(DealCalculator.class);
 
     /**
      * 计算持仓均价
@@ -215,6 +219,7 @@ public class DealCalculator {
 
         Double averagePosition = countAveragePosition(positionCost,positionNum);
 
+
         //是否需要判断？ 达到最大交易单数？
         if ( finishedOrder.equals(maxTradeOrder) ) {
             return false;
@@ -225,6 +230,7 @@ public class DealCalculator {
         }
         //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
         if ( realTimeTradeParameter.getSellPrice() - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
+            log.info(dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  有跌穿的风险，不买入");
             return false;
         }
 
