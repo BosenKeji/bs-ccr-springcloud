@@ -1,6 +1,6 @@
 package cn.bosenkeji;
 
-import cn.bosenkeji.messaging.OrderSink;
+import cn.bosenkeji.message.OrderSink;
 import cn.bosenkeji.util.RsaUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;

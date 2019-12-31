@@ -360,7 +360,7 @@
             <dependency>
                 <groupId>bosenCCR</groupId>
                 <artifactId>bs-ccr-order</artifactId>
-                <version>1.0.0</version>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
