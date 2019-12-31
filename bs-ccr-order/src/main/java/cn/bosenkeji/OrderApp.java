@@ -1,9 +1,8 @@
 package cn.bosenkeji;
 
-import cn.bosenkeji.message.OrderSink;
+import cn.bosenkeji.sink.OrderSink;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -14,7 +13,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
  */
 //@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @SpringBootApplication
-@EnableBinding({OrderSink.class})
+//@EnableBinding({OrderSink.class})
 @EnableDiscoveryClient
 @EnableFeignClients("cn.bosenkeji.service")
 public class OrderApp {
