@@ -13,7 +13,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
  */
 //@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @SpringBootApplication
-//@EnableBinding({OrderSink.class})
+@EnableBinding({OrderSink.class})
 @EnableDiscoveryClient
 @EnableFeignClients("cn.bosenkeji.service")
 public class OrderApp {

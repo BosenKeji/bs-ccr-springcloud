@@ -1,30 +1,25 @@
-#spring:
-#  cloud:
-    #      config:
-    #        endpoint: addr-us-east-1-internal.acm.aliyun.com
-    #        namespace : c4067486-17d5-4a22-bb04-c192866c9128
-    #        access-key: b0bb8f45c84d4b4284a3685cf9bc627a
-    #        secret-key: aXekfxEib7WFZqseg29LpxeHbMo=
-    #        file-extension : yml
-    #        ext-config[0]:
-    #          data-id: bs-ccr-page-size-config.yml
-    #        ext-config[1]:
-    #          data-id: bs-ccr-redis-config.yml
-    #        ext-config[2]:
-    #          data-id: bs-ccr-mq-config.yml
-    #        ext-config[3]:
-    #          data-id: bs-crr-common-config.yml
-    #logging:
-    #  level:
-    #    com:
-    #      alibaba: ERROR
-#    stream:
-#      rocketmq:
-#        binder:
-#          name-server: MQ_INST_1782728101358463_BbCmhMPY.mq-internet-access.mq-internet.aliyuncs.com:80
-#          access-key: LTAISwQkitLFbG0t
-#          secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
-#      bindings:
-#        output1: {destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-response-symbol-trade-info, content-type: application/json}
-#
-#        input1: {destination: MQ_INST_1782728101358463_BbCmhMPY%bs-ccr-topic-symbol-price, content-type: application/json, group: MQ_INST_1782728101358463_BbCmhMPY%GID-bs-ccr-consumer-symbol-price}
+spring:
+  cloud:
+    nacos:
+      discovery:
+        watch:
+          enabled: false
+      config:
+        server-addr: 127.0.0.1:8848
+        endpoint: addr-sz-internal.edas.aliyun.com
+        namespace : 3893fbec-c3c3-49d2-9843-ff20fdbc4219
+        file-extension : yml
+        ext-config[0]:
+          data-id: bs-ccr-page-size-config.yml
+        ext-config[1]:
+          data-id: bs-ccr-database-config.yml
+        ext-config[2]:
+          data-id: bs-ccr-mq-order-config.yml
+        ext-config[3]:
+          data-id: bs-crr-common-config.yml
+        ext-config[4]:
+          data-id: bs-ccr-open-search-config.yml
+logging:
+  level:
+    com:
+      alibaba: ERROR
