@@ -12,8 +12,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
  * @author CAJR
  * @date 2019/12/26 7:24 下午
  */
-//@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableBinding({OrderSink.class})
 @EnableDiscoveryClient
 @EnableFeignClients("cn.bosenkeji.service")
