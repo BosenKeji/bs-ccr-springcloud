@@ -1,5 +1,6 @@
 package cn.bosenkeji;
 
+import cn.bosenkeji.message.OrderSink;
 import cn.bosenkeji.util.RsaUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  * @Versio V1.0
 **/
 @SpringBootApplication
+@EnableBinding({OrderSink.class})
 @MapperScan("cn.bosenkeji.mapper")
 @EnableDiscoveryClient
 public class TradeBasicDataApp {
