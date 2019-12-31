@@ -149,7 +149,7 @@ public class DealHandler {
 
             }
             //交易状态为3 停止买入 正常买出
-            if (DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
+            if (!DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
                 //判断买
                 boolean isBuy = DealCalculator.isBuy(dealParameter,realTimeTradeParameter,redisParameter,redisTemplate);
                 if (isBuy) {

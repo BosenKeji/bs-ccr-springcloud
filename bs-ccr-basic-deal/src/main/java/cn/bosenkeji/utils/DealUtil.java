@@ -25,7 +25,6 @@ import java.util.Map;
 
 public class DealUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(DealUtil.class);
 
     /**
      *
@@ -54,7 +53,6 @@ public class DealUtil {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(), DealEnum.IS_FOLLOW_BUILD,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.TRIGGER_FOLLOW_BUILD_ORDER,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.MIN_AVERAGE_PRICE,"1000000.0",redisTemplate);
-            log.info(dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  清除追踪建仓" + ((averagePrice - lowerAveragePrice) > 0 && redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) + " " + !(redisParameter.getTriggerFollowBuildOrder().equals(dealParameter.getFinishedOrder())) + " " + (dealParameter.getTradeStatus() == 3));
             return true;
         }
         return false;
@@ -78,7 +76,6 @@ public class DealUtil {
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.IS_TRIGGER_TRACE_STOP_PROFIT,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.TRIGGER_STOP_PROFIT_ORDER,"0",redisTemplate);
             DealCalculator.updateRedisHashValue(redisParameter.getRedisKey(),DealEnum.HISTORY_MAX_BENEFIT_RATIO,"0",redisTemplate);
-            log.info(dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  清除追踪止盈" + isRealTimeEarningRatio + " " + isUniformOrder + " " + isTradeStatus);
             return true;
         }
         return false;

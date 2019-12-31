@@ -20,7 +20,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 public class DealCalculator {
 
-    private static final Logger log = LoggerFactory.getLogger(DealCalculator.class);
 
     /**
      * 计算持仓均价
@@ -230,7 +229,6 @@ public class DealCalculator {
         }
         //设置现价是否小于等于开始策略时现价-建仓间隔*(最大建仓数-1)？
         if ( realTimeTradeParameter.getSellPrice() - (firstOrderPrice-storeSplit*(maxTradeOrder-1)) <= 0 ) {
-            log.info(dealParameter.getSymbol() + "  " + dealParameter.getSignId() + "  有跌穿的风险，不买入");
             return false;
         }
 
