@@ -419,9 +419,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         result.setCoinPairChoiceName(coinPairChoice.getCoinPair().getName());
         try {
             if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,1).get() <= 0){
-                List<TradeOrder> tradeOrders = this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().stream().filter(tradeOrder -> tradeOrder.getTradeType() == 1).collect(Collectors.toList());
-                result.setTradeOrders(tradeOrders);
-                return result;
+                if (this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders() != null){
+                    List<TradeOrder> tradeOrders = this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().stream().filter(tradeOrder -> tradeOrder.getTradeType() == 1).collect(Collectors.toList());
+                    result.setTradeOrders(tradeOrders);
+                    return result;
+                }
             }
             return result;
         }catch (Exception e){
