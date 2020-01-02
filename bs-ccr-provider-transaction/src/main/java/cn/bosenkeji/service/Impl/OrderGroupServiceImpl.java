@@ -309,11 +309,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         if (coinPairChoiceId <= 0){
             return null;
         }
-        List<OrderGroup> orderGroups =
-                this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,CommonConstantUtil.NOT_END).stream().sorted(Comparator.comparing(OrderGroup::getCreatedAt).reversed()).collect(Collectors.toList());
+        List<OrderGroup> orderGroups = this.orderGroupMapper.findAllByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,CommonConstantUtil.NOT_END);
         if (CollectionUtils.isEmpty(orderGroups)){
             return new OrderGroup();
         }
+        orderGroups = orderGroups.stream().sorted(Comparator.comparing(OrderGroup::getCreatedAt).reversed()).collect(Collectors.toList());
         return getOneById(orderGroups.get(0).getId());
     }
 
