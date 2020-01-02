@@ -11,6 +11,8 @@ import cn.bosenkeji.vo.coin.CoinPairCoin;
 import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
+    private static final Logger log = LoggerFactory.getLogger(CoinPairChoiceServiceImpl.class);
 
     @Resource
     CoinPairChoiceMapper coinPairChoiceMapper;
@@ -413,6 +416,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         CoinPairChoice coinPairChoice = get(coinPairChoiceId);
 
         if (coinPairChoice == null || coinPairChoice.getCoinPair() == null){
+            log.info("该自选币不存在 返回null");
             return null;
         }
 
@@ -420,11 +424,13 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         try {
             if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,0).get() > 0 ){
                 if (this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders() != null){
+                    log.info("数据库中的该自选币的订单数据不为null tradeOrder的大小 ==>"+this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().size());
                     List<TradeOrder> tradeOrders = this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().stream().filter(tradeOrder -> tradeOrder.getTradeType() == 1).collect(Collectors.toList());
                     result.setTradeOrders(tradeOrders);
                     return result;
                 }
             }
+            log.info("数据库中的该自选币的订单数据为null");
             return result;
         }catch (Exception e){
             e.printStackTrace();
