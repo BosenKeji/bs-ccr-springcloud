@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.annotation.TokenUser;
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.impl.CustomUserDetailsImpl;
 import cn.bosenkeji.util.Result;
@@ -11,8 +12,10 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -36,10 +39,10 @@ public class ConsumerTradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getNoBindTradePlatformApiListByUserIdWithPage")
     public Object getNoBindTradePlatformApiListByUserId(@RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                                           @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                                          @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
+                                                        @ApiIgnore @TokenUser @Min(1) int userId) {
 
-        int currentUserId=this.getCurrentUser().getId();
-        return iTradePlatformApiBindProductComboClientService.getNoBindTradePlatformApiListByUserId(pageNum,pageSize,currentUserId);
+        //int currentUserId=this.getCurrentUser().getId();
+        return iTradePlatformApiBindProductComboClientService.getNoBindTradePlatformApiListByUserId(pageNum,pageSize,userId);
     }
 
 
@@ -48,18 +51,18 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @ApiOperation(value = "更新 交易平添api绑定用户套餐 api接口",httpMethod = "PUT",nickname = "updateTradePlatformApiBindProductCombo")
     public Object updateTradePlatformApiBindProductCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
                                                          @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api ID",required = true,type = "integer",example = "1") int tradePlatformApiId,
-                                                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
-        int currentUserId=this.getCurrentUser().getId();
-        return iTradePlatformApiBindProductComboClientService.updateTradePlatformApiBindProductCombo(id,tradePlatformApiId,currentUserId);
+                                                         @ApiIgnore @TokenUser @Min(1) int userId) {
+        //int currentUserId=this.getCurrentUser().getId();
+        return iTradePlatformApiBindProductComboClientService.updateTradePlatformApiBindProductCombo(id,tradePlatformApiId,userId);
     }
 
     @PreAuthorize("hasAnyAuthority('USER')")
     @DeleteMapping("/{id}")
     @ApiOperation(value="解除 交易品台绑定用户套餐",httpMethod = "DELETE",nickname = "deleteTradePlatformApiBindProductCombo")
     public Object deleteOneApiBindCombo(@PathVariable("id") @ApiParam(value = "交易平台绑定用户套餐ID",required = true,type = "integer",example = "1") int id,
-                         @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
-        int currentUserId=this.getCurrentUser().getId();
-        return iTradePlatformApiBindProductComboClientService.deleteTradePlatformApiBindProductCombo(id,currentUserId);
+            @ApiIgnore @TokenUser @Min(1) int userId) {
+        //int currentUserId=this.getCurrentUser().getId();
+        return iTradePlatformApiBindProductComboClientService.deleteTradePlatformApiBindProductCombo(id,userId);
     }
 
     @PreAuthorize("hasAnyAuthority('USER')")
@@ -80,9 +83,10 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @ApiOperation(value = "机器人绑定api接口",httpMethod = "POST",nickname = "apiBindUserProductCombo")
     public Result<Integer> apiBindCombo(
                                         @RequestParam("userProductComboId") @ApiParam(value = "用户套餐",required = true,type = "integer",example = "1") int userProductComboId,
-                                        @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api",required = true,type = "integer",example = "1") int tradePlatformApiId) {
-        int currentUserId=this.getCurrentUser().getId();
-        return this.iTradePlatformApiBindProductComboClientService.apiBindCombo(currentUserId,userProductComboId,tradePlatformApiId);
+                                        @RequestParam("tradePlatformApiId") @ApiParam(value = "交易平台api",required = true,type = "integer",example = "1") int tradePlatformApiId,
+                                        @ApiIgnore @TokenUser @Min(1) int userId) {
+        //int currentUserId=this.getCurrentUser().getId();
+        return this.iTradePlatformApiBindProductComboClientService.apiBindCombo(userId,userProductComboId,tradePlatformApiId);
     }
 
     @PreAuthorize("hasAnyAuthority('USER')")
@@ -91,9 +95,10 @@ public class ConsumerTradePlatformApiBindProductComboController {
             ,httpMethod = "GET",nickname = "getProductComboListWithBindByUserId")
     public PageInfo<TradePlatformApiBindProductComboVo> getProductComboListWithBindByUserId(
                                                                                              @RequestParam( value="pageNum",defaultValue="1") int pageNum,
-                                                                                            @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
+                                                                                            @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                                                             @ApiIgnore @TokenUser @Min(1) int userId) {
 
-        int currentUserId=this.getCurrentUser().getId();
-        return iTradePlatformApiBindProductComboClientService.getProductComboListWithBindByUserId(currentUserId,pageNum,pageSize);
+        //int currentUserId=this.getCurrentUser().getId();
+        return iTradePlatformApiBindProductComboClientService.getProductComboListWithBindByUserId(userId,pageNum,pageSize);
     }
 }
