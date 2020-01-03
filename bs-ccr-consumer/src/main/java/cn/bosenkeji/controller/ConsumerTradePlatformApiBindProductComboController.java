@@ -29,19 +29,6 @@ public class ConsumerTradePlatformApiBindProductComboController {
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
-    @PreAuthorize("hasAnyAuthority('USER')")
-    @GetMapping("/list_by_user_id")
-    @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
-            ,httpMethod = "GET",nickname = "getTradePlatformApiBindProductComboListByUserId")
-    public Object getListByUserId(@RequestParam(value="pageNum",defaultValue="1") int pageNum,
-                                  @RequestParam(value="pageSize",defaultValue="10") int pageSize,
-                                  @RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId) {
-
-        int currentUserId=this.getCurrentUser().getId();
-       return iTradePlatformApiBindProductComboClientService.getListByUserId(pageNum,pageSize,currentUserId);
-
-
-    }
 
     @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/get_no_bind_trade_platform_api_list_by_user_id")
@@ -75,6 +62,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
         return iTradePlatformApiBindProductComboClientService.deleteTradePlatformApiBindProductCombo(id,currentUserId);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     public CustomUserDetailsImpl getCurrentUser() {
         CustomUserDetailsImpl principal = (CustomUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return principal;
@@ -87,6 +75,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
         return this.iTradePlatformApiBindProductComboClientService.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @PostMapping("/binding")
     @ApiOperation(value = "机器人绑定api接口",httpMethod = "POST",nickname = "apiBindUserProductCombo")
     public Result<Integer> apiBindCombo(
@@ -96,6 +85,7 @@ public class ConsumerTradePlatformApiBindProductComboController {
         return this.iTradePlatformApiBindProductComboClientService.apiBindCombo(currentUserId,userProductComboId,tradePlatformApiId);
     }
 
+    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/by_user_id")
     @ApiOperation(value = "根据用户ID 获取交易平台api绑定用户套餐列表 api接口"
             ,httpMethod = "GET",nickname = "getProductComboListWithBindByUserId")
