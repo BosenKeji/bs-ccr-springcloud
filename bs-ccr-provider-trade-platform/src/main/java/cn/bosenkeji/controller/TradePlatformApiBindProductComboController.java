@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,8 @@ import java.util.Set;
 @Validated
 @Api(tags = "tradePlatformApiBindProductCombo 交易平台api绑定用户套餐接口",value = "提供交易平台api绑定用户套餐相关功能 Rest接口")
 public class TradePlatformApiBindProductComboController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private TradePlatformApiBindProductComboService tradePlatformApiBindProductComboService;
@@ -65,7 +69,10 @@ public class TradePlatformApiBindProductComboController {
                                                                                             @RequestParam( value="pageNum",defaultValue="1") int pageNum,
                                                                                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
 
-        return tradePlatformApiBindProductComboService.findBindUserProductComboByUserId(userId,pageNum,pageSize);
+        PageInfo<TradePlatformApiBindProductComboVo> bindUserProductComboByUserId = tradePlatformApiBindProductComboService.findBindUserProductComboByUserId(userId, pageNum, pageSize);
+        logger.info("service return to controller, the result is  {}",bindUserProductComboByUserId);
+        return bindUserProductComboByUserId;
+
     }
 
     public TradePlatformApiBindProductCombo getByUserIdAndComboId(@RequestParam("userId") int userId,@RequestParam("userProductComboId") int userProductComboId) {
