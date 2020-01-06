@@ -424,13 +424,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         try {
             if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(coinPairChoiceId,0).get() > 0 ){
                 if (this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders() != null){
-                    log.info("数据库中的该自选币的订单数据不为null tradeOrder的大小 ==>"+this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().size());
                     List<TradeOrder> tradeOrders = this.orderGroupService.getByCoinPairChoiceId(coinPairChoiceId).getTradeOrders().stream().filter(tradeOrder -> tradeOrder.getTradeType() == 1).collect(Collectors.toList());
                     result.setTradeOrders(tradeOrders);
                     return result;
                 }
             }
-            log.info("数据库中的该自选币的订单数据为null");
             return result;
         }catch (Exception e){
             e.printStackTrace();
