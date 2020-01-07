@@ -9,6 +9,9 @@ spring:
     nacos:
       discovery:
         server-addr: nacos-dev:8848
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 #feign:
 #  hystrix:
 #    enabled: true
