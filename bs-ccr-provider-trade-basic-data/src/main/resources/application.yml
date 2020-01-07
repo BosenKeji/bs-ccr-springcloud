@@ -13,7 +13,6 @@ spring:
         server-addr: 127.0.0.1:8848
   jackson:
     time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
 feign:
   httpclient:
     connection-timeout: 6000
