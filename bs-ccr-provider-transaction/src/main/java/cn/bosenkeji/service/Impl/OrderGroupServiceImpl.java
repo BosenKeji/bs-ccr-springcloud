@@ -321,4 +321,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     public int getGroupIdByName(String name) {
         return this.orderGroupMapper.getIdByName(name);
     }
+
+    @Override
+    public OrderGroup getOneByName(String name) {
+        return this.orderGroupMapper.getOneByName(name);
+    }
+
 }

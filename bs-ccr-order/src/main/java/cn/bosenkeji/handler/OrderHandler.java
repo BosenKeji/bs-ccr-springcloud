@@ -94,7 +94,7 @@ public class OrderHandler {
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
-                }else {
+                }else if (groupId != 0){
                     orderGroup.setId(Math.abs(groupId));
                     log.info("更新订单组id ==>"+Math.abs(groupId));
                     log.info("更新订单组信息 ==>"+orderGroup.toString());
@@ -120,6 +120,8 @@ public class OrderHandler {
                     }else {
                         log.error("订单消息重复！");
                     }
+                }else {
+                    log.error("订单消息重复！");
                 }
             }else {
                 log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());

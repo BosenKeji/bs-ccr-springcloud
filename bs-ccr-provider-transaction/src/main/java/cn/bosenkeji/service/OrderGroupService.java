@@ -46,4 +46,6 @@ public interface OrderGroupService {
     OrderGroup getByCoinPairChoiceId (int coinPairChoiceId);
 
     int getGroupIdByName(String name);
+
+    OrderGroup getOneByName(String name);
 }
