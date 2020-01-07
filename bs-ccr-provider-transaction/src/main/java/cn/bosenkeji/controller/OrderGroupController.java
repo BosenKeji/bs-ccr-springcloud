@@ -73,7 +73,9 @@ public class OrderGroupController {
         }
 
         if (this.orderGroupService.checkExistByGroupName(orderGroup.getName()).get() > 0){
-            return new Result<>(null,"订单组name已存在！");
+            OrderGroup orderGroup1 = this.orderGroupService.getOneByName(orderGroup.getName());
+            int orderGroupId = orderGroup1.getIsEnd() == 1?0:orderGroup1.getId();
+            return new Result<>(0-orderGroupId,"订单组name已存在！");
         }
 
         return new Result<>(this.orderGroupService.add(orderGroup));

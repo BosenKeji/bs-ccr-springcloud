@@ -8,10 +8,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-dev:8848
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+        server-addr: 127.0.0.1:8848
 #feign:
 #  hystrix:
 #    enabled: true
@@ -32,10 +29,4 @@ logging:
             naming: error
 feign:
   httpclient:
-    connection-timeout: 30000
-ribbon:
-  ConnectTimeout: 20000  #毫秒    连接超时时间
-  ReadTimeout: 20000     #毫秒      逻辑处理超时时间
-  OkToRetryOnAllOperations: true    # 是否对所有操作都进行重试
-  MaxAutoRetries: 2     # 对当前实例的最大重试次数(请求服务超时6s则会再请求一次)
-  MaxAutoRetriesNextServer: 1     # 切换实例的最大重试次数(如果还失败就切换下
+    connection-timeout: 10000

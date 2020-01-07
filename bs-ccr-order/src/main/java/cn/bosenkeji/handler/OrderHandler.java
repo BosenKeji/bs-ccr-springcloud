@@ -64,7 +64,8 @@ public class OrderHandler {
                 log.info("队列消息不合法！");
             }
         }catch (Exception e){
-            log.error("队列消息不合法！");
+            e.printStackTrace();
+            log.error("队列消息不合法或消息处理中出错！");
         }
         log.info("======= 消费信息结束！ ======= ");
     }
@@ -87,14 +88,16 @@ public class OrderHandler {
                     log.info("result ==>" + result.getMsg());
                 }else{
                     groupId = Integer.parseInt(result.getData().toString());
-                    log.info("订单组创建 ==>" + result.getMsg());
+                    log.info("订单组创建 ==>" + result.getMsg()+result.getData());
                 }
                 TradeOrder order = this.transformOrder(msg);
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
-                }else {
+                }else if (groupId != 0){
                     orderGroup.setId(Math.abs(groupId));
+                    log.info("更新订单组id ==>"+Math.abs(groupId));
+                    log.info("更新订单组信息 ==>"+orderGroup.toString());
                     Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
                     log.info("更新订单组 ==>"+updateResult.toString());
                     order.setOrderGroupId(Math.abs(groupId));
@@ -112,10 +115,13 @@ public class OrderHandler {
 
                     //如果数据库单数大于等于0并小于mq发来的已完成订单数+1
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                        log.error("创建订单");
                         createOrder(order);
                     }else {
                         log.error("订单消息重复！");
                     }
+                }else {
+                    log.error("订单消息重复！");
                 }
             }else {
                 log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());

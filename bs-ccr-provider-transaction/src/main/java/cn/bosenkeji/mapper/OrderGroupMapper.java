@@ -42,6 +42,8 @@ public interface OrderGroupMapper {
 
     int getIdByName(String name);
 
+    OrderGroup getOneByName(String name);
+
     List<OrderGroup> partFindByCoinPairChoiceIds(@Param("coinPairChoiceIds")List<Integer> coinPairChoiceIds);
 
 }
