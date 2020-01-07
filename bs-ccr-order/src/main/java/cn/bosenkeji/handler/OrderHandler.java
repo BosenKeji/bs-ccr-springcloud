@@ -65,7 +65,7 @@ public class OrderHandler {
             }
         }catch (Exception e){
             e.printStackTrace();
-            log.error("队列消息不合法！");
+            log.error("队列消息不合法或消息处理中出错！");
         }
         log.info("======= 消费信息结束！ ======= ");
     }
