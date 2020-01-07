@@ -47,7 +47,7 @@ public class OrderHandler {
             log.info("队列消息不合法！");
             return;
         }
-        log.info(msg);
+        log.info("======= 消费信息开始！接收的mq信息为 ==> "+msg);
         try {
             JSONObject jsonObject = JSON.parseObject(msg);
             int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
@@ -66,7 +66,7 @@ public class OrderHandler {
         }catch (Exception e){
             log.error("队列消息不合法！");
         }
-
+        log.info("======= 消费信息结束！ ======= ");
     }
 
     private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
