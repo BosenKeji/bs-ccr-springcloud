@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -28,9 +29,11 @@ public class Product implements Serializable {
 
     private int status;
 
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

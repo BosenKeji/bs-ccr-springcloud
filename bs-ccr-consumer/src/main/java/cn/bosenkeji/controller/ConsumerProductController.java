@@ -40,7 +40,7 @@ public class ConsumerProductController {
 
     @ApiOperation(value="获取产品详情api接口",httpMethod = "GET",nickname = "getOneProduct")
     @GetMapping("/{id}")
-    public Object getProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int id) {
+    public Product getProduct(@PathVariable("id") @ApiParam(value = "产品ID",required = true,type = "integer",example = "1") @Min(1) int id) {
         return this.iProductClientService.getProduct(id);
     }
 

@@ -12,7 +12,7 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
-    <association fetchType="lazy" property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+    <association property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
                  select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />
     <!--<collection property="userProductComboDays" column="id" ofType="cn.bosenkeji.vo.combo.UserProductComboDay"
                 select="cn.bosenkeji.mapper.UserProductComboDayMapper.selectByUserProductComboId" />-->

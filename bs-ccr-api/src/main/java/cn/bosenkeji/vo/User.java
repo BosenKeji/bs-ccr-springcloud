@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -29,9 +30,11 @@ public class User implements Serializable {
 
     private int isBinding;
 
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
