@@ -30,7 +30,7 @@ public interface ITradeOrderClientService {
     public TradeOrder getById(@PathVariable("id") int id);
 
     @PostMapping("/trade_order/")
-    public Result addOneOrderGroup(@RequestBody TradeOrder tradeOrder);
+    public Result addOneOrder(@RequestBody TradeOrder tradeOrder);
 
     @DeleteMapping("/trade_order/{id}")
     public Result delete(@PathVariable("id") int id);

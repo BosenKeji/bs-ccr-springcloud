@@ -2,6 +2,7 @@ package cn.bosenkeji.handler;
 
 import cn.bosenkeji.lock.DistributedLock;
 import cn.bosenkeji.lock.impl.RedisDistributedLock;
+import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
@@ -36,6 +37,9 @@ public class OrderHandler {
     IOrderGroupClientService iOrderGroupClientService;
 
     @Autowired
+    ICoinPairClientService iCoinPairClientService;
+
+    @Autowired
     ITradeOrderClientService iTradeOrderClientService;
 
     @Autowired
@@ -56,6 +60,7 @@ public class OrderHandler {
 
             if (sign == GROUP_PLUS_ORDER_SIGN){
                 consumerGroupPlusOrderMsg(msg,jsonObject,groupName);
+
             }
             else if (sign == ONLY_ORDER_SIGN){
                 consumerOnlyOrderMsg(msg,jsonObject,groupName);
@@ -69,6 +74,7 @@ public class OrderHandler {
         }
         log.info("======= 消费信息结束！ ======= ");
     }
+
 
     private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
@@ -140,7 +146,7 @@ public class OrderHandler {
     }
 
     private void createOrder(TradeOrder order){
-        Result result = this.iTradeOrderClientService.addOneOrderGroup(order);
+        Result result = this.iTradeOrderClientService.addOneOrder(order);
         if (result.getData() != null){
             if (Integer.parseInt(result.getData().toString()) == 1){
                 log.info("首次或尾次订单创建成功！"+result.getMsg());
@@ -174,12 +180,14 @@ public class OrderHandler {
                     log.info("dbOrderNum ==>" + dbOrderNum);
 
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
-                        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                        Result result = this.iTradeOrderClientService.addOneOrder(tradeOrder);
                         log.info("添加订单信息："+result.toString());
                     }
                 }else {
                     log.info("订单组id不合法或重复添加 添加订单失败！");
                 }
+            }else {
+                log.info("找不到该订单组id！");
             }
         }finally {
             log.info("lockLogo ==>"+lockLogo);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @author CAJR
  * @date 2019/11/6 11:25 上午
  */
-@FeignClient(name = "bs-ccr-provider-trade-basic-data" ,configuration = FeignClientConfig.class,fallbackFactory = IOrderGroupClientServiceFallbackFactory.class)
+@FeignClient(name = "bs-ccr-provider-trade-basic-data",configuration = FeignClientConfig.class, fallbackFactory = IOrderGroupClientServiceFallbackFactory.class)
 public interface IOrderGroupClientService {
 
     @GetMapping("/order_group/")
@@ -43,4 +43,13 @@ public interface IOrderGroupClientService {
 
     @GetMapping("/order_group/name")
     public int getIdByName(@RequestParam("name") String name);
+
+    @GetMapping("/record_group")
+    public Result addOrUpdateOneOrderGroup(@RequestParam("id") int id,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("coinPairChoiceId") int coinPairChoiceId,
+                                           @RequestParam("endProfitRatio")  double endProfitRatio,
+                                           @RequestParam("isEnd")  int isEnd,
+                                           @RequestParam("endType") int endType,
+                                           @RequestParam("sign") int sign);
 }
