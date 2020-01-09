@@ -1,6 +1,8 @@
 package cn.bosenkeji.config;
 
 import feign.Logger;
+import feign.Request;
+import feign.Retryer;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +16,19 @@ import org.springframework.context.annotation.Configuration;
  * @Versio V1.0
  **/
 
-@Configuration
+//@Configuration
 public class FeignClientConfig {
+    public static int connectTimeOutMillis = 10000;//超时时间
+    public static int readTimeOutMillis = 10000;
+    @Bean
+    public Request.Options options() {
+        return new Request.Options(connectTimeOutMillis, readTimeOutMillis);
+    }
+
+    @Bean
+    public Retryer feignRetryer() {
+        return new Retryer.Default();
+    }
 //    @Bean
 //    public BasicAuthRequestInterceptor getBasicAuthRequestInterceptor() {
 //        return new BasicAuthRequestInterceptor("admin", "admin");

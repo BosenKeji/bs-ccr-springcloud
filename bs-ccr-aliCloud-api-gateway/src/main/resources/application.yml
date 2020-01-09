@@ -36,7 +36,7 @@ api:
   #  API 支持的协议类型，可以多选，多选情况下以英文逗号隔开
   protocol: HTTP
 
-  serviceTimeout: 1000
+  serviceTimeout: 10000
 
   serviceAddress: https://www.aliyun.com
 

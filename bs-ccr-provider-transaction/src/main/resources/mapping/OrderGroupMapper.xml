@@ -35,6 +35,14 @@
     select id from order_group where name = #{name,jdbcType=VARCHAR} and status = 1;
   </select>
 
+  <select id="getOneByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from order_group
+    where name = #{name,jdbcType=VARCHAR} and status = 1
+  </select>
+
   <select id="resultNotEndGroupId" resultType="int">
     select id from order_group where coin_pair_choice_id = #{coinPairChoiceId,jdbcType=INTEGER} and is_end = 0;
   </select>

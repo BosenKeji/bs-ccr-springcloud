@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.annotation.TokenUser;
 import cn.bosenkeji.enums.exception.user.UserEnum;
 import cn.bosenkeji.exception.UpdateException;
 import cn.bosenkeji.service.IUserClientService;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.*;
@@ -183,6 +185,26 @@ public class ConsumerUserController {
             principal = (CustomUserDetailsImpl) obj;
         }
         return principal;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @GetMapping("/get_test")
+    @ApiOperation(value = "通过用户电话获取单个用户接口", httpMethod = "GET", nickname = "getTest")
+    public String getTest( @ApiIgnore @TokenUser @Min(1) int userId) {
+
+        try {
+
+            String testStr = "测试 401 字符串 当前登录用户："+userId;
+
+            System.out.println("Threed 前 执行");
+            Thread.sleep(4000L);
+            System.out.println("Thread 4秒后执行");
+            System.out.println("正常返回结果 testStr = " + testStr+ "userId:"+userId);
+            return testStr;
+        }catch (Exception e) {
+            System.out.println("测试 出异常");
+            return e.getMessage();
+        }
     }
 
 }

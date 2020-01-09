@@ -73,7 +73,9 @@ public class OrderGroupController {
         }
 
         if (this.orderGroupService.checkExistByGroupName(orderGroup.getName()).get() > 0){
-            return new Result<>(null,"订单组name已存在！");
+            OrderGroup orderGroup1 = this.orderGroupService.getOneByName(orderGroup.getName());
+            int orderGroupId = orderGroup1.getIsEnd() == 1?0:orderGroup1.getId();
+            return new Result<>(0-orderGroupId,"订单组name已存在！");
         }
 
         return new Result<>(this.orderGroupService.add(orderGroup));
@@ -122,5 +124,35 @@ public class OrderGroupController {
     @GetMapping("/name")
     public int getIdByName(@RequestParam("name") String name){
         return this.orderGroupService.getGroupIdByName(name);
+    }
+
+    @GetMapping("/record_group")
+    public Result addOrUpdateOneOrderGroup(@RequestParam("id") int id,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("coinPairChoiceId") int coinPairChoiceId,
+                                           @RequestParam("endProfitRatio")  double endProfitRatio,
+                                           @RequestParam("isEnd")  int isEnd,
+                                           @RequestParam("endType") int endType,
+                                           @RequestParam("sign") int sign){
+        OrderGroup orderGroup = loadingOrderGroup(name, coinPairChoiceId, endProfitRatio, isEnd, endType);
+        if (sign == CommonConstantUtil.ADD_SIGN){
+            return addOneOrderGroup(orderGroup);
+        }
+        if (sign == CommonConstantUtil.UPDATE_SIGN && id > 0){
+            orderGroup.setId(id);
+            return update(orderGroup);
+        }
+        return new Result<>(null,"sign不合法！");
+    }
+    private OrderGroup loadingOrderGroup(String name,int coinPairChoiceId,double endProfitRatio,int isEnd,int endType){
+        OrderGroup orderGroup = new OrderGroup();
+
+        orderGroup.setName(name);
+        orderGroup.setCoinPairChoiceId(coinPairChoiceId);
+        orderGroup.setEndProfitRatio(endProfitRatio);
+        orderGroup.setIsEnd(isEnd);
+        orderGroup.setEndType(endType);
+
+        return orderGroup;
     }
 }

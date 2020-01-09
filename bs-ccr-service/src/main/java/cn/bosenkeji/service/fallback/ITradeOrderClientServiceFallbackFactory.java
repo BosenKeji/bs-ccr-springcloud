@@ -40,7 +40,7 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
             }
 
             @Override
-            public Result addOneOrderGroup(TradeOrder tradeOrder) {
+            public Result addOneOrder(TradeOrder tradeOrder) {
                 return new Result<>(-1,"hystrix");
             }
 

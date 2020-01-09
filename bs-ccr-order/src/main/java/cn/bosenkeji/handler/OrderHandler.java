@@ -2,6 +2,7 @@ package cn.bosenkeji.handler;
 
 import cn.bosenkeji.lock.DistributedLock;
 import cn.bosenkeji.lock.impl.RedisDistributedLock;
+import cn.bosenkeji.service.ICoinPairClientService;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.service.ITradeOrderClientService;
 import cn.bosenkeji.util.Result;
@@ -36,6 +37,9 @@ public class OrderHandler {
     IOrderGroupClientService iOrderGroupClientService;
 
     @Autowired
+    ICoinPairClientService iCoinPairClientService;
+
+    @Autowired
     ITradeOrderClientService iTradeOrderClientService;
 
     @Autowired
@@ -47,7 +51,7 @@ public class OrderHandler {
             log.info("队列消息不合法！");
             return;
         }
-        log.info(msg);
+        log.info("======= 消费信息开始！接收的mq信息为 ==> "+msg);
         try {
             JSONObject jsonObject = JSON.parseObject(msg);
             int sign = MqMessageUtil.getInteger(jsonObject.get("sign"));
@@ -56,6 +60,7 @@ public class OrderHandler {
 
             if (sign == GROUP_PLUS_ORDER_SIGN){
                 consumerGroupPlusOrderMsg(msg,jsonObject,groupName);
+
             }
             else if (sign == ONLY_ORDER_SIGN){
                 consumerOnlyOrderMsg(msg,jsonObject,groupName);
@@ -64,10 +69,12 @@ public class OrderHandler {
                 log.info("队列消息不合法！");
             }
         }catch (Exception e){
-            log.error("队列消息不合法！");
+            e.printStackTrace();
+            log.error("队列消息不合法或消息处理中出错！");
         }
-
+        log.info("======= 消费信息结束！ ======= ");
     }
+
 
     private void consumerGroupPlusOrderMsg(String msg,JSONObject jsonObject,String groupName){
         OrderGroup orderGroup = transformOrderGroup(jsonObject);
@@ -87,14 +94,16 @@ public class OrderHandler {
                     log.info("result ==>" + result.getMsg());
                 }else{
                     groupId = Integer.parseInt(result.getData().toString());
-                    log.info("订单组创建 ==>" + result.getMsg());
+                    log.info("订单组创建 ==>" + result.getMsg()+result.getData());
                 }
                 TradeOrder order = this.transformOrder(msg);
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
-                }else {
+                }else if (groupId != 0){
                     orderGroup.setId(Math.abs(groupId));
+                    log.info("更新订单组id ==>"+Math.abs(groupId));
+                    log.info("更新订单组信息 ==>"+orderGroup.toString());
                     Result updateResult = this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
                     log.info("更新订单组 ==>"+updateResult.toString());
                     order.setOrderGroupId(Math.abs(groupId));
@@ -112,10 +121,13 @@ public class OrderHandler {
 
                     //如果数据库单数大于等于0并小于mq发来的已完成订单数+1
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
+                        log.error("创建订单");
                         createOrder(order);
                     }else {
                         log.error("订单消息重复！");
                     }
+                }else {
+                    log.error("订单消息重复！");
                 }
             }else {
                 log.info("自选币id不合法 ==>"+orderGroup.getCoinPairChoiceId());
@@ -134,7 +146,7 @@ public class OrderHandler {
     }
 
     private void createOrder(TradeOrder order){
-        Result result = this.iTradeOrderClientService.addOneOrderGroup(order);
+        Result result = this.iTradeOrderClientService.addOneOrder(order);
         if (result.getData() != null){
             if (Integer.parseInt(result.getData().toString()) == 1){
                 log.info("首次或尾次订单创建成功！"+result.getMsg());
@@ -168,12 +180,14 @@ public class OrderHandler {
                     log.info("dbOrderNum ==>" + dbOrderNum);
 
                     if (dbOrderNum >= 0 && dbOrderNum < finishedOrderNumber){
-                        Result result = this.iTradeOrderClientService.addOneOrderGroup(tradeOrder);
+                        Result result = this.iTradeOrderClientService.addOneOrder(tradeOrder);
                         log.info("添加订单信息："+result.toString());
                     }
                 }else {
                     log.info("订单组id不合法或重复添加 添加订单失败！");
                 }
+            }else {
+                log.info("找不到该订单组id！");
             }
         }finally {
             log.info("lockLogo ==>"+lockLogo);
