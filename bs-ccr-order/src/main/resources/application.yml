@@ -27,6 +27,3 @@ logging:
         nacos:
           client:
             naming: error
-feign:
-  httpclient:
-    connection-timeout: 10000

@@ -27,6 +27,8 @@ public interface CoinPairChoiceMapper {
 
     CoinPairChoice selectByPrimaryKey(int id);
 
+    CoinPairChoice selectByDisregardStatus(int id);
+
     Integer selectIdByCoinPartnerIdAndRobotIdAndStatus(int coinPartnerId,int tradePlatformApiBindProductComboId);
 
     int updateByPrimaryKeySelective(CoinPairChoice record);
