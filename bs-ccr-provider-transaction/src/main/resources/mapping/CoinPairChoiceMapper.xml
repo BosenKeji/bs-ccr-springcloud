@@ -57,6 +57,14 @@
     where id = #{id,jdbcType=INTEGER} and status = 1
   </select>
 
+  <select id="selectByDisregardStatus" parameterType="int" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List"/>
+    from coin_pair_choice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

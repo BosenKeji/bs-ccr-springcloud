@@ -21,6 +21,8 @@ public interface CoinPairChoiceService {
 
     CoinPairChoice get(int id);
 
+    CoinPairChoice getByDisregardStatus(int id);
+
     Optional<Integer> add(CoinPairChoice coinPairChoice);
 
     Optional<Integer> update(CoinPairChoice coinPairChoice);

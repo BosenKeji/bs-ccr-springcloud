@@ -18,8 +18,8 @@ public class CommonConstantUtil {
     public final static int ACTIVATE_STATUS = 1;
     public final static int ALL_STATUS = 2;
 
-    public static final int ACCURACY = 100;
-    public static final int ACCURACY_RATIO = 1000;
+    public static final int ACCURACY = 10000;
+    public static final int ACCURACY_RATIO = 10000;
 
     public static final ArrayList<String> openSearchFetchFieldFormat = Lists.newArrayList("order_group_id","coin_pair_choice_id","name","created_time");
 

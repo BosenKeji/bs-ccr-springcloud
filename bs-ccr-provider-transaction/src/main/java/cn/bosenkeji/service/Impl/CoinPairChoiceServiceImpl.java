@@ -252,6 +252,11 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return coinPairChoice;
     }
 
+    @Override
+    public CoinPairChoice getByDisregardStatus(int id) {
+        return this.coinPairChoiceMapper.selectByPrimaryKey(id);
+    }
+
     @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#coinPairChoice.tradePlatformApiBindProductComboId+'-'",condition = "#result != null")
     @Override
     public Optional<Integer> add(CoinPairChoice coinPairChoice) {

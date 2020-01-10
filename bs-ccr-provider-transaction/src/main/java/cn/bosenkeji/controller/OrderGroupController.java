@@ -65,7 +65,7 @@ public class OrderGroupController {
             return new Result<>(0-existedGroupId,"该自选币有未结单的订单组，创建订单组失败！");
         }
         if (orderGroup.getCoinPairChoiceId() != 0){
-            if (coinPairChoiceService.get(orderGroup.getCoinPairChoiceId()) == null){
+            if (coinPairChoiceService.getByDisregardStatus(orderGroup.getCoinPairChoiceId()) == null){
                 return new Result<>(null,"该自选币不存在！");
             }
         }else {
