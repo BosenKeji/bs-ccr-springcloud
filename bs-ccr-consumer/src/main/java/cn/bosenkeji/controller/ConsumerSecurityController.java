@@ -49,14 +49,17 @@ public class ConsumerSecurityController {
 
     /**
      * 获取token
-     * @param map 请求参数
      * @param request request
      * @return token信息
      */
     @ApiOperation(value = "获取token接口", httpMethod = "POST",nickname = "postAccessToken")
     @PostMapping("/oauth/token")
-    Object postAccessToken(@RequestParam LinkedMultiValueMap<String, String> map, HttpServletRequest request){
+    Object postAccessToken(@RequestParam("grant_type") String grantType,@RequestParam("username") String username,@RequestParam("password") String password, HttpServletRequest request){
         String url = url(request);
+        LinkedMultiValueMap<String,String> map = new LinkedMultiValueMap<>();
+        map.add("grant_type",grantType);
+        map.add("username",username);
+        map.add("password",password);
         HttpHeaders headers = authorizationHeaders(request);
         HttpEntity<LinkedMultiValueMap> entity = new HttpEntity<>(map,headers);
         return restTemplate.postForObject(url,entity,Object.class);
