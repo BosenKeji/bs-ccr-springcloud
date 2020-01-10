@@ -1,7 +1,6 @@
 package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -23,11 +22,9 @@ public class UserProductComboDay implements Serializable {
     @ApiModelProperty(hidden = true)
     private int status;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

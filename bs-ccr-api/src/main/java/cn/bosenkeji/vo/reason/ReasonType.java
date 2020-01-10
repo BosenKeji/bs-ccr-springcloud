@@ -1,7 +1,5 @@
 package cn.bosenkeji.vo.reason;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -12,10 +10,8 @@ public class ReasonType implements Serializable {
 
     private int status;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updatedAt;
 
     public int getId() {

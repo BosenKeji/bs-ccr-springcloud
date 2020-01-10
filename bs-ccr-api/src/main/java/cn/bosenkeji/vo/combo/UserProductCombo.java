@@ -3,7 +3,6 @@ package cn.bosenkeji.vo.combo;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,8 +14,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Api
+@JsonIgnoreProperties(value = {"handler"})
 @Validated
-public class UserProductCombo {
+public class UserProductCombo implements Serializable {
     private int id;
 
     @Min(value = 1,message = "用户ID不能小于1")
@@ -35,11 +35,9 @@ public class UserProductCombo {
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     //非数据库属性 剩余时长
     @ApiModelProperty(hidden = true)
     private int remainTime=0;

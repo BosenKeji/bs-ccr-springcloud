@@ -2,7 +2,6 @@ package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.Admin;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,11 +26,9 @@ public class UserProductComboDayByAdmin implements Serializable {
     private String remark;
     private int reasonId;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

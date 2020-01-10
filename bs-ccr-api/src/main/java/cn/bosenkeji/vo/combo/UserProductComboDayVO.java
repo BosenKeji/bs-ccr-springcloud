@@ -1,7 +1,5 @@
 package cn.bosenkeji.vo.combo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -9,7 +7,6 @@ public class UserProductComboDayVO implements Serializable {
 
     private int id;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdAt;
 
     private int userId;

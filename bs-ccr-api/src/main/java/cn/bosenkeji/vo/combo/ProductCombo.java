@@ -1,7 +1,6 @@
 package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.product.Product;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -37,11 +36,9 @@ public class ProductCombo implements Serializable {
 
     private int isCustomized;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp createdAt;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
 

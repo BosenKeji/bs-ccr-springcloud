@@ -1,7 +1,6 @@
 package cn.bosenkeji.vo.combo;
 
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 import java.io.Serializable;
@@ -19,7 +18,6 @@ public class UserProductComboVO implements Serializable {
     private int productComboId;
     private String productComboName;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdAt;
     private int remainTime;
 
