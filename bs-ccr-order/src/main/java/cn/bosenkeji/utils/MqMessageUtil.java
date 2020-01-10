@@ -9,6 +9,9 @@ public class MqMessageUtil {
         return o == null ? "" : o.toString();
     }
 
+    public static final int ADD_SIGN = 1;
+    public static final int UPDATE_SIGN = 2;
+
     public static Integer getInteger(Object o) {
         Integer temp = 0;
         if (o != null) {

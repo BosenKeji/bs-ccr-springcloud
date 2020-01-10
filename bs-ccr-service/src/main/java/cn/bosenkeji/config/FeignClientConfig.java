@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
  * @Versio V1.0
  **/
 
-@Configuration
+//@Configuration
 public class FeignClientConfig {
-    public static int connectTimeOutMillis = 5000;//超时时间
-    public static int readTimeOutMillis = 5000;
+    public static int connectTimeOutMillis = 10000;//超时时间
+    public static int readTimeOutMillis = 10000;
     @Bean
     public Request.Options options() {
         return new Request.Options(connectTimeOutMillis, readTimeOutMillis);

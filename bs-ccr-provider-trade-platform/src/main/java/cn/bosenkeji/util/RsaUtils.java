@@ -73,9 +73,9 @@ public class RsaUtils {
 
     public static final String PRIVATE_KEY_FILE_NAME = "privateKey.keystore";
 
-    private static final String ACCESS_KEY = "LTAISwQkitLFbG0t";
+    private static final String ACCESS_KEY = "LTAI4FiW7ykVpsp1C3M2EBzg";
 
-    private static final String SECRET_KEY = "aCeWQl874e6Jvh76GtfhEAeC24hKl0";
+    private static final String SECRET_KEY = "hZZmISbQzKUucNPe2woxXFYa3aplaP";
 
     private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
 

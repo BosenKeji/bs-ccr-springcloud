@@ -19,10 +19,10 @@ api:
   appId: 110565671
 
   #  阿里云accessKeyId
-  accessKeyId: LTAISwQkitLFbG0t
+  accessKeyId: LTAI4FiW7ykVpsp1C3M2EBzg
 
   #  阿里云accessSecret
-  accessSecret: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+  accessSecret: hZZmISbQzKUucNPe2woxXFYa3aplaP
 
   #  api是否公开
   visibility: PRIVATE

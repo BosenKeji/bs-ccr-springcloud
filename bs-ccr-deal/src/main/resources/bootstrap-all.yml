@@ -17,8 +17,8 @@ spring:
       rocketmq:
         binder:
           name-server: MQ_INST_1782728101358463_BbRT1x5s.us-east-1.mq-internal.aliyuncs.com:8080
-          access-key: LTAISwQkitLFbG0t
-          secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+          access-key: LTAI4FiW7ykVpsp1C3M2EBzg
+          secret-key: hZZmISbQzKUucNPe2woxXFYa3aplaP
       bindings:
         huobi_output: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info, content-type: application/json}
 

@@ -40,7 +40,7 @@
     select
     <include refid="Base_Column_List" />
     from order_group
-    where id = #{name,jdbcType=VARCHAR} and status = 1
+    where name = #{name,jdbcType=VARCHAR} and status = 1
   </select>
 
   <select id="resultNotEndGroupId" resultType="int">

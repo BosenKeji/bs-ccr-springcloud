@@ -65,7 +65,7 @@ public class OrderGroupController {
             return new Result<>(0-existedGroupId,"该自选币有未结单的订单组，创建订单组失败！");
         }
         if (orderGroup.getCoinPairChoiceId() != 0){
-            if (coinPairChoiceService.get(orderGroup.getCoinPairChoiceId()) == null){
+            if (coinPairChoiceService.getByDisregardStatus(orderGroup.getCoinPairChoiceId()) == null){
                 return new Result<>(null,"该自选币不存在！");
             }
         }else {
@@ -124,5 +124,35 @@ public class OrderGroupController {
     @GetMapping("/name")
     public int getIdByName(@RequestParam("name") String name){
         return this.orderGroupService.getGroupIdByName(name);
+    }
+
+    @GetMapping("/record_group")
+    public Result addOrUpdateOneOrderGroup(@RequestParam("id") int id,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("coinPairChoiceId") int coinPairChoiceId,
+                                           @RequestParam("endProfitRatio")  double endProfitRatio,
+                                           @RequestParam("isEnd")  int isEnd,
+                                           @RequestParam("endType") int endType,
+                                           @RequestParam("sign") int sign){
+        OrderGroup orderGroup = loadingOrderGroup(name, coinPairChoiceId, endProfitRatio, isEnd, endType);
+        if (sign == CommonConstantUtil.ADD_SIGN){
+            return addOneOrderGroup(orderGroup);
+        }
+        if (sign == CommonConstantUtil.UPDATE_SIGN && id > 0){
+            orderGroup.setId(id);
+            return update(orderGroup);
+        }
+        return new Result<>(null,"sign不合法！");
+    }
+    private OrderGroup loadingOrderGroup(String name,int coinPairChoiceId,double endProfitRatio,int isEnd,int endType){
+        OrderGroup orderGroup = new OrderGroup();
+
+        orderGroup.setName(name);
+        orderGroup.setCoinPairChoiceId(coinPairChoiceId);
+        orderGroup.setEndProfitRatio(endProfitRatio);
+        orderGroup.setIsEnd(isEnd);
+        orderGroup.setEndType(endType);
+
+        return orderGroup;
     }
 }

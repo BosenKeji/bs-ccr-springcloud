@@ -70,6 +70,11 @@ public class IOrderGroupClientServiceFallbackFactory implements FallbackFactory<
             public int getIdByName(String name) {
                 return 0;
             }
+
+            @Override
+            public Result addOrUpdateOneOrderGroup(int id, String name, int coinPairChoiceId, double endProfitRatio, int isEnd, int endType, int sign) {
+                return new Result<>(-1,"hystrix");
+            }
         };
     }
 }
