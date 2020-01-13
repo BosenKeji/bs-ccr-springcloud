@@ -100,7 +100,7 @@ public class OrderHandler {
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
-                }else if (groupId != 0){
+                }else if (groupId < 0){
                     orderGroup.setId(Math.abs(groupId));
                     log.info("更新订单组id ==>"+Math.abs(groupId));
                     log.info("更新订单组信息 ==>"+orderGroup.toString());
