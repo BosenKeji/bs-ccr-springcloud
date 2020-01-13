@@ -86,6 +86,9 @@ public class OrderGroupController {
         if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() <= 0){
             return new Result<>(null,"订单组不存在，更新订单组失败！");
         }
+        if (this.orderGroupService.getOneById(orderGroup.getId()).getIsEnd() > 0){
+            return new Result<>(null,"该订单组已结单，更新订单组失败！");
+        }
         Optional<Integer> result = this.orderGroupService.update(orderGroup);
         if (result.get() == CommonConstantUtil.VERIFY_FAIL){
             return new Result<>(null,"不能操作不是自己的东西哦！");
