@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @author CAJR
  * @date 2020/1/10 11:01 上午
  */
-@Configuration
+//@Configuration
 public class BizExceptionFeignErrorDecoder implements feign.codec.ErrorDecoder {
     private static final Logger logger = LoggerFactory.getLogger(BizExceptionFeignErrorDecoder.class);
 
