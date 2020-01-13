@@ -240,9 +240,13 @@ public class OrderHandler {
 
         String name = MqMessageUtil.getString(jsonObject.get("name"));
         int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
+        Timestamp createdAt = jsonObject.getTimestamp("createdAt");
         if (jsonObject.get("isEnd") != null){
             int isEnd = MqMessageUtil.getInteger(jsonObject.get("isEnd"));
             orderGroup.setIsEnd(isEnd);
+            if (isEnd == 0){
+                orderGroup.setCreatedAt(createdAt);
+            }
             if (isEnd == 1){
                 double endProfitRatio = MqMessageUtil.getDouble(jsonObject.get("endProfitRatio"));
                 int endType = MqMessageUtil.getInteger(jsonObject.getInteger("endType"));
