@@ -2,7 +2,7 @@ package cn.bosenkeji.vo;
 
 /**
  *
- *
+ * mq消息实体
  *
  * @author hjh
  *
@@ -15,6 +15,7 @@ public class RocketMQResult {
     private String type;
     private Integer finished_order;
     private String plantFormName;
+    private Double real_time_earning_ratio;
 
     public RocketMQResult() { }
 
@@ -58,6 +59,14 @@ public class RocketMQResult {
         this.plantFormName = plantFormName;
     }
 
+    public Double getReal_time_earning_ratio() {
+        return real_time_earning_ratio;
+    }
+
+    public void setReal_time_earning_ratio(Double real_time_earning_ratio) {
+        this.real_time_earning_ratio = real_time_earning_ratio;
+    }
+
     @Override
     public String toString() {
         return "RocketMQResult{" +
@@ -66,6 +75,7 @@ public class RocketMQResult {
                 ", type='" + type + '\'' +
                 ", finished_order=" + finished_order +
                 ", plantFormName='" + plantFormName + '\'' +
+                ", real_time_earning_ratio='" + real_time_earning_ratio + '\'' +
                 '}';
     }
 }
