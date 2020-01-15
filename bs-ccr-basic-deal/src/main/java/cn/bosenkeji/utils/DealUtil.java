@@ -102,7 +102,7 @@ public class DealUtil {
      * @return 需要发送消息的对象
      */
 
-    public static Message<String> createMessageObject(DealParameter dealParameter, String platformName, String type) {
+    public static Message<String> createMessageObject(DealParameter dealParameter, Double realTimeEarningRatio, String platformName, String type) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
         String symbol = dealParameter.getSymbol();
@@ -112,6 +112,8 @@ public class DealUtil {
         rocketMQResult.setType(type);
         rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
         rocketMQResult.setPlantFormName(platformName);
+        rocketMQResult.setReal_time_earning_ratio(realTimeEarningRatio);
+
 
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
         Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
