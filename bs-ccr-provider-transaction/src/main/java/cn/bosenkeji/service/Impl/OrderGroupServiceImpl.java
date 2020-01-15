@@ -177,6 +177,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
             if (orderGroup.getEndType() == CommonConstantUtil.FORGET_ORDER){
                 TradeOrder tradeOrder = new TradeOrder();
+                tradeOrder.setOrderGroupId(orderGroup.getId());
                 tradeOrder.setTradeType(CommonConstantUtil.FORGET_ORDER);
                 tradeOrder.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
                 tradeOrder.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
