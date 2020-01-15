@@ -126,4 +126,20 @@ public class CoinPairChoice implements Serializable {
     public void setCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         this.coinPairChoiceAttributeCustom = coinPairChoiceAttributeCustom;
     }
+
+    @Override
+    public String toString() {
+        return "CoinPairChoice{" +
+                "id=" + id +
+                ", coinPairId=" + coinPairId +
+                ", tradePlatformApiBindProductComboId=" + tradePlatformApiBindProductComboId +
+                ", isStart=" + isStart +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", coinPair=" + coinPair +
+                ", coinPairChoiceAttribute=" + coinPairChoiceAttribute +
+                ", coinPairChoiceAttributeCustom=" + coinPairChoiceAttributeCustom +
+                '}';
+    }
 }

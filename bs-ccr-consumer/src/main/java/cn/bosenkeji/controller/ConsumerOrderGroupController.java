@@ -59,6 +59,13 @@ public class ConsumerOrderGroupController {
     @ApiOperation(value = "更新单个交易订单组信息",httpMethod = "PUT",nickname = "updateOrderGroupById")
     @PutMapping("/")
     public Result update(@RequestBody @ApiParam(value = "交易订单实体", required = true, type = "string")@NotNull OrderGroup orderGroup){
+        if (orderGroup.getName() == null){
+            return new Result<>(null,"name 不能为空");
+        }
+        int id = this.iOrderGroupClientService.getIdByName(orderGroup.getName());
+        if (id > 0 ){
+            orderGroup.setId(id);
+        }
         return this.iOrderGroupClientService.updateOneOrderGroup(orderGroup);
     }
 

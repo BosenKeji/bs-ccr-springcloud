@@ -34,4 +34,6 @@ public class CommonConstantUtil {
 
     public static final int ADD_SIGN = 1;
     public static final int UPDATE_SIGN = 2;
+
+    public static final int FORGET_ORDER = 3;
 }

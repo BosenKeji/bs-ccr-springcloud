@@ -175,6 +175,13 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     public Optional<Integer> update(OrderGroup orderGroup) {
             double endProfitRatio = orderGroup.getEndProfitRatio() * CommonConstantUtil.ACCURACY_RATIO;
 
+            if (orderGroup.getEndType() == CommonConstantUtil.FORGET_ORDER){
+                TradeOrder tradeOrder = new TradeOrder();
+                tradeOrder.setTradeType(CommonConstantUtil.FORGET_ORDER);
+                tradeOrder.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                tradeOrder.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                this.tradeOrderService.add(tradeOrder);
+            }
             orderGroup.setEndProfitRatio(endProfitRatio);
             orderGroup.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             Integer result = this.orderGroupMapper.updateByPrimaryKeySelective(orderGroup);
