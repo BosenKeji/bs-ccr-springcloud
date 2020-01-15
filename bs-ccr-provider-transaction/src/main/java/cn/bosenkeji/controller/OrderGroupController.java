@@ -60,10 +60,6 @@ public class OrderGroupController {
     @ApiOperation(value = "添加单个订单组信息",httpMethod = "POST",nickname = "addOneOrderGroup")
     @PostMapping("/")
     public Result addOneOrderGroup(@RequestBody @ApiParam(value = "交易订单组", required = true, type = "string") OrderGroup orderGroup){
-        if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
-            int existedGroupId = this.orderGroupService.resultNotEndGroupId(orderGroup.getCoinPairChoiceId()).get();
-            return new Result<>(0-existedGroupId,"该自选币有未结单的订单组，创建订单组失败！");
-        }
         if (orderGroup.getCoinPairChoiceId() != 0){
             if (coinPairChoiceService.getByDisregardStatus(orderGroup.getCoinPairChoiceId()) == null){
                 return new Result<>(null,"该自选币不存在！");
@@ -71,13 +67,15 @@ public class OrderGroupController {
         }else {
             return new Result<>(null,"该自选币id不合法");
         }
-
         if (this.orderGroupService.checkExistByGroupName(orderGroup.getName()).get() > 0){
             OrderGroup orderGroup1 = this.orderGroupService.getOneByName(orderGroup.getName());
             int orderGroupId = orderGroup1.getIsEnd() == 1?0:orderGroup1.getId();
             return new Result<>(0-orderGroupId,"订单组name已存在！");
-        }
 
+        }
+        if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
+            return new Result<>(null,"该自选币有未结单的订单组，创建订单组失败！");
+        }
         return new Result<>(this.orderGroupService.add(orderGroup));
     }
 
@@ -87,6 +85,9 @@ public class OrderGroupController {
                          ){
         if (this.orderGroupService.checkExistByID(orderGroup.getId()).get() <= 0){
             return new Result<>(null,"订单组不存在，更新订单组失败！");
+        }
+        if (this.orderGroupService.getOneById(orderGroup.getId()).getIsEnd() > 0){
+            return new Result<>(null,"该订单组已结单，更新订单组失败！");
         }
         Optional<Integer> result = this.orderGroupService.update(orderGroup);
         if (result.get() == CommonConstantUtil.VERIFY_FAIL){

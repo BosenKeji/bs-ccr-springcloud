@@ -69,7 +69,7 @@ public class OrderHandler {
                 log.info("队列消息不合法！");
             }
         }catch (Exception e){
-//            e.printStackTrace();
+            e.printStackTrace();
             log.error("队列消息不合法或消息处理中出错！");
         }
         log.info("======= 消费信息结束！ ======= ");
@@ -100,7 +100,7 @@ public class OrderHandler {
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
                     createOrder(order);
-                }else if (groupId != 0){
+                }else if (groupId < 0){
                     orderGroup.setId(Math.abs(groupId));
                     log.info("更新订单组id ==>"+Math.abs(groupId));
                     log.info("更新订单组信息 ==>"+orderGroup.toString());
@@ -240,9 +240,13 @@ public class OrderHandler {
 
         String name = MqMessageUtil.getString(jsonObject.get("name"));
         int coinPairChoiceId = Integer.parseInt(jsonObject.getString("coinPairChoiceId"));
+        Timestamp createdAt = jsonObject.getTimestamp("createdAt");
         if (jsonObject.get("isEnd") != null){
             int isEnd = MqMessageUtil.getInteger(jsonObject.get("isEnd"));
             orderGroup.setIsEnd(isEnd);
+            if (isEnd == 0){
+                orderGroup.setCreatedAt(createdAt);
+            }
             if (isEnd == 1){
                 double endProfitRatio = MqMessageUtil.getDouble(jsonObject.get("endProfitRatio"));
                 int endType = MqMessageUtil.getInteger(jsonObject.getInteger("endType"));

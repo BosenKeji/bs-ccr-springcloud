@@ -128,7 +128,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
         orderGroup.setEndProfitRatio(endProfitRatio);
         orderGroup.setStatus(CommonConstantUtil.ACTIVATE_STATUS);
-        orderGroup.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         orderGroup.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         this.orderGroupMapper.insertSelective(orderGroup);
         pushToOpenSearch(orderGroup.getId());
