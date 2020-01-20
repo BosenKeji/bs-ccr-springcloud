@@ -179,8 +179,9 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     public int updateIsBound(int id, int isBound, int userId) {
         System.out.println("userId = " + userId);
         int isExist = tradePlatformApiMapper.checkExistByIdAndUserId(id, userId);
-        if(id >0 && isExist > 0)
+        if(id >0 && isExist > 0){
             return this.tradePlatformApiMapper.updateIsBound(id,isBound, Timestamp.valueOf(LocalDateTime.now()));
+        }
         return CommonResultNumberEnum.FAIL;
     }
 }

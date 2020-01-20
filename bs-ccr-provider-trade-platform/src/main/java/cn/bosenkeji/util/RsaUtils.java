@@ -77,7 +77,9 @@ public class RsaUtils {
 
     private static final String SECRET_KEY = "hZZmISbQzKUucNPe2woxXFYa3aplaP";
 
-    private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
+//    private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
+
+    private static final String END_POINT = "oss-cn-shenzhen-internal.aliyuncs.com";
 
     private  static final String BUCKET_NAME = "bs-follow";
 
@@ -453,8 +455,9 @@ public class RsaUtils {
      */
     public static byte[] cipherDoFinal(Cipher cipher, byte[] srcBytes, int segmentSize)
             throws  IOException, BadPaddingException, IllegalBlockSizeException {
-        if (segmentSize <= 0)
+        if (segmentSize <= 0){
             throw new RuntimeException("分段大小必须大于0");
+        }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int inputLen = srcBytes.length;
         int offSet = 0;
