@@ -248,7 +248,17 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         if (coinPairChoice != null){
             CoinPair coinPair = this.iCoinPairClientService.getCoinPair(coinPairChoice.getCoinPairId());
             coinPairChoice.setCoinPair(coinPair);
+            if (coinPairChoice.getCoinPairChoiceAttribute() != null){
+                coinPairChoice.getCoinPairChoiceAttribute().setExpectMoney(coinPairChoice.getCoinPairChoiceAttribute().getExpectMoney() / CommonConstantUtil.ACCURACY_RATIO);
+            }
+            if (coinPairChoice.getCoinPairChoiceAttributeCustom() != null){
+                coinPairChoice.getCoinPairChoiceAttributeCustom()
+                        .setFirstOpenPrice(coinPairChoice.getCoinPairChoiceAttributeCustom().getFirstOpenPrice() / CommonConstantUtil.ACCURACY_RATIO);
+                coinPairChoice.getCoinPairChoiceAttributeCustom()
+                        .setStopProfitMoney(coinPairChoice.getCoinPairChoiceAttributeCustom().getStopProfitMoney() / CommonConstantUtil.ACCURACY_RATIO);
+            }
         }
+
         return coinPairChoice;
     }
 

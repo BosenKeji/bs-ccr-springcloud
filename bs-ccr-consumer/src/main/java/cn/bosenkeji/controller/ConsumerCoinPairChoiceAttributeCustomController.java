@@ -51,4 +51,11 @@ public class ConsumerCoinPairChoiceAttributeCustomController {
     public Result deleteOneCoinPairChoiceAttributeCustom(@PathVariable("coinPairChoiceId")@Min(1) @ApiParam(value = "自选币ID", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return this.iCoinPairChoiceAttributeCustomClientService.deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(coinPairChoiceId);
     }
-}
+
+    @ApiOperation(value = "批量设置自选币开仓价",httpMethod = "PUT",nickname = "batchSettingFirstOpenPrice")
+    @PutMapping("/setting_first_open_price")
+    public Result batchSettingFirstOpenPrice(@RequestParam("coinPairIdAndOpenPrice")  @ApiParam(value = "自选币id与其开仓价组合字符串，例如（1-0.1230,888-11.2350,...,889-12.1234）", required = true, type = "string") String coinPairIdAndOpenPrice,
+                                             @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+        return this.iCoinPairChoiceAttributeCustomClientService.batchSettingFirstOpenPrice(coinPairIdAndOpenPrice, tradePlatformApiBindProductComboId);
+    }
+    }

@@ -39,6 +39,11 @@ public class ICoinPairChoiceAttributeCustomClientServiceFallbackFactory implemen
                 return new Result<>(0,"hystrix fail");
             }
 
+            @Override
+            public Result batchSettingFirstOpenPrice(String coinPairIdAndOpenPrice, int tradePlatformApiBindProductComboId) {
+                return new Result<>(0,"hystrix fail");
+            }
+
         };
     }
 }

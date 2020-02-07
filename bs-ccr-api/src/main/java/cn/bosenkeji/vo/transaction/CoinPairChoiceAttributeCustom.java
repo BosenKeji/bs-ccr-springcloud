@@ -32,6 +32,9 @@ public class CoinPairChoiceAttributeCustom {
     @ApiModelProperty("固定止盈比例")
     private Double stopProfitFixedRate;
 
+    @ApiModelProperty("首次开仓价")
+    private double firstOpenPrice;
+
     private int status;
 
     @ApiModelProperty(hidden = true)
@@ -118,6 +121,14 @@ public class CoinPairChoiceAttributeCustom {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public double getFirstOpenPrice() {
+        return firstOpenPrice;
+    }
+
+    public void setFirstOpenPrice(double firstOpenPrice) {
+        this.firstOpenPrice = firstOpenPrice;
     }
 
     @Override

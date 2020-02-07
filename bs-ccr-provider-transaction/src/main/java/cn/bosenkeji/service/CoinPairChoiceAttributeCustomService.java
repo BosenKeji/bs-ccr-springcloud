@@ -3,6 +3,7 @@ package cn.bosenkeji.service;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceAttributeCustom;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,8 @@ public interface CoinPairChoiceAttributeCustomService {
     Optional<Integer> deleteByCoinPairChoiceId(int coinPairChoiceId);
 
     Optional<Integer> batchDelete(List<Integer> coinPartnerChoiceIds);
+
+    Optional<Integer> batchSetFirstOpenPrice(Map<Integer,Double> coinPairAndOpenPrice,int tradePlatformApiBindProductComboId);
 
     Optional<Integer> checkByCoinPartnerChoiceId(int coinPartnerChoiceId);
 }

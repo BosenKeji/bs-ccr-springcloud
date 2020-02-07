@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * add cache by xivin
@@ -122,6 +122,25 @@ public class CoinPairChoiceAttributeCustomController {
         return new Result<>(this.coinPairChoiceAttributeCustomService.deleteByCoinPairChoiceId(coinPartnerChoiceId));
     }
 
+    @ApiOperation(value = "批量设置自选币开仓价",httpMethod = "PUT",nickname = "batchSettingFirstOpenPrice")
+    @PutMapping("/setting_first_open_price")
+    public Result batchSettingFirstOpenPrice(@RequestParam("coinPairIdAndOpenPrice")  @ApiParam(value = "自选币id与其开仓价组合字符串，例如（1-0.1230,888-11.2350,...,889-12.1234）", required = true, type = "string") String coinPairIdAndOpenPrice,
+                                             @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId){
+        String[] coinPairIdAndOpenPriceStrings = coinPairIdAndOpenPrice.split(",");
+        Map<Integer, Double> coinPairIdAndOpenPriceMap = new HashMap<>(16);
+        if (coinPairIdAndOpenPriceStrings.length <= 0){
+            return new Result<>("自选币id与其开仓价组合字符串格式错误或为空！");
+        }
+        for (String coinPairIdAndOpenPriceString : coinPairIdAndOpenPriceStrings){
+            int index = coinPairIdAndOpenPriceString.indexOf("-");
+            int end = coinPairIdAndOpenPriceString.length();
+            Integer coinPairId = Integer.valueOf(coinPairIdAndOpenPriceString.substring(0,index));
+            Double firstOpenPrice = Double.valueOf(coinPairIdAndOpenPriceString.substring(index+1, end));
+            coinPairIdAndOpenPriceMap.put(coinPairId, firstOpenPrice);
+        }
+
+        return new Result<>(this.coinPairChoiceAttributeCustomService.batchSetFirstOpenPrice(coinPairIdAndOpenPriceMap,tradePlatformApiBindProductComboId));
+    }
 
     @ApiOperation(value = "发现服务")
     @RequestMapping("/discover")

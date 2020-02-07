@@ -28,4 +28,7 @@ public interface ICoinPairChoiceAttributeCustomClientService {
 
     @DeleteMapping("/coin_pair_choice_attribute_custom/{coinPairChoiceId}")
     public Result deleteOneCoinPairChoiceAttributeCustomByCoinPairChoiceId(@PathVariable("coinPairChoiceId") int coinPairChoiceId);
+
+    @PutMapping("/coin_pair_choice_attribute_custom/setting_first_open_price")
+    public Result batchSettingFirstOpenPrice(@RequestParam("coinPairIdAndOpenPrice")  String coinPairIdAndOpenPrice, @RequestParam("tradePlatformApiBindProductComboId")  int tradePlatformApiBindProductComboId);
 }
