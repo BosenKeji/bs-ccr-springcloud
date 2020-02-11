@@ -86,6 +86,11 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
             public Result<Integer> checkExistByIdAndUserId(int id, int userId) {
                 return new Result<>(-1,"hystrix");
             }
+
+            @Override
+            public Result<Integer> updateRunStatus(int id, int runStatus) {
+                return new Result<>(-1,"hystrix");
+            }
         };
     }
 }

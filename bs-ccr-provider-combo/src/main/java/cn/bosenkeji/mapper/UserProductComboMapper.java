@@ -43,4 +43,6 @@ public interface UserProductComboMapper {
 
     int checkExistByIdAndUserId(@Param("id") int id,@Param("userId") Integer userId);
 
+    int updateRunStatus(@Param("id") int id, @Param("runStatus") int runStatus);
+
 }

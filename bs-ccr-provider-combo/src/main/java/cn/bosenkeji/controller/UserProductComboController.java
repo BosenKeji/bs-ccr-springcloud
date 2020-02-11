@@ -140,7 +140,12 @@ public class UserProductComboController {
         return new Result<>(this.iUserProductComboService.checkExistByIdAndUserId(id,userId));
     }
 
-    //获取单个用户套餐交易平台api接口
+    //更新用户套餐 运行状态
+    @ApiOperation(value = "更新运行状态接口",httpMethod = "PUT",nickname = "updateUserProductComboRunStatus")
+    @PutMapping("/run_status")
+    public Result<Integer> updateRunStatus(@RequestParam("id") int id, @RequestParam("runStatus") int runStatus) {
+        return iUserProductComboService.updateRunStatus(id,runStatus);
+    }
 
 
     @ApiOperation(value="获取当前服务api接口",notes="获取当前服务api接口",httpMethod = "GET")

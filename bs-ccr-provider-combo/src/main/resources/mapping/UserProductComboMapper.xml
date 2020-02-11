@@ -8,6 +8,7 @@
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
     <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="run_status" jdbcType="TINYINT" property="runStatus" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
@@ -26,6 +27,7 @@
     <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="run_status" jdbcType="TINYINT" property="runStatus" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
 
@@ -37,7 +39,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, order_number, product_combo_id, remark, status, created_at, updated_at
+    id, user_id, order_number, product_combo_id, remark, run_status, status, created_at, updated_at
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -245,5 +247,11 @@
     limit 1
     )
   </select>
+
+  <update id="updateRunStatus" parameterType="java.lang.Integer">
+    update user_product_combo
+    set run_status = #{runStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
 </mapper>

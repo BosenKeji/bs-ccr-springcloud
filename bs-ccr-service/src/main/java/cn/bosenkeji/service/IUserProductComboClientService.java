@@ -48,4 +48,7 @@ public interface IUserProductComboClientService {
     @GetMapping("/user_product_combo/exist_by_id_and_user_id")
     Result<Integer> checkExistByIdAndUserId(@RequestParam("id") int id, @RequestParam("userId") int userId);
 
+    @PutMapping("/user_product_combo/run_status")
+    Result<Integer> updateRunStatus(@RequestParam("id") int id, @RequestParam("runStatus") int runStatus);
+
 }

@@ -91,5 +91,12 @@ public class ConsumerUserProductComboController {
         return this.iUserProductComboClientService.delete(id);
     }
 
+    @ApiOperation(value = "更新运行状态接口",notes = "1 运行中 2 已暂停 3 已封禁", httpMethod = "PUT",nickname = "updateUserProductComboRunStatus")
+    @PutMapping("/run_status")
+    public Result<Integer> updateRunStatus(@RequestParam("id") @ApiParam(value = "用户套餐id",required = true,type = "integer",example = "1") int id,
+                                           @RequestParam("runStatus") @ApiParam(value = "运行状态",required = true,type = "integer",example = "1") int runStatus) {
+        return iUserProductComboClientService.updateRunStatus(id,runStatus);
+    }
+
 
 }

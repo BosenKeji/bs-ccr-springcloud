@@ -20,6 +20,7 @@ public class UserProductComboVO implements Serializable {
 
     private Timestamp createdAt;
     private int remainTime;
+    private int runStatus;
 
     private int userId;
     private String tel;
@@ -120,5 +121,13 @@ public class UserProductComboVO implements Serializable {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public int getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(int runStatus) {
+        this.runStatus = runStatus;
     }
 }

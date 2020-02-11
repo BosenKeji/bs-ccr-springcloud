@@ -44,5 +44,7 @@ public interface IUserProductComboService {
 
     int checkExistByIdAndUserId(int id,int userId);
 
+    Result<Integer> updateRunStatus(int id,int runStatus);
+
 
 }

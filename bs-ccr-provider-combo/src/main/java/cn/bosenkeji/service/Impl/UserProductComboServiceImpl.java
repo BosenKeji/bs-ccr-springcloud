@@ -428,5 +428,15 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         //设置剩余时间
         userProductCombo.setRemainTime(time>0?time:0);
     }
-    
+
+    @Override
+    public Result<Integer> updateRunStatus(int id, int runStatus) {
+        if (runStatus < 1) {
+            return new Result<>(0,"运行状态不存在！");
+        }
+        if (userProductComboMapper.checkExistById(id) < 1) {
+            return new Result<>(0,"套餐不存在！");
+        }
+        return new Result<>(userProductComboMapper.updateRunStatus(id,runStatus));
+    }
 }

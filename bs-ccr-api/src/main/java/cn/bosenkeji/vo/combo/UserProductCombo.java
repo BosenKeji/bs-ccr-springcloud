@@ -42,7 +42,11 @@ public class UserProductCombo implements Serializable {
     @ApiModelProperty(hidden = true)
     private int remainTime=0;
 
-   // private int redisKeyId;
+    /**
+     *  1 运行中 2 已暂停 3 已封禁
+     */
+    @ApiModelProperty(hidden = true)
+   private int runStatus;
 
     //一对一
     @ApiModelProperty(hidden = true)
@@ -168,6 +172,14 @@ public class UserProductCombo implements Serializable {
         this.userProductComboDays = userProductComboDays;
     }
 
+    public int getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(int runStatus) {
+        this.runStatus = runStatus;
+    }
+
     @Override
     public String toString() {
         return "UserProductCombo{" +
@@ -180,9 +192,11 @@ public class UserProductCombo implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", remainTime=" + remainTime +
+                ", runStatus=" + runStatus +
                 ", productCombo=" + productCombo +
                 ", user=" + user +
                 ", userProductComboDays=" + userProductComboDays +
+                ", tradePlatformApiBindProductCombo=" + tradePlatformApiBindProductCombo +
                 '}';
     }
 }

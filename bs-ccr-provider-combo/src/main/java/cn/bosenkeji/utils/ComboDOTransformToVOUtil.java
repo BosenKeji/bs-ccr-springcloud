@@ -56,6 +56,7 @@ public class ComboDOTransformToVOUtil {
             userProductComboVO.setId(userProductCombo.getId());
             userProductComboVO.setCreatedAt(userProductCombo.getCreatedAt());
             userProductComboVO.setRemainTime(userProductCombo.getRemainTime());
+            userProductComboVO.setRunStatus(userProductCombo.getRunStatus());
 
             if (null != userProductCombo.getProductCombo()) {
                 userProductComboVO.setProductComboId(userProductCombo.getProductComboId());
