@@ -4,6 +4,7 @@ import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import feign.hystrix.FallbackFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author xivin
@@ -88,6 +90,19 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             @Override
             public Result<Integer> apiBindCombo(int userId, int userProductComboId, int tradePlatformApiId) {
                 return new Result<>(-1,"hystrix");
+            }
+
+            @Override
+            public List<TradePlatformApiBindProductComboNoComboVo> listHasBoundByUserProductComboIds(Set<Integer> userProductComboIds) {
+
+                TradePlatformApiBindProductComboNoComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboNoComboVo();
+                tradePlatformApiBindProductComboVo.setApiBindRobotId(-1);
+                tradePlatformApiBindProductComboVo.setUserId(-1);
+                tradePlatformApiBindProductComboVo.setSign("hystrix");
+                List<TradePlatformApiBindProductComboNoComboVo> list = new ArrayList<>();
+                list.add(tradePlatformApiBindProductComboVo);
+                return list;
+
             }
 
             @Override

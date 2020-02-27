@@ -19,7 +19,7 @@
 
      -->
 
-    <classPathEntry location="/Users/sivan/.m2/repository/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar" />
+    <classPathEntry location="/Users/sivan/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-5.1.47.jar" />
 
     <!--
         context:生成一组对象的环境

@@ -211,7 +211,7 @@
     limit 1
   </select>
 
-  <select id="selectByComboIds" parameterType="java.util.Set" resultMap="BaseResultMap" >
+  <select id="selectByComboIds" parameterType="java.util.Set" resultMap="NoApiResultMap" >
     select
     <include refid="Base_Column_List"></include>
     from trade_platform_api_bind_product_combo

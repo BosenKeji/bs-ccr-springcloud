@@ -3,6 +3,7 @@ package cn.bosenkeji.controller;
 
 import cn.bosenkeji.service.IProductClientService;
 import cn.bosenkeji.service.IProductComboService;
+import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.ProductCombo;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import scala.Int;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
@@ -20,6 +22,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author xivin
@@ -39,10 +43,19 @@ public class ProductComboController {
 
     @Resource
     private IProductClientService iProductClientService;
+    @Resource
+    private ITradePlatformApiBindProductComboClientService tradePlatformApiBindProductComboClientService;
 
 
     @Resource
     private DiscoveryClient discoveryClient;
+
+    @ApiOperation(value ="ceshi",notes = "ceshi",httpMethod = "GET",nickname = "testByBound")
+    @RequestMapping(value = "/by_bound",method = RequestMethod.GET)
+    public List testByBound(@RequestParam("ids") Set<Integer> ids) {
+        System.out.println("ids = " + ids);
+        return tradePlatformApiBindProductComboClientService.listHasBoundByUserProductComboIds(ids);
+    }
 
     @ApiOperation(value ="获取产品套餐列表api",notes = "获取产品套餐列表api",httpMethod = "GET",nickname = "getProductComboListWithPage")
     @RequestMapping(value = "/",method = RequestMethod.GET)

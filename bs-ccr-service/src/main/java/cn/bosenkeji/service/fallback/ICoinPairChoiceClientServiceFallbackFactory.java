@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Author CAJR
@@ -83,6 +84,15 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             @Override
             public Result getCoinPairChoicePositionDetails(int coinPairChoiceId) {
                 return new Result<>(0,"hystrix fail");
+            }
+
+            @Override
+            public List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(Set<Integer> tradePlatformApiBindProductComboIds) {
+                CoinPairChoice coinPairChoice = new CoinPairChoice();
+                coinPairChoice.setId(0);
+                List list = new ArrayList();
+                list.add(coinPairChoice);
+                return list;
             }
         };
     }

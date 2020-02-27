@@ -53,6 +53,14 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 以 绑定表为主表 查询 用户绑定机器人列表
+     * v1.2已改成 以用户套餐表 为主表
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
     public PageInfo<TradePlatformApiBindProductCombo> findByUserIdWithPage(int userId, int pageNum, int pageSize) {
 
@@ -103,18 +111,6 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         return result;
     }
 
-    public int addConfirm(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
-
-        logger.info(tradePlatformApiBindProductCombo.getUserProductComboId()+"部署绑定机器人成功");
-        return 2;
-    }
-
-    public int addCancel(TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo) {
-
-        logger.error(tradePlatformApiBindProductCombo.getUserProductComboId()+"部署绑定机器人失败，进行cancel操作");
-        tradePlatformApiBindProductComboMapper.deleteByPrimaryKey(tradePlatformApiBindProductCombo.getId());
-        return -2;
-    }
 
     /**
      * 根据userId查询 机器人列表方法
@@ -257,7 +253,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         }catch (Exception e) {
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return new Result<>(CommonResultNumberEnum.FAIL,e.getMessage());
+            return new Result<>(CommonResultNumberEnum.FAIL,"绑定api异常，请联系业务人员！");
         }
     }
 
@@ -464,6 +460,7 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
 
     /**
      * 通过 userProductComboIds 查询 已经绑定api的 robot信息，包含 api 信息
+     * 以 tradePlatformApiBindProductCombo为 主表
      * @param ids
      * @return
      */
@@ -475,21 +472,12 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         while (iterator.hasNext()) {
             TradePlatformApiBindProductCombo next = iterator.next();
 
-            // 过滤掉没有绑定的 机器人
-            if(next.getTradePlatformApi() == null) {
-                iterator.remove();
-            }
-            else if(StringUtils.isBlank(next.getTradePlatformApi().getSign())) {
-                iterator.remove();
-            }else {
-                TradePlatformApiBindProductComboNoComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboNoComboVo();
-                tradePlatformApiBindProductComboVo.setApiBindRobotId(next.getId());
-                tradePlatformApiBindProductComboVo.setTradePlatformApiId(next.getTradePlatformApiId());
-                tradePlatformApiBindProductComboVo.setTradePlatformId(next.getTradePlatformApi().getTradePlatformId());
-                tradePlatformApiBindProductComboVo.setSign(next.getTradePlatformApi().getSign());
-                tradePlatformApiBindProductComboVo.setUserId(next.getUserId());
-                list.add(tradePlatformApiBindProductComboVo);
-            }
+            TradePlatformApiBindProductComboNoComboVo tradePlatformApiBindProductComboVo = new TradePlatformApiBindProductComboNoComboVo();
+            tradePlatformApiBindProductComboVo.setApiBindRobotId(next.getId());
+            tradePlatformApiBindProductComboVo.setTradePlatformApiId(next.getTradePlatformApiId());
+            tradePlatformApiBindProductComboVo.setUserId(next.getUserId());
+            list.add(tradePlatformApiBindProductComboVo);
+
         }
         return list;
     }

@@ -1,7 +1,6 @@
 package cn.bosenkeji.controller;
 
 import cn.bosenkeji.OpenSearchPage;
-import cn.bosenkeji.interfaces.OpenSearchTimeType;
 import cn.bosenkeji.service.TradeOrderService;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.transaction.OrderSearchRequestVo;

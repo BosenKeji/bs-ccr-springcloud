@@ -70,7 +70,6 @@ public class TradePlatformApiBindProductComboController {
                                                                                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
 
         PageInfo<TradePlatformApiBindProductComboVo> bindUserProductComboByUserId = tradePlatformApiBindProductComboService.findBindUserProductComboByUserId(userId, pageNum, pageSize);
-        logger.info("service return to controller, the result is  {}",bindUserProductComboByUserId);
         return bindUserProductComboByUserId;
 
     }
@@ -102,7 +101,7 @@ public class TradePlatformApiBindProductComboController {
     }
 
     @GetMapping("/bound_by_combo_ids")
-    @ApiOperation(value = "",httpMethod = "GET",nickname = "listHasBoundByUserProductComboIds")
+    @ApiOperation(value = "多个 用户套餐id 获取 用户绑定列表 接口",httpMethod = "GET",nickname = "listHasBoundByUserProductComboIds")
     public List<TradePlatformApiBindProductComboNoComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds) {
         return this.tradePlatformApiBindProductComboService.listHasBindByUserProductComboIds(userProductComboIds);
     }

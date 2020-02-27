@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author CAJR
@@ -45,4 +46,6 @@ public interface CoinPairChoiceMapper {
     List<CoinPairChoice> findAll();
 
     List<Integer> findAllCoinPairChoiceId();
+
+    List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(Set<Integer> tradePlatformApiBindProductComboIds);
 }

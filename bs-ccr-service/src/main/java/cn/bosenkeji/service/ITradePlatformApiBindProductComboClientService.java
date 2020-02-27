@@ -4,12 +4,14 @@ import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.ITradePlatformApiBindProductComboClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author xivin
@@ -58,10 +60,13 @@ public interface ITradePlatformApiBindProductComboClientService {
     @DeleteMapping("/trade_platform_api_bind_product_combo/by_combo/{userProductComboId}")
     public Result deleteByComboId(@PathVariable("userProductComboId") int userProductComboId);
 
-    @GetMapping("trade_platform_api_bind_product_combo/")
+    @GetMapping("/trade_platform_api_bind_product_combo/")
     public List findAll();
 
-    @GetMapping("trade_platform_api_bind_product_combo/{id}")
+    @GetMapping("/trade_platform_api_bind_product_combo/{id}")
     public int getUserIdById(@PathVariable("id") int id);
+
+    @GetMapping("/trade_platform_api_bind_product_combo/bound_by_combo_ids/")
+    List<TradePlatformApiBindProductComboNoComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds);
 
 }

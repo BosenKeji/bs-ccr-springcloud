@@ -8,6 +8,7 @@ import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Author CAJR
@@ -40,4 +41,6 @@ public interface CoinPairChoiceService {
     List<Integer> findAllCoinPartnerChoiceId();
 
     CoinPairChoicePositionDetailResult getCoinPairChoicePositionDetail(int coinPairChoiceId);
+
+    List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(Set<Integer> tradePlatformApiBindProductComboIds);
 }

@@ -23,6 +23,18 @@
 
   </resultMap>
 
+  <!-- 单表map create by xivin -->
+  <resultMap id="SingleResultMap" type="cn.bosenkeji.vo.transaction.CoinPairChoice">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="coin_pair_id" jdbcType="INTEGER" property="coinPairId" />
+    <result column="is_start" jdbcType="TINYINT" property="isStart" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="trade_platform_api_bind_product_combo_id" jdbcType="INTEGER" property="tradePlatformApiBindProductComboId"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, coin_pair_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
@@ -177,4 +189,17 @@
       #{item,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <select id="findByTradePlatformApiBindProductComboIdsAndStatus" parameterType="java.util.Set"  resultMap="SingleResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from coin_pair_choice
+    where
+    trade_platform_api_bind_product_combo_id in
+    <foreach collection="collection" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    and status = 1
+  </select>
+
 </mapper>

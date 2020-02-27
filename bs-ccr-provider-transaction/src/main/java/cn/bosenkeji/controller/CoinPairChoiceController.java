@@ -26,6 +26,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * add cache by xivin
@@ -203,6 +204,24 @@ public class CoinPairChoiceController {
     @GetMapping("/position_details")
     public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") @Min(1)  @ApiParam(value = "自选币id", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return new Result<>(this.coinPairChoiceService.getCoinPairChoicePositionDetail(coinPairChoiceId));
+    }
+
+    /**
+     * 通过 tradePlatformApiBindProductComboIds 集合查询 状态存在的 自选币列表
+     * 单表查询
+     * created by xivin
+     * @param tradePlatformApiBindProductComboIds
+     * @return
+     */
+    @ApiOperation(value = "根据 多个绑定id查询 自选币列表",httpMethod = "GET",nickname = "findByTradePlatformApiBindProductComboIdsAndStatus")
+    @GetMapping("/by_bind_ids")
+    public List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(@RequestParam("tradePlatformApiBindProductComboIds") Set<Integer> tradePlatformApiBindProductComboIds) {
+
+        // 注意不能传空的集合
+        if (tradePlatformApiBindProductComboIds.isEmpty()) {
+            return null;
+        }
+        return coinPairChoiceService.findByTradePlatformApiBindProductComboIdsAndStatus(tradePlatformApiBindProductComboIds);
     }
 
 }

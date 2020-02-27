@@ -450,4 +450,21 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             return result;
         }
     }
+
+    /**
+     * 通过 tradePlatformApiBindProductComboIds 集合查询 状态存在的 自选币列表
+     * 单表查询
+     * created by xivin
+     * @param tradePlatformApiBindProductComboIds
+     * @return
+     */
+    @Override
+    public List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(Set<Integer> tradePlatformApiBindProductComboIds) {
+
+        // 注意不能传空的集合
+        if (tradePlatformApiBindProductComboIds.isEmpty()) {
+            return null;
+        }
+        return coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdsAndStatus(tradePlatformApiBindProductComboIds);
+    }
 }

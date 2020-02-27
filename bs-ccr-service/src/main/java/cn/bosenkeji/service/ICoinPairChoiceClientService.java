@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @Author CAJR
@@ -65,5 +66,9 @@ public interface ICoinPairChoiceClientService {
 
     @GetMapping("/coin_pair_choice/position_details")
     public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") int coinPairChoiceId);
+
+
+    @GetMapping("/coin_pair_choice/by_bind_ids")
+    List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(@RequestParam("tradePlatformApiBindProductComboIds") Set<Integer> tradePlatformApiBindProductComboIds);
 
     }
