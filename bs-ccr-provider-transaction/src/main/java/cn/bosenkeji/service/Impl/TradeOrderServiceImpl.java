@@ -45,7 +45,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private static final String orderTable="trade_order";
 
     //查询字段
-    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","profit_ratio","theoretical_build_price","is_end","end_type","trade_profit_price");
+    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","sell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","profit_ratio","theoretical_build_price","is_end","end_type","trade_profit_price");
 
     private static final String addCmd = "ADD";
 

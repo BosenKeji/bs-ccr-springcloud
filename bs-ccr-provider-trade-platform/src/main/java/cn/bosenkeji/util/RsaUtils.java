@@ -82,6 +82,7 @@ public class RsaUtils {
     private static final String END_POINT = "oss-cn-shenzhen-internal.aliyuncs.com";
 
     private  static final String BUCKET_NAME = "bs-follow";
+//    private  static final String BUCKET_NAME = "bs-follow-prod";
 
 
     /**

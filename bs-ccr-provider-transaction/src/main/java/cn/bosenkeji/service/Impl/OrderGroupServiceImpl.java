@@ -106,10 +106,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 for (TradeOrder o : tradeOrders) {
                     if (o.getTradeType() == 1){
                         buildNumbers += 1;
-                        accumulateShell += o.getTradeNumbers();
                         accumulateCast += o.getTradeCost();
                     }else {
                         accumulateProfit = o.getSellProfit();
+                        accumulateShell += o.getTradeNumbers();
                     }
                 }
             }
