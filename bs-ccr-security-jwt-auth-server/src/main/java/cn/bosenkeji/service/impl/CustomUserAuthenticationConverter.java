@@ -3,11 +3,13 @@ package cn.bosenkeji.service.impl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 
 public class CustomUserAuthenticationConverter extends JwtAccessTokenConverter {
+
 
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
@@ -53,5 +56,30 @@ public class CustomUserAuthenticationConverter extends JwtAccessTokenConverter {
             }
         }
         return result;
+    }
+
+    @Override
+    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+        DefaultOAuth2AccessToken defaultOAuth2AccessToken = new DefaultOAuth2AccessToken(accessToken);
+        Object principal = authentication.getPrincipal();
+        CustomUserDetailsImpl user = null;
+        CustomAdminDetailsImpl admin = null;
+        Map<String, Object> userInfoMap = new HashMap<>();
+
+        if ( principal != null) {
+            if ( principal instanceof CustomUserDetailsImpl) {
+                user = (CustomUserDetailsImpl) principal;
+                userInfoMap.put("user_id", user.getId());
+                System.out.println(user.getUsername());
+                userInfoMap.put("user_name", user.getUsername());
+            } else if (principal instanceof CustomAdminDetailsImpl) {
+                admin = (CustomAdminDetailsImpl) principal;
+                userInfoMap.put("user_id", admin.getId());
+                userInfoMap.put("user_name", admin.getUsername());
+            }
+        }
+
+        defaultOAuth2AccessToken.setAdditionalInformation(userInfoMap);
+        return super.enhance(defaultOAuth2AccessToken, authentication);
     }
 }

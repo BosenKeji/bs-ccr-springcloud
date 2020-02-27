@@ -79,7 +79,7 @@ public class RsaUtils {
 
     private static final String ACCESS_KEY = "LTAI4FiW7ykVpsp1C3M2EBzg";
 
-    private static final String SECRET_KEY = " hZZmISbQzKUucNPe2woxXFYa3aplaP";
+    private static final String SECRET_KEY = "hZZmISbQzKUucNPe2woxXFYa3aplaP";
 
     private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
 
