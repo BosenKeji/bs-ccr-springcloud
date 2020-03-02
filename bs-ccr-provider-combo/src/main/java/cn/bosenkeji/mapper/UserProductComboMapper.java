@@ -26,6 +26,7 @@ public interface UserProductComboMapper {
 
 
     List<UserProductCombo> selectUserProductComboByUserId(Integer userId);
+    List<UserProductCombo> selectUserProductComboByIdAndUserId(@Param("id") Integer id,@Param("userId") Integer userId);
 
     Integer checkExistByProductIdAndUserId(Integer productId, Integer userId);
 
