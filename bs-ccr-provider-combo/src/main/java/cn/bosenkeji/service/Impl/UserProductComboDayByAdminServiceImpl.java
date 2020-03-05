@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -71,6 +72,7 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
      * @return
      */
     @BatchCacheRemove(value = {"'ccr:comboDay:listByUpcId::'+#userProductComboDay.userProductComboId+'-'"},condition = "#result > 0")
+    @Transactional
     @Override
     public int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin) {
 
@@ -84,10 +86,11 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
         String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey,String.valueOf(id));
 
         //重新创建redis 的zset情况
-        if(redisKey==null)
-            UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
+        if(redisKey==null) {
+            UserComboTimeUtil.saveComboTimeToRedis(time, redisTemplate, userProductCombo, jobService);
             //return 0;
-        if(redisTemplate.opsForZSet().score(redisKey,String.valueOf(id))==null) {
+        }
+        else if(redisTemplate.opsForZSet().score(redisKey,String.valueOf(id))==null) {
 
             UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
 
