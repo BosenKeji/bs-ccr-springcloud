@@ -45,4 +45,6 @@ public interface CoinPairChoiceMapper {
     List<CoinPairChoice> findAll();
 
     List<Integer> findAllCoinPairChoiceId();
+
+    List<CoinPairChoice> findByTradePlatformApiBindProductComboIdAndIsStart(@Param("tradePlatformApiBindProductComboId") int tradePlatformApiBindProductComboId, @Param("isStart") int isStart);
 }

@@ -7,9 +7,12 @@ import cn.bosenkeji.vo.transaction.CoinPairChoice;
 import cn.bosenkeji.vo.transaction.CoinPairChoiceJoinCoinPair;
 import cn.bosenkeji.vo.transaction.CoinPairChoicePositionDetailResult;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +68,11 @@ public interface ICoinPairChoiceClientService {
 
     @GetMapping("/coin_pair_choice/position_details")
     public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") int coinPairChoiceId);
+
+    @GetMapping("/coin_pair_choice/by_is_start")
+    public List listByIsStart(
+            @RequestParam("tradePlatformApiBindProductComboId") int tradePlatformApiBindProductComboId,
+            @RequestParam("isStart") int isStart,
+            @RequestParam("coinId") int coinId);
 
     }

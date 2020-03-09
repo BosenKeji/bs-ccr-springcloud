@@ -10,6 +10,7 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="trade_platform_api_bind_product_combo_id" jdbcType="INTEGER" property="tradePlatformApiBindProductComboId"/>
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
 
     <association property="coinPairChoiceAttribute" javaType="cn.bosenkeji.vo.transaction.CoinPairChoiceAttribute"
                  column="id"
@@ -25,7 +26,7 @@
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, coin_pair_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
+    id, coin_pair_id, is_start, `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id, order_status
   </sql>
   <select id="selectIdByCoinPartnerIdAndRobotIdAndStatus" resultType="integer">
     select id from coin_pair_choice where coin_pair_id = #{param1} and trade_platform_api_bind_product_combo_id = #{param2} and status = 0
@@ -86,10 +87,10 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into coin_pair_choice (coin_pair_id, is_start,
-      `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id
+      `status`, created_at, updated_at,trade_platform_api_bind_product_combo_id,order_status
       )
     values (#{coinPairId,jdbcType=INTEGER}, #{isStart,jdbcType=TINYINT},
-      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},#{tradePlatformApiBindProductComboId,jdbcType=INTEGER}, #{orderStatus,jdbcType=TINYINT}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.bosenkeji.vo.transaction.CoinPairChoice" useGeneratedKeys="true">
@@ -108,6 +109,9 @@
       <if test="tradePlatformApiBindProductComboId > 0">
         trade_platform_api_bind_product_combo_id,
       </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       #{coinPairId,jdbcType=INTEGER},
@@ -120,7 +124,10 @@
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
       <if test="tradePlatformApiBindProductComboId > 0">
-        #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
+        #{tradePlatformApiBindProductComboId,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -133,6 +140,9 @@
       </if>
       <if test="isStart > 0">
         is_start = #{isStart,jdbcType=TINYINT},
+      </if>
+      <if test="orderStatus != null ">
+        `order_status` = #{orderStatus,jdbcType=TINYINT},
       </if>
       <if test="status == 1">
         `status` = #{status,jdbcType=TINYINT},
@@ -157,6 +167,7 @@
       `status` = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      order_status = #{orderStatus,jdbcType=TINYINT},
     trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER} and status = 1
   </update>
@@ -164,17 +175,28 @@
   <update id="logicDelete" >
     update coin_pair_choice
     set `status` = #{param3,jdbcType=INTEGER},
-    is_start = 1,
+    is_start = 1,order_status= 0,
     updated_at = #{param2,jdbcType=TIMESTAMP}
     where id = #{param1,jdbcType=INTEGER}
   </update>
   <update id="batchLogicDelete" >
     update coin_pair_choice
-    set `status` = 0,
+    set `status` = 0,order_status= 0,
     updated_at = #{param2,jdbcType=TIMESTAMP}
     where id in
     <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
       #{item,jdbcType=INTEGER}
     </foreach>
   </update>
+
+  <select id="findByTradePlatformApiBindProductComboIdAndIsStart" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from coin_pair_choice
+    where
+    trade_platform_api_bind_product_combo_id = #{tradePlatformApiBindProductComboId,jdbcType=INTEGER}
+    and
+    is_start = #{isStart,jdbcType=TINYINT}
+    and status = 1
+  </select>
 </mapper>
