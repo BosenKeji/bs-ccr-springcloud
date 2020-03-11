@@ -34,12 +34,12 @@
                     <user>bosen_follow</user>
                     <password>AYbosenkj19</password>-->
 
-<!--                    <url>jdbc:mysql://127.0.0.1:3306/bs-ccr</url>
+                    <url>jdbc:mysql://127.0.0.1:3306/bs-ccr</url>
                     <user>root</user>
-                    <password>123zxc</password>-->
-                    <url>jdbc:mysql://rm-wz998481a2g965n850o.mysql.rds.aliyuncs.com:3306/bs-ccr</url>
+                    <password>123zxc</password>
+                    <!--<url>jdbc:mysql://rm-wz998481a2g965n850o.mysql.rds.aliyuncs.com:3306/bs-ccr</url>
                     <user>bs_ccr_mysql</user>
-                    <password>bs_ccr_mysql_RBN!!</password>
+                    <password>bs_ccr_mysql_RBN!!</password>-->
                 </configuration>
             </plugin>
         </plugins>
