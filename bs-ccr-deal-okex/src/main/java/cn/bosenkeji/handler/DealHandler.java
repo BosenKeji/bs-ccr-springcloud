@@ -114,7 +114,7 @@ public class DealHandler {
                     //mq发送卖的消息
                     Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
                     boolean isSend = source.okexOutput().send(messageObject);
-                    log.info("sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
+                    log.info(s + "===> sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
 
             }
@@ -128,7 +128,7 @@ public class DealHandler {
                     //mq发送买的消息
                     Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_BUY);
                     boolean isSend = source.okexOutput().send(messageObject);
-                    log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
+                    log.info(s + "===> buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }
         });
