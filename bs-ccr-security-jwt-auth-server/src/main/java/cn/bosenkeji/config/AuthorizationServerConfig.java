@@ -80,6 +80,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
         endpoints.authenticationManager(authenticationManager).accessTokenConverter(accessTokenConverter());
+
         endpoints.tokenEnhancer(tokenEnhancer());
         endpoints.tokenStore(tokenStore());
 //        endpoints.userDetailsService(userService);
@@ -88,7 +89,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         DefaultTokenServices tokenServices = tokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
         tokenServices.setSupportRefreshToken(true);
-        tokenServices.setTokenEnhancer(tokenEnhancer());
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 1天
 

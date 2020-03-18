@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -216,6 +217,35 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     }
 
+    @Override
+    public PageInfo<UserProductCombo> selectUserProductComboByUserTelAndId(int pageNum, int pageSize, String tel, Integer id) {
+
+        if (StringUtils.isEmpty(tel) && (id == null || id <=0) ) {
+            return new PageInfo<>();
+        }
+
+        if (StringUtils.isEmpty(tel)) {
+            return selectUserProductComboByUserIdAndId(pageNum,pageSize,null,id);
+        }
+
+        User user=null;
+
+        try{
+            user = iUserClientService.getOneUserByTel(tel);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new PageInfo<>();
+        }
+
+        //查不到用户
+        if(user==null) {
+            return new PageInfo<>();
+        }
+        //从数据库查询
+
+        return selectUserProductComboByUserIdAndId(pageNum,pageSize,user.getId(),id);
+    }
+
     /**
      * 联合查询用户套餐时长列表
      * @param pageNum
@@ -230,6 +260,25 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         PageHelper.startPage(pageNum,pageSize);
 
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByUserId(userId);
+
+        getProductByPids(userProductCombos);
+
+        return new PageInfo<>(userProductCombos);
+    }
+
+    /**
+     * 根据
+     * @param pageNum
+     * @param pageSize
+     * @param userId 用户ID
+     * @return
+     */
+    public PageInfo<UserProductCombo> selectUserProductComboByUserIdAndId(int pageNum,int pageSize,Integer userId, Integer id) {
+
+        //从数据库查询
+        PageHelper.startPage(pageNum,pageSize);
+
+        List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByIdAndUserId(id,userId);
 
         getProductByPids(userProductCombos);
 

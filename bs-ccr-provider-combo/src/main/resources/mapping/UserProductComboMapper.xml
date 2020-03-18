@@ -246,4 +246,19 @@
     )
   </select>
 
+  <select id="selectUserProductComboByIdAndUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_product_combo
+    <where>
+      <if test="id != null and id > 0">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+
+      <if test="userId != null and userId > 0">
+        and user_id = #{userId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
 </mapper>

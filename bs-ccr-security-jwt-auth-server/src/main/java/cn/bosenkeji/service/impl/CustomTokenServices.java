@@ -5,15 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class CustomTokenServices extends DefaultTokenServices {
@@ -29,26 +24,15 @@ public class CustomTokenServices extends DefaultTokenServices {
     }
 
     @Override
-    @Transactional
     public  OAuth2AccessToken createAccessToken(OAuth2Authentication authentication) throws AuthenticationException {
-        DefaultOAuth2AccessToken oAuth2AccessToken;
-        OAuth2AccessToken accessToken;
+
+        OAuth2AccessToken accessToken = null;
         Object principal = authentication.getUserAuthentication().getPrincipal();
         UserDetails userDetails;
-        CustomUserDetailsImpl user;
-        CustomAdminDetailsImpl admin;
-        //附加信息map
-        Map<String, Object> userInfoMap = new HashMap<>();
         if (principal instanceof CustomAdminDetailsImpl) {
            userDetails = (CustomAdminDetailsImpl) principal;
-           admin = (CustomAdminDetailsImpl) principal;
-           userInfoMap.put("user_id",admin.getId());
-           userInfoMap.put("user_name",userDetails.getUsername());
         } else {
             userDetails = (CustomUserDetailsImpl) principal;
-            user = (CustomUserDetailsImpl) principal;
-            userInfoMap.put("user_id",user.getId());
-            userInfoMap.put("user_name",user.getUsername());
         }
         String username = userDetails.getUsername();
         String password = userDetails.getPassword();
@@ -60,8 +44,6 @@ public class CustomTokenServices extends DefaultTokenServices {
                 }
             }
             accessToken = super.createAccessToken(authentication);
-            oAuth2AccessToken = (DefaultOAuth2AccessToken)accessToken;
-            oAuth2AccessToken.setAdditionalInformation(userInfoMap);
         } finally {
             while (true) {
                 boolean unLock = redisLockUtil.unLock( username, password);
@@ -71,6 +53,6 @@ public class CustomTokenServices extends DefaultTokenServices {
             }
         }
 
-       return oAuth2AccessToken;
+       return accessToken;
     }
 }

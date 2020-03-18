@@ -84,6 +84,14 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             public Result getCoinPairChoicePositionDetails(int coinPairChoiceId) {
                 return new Result<>(0,"hystrix fail");
             }
+
+            @Override
+            public List listByIsStart(int tradePlatformApiBindProductComboId, int isStart, int coinId) {
+                List list = new ArrayList();
+                CoinPairChoice coinPairChoice = new CoinPairChoice();
+                list.add(coinPairChoice);
+                return list;
+            }
         };
     }
 }

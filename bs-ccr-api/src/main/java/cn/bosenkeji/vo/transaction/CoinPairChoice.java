@@ -25,7 +25,7 @@ public class CoinPairChoice implements Serializable {
     @ApiModelProperty("机器人id")
     private int tradePlatformApiBindProductComboId;
 
-    @ApiModelProperty("是否开始策略")
+    @ApiModelProperty("是否开始策略  1未开启策略 2 开启策略")
     private int isStart;
 
     @ApiModelProperty(hidden = true)
@@ -36,6 +36,9 @@ public class CoinPairChoice implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private Timestamp updatedAt;
+
+    @ApiModelProperty("0正常  1暂停买入 2忘记订单")
+    private Integer orderStatus;
 
     /**非数据库字段*/
     @ApiModelProperty(hidden = true)
@@ -125,6 +128,14 @@ public class CoinPairChoice implements Serializable {
 
     public void setCoinPairChoiceAttributeCustom(CoinPairChoiceAttributeCustom coinPairChoiceAttributeCustom) {
         this.coinPairChoiceAttributeCustom = coinPairChoiceAttributeCustom;
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

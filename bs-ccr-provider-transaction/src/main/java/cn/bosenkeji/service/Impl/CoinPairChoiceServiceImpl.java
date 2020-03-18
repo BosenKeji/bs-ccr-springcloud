@@ -8,6 +8,7 @@ import cn.bosenkeji.util.CommonConstantUtil;
 import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -62,6 +63,9 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Autowired
     CoinPairChoiceAttributeCustomServiceImpl coinPairChoiceAttributeCustomService;
+
+    @Autowired
+    IStrategyService iStrategyService;
 
     @Autowired
     OrderGroupService orderGroupService;
@@ -139,6 +143,76 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
                }
            }
         }
+
+        return filter(coinId,resultCoinPairChoiceList);
+    }
+
+    /**
+     * 填充 自选币 和 策略 信息方法
+     * @param tradePlatformApiBindProductComboId
+     * @param coinId
+     * @param isStart
+     * @return
+     */
+    private List<CoinPairChoice> fillWithStrategy(int tradePlatformApiBindProductComboId,int coinId,int isStart) {
+        //货币对Map
+        Map<Integer, CoinPair> coinPairMap = new HashMap<>(16);
+        //根据tradePlatformApiBindProductComboId查询自选币list
+        List<CoinPairChoice>  coinPairChoices;
+        //根据货币id查询货币对货币的列表
+        List<CoinPairCoin> coinPairCoinList = this.iCoinPairCoinClientService.listByCoinId(coinId);
+        //真正返回的结果列表
+        List<CoinPairChoice> resultCoinPairChoiceList = new ArrayList<>();
+
+        //获取货币对的id的list
+        List<Integer> coinPairIds = new ArrayList<>();
+        if (!coinPairCoinList.isEmpty()){
+            for (CoinPairCoin c : coinPairCoinList) {
+                coinPairIds.add(c.getCoinPairId());
+            }
+        }else {
+            return resultCoinPairChoiceList;
+        }
+
+        //根据货币对id列表的填充coinPairMap
+        if (!coinPairIds.isEmpty()){
+            List<CoinPair> coinPairs = this.iCoinPairClientService.findSection(coinPairIds);
+            if (!coinPairs.isEmpty()){
+                for (CoinPair c : coinPairs) {
+                    coinPairMap.put(c.getId(), c);
+                }
+            }
+        }else {
+            return resultCoinPairChoiceList;
+        }
+
+        //根据TradePlatformApiBindProductComboId填充自选币的货币对数据
+        coinPairChoices = selectByRobotIdAndIsStart(tradePlatformApiBindProductComboId,isStart);
+
+        if (!coinPairChoices.isEmpty()){
+            for (CoinPairChoice c : coinPairChoices) {
+                if (coinPairMap.containsKey(c.getCoinPairId())){
+                    c.setCoinPair(coinPairMap.get(c.getCoinPairId()));
+                }
+                if (c.getCoinPairChoiceAttribute() != null) {
+                    if (c.getCoinPairChoiceAttribute().getStrategyId() > 0) {
+                        StrategyOther strategy = iStrategyService.getStrategy(c.getCoinPairChoiceAttribute().getStrategyId());
+                        if (strategy != null) {
+                            c.getCoinPairChoiceAttribute().setStrategy(strategy);
+                        }
+                    }
+                }
+            }
+            //把货币对不为空的数据填充
+            for (CoinPairChoice coinPairChoice : coinPairChoices){
+                if (coinPairChoice.getCoinPair() != null){
+                    resultCoinPairChoiceList.add(coinPairChoice);
+                }
+            }
+        }
+
+
+
 
         return filter(coinId,resultCoinPairChoiceList);
     }
@@ -439,5 +513,20 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
             e.printStackTrace();
             return result;
         }
+    }
+
+    /**
+     * create by xivin
+     * @param tradePlatformApiBindProductComboId
+     * @param isStart
+     * @return
+     */
+    @Override
+    public List<CoinPairChoice> listByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart, int coinId) {
+        return fillWithStrategy(tradePlatformApiBindProductComboId,coinId,isStart);
+    }
+
+    public List<CoinPairChoice> selectByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart) {
+        return coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdAndIsStart(tradePlatformApiBindProductComboId,isStart);
     }
 }

@@ -1,5 +1,6 @@
 package cn.bosenkeji.vo.transaction;
 
+import cn.bosenkeji.vo.strategy.StrategyOther;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
@@ -33,6 +34,8 @@ public class CoinPairChoiceAttribute {
 
     @ApiModelProperty(hidden = true)
     private Date updatedAt;
+
+    private StrategyOther strategy;
 
     public int getId() {
         return id;
@@ -96,6 +99,14 @@ public class CoinPairChoiceAttribute {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public StrategyOther getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(StrategyOther strategy) {
+        this.strategy = strategy;
     }
 
     @Override

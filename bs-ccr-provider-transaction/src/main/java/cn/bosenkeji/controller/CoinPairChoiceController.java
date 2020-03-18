@@ -71,6 +71,21 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.listByPage(pageNum,pageSizeCommon,tradePlatformApiBindProductComboId,coinId);
     }
 
+    /**
+     * create by xivin
+     * @param tradePlatformApiBindProductComboId
+     * @param isStart
+     * @return
+     */
+    @ApiOperation(value = "通过绑定id 和 是否开启策略 获取自选货币列表接口",httpMethod = "GET",nickname = "getByRobotIdAndIsStartCoinPairChoiceList")
+    @GetMapping("/by_is_start")
+    public List listByIsStart(
+                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                         @RequestParam("isStart") @ApiParam(value = "是否开启策略", required = true, type = "integer",example = "1") int isStart,
+                         @RequestParam("coinId") @ApiParam(value = "货币id",required = true,type = "integer",example = "1") int coinId ){
+        return this.coinPairChoiceService.listByRobotIdAndIsStart(tradePlatformApiBindProductComboId,isStart,coinId);
+    }
+
     @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
     @GetMapping("/check_coin_pair_choice")
     public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,

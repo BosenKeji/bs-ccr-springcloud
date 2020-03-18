@@ -103,6 +103,20 @@ public class UserProductComboController {
         return userProductComboPageInfo;
     }
 
+    @ApiOperation(value="根据用户电话和机器人编号查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserTelAndIdWithPage")
+    @RequestMapping(value="/list_by_user_tel_and_id",method = RequestMethod.GET)
+    public PageInfo<UserProductComboVO> listByUserTelAndId(@RequestParam(value = "userTel",defaultValue = "") @ApiParam(value = "用户电话",type = "string",example = "13556559840") String userTel,
+                                                           @RequestParam(value = "id",defaultValue = "0") @ApiParam(value = "用户套餐ID",type = "integer",example = "1") int id,
+                                                           @RequestParam(value="pageNum",defaultValue = "1") int pageNum,
+                                                           @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
+
+        PageInfo userProductComboPageInfo = this.iUserProductComboService.selectUserProductComboByUserTelAndId(pageNum, pageSize, userTel, id);
+        if(null != userProductComboPageInfo.getList() && userProductComboPageInfo.getList().size() > 0) {
+            userProductComboPageInfo.setList(ComboDOTransformToVOUtil.transformUserProductComboDOToVO(userProductComboPageInfo.getList()));
+        }
+        return userProductComboPageInfo;
+    }
+
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
     @RequestMapping(value="/list_by_user_id",method = RequestMethod.GET)
     public PageInfo<UserProductComboVO> listByUserId(@RequestParam("userId") @ApiParam(value = "用户ID",required = true,type = "integer",example = "1") int userId,

@@ -40,4 +40,6 @@ public interface CoinPairChoiceService {
     List<Integer> findAllCoinPartnerChoiceId();
 
     CoinPairChoicePositionDetailResult getCoinPairChoicePositionDetail(int coinPairChoiceId);
+
+    List<CoinPairChoice> listByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart, int coinId);
 }

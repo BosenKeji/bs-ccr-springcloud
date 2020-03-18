@@ -57,4 +57,29 @@ public class CustomUserAuthenticationConverter extends JwtAccessTokenConverter {
         }
         return result;
     }
+
+    @Override
+    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+        DefaultOAuth2AccessToken defaultOAuth2AccessToken = new DefaultOAuth2AccessToken(accessToken);
+        Object principal = authentication.getPrincipal();
+        CustomUserDetailsImpl user = null;
+        CustomAdminDetailsImpl admin = null;
+        Map<String, Object> userInfoMap = new HashMap<>();
+
+        if ( principal != null) {
+            if ( principal instanceof CustomUserDetailsImpl) {
+                user = (CustomUserDetailsImpl) principal;
+                userInfoMap.put("user_id", user.getId());
+                System.out.println(user.getUsername());
+                userInfoMap.put("user_name", user.getUsername());
+            } else if (principal instanceof CustomAdminDetailsImpl) {
+                admin = (CustomAdminDetailsImpl) principal;
+                userInfoMap.put("user_id", admin.getId());
+                userInfoMap.put("user_name", admin.getUsername());
+            }
+        }
+
+        defaultOAuth2AccessToken.setAdditionalInformation(userInfoMap);
+        return super.enhance(defaultOAuth2AccessToken, authentication);
+    }
 }

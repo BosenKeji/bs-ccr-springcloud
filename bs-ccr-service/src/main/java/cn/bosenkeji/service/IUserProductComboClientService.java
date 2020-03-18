@@ -30,6 +30,12 @@ public interface IUserProductComboClientService {
     @GetMapping("/user_product_combo/list_by_user_tel/")
     PageInfo<UserProductComboVO> listByUserTel(@RequestParam("userTel") String userTel, @RequestParam(value="pageNum") int pageNum, @RequestParam(value="pageSize") int pageSize);
 
+    @GetMapping("/user_product_combo/list_by_user_tel_and_id/")
+    PageInfo<UserProductComboVO> listByUserTelAndId(@RequestParam("userTel") String userTel,
+                                               @RequestParam("id") Integer id,
+                                               @RequestParam(value="pageNum") int pageNum,
+                                               @RequestParam(value="pageSize") int pageSize);
+
     @GetMapping("/user_product_combo/list_by_user_id/")
     PageInfo<UserProductComboVO> listByUserId(@RequestParam("userId") int userId,@RequestParam(value="pageNum") int pageNum,@RequestParam(value="pageSize") int pageSize);
 

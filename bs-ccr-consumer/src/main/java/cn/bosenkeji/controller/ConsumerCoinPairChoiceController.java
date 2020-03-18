@@ -18,6 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -101,5 +102,20 @@ public class ConsumerCoinPairChoiceController {
     @GetMapping("/position_details")
     public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") @Min(1)  @ApiParam(value = "自选币id", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return this.iCoinPairChoiceClientService.getCoinPairChoicePositionDetails(coinPairChoiceId);
+    }
+
+    /**
+     * create by xivin
+     * @param tradePlatformApiBindProductComboId
+     * @param isStart
+     * @return
+     */
+    @ApiOperation(value = "通过绑定id 和 是否开启策略 获取自选货币列表接口",httpMethod = "GET",nickname = "getByRobotIdAndIsStartCoinPairChoiceList")
+    @GetMapping("/by_is_start")
+    public List listByIsStart(
+            @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+            @RequestParam("isStart") @ApiParam(value = "是否开启策略", required = true, type = "integer",example = "1") int isStart,
+            @RequestParam("coinId") @ApiParam(value = "货币id",required = true,type = "integer",example = "1") int coinId ){
+        return this.iCoinPairChoiceClientService.listByIsStart(tradePlatformApiBindProductComboId,isStart,coinId);
     }
 }

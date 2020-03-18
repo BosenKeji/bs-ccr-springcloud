@@ -63,17 +63,8 @@ public class ConsumerUserProductComboController {
                                      @RequestParam(value = "id",defaultValue = "0") @ApiParam(value = "用户套餐ID",type = "integer",example = "1") int id,
                                 @RequestParam(value="pageNum",defaultValue = "1") int pageNum,
                                 @RequestParam(value="pageSize",defaultValue = "15") int pageSize) {
-        if(id>0) {
-            UserProductCombo userProductCombo = this.iUserProductComboClientService.getUserProductCombo(id);
-            List list = new ArrayList();
-            list.add(userProductCombo);
-            return new PageInfo<>(list);
-        }else if (StringUtils.isNotBlank(userTel)) {
-            return this.iUserProductComboClientService.listByUserTel(userTel, pageNum, pageSize);
-        }
-        else {
-            return this.iUserProductComboClientService.listByPage(pageNum,pageSize);
-        }
+
+        return this.iUserProductComboClientService.listByUserTelAndId(userTel,id,pageNum,pageSize);
     }
 
     @ApiOperation(value="根据用户Id查询用户套餐api接口",httpMethod = "GET",nickname = "getUserProductComboByUserIdWithPage")
