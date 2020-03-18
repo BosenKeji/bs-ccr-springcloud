@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -76,56 +77,84 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
     @Override
     public int add(UserProductComboDay userProductComboDay, UserProductComboDayByAdmin userProductComboDayByAdmin) {
 
-        //添加缓存
-        int id = userProductComboDay.getUserProductComboId();
-        UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
-        int time=userProductComboDay.getNumber();
-        if(userProductCombo==null)
-            return 0;
-        //String redisKey = userProductCombo.getRedisKey();
-        String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey,String.valueOf(id));
+        try {
+            //添加缓存
+            int id = userProductComboDay.getUserProductComboId();
+            UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
+            int time = userProductComboDay.getNumber();
 
-        //重新创建redis 的zset情况
-        if(redisKey==null) {
-            UserComboTimeUtil.saveComboTimeToRedis(time, redisTemplate, userProductCombo, jobService);
-            //return 0;
-        }
-        else if(redisTemplate.opsForZSet().score(redisKey,String.valueOf(id))==null) {
+            if (userProductCombo == null)
+                return 0;
+            //String redisKey = userProductCombo.getRedisKey();
+            String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey, String.valueOf(id));
 
-            UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
 
-        }
+            // 减时长
+            if (time < 0) {
 
-        //redis中的时长还在，直接加长
-        else {
-            redisTemplate.opsForZSet().incrementScore(redisKey,String.valueOf(id),time);
-        }
+                if (redisKey != null) {
 
-        if(userProductCombo.getUserId()>0) {
-            userProductComboDay.setUserId(userProductCombo.getUserId());
-        }
-        //新增用户套餐时长
-        userProductComboDayMapper.insertSelective(userProductComboDay);
+                    Double currentScore = redisTemplate.opsForZSet().score(redisKey, String.valueOf(id));
+                    System.out.println("current score = " + currentScore);
+                    if (currentScore != null || currentScore != 0) {
+                        if (currentScore + time < 0) {
+                            redisTemplate.opsForZSet().add(redisKey, String.valueOf(id), 0);
+                        } else {
+                            redisTemplate.opsForZSet().incrementScore(redisKey, String.valueOf(id), time);
+                        }
+                    }
+                }
 
-        //新增用户套餐时长操作
-        userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
-
-        userProductComboDayByAdminMapper.insertSelective(userProductComboDayByAdmin);
-
-        if(userProductComboDayByAdmin.getReasonId()>0) {
-            Result<Integer> result=iReasonClientService.checkExistById(userProductComboDayByAdmin.getReasonId());
-            if(result.getData()>0) {
-                ComboDayByAdminReason comboDayByAdminReason = new ComboDayByAdminReason();
-                comboDayByAdminReason.setUserProductComboDayByAdminId(userProductComboDayByAdmin.getId());
-                comboDayByAdminReason.setReasonId(userProductComboDayByAdmin.getReasonId());
-                comboDayByAdminReason.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                comboDayByAdminReason.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-                comboDayByAdminReason.setStatus(CommonStatusEnum.NORMAL);
-                comboDayByAdminReasonMapper.insertSelective(comboDayByAdminReason);
             }
-        }
 
-       return SUCCESS;
+            // 增加时长
+            else {
+                //重新创建redis 的zset情况
+                if (redisKey == null) {
+                    UserComboTimeUtil.saveComboTimeToRedis(time, redisTemplate, userProductCombo, jobService);
+                    //return 0;
+                } else if (redisTemplate.opsForZSet().score(redisKey, String.valueOf(id)) == null) {
+
+                    UserComboTimeUtil.saveComboTimeToRedis(time, redisTemplate, userProductCombo, jobService);
+
+                }
+
+                //redis中的时长还在，直接加长
+                else {
+                    redisTemplate.opsForZSet().incrementScore(redisKey, String.valueOf(id), time);
+                }
+            }
+
+            if (userProductCombo.getUserId() > 0) {
+                userProductComboDay.setUserId(userProductCombo.getUserId());
+            }
+            //新增用户套餐时长
+            userProductComboDayMapper.insertSelective(userProductComboDay);
+
+            //新增用户套餐时长操作
+            userProductComboDayByAdmin.setUserProductComboDayId(userProductComboDay.getId());
+
+            userProductComboDayByAdminMapper.insertSelective(userProductComboDayByAdmin);
+
+            if (userProductComboDayByAdmin.getReasonId() > 0) {
+                Result<Integer> result = iReasonClientService.checkExistById(userProductComboDayByAdmin.getReasonId());
+                if (result.getData() > 0) {
+                    ComboDayByAdminReason comboDayByAdminReason = new ComboDayByAdminReason();
+                    comboDayByAdminReason.setUserProductComboDayByAdminId(userProductComboDayByAdmin.getId());
+                    comboDayByAdminReason.setReasonId(userProductComboDayByAdmin.getReasonId());
+                    comboDayByAdminReason.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                    comboDayByAdminReason.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
+                    comboDayByAdminReason.setStatus(CommonStatusEnum.NORMAL);
+                    comboDayByAdminReasonMapper.insertSelective(comboDayByAdminReason);
+                }
+            }
+
+            return SUCCESS;
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return 0;
+        }
 
     }
 

@@ -38,8 +38,7 @@ public class ConsumerUserProductComboDayByAdminController {
                           @ApiParam(value = "用户套餐时长操作实体",required = true,type = "string")
                                   UserProductComboDayByAdmin userProductComboDayByAdmin)
     {
-        if(userProductComboDayByAdmin.getUserProductComboDay().getNumber()<=0)
-            return new Result(0,"时长必须大于0，请输入合法的时长！！！");
+
         int currentAdminId=this.getCurrentAdmin().getId();
         userProductComboDayByAdmin.setAdminId(currentAdminId);
         return this.iUserProductComboDayByAdminClientService.add(userProductComboDayByAdmin);
