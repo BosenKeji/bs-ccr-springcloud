@@ -3,7 +3,7 @@ spring:
     database: 0
     host: r-0xi4fslkpsrqxf5vjx.redis.rds.aliyuncs.com  #内网地址
     port: 6379
-    password: AYbosenkj19
+    password: 4v8e3&jo8Y%fG(kv
     timeout: 5000ms
     lettuce:
       pool:

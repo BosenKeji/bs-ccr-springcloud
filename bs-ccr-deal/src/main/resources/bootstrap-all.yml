@@ -1,10 +1,10 @@
 spring:
   redis:
     database: 0
-    host: inside-network.redis.rds.aliyuncs.com  #内网地址
-    #    host: internal.redis.rds.aliyuncs.com  #外网地址
+#    host: inside-network.redis.rds.aliyuncs.com  #内网地址
+    host: r-0xi4fslkpsrqxf5vjxpd.redis.rds.aliyuncs.com  #prod外网地址
     port: 6379
-    password: AYbosenkj19
+    password: 4v8e3&jo8Y%fG(kv
     timeout: 5000ms
     lettuce:
       pool:
@@ -13,13 +13,16 @@ spring:
         max-active: 8
         max-wait: -1ms
   cloud:
+    config:
+      nacos:
+        server-addr: nacos-dev:8848
     stream:
       rocketmq:
         binder:
-          name-server: MQ_INST_1782728101358463_BbRT1x5s.us-east-1.mq-internal.aliyuncs.com:8080
-          access-key: LTAI4FiW7ykVpsp1C3M2EBzg
-          secret-key: hZZmISbQzKUucNPe2woxXFYa3aplaP
+          name-server: MQ_INST_1380779423247736_Bb8j8OFI.mq-internet-access.mq-internet.aliyuncs.com:80
+          access-key: LTAI4Fd1zNzk8YdGKrgF5ohp
+          secret-key: aja6ZkZUeA11ZroIdOADMQRKzhSjOJ
       bindings:
-        huobi_output: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-response-symbol-trade-info, content-type: application/json}
+        huobi_output: {destination: MQ_INST_1380779423247736_Bb8j8OFI%bs-ccr-topic-response-symbol-trade-info-cajr, content-type: application/json}
 
-        huobi_input: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-topic-symbol-price, content-type: application/json, group: MQ_INST_1782728101358463_BbRT1x5s%GID-TCP-bs-ccr-consumer-symbol-price}
+        huobi_input: {destination: MQ_INST_1380779423247736_Bb8j8OFI%bs-ccr-topic-symbol-price-cajr, content-type: application/json, group: MQ_INST_1380779423247736_Bb8j8OFI%GID-TCP-bs-ccr-consumer-symbol-price-cajr}
