@@ -236,8 +236,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         Integer tradeType = orderSearchRequestVo.getTradeType();
         if(null != tradeType && tradeType >0) {
             //ai止盈 和 手动清仓
+            //+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+ 去掉手动清仓
             if(tradeType == TradeTypeInterface.SHELL) {
-                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
             }
             // 其他 如 1 ai建仓
             else {
@@ -256,6 +257,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         if(StringUtils.isNotBlank(otherBuffer.toString())) {
             query = query+otherBuffer.toString();
         }
+
+        logger.info(" sell sum the open search sql is: {}",query);
 
         Sort sort = new Sort();
         sort.addToSortFields(new SortField("created_at",Order.DECREASE));
@@ -356,7 +359,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         if(null != tradeType && tradeType >0) {
             //ai止盈 和 手动清仓
             if(tradeType == TradeTypeInterface.SHELL) {
-                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+                //"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+   手动清仓去除
+                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
             }
             // 其他 如 1 ai建仓
             else {
@@ -449,8 +453,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         }
 
         //设置交易类型
-        //ai止盈 和 手动清仓
-        otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+        //ai止盈
+        //"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+  手动清仓不要
+        otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
 
         if(StringUtils.isNotBlank(otherBuffer.toString())) {
             query = query+otherBuffer.toString();
