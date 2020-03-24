@@ -89,7 +89,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
         if (orderGroup != null){
             int buildNumbers = 0;
-            double accumulateShell = 0,accumulateCast = 0,accumulateProfit = 0;
+            double accumulateSell = 0,accumulateCast = 0,accumulateProfit = 0;
 
             orderGroup.setTradeOrders(tradeOrderService.listByOrderGroupId(orderGroup.getId()).stream().sorted(Comparator.comparing(TradeOrder::getCreatedAt).reversed()).collect(Collectors.toList()));
             double endProfitRatio = orderGroup.getEndProfitRatio() / CommonConstantUtil.ACCURACY;
@@ -104,18 +104,20 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             if (orderGroup.getTradeOrders().size() != 0){
                 List<TradeOrder> tradeOrders = orderGroup.getTradeOrders();
                 for (TradeOrder o : tradeOrders) {
-                    if (o.getTradeType() == 1){
+                    //把ai止盈的交易数量累加
+                    if (o.getTradeType() == CommonConstantUtil.AI_STOP_PROFIT_STATUS){
+                        accumulateProfit = o.getSellProfit();
+                        accumulateSell += o.getTradeNumbers();
+                    }
+                    if (o.getTradeType() == CommonConstantUtil.BUILD_STATUS){
                         buildNumbers += 1;
                         accumulateCast += o.getTradeCost();
-                    }else {
-                        accumulateProfit = o.getSellProfit();
-                        accumulateShell += o.getTradeNumbers();
                     }
                 }
             }
             orderGroup.setBuildNumbers(buildNumbers);
             orderGroup.setTotalCast(Math.abs(accumulateCast));
-            orderGroup.setTotalShell(accumulateShell);
+            orderGroup.setTotalSell(accumulateSell);
             orderGroup.setTotalProfit(accumulateProfit);
         }
         return orderGroup;

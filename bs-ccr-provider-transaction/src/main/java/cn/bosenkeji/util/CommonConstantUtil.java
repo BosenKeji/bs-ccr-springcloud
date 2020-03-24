@@ -37,4 +37,21 @@ public class CommonConstantUtil {
 
     public static final int FORGET_ORDER = 3;
     public static final int FORGET_ORDER_TYPE = 4;
+
+    /**
+     * 建仓
+     */
+    public static final int BUILD_STATUS = 1;
+
+    /**
+     * ai止盈
+     */
+    public static final int AI_STOP_PROFIT_STATUS = 2;
+
+    /**
+     * 手动清仓
+     */
+    public static final int MANUAL_CLEAR_STATUS = 3;
+
+
 }
