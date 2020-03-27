@@ -272,11 +272,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
 
         //去重
-        page.setList(orderGroupOpenSearchFormats.stream().collect(
+        List<OrderGroupOpenSearchFormat> unique = orderGroupOpenSearchFormats.stream().collect(
                 collectingAndThen(
-                        toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new)
-        ));
-
+                        toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new));
+        page.setList(unique);
         page.countStartRow();
         page.countTotalPages();
         return page;
