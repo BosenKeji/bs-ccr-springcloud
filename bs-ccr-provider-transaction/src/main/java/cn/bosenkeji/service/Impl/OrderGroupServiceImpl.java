@@ -229,21 +229,22 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         OpenSearchPage page= new OpenSearchPage();
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);
+        page.countStartRow();
 
         SearcherClient searcherClient = new SearcherClient(openSearchClient);
 
         Config config = new Config(Lists.newArrayList(appName));
         config.setSearchFormat(SearchFormat.FULLJSON);
-        config.setStart(page.getPageNum());
+        config.setStart(page.getStartRow());
         config.setHits(page.getPageSize());
         config.setFetchFields(CommonConstantUtil.openSearchFetchFieldFormat);
 
         SearchParams searchParams = new SearchParams(config);
         String searchString;
         if (startTime > 0){
-            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]";
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]" + CommonConstantUtil.DISTINCT_STATEMENT;
         }else {
-            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'";
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'" + CommonConstantUtil.DISTINCT_STATEMENT;
         }
 
         searchParams.setQuery(searchString);
@@ -276,7 +277,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 collectingAndThen(
                         toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new));
         page.setList(unique);
-        page.countStartRow();
         page.countTotalPages();
         return page;
     }
