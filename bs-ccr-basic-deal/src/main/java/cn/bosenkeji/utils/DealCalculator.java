@@ -128,7 +128,8 @@ public class DealCalculator {
         Double stopProfitPrice = dealParameter.getTargetProfitPrice();
         Double callBackRatio = dealParameter.getTurnDownRatio();
 
-        Double stopProfitRatio = dealParameter.getEmitRatio();
+        Double stopProfitRatio = dealParameter.getStopProfitRatio();
+        Double stopFixedRatio = dealParameter.getStopProfitFixedRate();
         Double positionCost = dealParameter.getPositionCost();
         Double positionNum = dealParameter.getPositionNum();
 
@@ -171,7 +172,7 @@ public class DealCalculator {
         } else {
             //固定止盈
             //收益比≥1+止盈比例？ //确定卖出
-            if (realTimeEarningRatio - (1 + stopProfitRatio) >= 0) {
+            if (realTimeEarningRatio - (1 + stopFixedRatio) >= 0) {
                 return true;
             }
         }

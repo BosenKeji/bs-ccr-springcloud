@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.vo.transaction.OrderGroup;
 import cn.bosenkeji.vo.transaction.OrderGroupOpenSearchFormat;
 import cn.bosenkeji.vo.transaction.OrderGroupOther;
@@ -35,7 +36,7 @@ public interface OrderGroupService {
 
     Optional<Integer> checkExistByGroupName(String name);
 
-    List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId);
+    OpenSearchPage searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId, int pageNum, int pageSize);
 
     List<OrderGroup> partFindByCoinPairChoiceIds(List<Integer> coinPairChoiceIds);
 

@@ -54,14 +54,15 @@ public class DealEnum {
      *
      * TARGET_PROFIT_PRICE：止盈金额
      * IS_STOP_PROFIT_TRACE：是否使用追踪止盈
-     * TURN_DOWN_RATIO：追踪止盈触发比例
-     * EMIT_RATIO：追踪止盈回调比例
+     * TURN_DOWN_RATIO：追踪止盈回调比例
+     * FIXED_RATIO：止盈比例
      */
     public static final String TARGET_PROFIT_PRICE = "target_profit_price";
     public static final String IS_STOP_PROFIT_TRACE = "is_stop_profit_trace";
     public static final String TURN_DOWN_RATIO = "turn_down_ratio";
 
-    public static final String EMIT_RATIO = "emit_ratio";
+    public static final String FIXED_RATIO = "stopProfitFixedRate";
+    public static final String NOT_FIXED_RATIO = "emit_ratio";
 
     public static final String TRADE_TYPE_BUY = "buy";
     public static final String TRADE_TYPE_SELL = "sell";

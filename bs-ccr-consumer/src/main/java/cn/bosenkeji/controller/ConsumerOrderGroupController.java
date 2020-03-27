@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.annotation.TokenUser;
 import cn.bosenkeji.service.IOrderGroupClientService;
 import cn.bosenkeji.util.Result;
@@ -77,10 +78,12 @@ public class ConsumerOrderGroupController {
 
     @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
     @GetMapping("/search_group")
-    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long",example = "1") @Min(0) Long startTime,
-                                               @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 ",required = true,type = "Long",example = "1") @Min(0) Long endTime,
-                                               @RequestParam("coinPairChoiceId")@Min(1)@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
-        return this.iOrderGroupClientService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId);
+    public OpenSearchPage searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long",example = "1") @Min(0) Long startTime,
+                                                       @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间 ",required = true,type = "Long",example = "1") @Min(0) Long endTime,
+                                                       @RequestParam("coinPairChoiceId")@Min(1)@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId,
+                                                       @RequestParam(value = "pageNum" , defaultValue = "1") int pageNum,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        return this.iOrderGroupClientService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId, pageNum, pageSize);
     }
     @ApiOperation(value = "根据 自选币ID 获取交易总览",httpMethod = "GET",nickname = "getCoinPairChoiceTradeOverview")
     @GetMapping("/trade_overview")

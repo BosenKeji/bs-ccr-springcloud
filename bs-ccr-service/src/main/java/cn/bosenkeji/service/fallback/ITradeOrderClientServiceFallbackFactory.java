@@ -53,7 +53,7 @@ public class ITradeOrderClientServiceFallbackFactory implements FallbackFactory<
             public OpenSearchPage searchTradeOrderByCondition(String coinPairChoiceIds, Integer tradeType, Long startTime, Long endTime, int pageNum, int pageSize) {
 
                 OpenSearchPage page = new OpenSearchPage();
-                page.setTotal(0l);
+                page.setTotal(0L);
                 OpenSearchField openSearchField = new OpenSearchField();
                 OpenSearchOrderVo openSearchOrderVo=new OpenSearchOrderVo();
                 openSearchOrderVo.setName("hystrix");

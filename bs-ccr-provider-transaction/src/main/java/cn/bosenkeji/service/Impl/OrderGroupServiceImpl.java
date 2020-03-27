@@ -1,5 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.interfaces.CommonResultNumberEnum;
 import cn.bosenkeji.mapper.OrderGroupMapper;
 import cn.bosenkeji.service.CoinPairChoiceService;
@@ -218,23 +219,28 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
-    public List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
+    public OpenSearchPage searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId, int pageNum, int pageSize) {
 
         List<OrderGroupOpenSearchFormat> orderGroupOpenSearchFormats = new ArrayList<>();
         if (startTime > endTime ){
-            return orderGroupOpenSearchFormats;
+            return null;
         }
+
+        OpenSearchPage page= new OpenSearchPage();
+        page.setPageNum(pageNum);
+        page.setPageSize(pageSize);
 
         SearcherClient searcherClient = new SearcherClient(openSearchClient);
 
         Config config = new Config(Lists.newArrayList(appName));
         config.setSearchFormat(SearchFormat.FULLJSON);
-        config.setStart(0);
+        config.setStart(page.getPageNum());
+        config.setHits(page.getPageSize());
         config.setFetchFields(CommonConstantUtil.openSearchFetchFieldFormat);
 
         SearchParams searchParams = new SearchParams(config);
         String searchString;
-        if (startTime > 0 && endTime > 0 ){
+        if (startTime > 0){
             searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]";
         }else {
             searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'";
@@ -248,6 +254,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             String result = execute.getResult();
             OpenSearchExecuteResult openSearchExecuteResult = JSONObject.parseObject(result,OpenSearchExecuteResult.class);
             List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
+            page.setTotal(openSearchExecuteResult.getResult().getTotal());
 
             items.forEach(openSearchField -> {
                 OpenSearchOrderVo openSearchOrderVo = openSearchField.getFields();
@@ -263,13 +270,16 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             e.printStackTrace();
         }
 
+
         //去重
-        List<OrderGroupOpenSearchFormat> unique = orderGroupOpenSearchFormats.stream().collect(
+        page.setList(orderGroupOpenSearchFormats.stream().collect(
                 collectingAndThen(
                         toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new)
-        );
+        ));
 
-        return unique;
+        page.countStartRow();
+        page.countTotalPages();
+        return page;
     }
 
     @Override
@@ -312,6 +322,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         }
         return orderGroupOverviewResult;
     }
+
 
     @Override
     public OrderGroup getByCoinPairChoiceId(int coinPairChoiceId) {

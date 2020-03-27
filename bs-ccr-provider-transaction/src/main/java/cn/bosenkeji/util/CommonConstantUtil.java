@@ -54,4 +54,9 @@ public class CommonConstantUtil {
     public static final int MANUAL_CLEAR_STATUS = 3;
 
 
+    //默认分页
+    public static final int DEFAULT_START = 1;
+    public static final int DEFAULT_COUNT = 10;
+
+
 }
