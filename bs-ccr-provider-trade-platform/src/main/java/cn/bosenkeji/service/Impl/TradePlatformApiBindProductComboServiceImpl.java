@@ -462,6 +462,11 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
         return 0;
     }
 
+    @Override
+    public TradePlatformApiBindProductCombo getOneByPrimaryKey(Integer id) {
+        return this.tradePlatformApiBindProductComboMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 通过 userProductComboIds 查询 已经绑定api的 robot信息，包含 api 信息
      * @param ids

@@ -73,21 +73,21 @@ public class RsaUtils {
 
     public static final String PRIVATE_KEY_FILE_NAME = "privateKey.keystore";
 
-    private static final String ACCESS_KEY = "LTAI4Fd1zNzk8YdGKrgF5ohp";
-
-    private static final String SECRET_KEY = "aja6ZkZUeA11ZroIdOADMQRKzhSjOJ";
-
-//    private static final String ACCESS_KEY = "LTAI4FiW7ykVpsp1C3M2EBzg";
+//    private static final String ACCESS_KEY = "LTAI4Fd1zNzk8YdGKrgF5ohp";
 //
-//    private static final String SECRET_KEY = "hZZmISbQzKUucNPe2woxXFYa3aplaP";
+//    private static final String SECRET_KEY = "aja6ZkZUeA11ZroIdOADMQRKzhSjOJ";
 
-//    private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
+    private static final String ACCESS_KEY = "LTAI4FiW7ykVpsp1C3M2EBzg";
 
-    private static final String END_POINT = "oss-cn-shenzhen-internal.aliyuncs.com";
+    private static final String SECRET_KEY = "hZZmISbQzKUucNPe2woxXFYa3aplaP";
 
-//    private  static final String BUCKET_NAME = "bs-follow";
+    private static final String END_POINT = "oss-cn-shenzhen.aliyuncs.com";
 
-    private  static final String BUCKET_NAME = "bs-follow-prod";
+//    private static final String END_POINT = "oss-cn-shenzhen-internal.aliyuncs.com";
+
+    private  static final String BUCKET_NAME = "bs-follow";
+
+//    private  static final String BUCKET_NAME = "bs-follow-prod";
 
 
     /**

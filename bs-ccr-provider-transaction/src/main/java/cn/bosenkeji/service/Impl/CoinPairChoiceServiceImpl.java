@@ -9,6 +9,8 @@ import cn.bosenkeji.vo.coin.Coin;
 import cn.bosenkeji.vo.coin.CoinPair;
 import cn.bosenkeji.vo.coin.CoinPairCoin;
 import cn.bosenkeji.vo.strategy.StrategyOther;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApi;
+import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
 import cn.bosenkeji.vo.transaction.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -69,6 +71,12 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
 
     @Autowired
     OrderGroupService orderGroupService;
+
+    @Autowired
+    ITradePlatformApiClientService iTradePlatformApiClientService;
+
+    @Autowired
+    ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
 
     @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#tradePlatformApiBindProductComboId+'-'+#coinId+'-'+#pageNum+'-'+#pageSize")
@@ -217,11 +225,48 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
         return filter(coinId,resultCoinPairChoiceList);
     }
 
-    private List<CoinPairChoice> fillByTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId,int status){
-        if (status == CommonConstantUtil.ACTIVATE_STATUS){
-            return this.coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdAndStatus(tradePlatformApiBindProductComboId);
+    /**
+     * 根据绑定id中的apiId查询sign，用来查询相同sign的api对应的绑定记录
+     * @param tradePlatformApiBindProductComboId 绑定id
+     * @return
+     */
+    private List<Integer> getAllSameSignTradePlatformApiBindProductComboIds(int tradePlatformApiBindProductComboId){
+        TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = this.iTradePlatformApiBindProductComboClientService.getOneByPrimaryId(tradePlatformApiBindProductComboId);
+        List<Integer> tradePlatformApiBindProductComboIdsResult = new ArrayList<>();
+        if (tradePlatformApiBindProductCombo == null){
+            return tradePlatformApiBindProductComboIdsResult;
         }
-        return this.coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboId(tradePlatformApiBindProductComboId);
+        int apiId = tradePlatformApiBindProductCombo.getTradePlatformApiId();
+        TradePlatformApi tradePlatformApi = this.iTradePlatformApiClientService.getOneTradePlatformApi(apiId);
+        if (tradePlatformApi == null){
+            return tradePlatformApiBindProductComboIdsResult;
+        }
+
+        String sign = tradePlatformApi.getSign();
+        List<TradePlatformApi> tradePlatformApis = this.iTradePlatformApiClientService.findAllBySign(sign);
+        if (!tradePlatformApis.isEmpty()){
+            for (TradePlatformApi t : tradePlatformApis) {
+                List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos = t.getTradePlatformApiBindProductCombos();
+                if (!tradePlatformApiBindProductCombos.isEmpty()){
+                    for (TradePlatformApiBindProductCombo bindProductCombo: tradePlatformApiBindProductCombos) {
+                        tradePlatformApiBindProductComboIdsResult.add(bindProductCombo.getId());
+                    }
+                }
+            }
+            return tradePlatformApiBindProductComboIdsResult;
+        }
+
+        return tradePlatformApiBindProductComboIdsResult;
+    }
+
+    private List<CoinPairChoice> fillByTradePlatformApiBindProductComboId(int tradePlatformApiBindProductComboId,int status){
+        //根据绑定id中的apiId查询sign，用来查询相同sign的api对应的绑定记录id列表
+        List<Integer> tradePlatformApiBindProductComboIds = this.getAllSameSignTradePlatformApiBindProductComboIds(tradePlatformApiBindProductComboId);
+
+        if (status == CommonConstantUtil.ACTIVATE_STATUS){
+            return this.coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboIdsAndStatus(tradePlatformApiBindProductComboIds);
+        }
+        return this.coinPairChoiceMapper.findAllByTradePlatformApiBindProductComboIds(tradePlatformApiBindProductComboIds);
     }
 
     /**
@@ -527,6 +572,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     }
 
     public List<CoinPairChoice> selectByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart) {
-        return coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdAndIsStart(tradePlatformApiBindProductComboId,isStart);
+        //根据绑定id中的apiId查询sign，用来查询相同sign的api对应的绑定记录id列表
+        List<Integer> tradePlatformApiBindProductComboIds = this.getAllSameSignTradePlatformApiBindProductComboIds(tradePlatformApiBindProductComboId);
+        return coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdsAndIsStart(tradePlatformApiBindProductComboIds,isStart);
     }
 }
