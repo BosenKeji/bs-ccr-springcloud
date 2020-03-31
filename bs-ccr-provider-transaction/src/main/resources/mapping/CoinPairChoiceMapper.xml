@@ -207,7 +207,7 @@
     </foreach>
   </update>
 
-  <select id="findByTradePlatformApiBindProductComboIdAndIsStart" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findByTradePlatformApiBindProductComboIdsAndIsStart" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"></include>
     from coin_pair_choice
