@@ -183,4 +183,10 @@ public class TradePlatformApiBindProductComboController {
         return 0;
     }
 
+    @GetMapping("/primary_id")
+    public TradePlatformApiBindProductCombo getOneByPrimaryKey(@RequestParam("id") Integer id){
+        return this.tradePlatformApiBindProductComboService.getOneByPrimaryKey(id);
+    }
+
+
 }

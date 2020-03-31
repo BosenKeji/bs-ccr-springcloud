@@ -56,4 +56,6 @@ public interface TradePlatformApiBindProductComboService {
 
     int getUserIdById(int id);
 
+    TradePlatformApiBindProductCombo getOneByPrimaryKey(Integer id);
+
 }

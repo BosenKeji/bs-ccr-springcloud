@@ -30,6 +30,8 @@ public interface TradePlatformApiService {
 
     List<TradePlatformApi> findAll();
 
+    List<TradePlatformApi> findAllBySign(String sign);
+
     int updateIsBound(int id,int isBound, int userId);
 
 }

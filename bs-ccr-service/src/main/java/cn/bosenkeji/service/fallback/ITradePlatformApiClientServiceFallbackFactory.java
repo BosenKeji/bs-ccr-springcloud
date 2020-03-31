@@ -63,6 +63,14 @@ public class ITradePlatformApiClientServiceFallbackFactory implements FallbackFa
                 tradePlatformApiList.add(tradePlatformApi);
                 return tradePlatformApiList;
             }
+
+            @Override
+            public List<TradePlatformApi> findAllBySign(String sign) {
+                List<TradePlatformApi> tradePlatformApiList = new ArrayList<>();
+                TradePlatformApi tradePlatformApi = new TradePlatformApi();
+                tradePlatformApiList.add(tradePlatformApi);
+                return tradePlatformApiList;
+            }
         };
     }
 }

@@ -162,6 +162,11 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
         return tradePlatformApiMapper.findAll();
     }
 
+    @Override
+    public List<TradePlatformApi> findAllBySign(String sign) {
+        return this.tradePlatformApiMapper.findAllBySign(sign);
+    }
+
     /**
      * add by xivin
      * 更新 API isBound 是否被绑定状态

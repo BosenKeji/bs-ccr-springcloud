@@ -29,6 +29,8 @@ public interface TradePlatformApiMapper {
 
     List<TradePlatformApi> findAll();
 
+    List<TradePlatformApi> findAllBySign(String sign);
+
     List<TradePlatformApi> findAllByUserId(int userId);
 
     List<TradePlatformApiListResult> findAllByUser(int userId);
