@@ -220,4 +220,16 @@ public class CoinPairChoiceController {
         return new Result<>(this.coinPairChoiceService.getCoinPairChoicePositionDetail(coinPairChoiceId));
     }
 
+    /**
+     *  xivinChen
+     * @param originalBindId
+     * @param newBindId
+     * @return
+     */
+    @PutMapping("/bind_id/")
+    public Result<Integer> updateByBindId(@RequestParam("originalBindId") @ApiParam(value = "原来的绑定",required = true,type = "integer",example = "1") int originalBindId,
+                                          @RequestParam("newBindId") @ApiParam(value = "新的的绑定",required = true,type = "integer",example = "1") int newBindId) {
+        return new Result<>(coinPairChoiceService.updateByBindId(originalBindId,newBindId));
+    }
+
 }

@@ -5,6 +5,7 @@ import cn.bosenkeji.interfaces.CommonStatusEnum;
 import cn.bosenkeji.interfaces.TradePlatformApiBoundStatus;
 import cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper;
 import cn.bosenkeji.mapper.TradePlatformApiMapper;
+import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.service.IUserProductComboClientService;
 import cn.bosenkeji.service.TradePlatformApiBindProductComboService;
 import cn.bosenkeji.service.TradePlatformApiService;
@@ -50,6 +51,9 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
     //注入用户套餐生产者
     @Resource
     private IUserProductComboClientService iUserProductComboClientService;
+
+    @Resource
+    private ICoinPairChoiceClientService iCoinPairChoiceClientService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -227,12 +231,22 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
                 newTradePlatformApiBindCombo.setUserId(userId);
 
                 int addResult = this.add(newTradePlatformApiBindCombo);
+
+                if (addResult != 1) {
+                    return new Result<>(0,"绑定失败");
+                }
                 if(oldBind != null) {
                     //把原来的绑定状态设为0 删除
                     tradePlatformApiBindProductComboMapper.updateStatusById(oldBind.getId(),CommonStatusEnum.DELETE);
                     tradePlatformApiService.updateIsBound(oldBind.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND,oldBind.getUserId());
 
                 }
+
+                /**
+                 * 更新 自选币 绑定id , 即 交易平台api 无论绑定到那个 机器人其自选币都应该复制过来
+                 */
+                this.updateCoinPairChoiceByBindId(newTradePlatformApiBindCombo.getTradePlatformApiId(),newTradePlatformApiBindCombo.getId());
+
                 tradePlatformApiService.updateIsBound(tradePlatformApiId, TradePlatformApiBoundStatus.EXIST_BOUND,userId);
 
                 logger.info("api绑定机器人 新增了 绑定记录！");
@@ -250,6 +264,10 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
                     tradePlatformApiService.updateIsBound(oldBind.getTradePlatformApiId(), TradePlatformApiBoundStatus.NOT_EXIST_BOUND,oldBind.getUserId());
 
                 }
+                /**
+                 * 更新 自选币 绑定id , 即 交易平台api 无论绑定到那个 机器人其自选币都应该复制过来
+                 */
+                this.updateCoinPairChoiceByBindId(tradePlatformApiBindProductCombo.getTradePlatformApiId(),tradePlatformApiBindProductCombo.getId());
                 tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.EXIST_BOUND,tradePlatformApiBindProductCombo.getUserId());
                 logger.info("api 绑定 机器人 从逻辑删除中更新为 正常状态！");
                 return new Result<>(result);
@@ -360,6 +378,11 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
                     tradePlatformApiService.updateIsBound(tradePlatformApiBindProductCombo.getTradePlatformApiId(), TradePlatformApiBoundStatus.EXIST_BOUND,preBinding.getUserId());
                 }
             }
+
+            /**
+             * 更新 自选币 绑定id , 即 交易平台api 无论绑定到那个 机器人其自选币都应该复制过来
+             */
+            this.updateCoinPairChoiceByBindId(tradePlatformApiBindProductCombo.getTradePlatformApiId(),tradePlatformApiBindProductCombo.getId());
 
             return result;
         }catch (Exception e) {
@@ -492,5 +515,34 @@ public class TradePlatformApiBindProductComboServiceImpl implements TradePlatfor
             }
         }
         return list;
+    }
+
+    List<TradePlatformApiBindProductCombo> getByTradePlatformApiId(int tradePlatformApiId) {
+        List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos = tradePlatformApiBindProductComboMapper.getByTradePlatformApiId(tradePlatformApiId);
+        if (tradePlatformApiBindProductCombos != null) {
+            return tradePlatformApiBindProductCombos;
+        }else {
+            return null;
+        }
+    }
+
+
+    int updateCoinPairChoiceByBindId(int tradePlatformApiId,int currentBindId) {
+        Integer result = 0;
+        logger.info(" the tradePlatformApiId ====== {} ,and the currentBindId ====  {} ",tradePlatformApiId,currentBindId);
+        List<TradePlatformApiBindProductCombo> byTradePlatformApiId = getByTradePlatformApiId(tradePlatformApiId);
+        if (byTradePlatformApiId == null || byTradePlatformApiId.size() < 1) {
+            logger.info("相同的api 机器人为 0 个");
+            return 0;
+        }
+        byTradePlatformApiId.forEach(tradePlatformApiBindProductCombo -> {
+            Result<Integer> result1 = iCoinPairChoiceClientService.updateByBindId(tradePlatformApiBindProductCombo.getId(), currentBindId);
+            logger.info(" update coinPairChoice By bindId result ======= {} ,and the oldBindId === {} the new BindId ==== {} ,the  tradePlatformApiId ===== {}",
+                    result1.getData(),tradePlatformApiBindProductCombo.getId(),currentBindId,tradePlatformApiId);
+            Integer data = result1.getData();
+
+        });
+
+        return 1;
     }
 }

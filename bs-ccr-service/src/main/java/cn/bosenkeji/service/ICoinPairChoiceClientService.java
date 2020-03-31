@@ -75,4 +75,9 @@ public interface ICoinPairChoiceClientService {
             @RequestParam("isStart") int isStart,
             @RequestParam("coinId") int coinId);
 
+    @PutMapping("/coin_pair_choice/bind_id/")
+    Result<Integer> updateByBindId(@RequestParam("originalBindId") int originalBindId,
+                                          @RequestParam("newBindId") int newBindId);
+
+
     }

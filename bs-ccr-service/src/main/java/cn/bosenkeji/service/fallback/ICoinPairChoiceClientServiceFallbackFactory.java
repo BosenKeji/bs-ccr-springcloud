@@ -92,6 +92,11 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
                 list.add(coinPairChoice);
                 return list;
             }
+
+            @Override
+            public Result<Integer> updateByBindId(int originalBindId, int newBindId) {
+                return new Result<>(-1,"hystrix");
+            }
         };
     }
 }

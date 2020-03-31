@@ -199,4 +199,9 @@
     is_start = #{isStart,jdbcType=TINYINT}
     and status = 1
   </select>
+
+  <update id="updateByBindId" parameterType="java.lang.Integer" >
+    update coin_pair_choice set trade_platform_api_bind_product_combo_id = #{newBindId,jdbcType=INTEGER},updated_at = current_timestamp
+    where  trade_platform_api_bind_product_combo_id = #{originalBindId,jdbcType=INTEGER}
+  </update>
 </mapper>

@@ -529,4 +529,10 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     public List<CoinPairChoice> selectByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart) {
         return coinPairChoiceMapper.findByTradePlatformApiBindProductComboIdAndIsStart(tradePlatformApiBindProductComboId,isStart);
     }
+
+    @BatchCacheRemove(value = "'ccr:coinPairChoice:list::'+#newBindId+'-'",condition = "#result != null")
+    @Override
+    public int updateByBindId(int originalBindId, int newBindId) {
+        return coinPairChoiceMapper.updateByBindId(originalBindId,newBindId);
+    }
 }

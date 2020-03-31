@@ -263,4 +263,11 @@
     where id = #{id}
   </update>
 
+<select id="getByTradePlatformApiId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List"></include>
+  from trade_platform_api_bind_product_combo
+  where
+  trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER}
+</select>
+
 </mapper>
