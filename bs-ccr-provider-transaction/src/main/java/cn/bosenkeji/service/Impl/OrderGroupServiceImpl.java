@@ -20,9 +20,7 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchResult;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
-import com.aliyun.opensearch.sdk.generated.search.SearchParams;
+import com.aliyun.opensearch.sdk.generated.search.*;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
@@ -246,7 +244,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         }else {
             searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'" + CommonConstantUtil.DISTINCT_STATEMENT;
         }
-
+        Sort sort = new Sort();
+        sort.addToSortFields(new SortField("created_time",Order.DECREASE));
+        searchParams.setSort(sort);
         searchParams.setQuery(searchString);
         SearchParamsBuilder paramsBuilder = SearchParamsBuilder.create(searchParams);
 

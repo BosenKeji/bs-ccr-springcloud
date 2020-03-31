@@ -42,5 +42,8 @@ public interface CoinPairChoiceService {
     CoinPairChoicePositionDetailResult getCoinPairChoicePositionDetail(int coinPairChoiceId);
 
     List<CoinPairChoice> listByRobotIdAndIsStart(int tradePlatformApiBindProductComboId, int isStart, int coinId);
+
     int updateByBindId(int originalBindId, int newBindId);
+
+    public List<Integer> getAllSameSignTradePlatformApiBindProductComboIds(int tradePlatformApiBindProductComboId);
 }

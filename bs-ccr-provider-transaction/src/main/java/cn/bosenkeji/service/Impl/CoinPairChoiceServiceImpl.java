@@ -79,7 +79,7 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
     ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
 
 
-    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#tradePlatformApiBindProductComboId+'-'+#coinId+'-'+#pageNum+'-'+#pageSize")
+//    @Cacheable(value = RedisInterface.COIN_PAIR_CHOICE_LIST_KEY,key = "#tradePlatformApiBindProductComboId+'-'+#coinId+'-'+#pageNum+'-'+#pageSize")
     @Override
     public PageInfo listByPage(int pageNum, int pageSize,int tradePlatformApiBindProductComboId,int coinId) {
         PageHelper.startPage(pageNum, pageSize);
@@ -230,7 +230,8 @@ public class CoinPairChoiceServiceImpl implements CoinPairChoiceService {
      * @param tradePlatformApiBindProductComboId 绑定id
      * @return
      */
-    private List<Integer> getAllSameSignTradePlatformApiBindProductComboIds(int tradePlatformApiBindProductComboId){
+    @Override
+    public List<Integer> getAllSameSignTradePlatformApiBindProductComboIds(int tradePlatformApiBindProductComboId){
         TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = this.iTradePlatformApiBindProductComboClientService.getOneByPrimaryId(tradePlatformApiBindProductComboId);
         List<Integer> tradePlatformApiBindProductComboIdsResult = new ArrayList<>();
         if (tradePlatformApiBindProductCombo == null){
