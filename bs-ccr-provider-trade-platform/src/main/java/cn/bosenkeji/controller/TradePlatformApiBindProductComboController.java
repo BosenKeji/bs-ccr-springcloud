@@ -70,7 +70,7 @@ public class TradePlatformApiBindProductComboController {
                                                                                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize) {
 
         PageInfo<TradePlatformApiBindProductComboVo> bindUserProductComboByUserId = tradePlatformApiBindProductComboService.findBindUserProductComboByUserId(userId, pageNum, pageSize);
-        logger.info("service return to controller, the result is  {}",bindUserProductComboByUserId);
+        //logger.info("service return to controller, the result is  {}",bindUserProductComboByUserId);
         return bindUserProductComboByUserId;
 
     }
