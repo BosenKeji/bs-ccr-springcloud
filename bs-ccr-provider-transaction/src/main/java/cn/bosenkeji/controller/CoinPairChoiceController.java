@@ -141,8 +141,11 @@ public class CoinPairChoiceController {
         if (coinPairChoiceVerification == null || coinPairChoiceVerification.getStatus() == 0){
             return new Result<>(null,"自选币不存在或已删除");
         }
-        if (coinPairChoiceVerification.getTradePlatformApiBindProductComboId() != coinPairChoice.getTradePlatformApiBindProductComboId()){
-            return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+        List<Integer> bingIds = this.coinPairChoiceService.getAllSameSignTradePlatformApiBindProductComboIds(coinPairChoice.getTradePlatformApiBindProductComboId());
+        if (!bingIds.isEmpty()){
+            if (!bingIds.contains(coinPairChoiceVerification.getTradePlatformApiBindProductComboId())){
+                return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+            }
         }
 
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -163,8 +166,11 @@ public class CoinPairChoiceController {
         if (coinPairChoice == null || coinPairChoice.getStatus() == 0){
             return new Result<>(null,"自选币不存在或已删除");
         }
-        if (coinPairChoice.getTradePlatformApiBindProductComboId() != tradePlatformApiBindProductComboId){
-            return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
+        List<Integer> bingIds = this.coinPairChoiceService.getAllSameSignTradePlatformApiBindProductComboIds(tradePlatformApiBindProductComboId);
+        if (!bingIds.isEmpty()){
+            if (!bingIds.contains(coinPairChoice.getTradePlatformApiBindProductComboId())){
+                return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+            }
         }
 
         return new Result<>(this.coinPairChoiceService.delete(id));
