@@ -1,6 +1,7 @@
 package cn.bosenkeji.job;
 
 import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.interfaces.ExpiredComboRedisKey;
 import com.alibaba.schedulerx.worker.domain.JobContext;
 import com.alibaba.schedulerx.worker.processor.JavaProcessor;
 import com.alibaba.schedulerx.worker.processor.ProcessResult;
@@ -65,6 +66,9 @@ public class UserComboTask extends JavaProcessor {
 
                 redisTemplate.opsForZSet().remove(jobParameters, eq0Set.toArray());
                 redisTemplate.opsForHash().delete(UserComboRedisEnum.ComboRedisKey, list.toArray());
+
+                //把已经过期的userProductComboId 放到redis
+                redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredUserProductComboIdSet,eq0Set.toArray());
             }
 
 

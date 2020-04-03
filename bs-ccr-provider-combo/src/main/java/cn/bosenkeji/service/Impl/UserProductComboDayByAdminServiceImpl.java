@@ -3,6 +3,7 @@ package cn.bosenkeji.service.Impl;
 import cn.bosenkeji.UserComboRedisEnum;
 import cn.bosenkeji.annotation.cache.BatchCacheRemove;
 import cn.bosenkeji.interfaces.CommonStatusEnum;
+import cn.bosenkeji.interfaces.ExpiredComboRedisKey;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.mapper.ComboDayByAdminReasonMapper;
 import cn.bosenkeji.mapper.UserProductComboDayByAdminMapper;
@@ -148,6 +149,9 @@ public class UserProductComboDayByAdminServiceImpl implements IUserProductComboD
                     comboDayByAdminReasonMapper.insertSelective(comboDayByAdminReason);
                 }
             }
+
+            // 把redis 中已经过期的用户套餐记录 删除
+            redisTemplate.opsForSet().remove(ExpiredComboRedisKey.expiredUserProductComboIdSet,String.valueOf(userProductComboDay.getUserProductComboId()));
 
             return SUCCESS;
         }catch (Exception e) {
