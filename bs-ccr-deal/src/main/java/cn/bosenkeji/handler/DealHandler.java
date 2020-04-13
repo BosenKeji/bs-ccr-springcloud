@@ -101,12 +101,12 @@ public class DealHandler {
 
 
             if (CollectionUtils.isEmpty(trade)) {
-                log.info(s + "货币的key的交易参数为空！");
+//                log.info(s + "货币的key的交易参数为空！");
                 return;
             }
             DealParameter dealParameter = new DealParameterParser(trade).getDealParameter();
 
-            log.info(s + "交易 TradeStatus 为===>" + dealParameter.getTradeStatus());
+//            log.info(s + "交易 TradeStatus 为===>" + dealParameter.getTradeStatus());
             //判断是否交易
             if (dealParameter.getTradeStatus() != 1 && !DealEnum.TRADE_STATUS_3.equals(dealParameter.getTradeStatus())) {
                 return;
@@ -119,14 +119,14 @@ public class DealHandler {
             //实时收益比
             Double realTimeEarningRatio = DealCalculator.countRealTimeEarningRatio(realTimeTradeParameter.getBuyDeep(),
                     dealParameter.getPositionNum(),dealParameter.getPositionCost());
-            log.info(s+"实时收益比 ==>" + realTimeEarningRatio);
+//            log.info(s+"实时收益比 ==>" + realTimeEarningRatio);
             //记录实时收益比
             DealUtil.recordRealTimeEarningRatio(redisParameter.getRedisKey(),realTimeEarningRatio.isNaN() ? "0.0" : realTimeEarningRatio.toString() ,redisTemplate);
 
             //是否清除 触发追踪止盈标志
             if (redisParameter.getIsTriggerTraceStopProfit() == 1) {
                 if (DealUtil.isClearTriggerStopProfit(dealParameter,redisParameter,redisTemplate)) {
-                    log.info(s+"清除 触发追踪止盈标志");
+//                    log.info(s+"清除 触发追踪止盈标志");
                     return;
                 }
             }
@@ -135,7 +135,7 @@ public class DealHandler {
             if (!dealParameter.getFinishedOrder().equals(dealParameter.getMaxTradeOrder())) {
                 if (redisParameter.getIsFollowBuild() == 1) {
                     if (DealUtil.isClearTriggerFollowBuild(dealParameter, redisParameter, realTimeTradeParameter, redisTemplate)) {
-                        log.info(s+"清除 触发追踪建仓标志");
+//                        log.info(s+"清除 触发追踪建仓标志");
                         return;
                     }
                 }
@@ -150,7 +150,7 @@ public class DealHandler {
                     //mq发送卖的消息
                     Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeEarningRatio,realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
                     boolean isSend = source.huobiOutput().send(messageObject);
-                    log.info("sell-" + isSend + "  " + realTimeTradeParameter  + "  " + dealParameter);
+                    log.info(dealParameter.getSignId()+" sell-" + isSend + "  " + realTimeTradeParameter  + "  " + dealParameter);
                 }
 
             }
@@ -164,7 +164,7 @@ public class DealHandler {
                     //mq发送买的消息
                     Message<String> messageObject = DealUtil.createMessageObject(dealParameter, realTimeEarningRatio,realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_BUY);
                     boolean isSend = source.huobiOutput().send(messageObject);
-                    log.info("buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
+                    log.info(dealParameter.getSignId()+" buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
             }
         });

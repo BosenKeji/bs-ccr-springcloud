@@ -6,6 +6,7 @@ import cn.bosenkeji.vo.RealTimeTradeParameter;
 import cn.bosenkeji.vo.RedisParameter;
 import cn.bosenkeji.vo.RocketMQResult;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.rocketmq.spring.support.RocketMQHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,6 +14,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.CollectionUtils;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -114,11 +117,13 @@ public class DealUtil {
         rocketMQResult.setPlantFormName(platformName);
         rocketMQResult.setReal_time_earning_ratio(realTimeEarningRatio);
 
+        String tagsMsg = type + "-" + signId + "-" + symbol + "-已做单数-" + dealParameter.getFinishedOrder() +"-"+ Timestamp.valueOf(LocalDateTime.now());
 
         JSONObject jsonResult = (JSONObject) JSONObject.toJSON(rocketMQResult);
-        Message<String> jsonMessage = MessageBuilder.withPayload(jsonResult.toJSONString()).build();
 
-        return jsonMessage;
+        return MessageBuilder.withPayload(jsonResult.toJSONString())
+                .setHeader(RocketMQHeaders.TAGS,tagsMsg)
+                .build();
     }
 
 
@@ -197,4 +202,6 @@ public class DealUtil {
         temp = o == null ? Double.valueOf("0.0") : Double.valueOf(o.toString());
         return temp;
     }
+
+
 }

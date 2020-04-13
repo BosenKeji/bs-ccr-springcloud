@@ -55,7 +55,7 @@ public class DealHandler {
             setKey = DealEnum.OKEX_PLATFORM_NAME + "_" + setKey;
         }
         realTimeTradeParameter.setSetKey(setKey);
-
+        log.info("接收"+realTimeTradeParameter.getSymbol()+"的现价");
         handle(realTimeTradeParameter);
     }
 
