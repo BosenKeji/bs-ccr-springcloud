@@ -24,11 +24,13 @@ public interface TradePlatformApiService {
 
     TradePlatformApi getByUserId(int userId);
 
-    Optional<Integer> checkExistBySignAndStatus (int userId,String sign,int status);
+    Optional<Integer> checkExistBySignAndStatus (int tradePlatformId, int userId,String sign,int status);
 
     Optional<Integer> checkExistByUserIdAndNickName (int userId, String nickName);
 
     List<TradePlatformApi> findAll();
+
+    List<TradePlatformApi> findAllBySign(String sign);
 
     int updateIsBound(int id,int isBound, int userId);
 

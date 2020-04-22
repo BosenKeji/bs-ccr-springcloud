@@ -74,8 +74,8 @@ public class TradePlatformApiController {
         if (this.tradePlatformApiService.checkExistByUserIdAndNickName(tradePlatformApi.getUserId(),tradePlatformApi.getNickname()).get() >= 1){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
-            return new Result<>(null,"该用户的sign已存在，添加失败！");
+        if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getTradePlatformId(), tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() > 0){
+            return new Result<>(null,"该用户的该平台sign已存在，添加失败！");
         }
         tradePlatformApi.setStatus(1);
         tradePlatformApi.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -107,12 +107,12 @@ public class TradePlatformApiController {
                 && !existTradePlatformApi.getNickname().equals(tradePlatformApi.getNickname())){
             return new Result<>(null,"该用户的nickName已存在");
         }
-        if (tradePlatformApi.getSign() != null){
-            if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1
-            && !existTradePlatformApi.getSign().equals(tradePlatformApi.getSign())){
-                return new Result<>(null,"该API的账号已经绑定了机器人，在取消绑定之前，请勿重复绑定！");
-            }
-        }
+//        if (tradePlatformApi.getSign() != null){
+//            if (this.tradePlatformApiService.checkExistBySignAndStatus(tradePlatformApi.getUserId(),tradePlatformApi.getSign(),1).get() >= 1
+//            && !existTradePlatformApi.getSign().equals(tradePlatformApi.getSign())){
+//                return new Result<>(null,"该API的账号已经绑定了机器人，在取消绑定之前，请勿重复绑定！");
+//            }
+//        }
 
         tradePlatformApi.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
         Optional<Integer> result = this.tradePlatformApiService.update(tradePlatformApi);
@@ -138,7 +138,7 @@ public class TradePlatformApiController {
             return new Result<>(null,"交易平台API不存在");
         }
         if (tradePlatformApi.getUserId() != userId){
-            return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
+            return new Result<>(null,"非法操作，不能删除其他用户的东西");
         }
 
         return new Result<>(this.tradePlatformApiService.delete(id));
@@ -170,6 +170,11 @@ public class TradePlatformApiController {
     public Result priKeyCoverOss(){
         RsaUtils.downloadPrivateKeyByOSS();
         return new Result<>(1);
+    }
+
+    @GetMapping("/sign")
+    List<TradePlatformApi> findAllBySign(@RequestParam("sign") String sign){
+        return this.tradePlatformApiService.findAllBySign(sign);
     }
 
 }

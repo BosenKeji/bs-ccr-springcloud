@@ -198,6 +198,12 @@
     trade_platform_api_bind_product_combo
   </select>
 
+  <select id="findAllByApiId" resultMap="NoApiResultMap" >
+    select <include refid="Base_Column_List"></include> from
+    trade_platform_api_bind_product_combo
+    where trade_platform_api_id = #{apiId,jdbcType=INTEGER}
+  </select>
+
   <select id="getUserIdById" resultType="int" >
     select user_id from
     trade_platform_api_bind_product_combo where id = #{id,jdbcType=INTEGER}
@@ -262,5 +268,12 @@
     set status = #{status,jdbcType=INTEGER}
     where id = #{id}
   </update>
+
+<select id="getByTradePlatformApiId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List"></include>
+  from trade_platform_api_bind_product_combo
+  where
+  trade_platform_api_id = #{tradePlatformApiId,jdbcType=INTEGER}
+</select>
 
 </mapper>

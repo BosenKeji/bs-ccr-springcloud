@@ -148,8 +148,8 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     }
 
     @Override
-    public Optional<Integer> checkExistBySignAndStatus(int userId,String sign,int status) {
-        return Optional.of(tradePlatformApiMapper.checkExistByKeyAndStatus(userId,sign, status));
+    public Optional<Integer> checkExistBySignAndStatus(int tradePlatformId,int userId,String sign,int status) {
+        return Optional.of(tradePlatformApiMapper.checkExistByKeyAndStatus(tradePlatformId,userId,sign, status));
     }
 
     @Override
@@ -160,6 +160,11 @@ public class TradePlatformApiServiceImpl implements TradePlatformApiService {
     @Override
     public List<TradePlatformApi> findAll() {
         return tradePlatformApiMapper.findAll();
+    }
+
+    @Override
+    public List<TradePlatformApi> findAllBySign(String sign) {
+        return this.tradePlatformApiMapper.findAllBySign(sign);
     }
 
     /**

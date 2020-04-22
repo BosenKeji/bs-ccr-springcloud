@@ -16,6 +16,11 @@
     <association property="tradePlatform" column="trade_platform_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform"
                  select="cn.bosenkeji.mapper.TradePlatformMapper.selectByPrimaryKey" />
 
+    <collection property="tradePlatformApiBindProductCombos"
+                ofType="cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo"
+                column="id"
+                select="cn.bosenkeji.mapper.TradePlatformApiBindProductComboMapper.findAllByApiId"/>
+
   </resultMap>
 
   <resultMap id="TradePlatformApiListResultMap" type="cn.bosenkeji.vo.tradeplatform.TradePlatformApiListResult">
@@ -27,12 +32,21 @@
     <result column="is_bound" jdbcType="INTEGER" property="isBound" />
     <association property="tradePlatform" column="trade_platform_id" javaType="cn.bosenkeji.vo.tradeplatform.TradePlatform"
                  select="cn.bosenkeji.mapper.TradePlatformMapper.selectByPrimaryKey" />
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, user_id, trade_platform_id, sign, nickname, `status`,is_bound,
     created_at, updated_at,secret
   </sql>
+
+  <select id="findAllBySign" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from trade_platform_api
+    where sign =#{sign,jdbcType=VARCHAR}
+  </select>
+
   <select id="findAllByUser" parameterType="integer" resultMap="TradePlatformApiListResultMap">
     select
     <include refid="Base_Column_List"/>
@@ -71,7 +85,10 @@
   </select>
 
   <select id="checkExistByKeyAndStatus"  resultType="integer">
-    select exists (select 1 from trade_platform_api where trade_platform_api.user_id = #{param1,jdbcType=INTEGER} and trade_platform_api.sign=#{param2,jdbcType=VARCHAR} and trade_platform_api.status = #{param3,jdbcType=INTEGER} limit 1)
+    select exists (select 1 from trade_platform_api where trade_platform_api.trade_platform_id = #{tradePlatformId, jdbcType=INTEGER}
+    and trade_platform_api.user_id = #{userId,jdbcType=INTEGER}
+    and trade_platform_api.sign=#{sign,jdbcType=VARCHAR}
+    and trade_platform_api.status = #{status,jdbcType=INTEGER} limit 1)
   </select>
 
   <select id="checkExistByTradePlatformIdAndUserId" parameterType="int" resultType="integer">

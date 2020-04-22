@@ -8,21 +8,23 @@ import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
 import cn.bosenkeji.service.JobService;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
+import cn.bosenkeji.interfaces.ExpiredComboRedisKey;
 import com.alibaba.schedulerx.worker.domain.JobContext;
 import com.alibaba.schedulerx.worker.processor.JavaProcessor;
 import com.alibaba.schedulerx.worker.processor.ProcessResult;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -66,49 +68,22 @@ public class UserComboTask extends JavaProcessor {
         String jobParameters = context.getJobParameters();
         if(StringUtils.isNotBlank(jobParameters)) {
 
-            Log.info("come clear expire combo data ......");
-            Set<Integer> expiredUserProductComboIds=new HashSet<>();
-            Set<String> expiredUserProductComboIdsStr=new HashSet<>();
-            Set<Integer> expiredComboBindApiIds = new HashSet();
-            Set<Integer> expiredCoinPairChoiceIds = new HashSet<>();
+            List list=new ArrayList();
             //获取剩余0天的 用户套餐
             //把这些套餐的时长从 缓存中清除
             Set eq0Set = redisTemplate.opsForZSet().rangeByScore(jobParameters, ZERO, ZERO);
             Iterator eq0Iterator = eq0Set.iterator();
             while (eq0Iterator.hasNext()) {
                 String next = String.valueOf(eq0Iterator.next());
-                expiredUserProductComboIdsStr.add(next);
-                expiredUserProductComboIds.add(Integer.parseInt(next));
+                list.add(next);
             }
-            if(expiredUserProductComboIds.size()>0) {
+            if(list.size()>0) {
 
-                Log.info(" expiredUserProductComboIds > 0 , {}",expiredUserProductComboIds);
                 redisTemplate.opsForZSet().remove(jobParameters, eq0Set.toArray());
-                redisTemplate.opsForHash().delete(UserComboRedisEnum.ComboRedisKey, expiredUserProductComboIdsStr.toArray());
+                redisTemplate.opsForHash().delete(UserComboRedisEnum.ComboRedisKey, list.toArray());
 
-                // 写下过期的 userProductComboId  集合
-                /*redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredUserProductComboIdSet, eq0Set.toArray());
-
-                // 写下过期的 expiredComboBindApiIds  集合
-                List<TradePlatformApiBindProductComboNoComboVo> expiredRobotBindApis = iTradePlatformApiBindProductComboClientService.listHasBoundByUserProductComboIds(expiredUserProductComboIds);
-                if (!expiredRobotBindApis.isEmpty()) {
-
-                    expiredRobotBindApis.forEach(robot -> {
-                        expiredComboBindApiIds.add(robot.getApiBindRobotId());
-                    });
-
-                    redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredComboBindTradePlatformApiIdSet, expiredComboBindApiIds.toArray());
-
-                    // 写下过期的 expiredCoinPairChoiceIds  集合
-                    List<CoinPairChoice> expiredCoinPairChoice = iCoinPairChoiceClientService.findByTradePlatformApiBindProductComboIdsAndStatus(expiredComboBindApiIds);
-                    if (expiredCoinPairChoice.isEmpty()) {
-                        expiredCoinPairChoice.forEach(coinPairChoice -> {
-                            expiredCoinPairChoiceIds.add(coinPairChoice.getId());
-                        });
-                        redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredCoinPairChoiceIdSet,expiredCoinPairChoiceIds.toArray());
-                    }
-                }*/
-
+                //把已经过期的userProductComboId 放到redis
+                redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredUserProductComboIdSet,eq0Set.toArray());
             }
 
 
@@ -127,7 +102,7 @@ public class UserComboTask extends JavaProcessor {
 
         //默认最大值为1000
         long maxScore=DEFAULT_MAX_VALUE;
-
+        JobContext jobContext1=jobContext;
 
         //获取要操作的键
         String jobParameters = jobContext.getJobParameters();

@@ -19,6 +19,8 @@ import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,7 +47,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     private static final String orderTable="trade_order";
 
     //查询字段
-    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","shell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","profit_ratio","theoretical_build_price","is_end","end_type","trade_profit_price");
+    private static final ArrayList<String> openSearchFetchField = Lists.newArrayList("id","order_group_id","trade_average_price","trade_numbers","trade_cost","sell_profit","trade_type","status","created_at","name","coin_pair_choice_id","coin_pair_choice","end_profit_ratio","profit_ratio","theoretical_build_price","is_end","end_type","trade_profit_price");
 
     private static final String addCmd = "ADD";
 
@@ -55,7 +57,7 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     //query 语句相关
     private static final String tradeTypeGroupKey = "trade_type";
     private static final String sumTotalTradeCostAggFun = "count()#sum(trade_cost)";
-    private static final String sumTotalShellProfitAggFun = "count()#sum(shell_profit)";
+    private static final String sumTotalShellProfitAggFun = "count()#sum(sell_profit)";
     private static final String sumTotalExtraProfitAggFun= "count()#sum(extra_profit)";
     private static final String orCoinPairChoiceQuery = " OR coin_pair_choice_id:'";
     private static final String andTradeTypeQuery = " AND trade_type:'";
@@ -72,6 +74,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
     //
     private static final int SHELL_STATUS=2;
+
+    private static final Logger logger = LoggerFactory.getLogger(TradeOrderServiceImpl.class);
 
     @Override
     public PageInfo listByPage(int pageNum, int pageSize) {
@@ -232,8 +236,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         Integer tradeType = orderSearchRequestVo.getTradeType();
         if(null != tradeType && tradeType >0) {
             //ai止盈 和 手动清仓
+            //+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+ 去掉手动清仓
             if(tradeType == TradeTypeInterface.SHELL) {
-                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
             }
             // 其他 如 1 ai建仓
             else {
@@ -252,6 +257,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         if(StringUtils.isNotBlank(otherBuffer.toString())) {
             query = query+otherBuffer.toString();
         }
+
+        logger.info(" sell sum the open search sql is: {}",query);
 
         Sort sort = new Sort();
         sort.addToSortFields(new SortField("created_at",Order.DECREASE));
@@ -352,7 +359,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         if(null != tradeType && tradeType >0) {
             //ai止盈 和 手动清仓
             if(tradeType == TradeTypeInterface.SHELL) {
-                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+                //"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+   手动清仓去除
+                otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
             }
             // 其他 如 1 ai建仓
             else {
@@ -445,8 +453,9 @@ public class TradeOrderServiceImpl implements TradeOrderService {
         }
 
         //设置交易类型
-        //ai止盈 和 手动清仓
-        //otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+"')");
+        //ai止盈
+        //"' OR trade_type:'"+TradeTypeInterface.manualClearRepository+  手动清仓不要
+        otherBuffer.append(" AND ( trade_type:'"+TradeTypeInterface.aiStopProfit+"' ) ");
 
         if(StringUtils.isNotBlank(otherBuffer.toString())) {
             query = query+otherBuffer.toString();
@@ -454,7 +463,8 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
         searchParams.setQuery(query);
 
-        //System.out.println("the query is :"+query);
+
+        logger.info("the open search sell cost query --- {}",query);
 
         //聚合搜索 合计盈利
         Aggregate aggregate = setOpenSearchAggregate(tradeTypeGroupKey, sumTotalShellProfitAggFun);
@@ -463,8 +473,6 @@ public class TradeOrderServiceImpl implements TradeOrderService {
 
 
         SearchParamsBuilder searchParamsBuilder = SearchParamsBuilder.create(searchParams);
-        searchParamsBuilder.addFilter(" trade_type= 2 ","AND");
-        searchParamsBuilder.addFilter(" trade_type= 3 ","OR");
 
         try{
 

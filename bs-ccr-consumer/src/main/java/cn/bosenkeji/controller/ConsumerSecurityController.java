@@ -2,6 +2,7 @@ package cn.bosenkeji.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestOperations;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * ConsumerSecurityController
@@ -62,6 +64,7 @@ public class ConsumerSecurityController {
         map.add("password",password);
         HttpHeaders headers = authorizationHeaders(request);
         HttpEntity<LinkedMultiValueMap> entity = new HttpEntity<>(map,headers);
+
         return restTemplate.postForObject(url,entity,Object.class);
     }
 

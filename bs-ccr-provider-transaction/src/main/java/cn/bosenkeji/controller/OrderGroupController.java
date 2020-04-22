@@ -1,5 +1,6 @@
 package cn.bosenkeji.controller;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.service.CoinPairChoiceService;
 import cn.bosenkeji.service.OrderGroupService;
 import cn.bosenkeji.util.CommonConstantUtil;
@@ -44,10 +45,12 @@ public class OrderGroupController {
     }
     @ApiOperation(value = " 查询 订单组name 方法",httpMethod = "GET",nickname = "searchTradeOrderByCondition")
     @GetMapping("/search_group")
-    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long") Long startTime,
-                                              @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间",required = true,type = "Long") Long endTime,
-                                              @RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId){
-        return new Result<>(this.orderGroupService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId));
+    public OpenSearchPage searchTradeRecordByCondition(@RequestParam(value = "startTime",defaultValue = "0") @ApiParam(value = "开始时间 ",required = true,type = "Long") Long startTime,
+                                                       @RequestParam(value = "endTime",defaultValue = "0") @ApiParam(value = "截止时间",required = true,type = "Long") Long endTime,
+                                                       @RequestParam("coinPairChoiceId")@ApiParam(value = "自选币id",required = true,type="integer",example = "1") int coinPairChoiceId,
+                                                       @RequestParam(value = "pageNum" , defaultValue = "1") int pageNum,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        return this.orderGroupService.searchTradeRecordByCondition(startTime, endTime, coinPairChoiceId, pageNum, pageSize);
     }
 
     @ApiOperation(value = "获取单个订单组信息",httpMethod = "GET",nickname = "getOneOrderGroupById")

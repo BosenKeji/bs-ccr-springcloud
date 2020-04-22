@@ -39,6 +39,15 @@ public class IUserProductComboClientServiceFallbackFactory implements FallbackFa
             }
 
             @Override
+            public PageInfo<UserProductComboVO> listByUserTelAndId(String userTel, Integer id, int pageNum, int pageSize) {
+                List<UserProductComboVO> list=new ArrayList<>();
+                UserProductComboVO userProductCombo=new UserProductComboVO();
+                userProductCombo.setProductName("hystrixName");
+                list.add(userProductCombo);
+                return new PageInfo(list);
+            }
+
+            @Override
             public UserProductCombo getUserProductCombo(int id) {
                 UserProductCombo userProductCombo=new UserProductCombo();
                 userProductCombo.setRemark("hystrixName");

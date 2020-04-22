@@ -45,6 +45,8 @@ public interface TradePlatformApiBindProductComboMapper {
 
     List<TradePlatformApiBindProductCombo> findAll();
 
+    List<TradePlatformApiBindProductCombo> findAllByApiId(Integer apiId);
+
     int getUserIdById(int id);
 
     TradePlatformApiBindProductCombo selectByComboId(Integer comboId);
@@ -55,5 +57,7 @@ public interface TradePlatformApiBindProductComboMapper {
 
     TradePlatformApiBindProductCombo selectByComboAndApi(@Param("userProductComboId") Integer userProductComboId,@Param("tradePlatformApiId") Integer tradePlatformApiId,@Param("status") Integer status);
     int updateStatusById(@Param("id") int id,@Param("status") int status);
+
+    List<TradePlatformApiBindProductCombo> getByTradePlatformApiId(int tradePlatformApiId);
 
 }

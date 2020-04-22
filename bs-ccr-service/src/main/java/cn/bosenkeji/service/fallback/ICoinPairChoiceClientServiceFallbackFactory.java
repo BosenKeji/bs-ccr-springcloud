@@ -87,6 +87,19 @@ public class ICoinPairChoiceClientServiceFallbackFactory implements FallbackFact
             }
 
             @Override
+            public List listByIsStart(int tradePlatformApiBindProductComboId, int isStart, int coinId) {
+                List list = new ArrayList();
+                CoinPairChoice coinPairChoice = new CoinPairChoice();
+                list.add(coinPairChoice);
+                return list;
+            }
+
+            @Override
+            public Result<Integer> updateByBindId(int originalBindId, int newBindId) {
+                return new Result<>(-1,"hystrix");
+            }
+
+            @Override
             public List<CoinPairChoice> findByTradePlatformApiBindProductComboIdsAndStatus(Set<Integer> tradePlatformApiBindProductComboIds) {
                 CoinPairChoice coinPairChoice = new CoinPairChoice();
                 coinPairChoice.setId(0);

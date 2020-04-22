@@ -1,6 +1,7 @@
 package cn.bosenkeji.config;
 
 import cn.bosenkeji.exception.CustomWebResponseExceptionTranslator;
+import cn.bosenkeji.service.impl.CustomTokenEnhancer;
 import cn.bosenkeji.service.impl.CustomTokenServices;
 import cn.bosenkeji.service.impl.CustomUserAuthenticationConverter;
 import cn.bosenkeji.utils.RedisLockUtil;
@@ -18,13 +19,17 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -58,6 +63,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
+    public TokenEnhancer tokenEnhancer(){
+        return new CustomTokenEnhancer();
+    }
+
+    @Bean
     @Primary
     DefaultTokenServices tokenServices() {
         final DefaultTokenServices defaultTokenServices = new CustomTokenServices(redisLockUtil);
@@ -67,8 +77,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager);
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+        endpoints.authenticationManager(authenticationManager).accessTokenConverter(accessTokenConverter());
+
+        endpoints.tokenEnhancer(tokenEnhancer());
         endpoints.tokenStore(tokenStore());
 //        endpoints.userDetailsService(userService);
         endpoints.setClientDetailsService(clientDetails());
@@ -77,7 +90,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenServices.setTokenStore(endpoints.getTokenStore());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
-        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 1天
 
         endpoints.tokenServices(tokenServices);
@@ -103,6 +115,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     @Bean
+    @Primary
     public JwtAccessTokenConverter accessTokenConverter() {
 //        final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         final CustomUserAuthenticationConverter converter = new CustomUserAuthenticationConverter();
@@ -122,6 +135,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public WebResponseExceptionTranslator webResponseExceptionTranslator() {
         return new CustomWebResponseExceptionTranslator();
     }
+
+
 
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

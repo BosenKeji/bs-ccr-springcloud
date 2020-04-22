@@ -88,6 +88,13 @@ public class ITradePlatformApiBindProductComboClientServiceFallbackFactory imple
             }
 
             @Override
+            public TradePlatformApiBindProductCombo getOneByPrimaryId(Integer id) {
+                TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo = new TradePlatformApiBindProductCombo();
+                tradePlatformApiBindProductCombo.setId(0);
+                return tradePlatformApiBindProductCombo;
+            }
+
+            @Override
             public Result<Integer> apiBindCombo(int userId, int userProductComboId, int tradePlatformApiId) {
                 return new Result<>(-1,"hystrix");
             }

@@ -47,14 +47,16 @@ public class DealParameter {
     /**
      * targetProfitPrice：止盈金额
      * isStopProfitTrace：是否使用追踪止盈
-     * turnDownRatio：追踪止盈触发比例
-     * emitRatio：追踪止盈回调比例
+     * turnDownRatio：追踪止盈回调比例
+     * stopProfitFixedRate：固定止盈触发比例
+     * stopProfitRatio 追踪止盈触发比例
      */
 
     private Double targetProfitPrice;
     private Integer isStopProfitTrace;
     private Double turnDownRatio;
-    private Double emitRatio;
+    private Double stopProfitFixedRate;
+    private Double stopProfitRatio;
 
     private Double lastBuildPrice;
 
@@ -180,12 +182,20 @@ public class DealParameter {
         this.turnDownRatio = turnDownRatio;
     }
 
-    public Double getEmitRatio() {
-        return emitRatio;
+    public Double getStopProfitFixedRate() {
+        return stopProfitFixedRate;
     }
 
-    public void setEmitRatio(Double emitRatio) {
-        this.emitRatio = emitRatio;
+    public void setStopProfitFixedRate(Double stopProfitFixedRate) {
+        this.stopProfitFixedRate = stopProfitFixedRate;
+    }
+
+    public Double getStopProfitRatio() {
+        return stopProfitRatio;
+    }
+
+    public void setStopProfitRatio(Double stopProfitRatio) {
+        this.stopProfitRatio = stopProfitRatio;
     }
 
     public Map<String, Object> getTrade() {
@@ -204,27 +214,4 @@ public class DealParameter {
         this.lastBuildPrice = lastBuildPrice;
     }
 
-    @Override
-    public String toString() {
-        return "DealParameter{" +
-                "trade=" + trade +
-                ", symbol='" + symbol + '\'' +
-                ", signId='" + signId + '\'' +
-                ", tradeStatus=" + tradeStatus +
-                ", positionCost=" + positionCost +
-                ", positionNum=" + positionNum +
-                ", finishedOrder=" + finishedOrder +
-                ", maxTradeOrder=" + maxTradeOrder +
-                ", storeSplit=" + storeSplit +
-                ", buyVolume=" + buyVolume +
-                ", followLowerRatio=" + followLowerRatio +
-                ", followCallbackRatio=" + followCallbackRatio +
-                ", firstOrderPrice=" + firstOrderPrice +
-                ", targetProfitPrice=" + targetProfitPrice +
-                ", isStopProfitTrace=" + isStopProfitTrace +
-                ", turnDownRatio=" + turnDownRatio +
-                ", emitRatio=" + emitRatio +
-                ", lastBuildPrice=" + lastBuildPrice +
-                '}';
-    }
 }

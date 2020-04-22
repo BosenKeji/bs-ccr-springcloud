@@ -81,7 +81,7 @@ public class OrderGroup implements Serializable {
     private int buildNumbers;
 
     @ApiModelProperty(hidden = true)
-    private double totalShell;
+    private double totalSell;
 
     @ApiModelProperty(hidden = true)
     private double totalCast;
@@ -193,12 +193,12 @@ public class OrderGroup implements Serializable {
         this.buildNumbers = buildNumbers;
     }
 
-    public double getTotalShell() {
-        return totalShell;
+    public double getTotalSell() {
+        return totalSell;
     }
 
-    public void setTotalShell(double totalShell) {
-        this.totalShell = totalShell;
+    public void setTotalSell(double totalSell) {
+        this.totalSell = totalSell;
     }
 
     public double getTotalCast() {

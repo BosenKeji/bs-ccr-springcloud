@@ -68,7 +68,8 @@ public class DealParameterParser {
         }
         parameter.setIsStopProfitTrace(temp);
         parameter.setTurnDownRatio(DealUtil.getDouble(trade.get(DealEnum.TURN_DOWN_RATIO)));
-        parameter.setEmitRatio(DealUtil.getDouble(trade.get(DealEnum.EMIT_RATIO)));
+        parameter.setStopProfitFixedRate(DealUtil.getDouble(trade.get(DealEnum.FIXED_RATIO)));
+        parameter.setStopProfitRatio(DealUtil.getDouble(trade.get(DealEnum.NOT_FIXED_RATIO)));
 
         Object lastBuildPriceObject = trade.get(DealEnum.LAST_BUILD_PRICE);
         if (lastBuildPriceObject != null) {

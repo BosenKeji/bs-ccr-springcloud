@@ -23,6 +23,7 @@ public interface IUserProductComboService {
 
     //List<UserProductCombo> getByUserId(int userId);
     PageInfo<UserProductCombo> selectUserProductComboByUserTel(int pageNum, int pageSize, String userTel);
+    PageInfo<UserProductCombo> selectUserProductComboByUserTelAndId(int pageNum,int pageSize,String tel,Integer id);
     PageInfo<UserProductCombo> selectUserProductComboByUserId(int pageNum, int pageSize, int userId);
     int checkExistByProductIdAndUserId(int productId, int userId);
 

@@ -1,5 +1,6 @@
 package cn.bosenkeji.service.Impl;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.interfaces.CommonResultNumberEnum;
 import cn.bosenkeji.mapper.OrderGroupMapper;
 import cn.bosenkeji.service.CoinPairChoiceService;
@@ -19,9 +20,7 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchResult;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
-import com.aliyun.opensearch.sdk.generated.search.SearchParams;
+import com.aliyun.opensearch.sdk.generated.search.*;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.github.pagehelper.PageHelper;
@@ -89,7 +88,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
         if (orderGroup != null){
             int buildNumbers = 0;
-            double accumulateShell = 0,accumulateCast = 0,accumulateProfit = 0;
+            double accumulateSell = 0,accumulateCast = 0,accumulateProfit = 0;
 
             orderGroup.setTradeOrders(tradeOrderService.listByOrderGroupId(orderGroup.getId()).stream().sorted(Comparator.comparing(TradeOrder::getCreatedAt).reversed()).collect(Collectors.toList()));
             double endProfitRatio = orderGroup.getEndProfitRatio() / CommonConstantUtil.ACCURACY;
@@ -104,18 +103,20 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             if (orderGroup.getTradeOrders().size() != 0){
                 List<TradeOrder> tradeOrders = orderGroup.getTradeOrders();
                 for (TradeOrder o : tradeOrders) {
-                    if (o.getTradeType() == 1){
+                    //把ai止盈的交易数量累加
+                    if (o.getTradeType() == CommonConstantUtil.AI_STOP_PROFIT_STATUS){
+                        accumulateProfit = o.getSellProfit();
+                        accumulateSell += o.getTradeNumbers();
+                    }
+                    if (o.getTradeType() == CommonConstantUtil.BUILD_STATUS){
                         buildNumbers += 1;
                         accumulateCast += o.getTradeCost();
-                    }else {
-                        accumulateProfit = o.getSellProfit();
-                        accumulateShell += o.getTradeNumbers();
                     }
                 }
             }
             orderGroup.setBuildNumbers(buildNumbers);
             orderGroup.setTotalCast(Math.abs(accumulateCast));
-            orderGroup.setTotalShell(accumulateShell);
+            orderGroup.setTotalSell(accumulateSell);
             orderGroup.setTotalProfit(accumulateProfit);
         }
         return orderGroup;
@@ -216,28 +217,36 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     @Override
-    public List<OrderGroupOpenSearchFormat> searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId) {
+    public OpenSearchPage searchTradeRecordByCondition(Long startTime, Long endTime, int coinPairChoiceId, int pageNum, int pageSize) {
 
         List<OrderGroupOpenSearchFormat> orderGroupOpenSearchFormats = new ArrayList<>();
         if (startTime > endTime ){
-            return orderGroupOpenSearchFormats;
+            return null;
         }
+
+        OpenSearchPage page= new OpenSearchPage();
+        page.setPageNum(pageNum);
+        page.setPageSize(pageSize);
+        page.countStartRow();
 
         SearcherClient searcherClient = new SearcherClient(openSearchClient);
 
         Config config = new Config(Lists.newArrayList(appName));
         config.setSearchFormat(SearchFormat.FULLJSON);
-        config.setStart(0);
+        config.setStart(page.getStartRow());
+        config.setHits(page.getPageSize());
         config.setFetchFields(CommonConstantUtil.openSearchFetchFieldFormat);
 
         SearchParams searchParams = new SearchParams(config);
         String searchString;
-        if (startTime > 0 && endTime > 0 ){
-            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]";
+        if (startTime > 0){
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'"+" AND "+"created_time:["+startTime+","+endTime+"]" + CommonConstantUtil.DISTINCT_STATEMENT;
         }else {
-            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'";
+            searchString = "coin_pair_choice_id:'"+coinPairChoiceId+"'" + CommonConstantUtil.DISTINCT_STATEMENT;
         }
-
+        Sort sort = new Sort();
+        sort.addToSortFields(new SortField("created_time",Order.DECREASE));
+        searchParams.setSort(sort);
         searchParams.setQuery(searchString);
         SearchParamsBuilder paramsBuilder = SearchParamsBuilder.create(searchParams);
 
@@ -246,6 +255,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             String result = execute.getResult();
             OpenSearchExecuteResult openSearchExecuteResult = JSONObject.parseObject(result,OpenSearchExecuteResult.class);
             List<OpenSearchField> items = openSearchExecuteResult.getResult().getItems();
+            page.setTotal(openSearchExecuteResult.getResult().getTotal());
 
             items.forEach(openSearchField -> {
                 OpenSearchOrderVo openSearchOrderVo = openSearchField.getFields();
@@ -261,13 +271,14 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             e.printStackTrace();
         }
 
+
         //去重
         List<OrderGroupOpenSearchFormat> unique = orderGroupOpenSearchFormats.stream().collect(
                 collectingAndThen(
-                        toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new)
-        );
-
-        return unique;
+                        toCollection(() -> new TreeSet<>(comparingLong(OrderGroupOpenSearchFormat::getId))), ArrayList::new));
+        page.setList(unique);
+        page.countTotalPages();
+        return page;
     }
 
     @Override
@@ -310,6 +321,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         }
         return orderGroupOverviewResult;
     }
+
 
     @Override
     public OrderGroup getByCoinPairChoiceId(int coinPairChoiceId) {

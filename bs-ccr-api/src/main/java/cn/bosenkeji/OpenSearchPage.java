@@ -14,7 +14,11 @@ public class OpenSearchPage {
     private Integer totalPage;
 
     public void countStartRow() {
-        this.startRow=(this.pageNum-1)*pageSize;
+        this.startRow = (this.pageNum-1)*pageSize;
+    }
+
+    public void countTotalPages() {
+        this.totalPage = Math.toIntExact(total / pageSize);
     }
 
     public Long getTotal() {

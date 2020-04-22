@@ -1,5 +1,6 @@
 package cn.bosenkeji.service;
 
+import cn.bosenkeji.OpenSearchPage;
 import cn.bosenkeji.config.FeignClientConfig;
 import cn.bosenkeji.service.fallback.IOrderGroupClientServiceFallbackFactory;
 import cn.bosenkeji.util.Result;
@@ -34,9 +35,11 @@ public interface IOrderGroupClientService {
     public Result deleteOne(@PathVariable("id") int id);
 
     @GetMapping("/order_group/search_group")
-    public Result searchTradeRecordByCondition(@RequestParam(value = "startTime") Long startTime,
-                                               @RequestParam(value = "endTime") Long endTime,
-                                               @RequestParam("coinPairChoiceId") int coinPairChoiceId);
+    public OpenSearchPage searchTradeRecordByCondition(@RequestParam(value = "startTime") Long startTime,
+                                                       @RequestParam(value = "endTime") Long endTime,
+                                                       @RequestParam("coinPairChoiceId") int coinPairChoiceId,
+                                                       @RequestParam(value = "pageNum" , defaultValue = "1") int pageNum,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize);
 
     @GetMapping("/order_group/trade_overview")
     public OrderGroupOverviewResult getCoinPairChoiceTradeOverview(@RequestParam("coinPairChoiceId") int coinPairChoiceId);

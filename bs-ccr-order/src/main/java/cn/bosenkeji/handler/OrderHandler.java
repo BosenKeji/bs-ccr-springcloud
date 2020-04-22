@@ -110,7 +110,7 @@ public class OrderHandler {
                     //防止重复接收到重复的消息
                     //已完成订单数
                     int finishedOrderNumber = -1;
-                    if (!MqMessageUtil.getString(jsonObject.getString("finished_order")).equals("")){
+                    if (!"".equals(MqMessageUtil.getString(jsonObject.getString("finished_order")))){
                         finishedOrderNumber = Integer.parseInt(MqMessageUtil.getString(jsonObject.getString("finished_order")))+1;
                     }
                     log.info("finishedOrderNum ==>" + finishedOrderNumber);

@@ -60,15 +60,15 @@ public class CoinPairChoiceAttributeCustomServiceImpl implements CoinPairChoiceA
         }
 
         if (stopProfitType == CoinPairChoiceAttributeCustomService.PROFIT_TRACE_TYPE){
-            coinPairChoiceAttributeCustom.setStopProfitFixedRate(0.00);
+//            coinPairChoiceAttributeCustom.setStopProfitFixedRate(0.00);
 
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return Optional.of(this.coinPairChoiceAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoiceAttributeCustom));
         }
 
         if (stopProfitType == CoinPairChoiceAttributeCustomService.PROFIT_FIXED_TYPE){
-            coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
-            coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
+//            coinPairChoiceAttributeCustom.setStopProfitTraceTriggerRate(0.00);
+//            coinPairChoiceAttributeCustom.setStopProfitTraceDropRate(0.00);
 
             coinPairChoiceAttributeCustom.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
             return Optional.of(this.coinPairChoiceAttributeCustomMapper.updateByPrimaryKeySelective(coinPairChoiceAttributeCustom));

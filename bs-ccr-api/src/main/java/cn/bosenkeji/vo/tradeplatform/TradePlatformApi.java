@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @Author CAJR
@@ -59,6 +60,8 @@ public class TradePlatformApi implements Serializable {
      */
     @ApiModelProperty(hidden = true)
     private TradePlatform tradePlatform;
+
+    private List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos;
 
     public TradePlatformApi() {
     }
@@ -153,5 +156,13 @@ public class TradePlatformApi implements Serializable {
 
     public void setIsBound(int isBound) {
         this.isBound = isBound;
+    }
+
+    public List<TradePlatformApiBindProductCombo> getTradePlatformApiBindProductCombos() {
+        return tradePlatformApiBindProductCombos;
+    }
+
+    public void setTradePlatformApiBindProductCombos(List<TradePlatformApiBindProductCombo> tradePlatformApiBindProductCombos) {
+        this.tradePlatformApiBindProductCombos = tradePlatformApiBindProductCombos;
     }
 }

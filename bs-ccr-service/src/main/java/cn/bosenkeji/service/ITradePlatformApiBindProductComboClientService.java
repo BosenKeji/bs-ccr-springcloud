@@ -66,6 +66,9 @@ public interface ITradePlatformApiBindProductComboClientService {
     @GetMapping("/trade_platform_api_bind_product_combo/{id}")
     public int getUserIdById(@PathVariable("id") int id);
 
+    @GetMapping("trade_platform_api_bind_product_combo/primary_id")
+    public TradePlatformApiBindProductCombo getOneByPrimaryId(@RequestParam("id") Integer id);
+
     @GetMapping("/trade_platform_api_bind_product_combo/bound_by_combo_ids/")
     List<TradePlatformApiBindProductComboNoComboVo> listHasBoundByUserProductComboIds(@RequestParam("userProductComboIds") Set<Integer> userProductComboIds);
 

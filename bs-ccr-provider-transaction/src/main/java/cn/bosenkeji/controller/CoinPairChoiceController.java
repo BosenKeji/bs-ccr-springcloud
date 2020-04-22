@@ -72,6 +72,21 @@ public class CoinPairChoiceController {
         return this.coinPairChoiceService.listByPage(pageNum,pageSizeCommon,tradePlatformApiBindProductComboId,coinId);
     }
 
+    /**
+     * create by xivin
+     * @param tradePlatformApiBindProductComboId
+     * @param isStart
+     * @return
+     */
+    @ApiOperation(value = "通过绑定id 和 是否开启策略 获取自选货币列表接口",httpMethod = "GET",nickname = "getByRobotIdAndIsStartCoinPairChoiceList")
+    @GetMapping("/by_is_start")
+    public List listByIsStart(
+                         @RequestParam("tradePlatformApiBindProductComboId") @Min(1)  @ApiParam(value = "🤖️机器人🆔", required = true, type = "integer",example = "1") int tradePlatformApiBindProductComboId,
+                         @RequestParam("isStart") @ApiParam(value = "是否开启策略", required = true, type = "integer",example = "1") int isStart,
+                         @RequestParam("coinId") @ApiParam(value = "货币id",required = true,type = "integer",example = "1") int coinId ){
+        return this.coinPairChoiceService.listByRobotIdAndIsStart(tradePlatformApiBindProductComboId,isStart,coinId);
+    }
+
     @ApiOperation(value = "检查自选币",httpMethod = "GET",nickname = "checkExistByCoinPartnerIdAndUserId")
     @GetMapping("/check_coin_pair_choice")
     public Result checkExistByCoinPairIdAndUserId(@RequestParam("coinPairName")   @ApiParam(value = "货币对Name", required = true, type = "String") String coinPairName,
@@ -127,8 +142,11 @@ public class CoinPairChoiceController {
         if (coinPairChoiceVerification == null || coinPairChoiceVerification.getStatus() == 0){
             return new Result<>(null,"自选币不存在或已删除");
         }
-        if (coinPairChoiceVerification.getTradePlatformApiBindProductComboId() != coinPairChoice.getTradePlatformApiBindProductComboId()){
-            return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+        List<Integer> bingIds = this.coinPairChoiceService.getAllSameSignTradePlatformApiBindProductComboIds(coinPairChoice.getTradePlatformApiBindProductComboId());
+        if (!bingIds.isEmpty()){
+            if (!bingIds.contains(coinPairChoiceVerification.getTradePlatformApiBindProductComboId())){
+                return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+            }
         }
 
         coinPairChoice.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -149,8 +167,11 @@ public class CoinPairChoiceController {
         if (coinPairChoice == null || coinPairChoice.getStatus() == 0){
             return new Result<>(null,"自选币不存在或已删除");
         }
-        if (coinPairChoice.getTradePlatformApiBindProductComboId() != tradePlatformApiBindProductComboId){
-            return new Result<>(null,"非法操作，不能删除其他用户的东西哦");
+        List<Integer> bingIds = this.coinPairChoiceService.getAllSameSignTradePlatformApiBindProductComboIds(tradePlatformApiBindProductComboId);
+        if (!bingIds.isEmpty()){
+            if (!bingIds.contains(coinPairChoice.getTradePlatformApiBindProductComboId())){
+                return new Result<>(null,"非法操作，不能编辑其他用户的东西哦");
+            }
         }
 
         return new Result<>(this.coinPairChoiceService.delete(id));
@@ -204,6 +225,18 @@ public class CoinPairChoiceController {
     @GetMapping("/position_details")
     public Result getCoinPairChoicePositionDetails(@RequestParam("coinPairChoiceId") @Min(1)  @ApiParam(value = "自选币id", required = true, type = "integer",example = "1") int coinPairChoiceId){
         return new Result<>(this.coinPairChoiceService.getCoinPairChoicePositionDetail(coinPairChoiceId));
+    }
+
+    /**
+     *  xivinChen
+     * @param originalBindId
+     * @param newBindId
+     * @return
+     */
+    @PutMapping("/bind_id/")
+    public Result<Integer> updateByBindId(@RequestParam("originalBindId") @ApiParam(value = "原来的绑定",required = true,type = "integer",example = "1") int originalBindId,
+                                          @RequestParam("newBindId") @ApiParam(value = "新的的绑定",required = true,type = "integer",example = "1") int newBindId) {
+        return new Result<>(coinPairChoiceService.updateByBindId(originalBindId,newBindId));
     }
 
     /**
