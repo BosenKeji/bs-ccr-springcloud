@@ -3,15 +3,14 @@ package cn.bosenkeji.vo.cdKey;
 public class RenewCdKeyUserParam{
 
     private int userId;
-    private String username;
     private int userProductComboId;
     private String cdKey;
 
     public RenewCdKeyUserParam() { }
 
-    public RenewCdKeyUserParam(int userId, String username, int userProductComboId, String cdKey) {
+    public RenewCdKeyUserParam(int userId, int userProductComboId, String cdKey) {
         this.userId = userId;
-        this.username = username;
+
         this.userProductComboId = userProductComboId;
         this.cdKey = cdKey;
     }
@@ -22,14 +21,6 @@ public class RenewCdKeyUserParam{
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public int getUserProductComboId() {

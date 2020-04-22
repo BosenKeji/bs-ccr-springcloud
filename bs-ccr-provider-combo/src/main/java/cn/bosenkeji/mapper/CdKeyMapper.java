@@ -13,7 +13,7 @@ public interface CdKeyMapper {
 
     int insertCdKeyByBatch(List<CdKey> cdKeys);
 
-    int updateUsernameAndStatusById(@Param("id") Integer id, @Param("username") String username, @Param("status") Integer status);
+    int updateUserIdAndStatusById(@Param("id") Integer id, @Param("userId") int userId, @Param("status") Integer status, @Param("userProductComboId") int userProductComboId);
 
     int deleteByIds(@Param("ids") List<Integer> ids);
 

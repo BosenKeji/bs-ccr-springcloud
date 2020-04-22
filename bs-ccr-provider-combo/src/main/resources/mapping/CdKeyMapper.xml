@@ -2,19 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.bosenkeji.mapper.CdKeyMapper" >
   <resultMap id="BaseResultMap" type="cn.bosenkeji.vo.cdKey.CdKey" >
-    <constructor >
-      <arg column="id" jdbcType="INTEGER" javaType="_int" />
-      <arg column="key" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="product_combo_id" jdbcType="INTEGER" javaType="_int" />
-      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="status" jdbcType="TINYINT" javaType="java.lang.Integer" />
-      <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
-      <arg column="updated_at" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
-    </constructor>
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
+    <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
+
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+
   </resultMap>
 
-  <sql id="Base_Column_List">id,`key`,product_combo_id,username,remark,status,created_at,updated_at</sql>
+  <resultMap id="WithOtherResultMap" type="cn.bosenkeji.vo.cdKey.CdKey" >
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
+    <result column="product_combo_id" jdbcType="INTEGER" property="productComboId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_product_combo_id" jdbcType="INTEGER" property="userProductComboId" />
+    <association property="userProductCombo" column="user_product_combo_id" javaType="cn.bosenkeji.vo.combo.UserProductCombo"
+                 select="cn.bosenkeji.mapper.UserProductComboMapper.selectByPrimaryKey" />
+    <!--<association property="productCombo" column="product_combo_id" javaType="cn.bosenkeji.vo.combo.ProductCombo"
+                 select="cn.bosenkeji.mapper.ProductComboMapper.selectByPrimaryKey" />-->
+
+  </resultMap>
+
+  <sql id="Base_Column_List">id,`key`,product_combo_id,remark,status,created_at,updated_at, user_id, user_product_combo_id</sql>
   <insert id="insert" parameterType="cn.bosenkeji.vo.cdKey.CdKey" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -80,14 +100,14 @@
   </insert>
 
   <insert id="insertCdKeyByBatch" parameterType="list" keyProperty="id" useGeneratedKeys="true">
-    insert into cd_key(`key`, product_combo_id, username, remark, status, created_at, updated_at) values
+    insert into cd_key(`key`, product_combo_id, remark, status, created_at, updated_at) values
     <foreach collection="list" item="item" separator=",">
-      (#{item.key},#{item.productComboId},#{item.username},#{item.remark},#{item.status},#{item.createdAt},#{item.updatedAt})
+      (#{item.key},#{item.productComboId},#{item.remark},#{item.status},#{item.createdAt},#{item.updatedAt})
     </foreach>
   </insert>
 
-  <update id="updateUsernameAndStatusById">
-    update cd_key set username = #{username}, status = #{status} where id = #{id}
+  <update id="updateUserIdAndStatusById">
+    update cd_key set user_id = #{userId}, status = #{status}, user_product_combo_id = #{userProductComboId} where id = #{id}
   </update>
 
   <delete id="deleteByIds" parameterType="list">
@@ -119,17 +139,20 @@
     from cd_key
   </select>
 
-  <select id="getBySearch" parameterType="cn.bosenkeji.vo.cdKey.CdKey" resultMap="BaseResultMap">
+  <select id="getBySearch" parameterType="cn.bosenkeji.vo.cdKey.CdKey" resultMap="WithOtherResultMap">
     select <include refid="Base_Column_List" /> from cd_key
     <where>
       <if test="key != null">
         and `key` = #{key}
       </if>
-      <if test="username != null">
-        and username = #{username}
+      <if test="userId != null">
+        and user_id = #{userId}
       </if>
       <if test="status != null">
         and status = #{status}
+      </if>
+      <if test="userProductComboId != null ">
+        and user_product_combo_id = #{userProductComboId}
       </if>
     </where>
   </select>

@@ -3,15 +3,13 @@ package cn.bosenkeji.vo.cdKey;
 public class ActivateCdKeyUserParam {
 
     private int userId;
-    private String username;
     private String cdKey;
 
     public ActivateCdKeyUserParam() {
     }
 
-    public ActivateCdKeyUserParam(int userId, String username, String cdKey) {
+    public ActivateCdKeyUserParam(int userId, String cdKey) {
         this.userId = userId;
-        this.username = username;
         this.cdKey = cdKey;
     }
 
@@ -21,14 +19,6 @@ public class ActivateCdKeyUserParam {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getCdKey() {

@@ -103,7 +103,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         int userResult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();*/
 
         //int i=1/0;
-        return SUCCESS;
+        return userProductCombo.getId();
 
     }
 

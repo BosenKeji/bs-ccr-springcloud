@@ -37,7 +37,7 @@ public class ConsumerCdKeyController {
     @PostMapping("/activation")
     public Result activation( @RequestParam("key") String key) {
         CustomUserDetailsImpl currentUser = getCurrentUser();
-        ActivateCdKeyUserParam param = new ActivateCdKeyUserParam(currentUser.getId(),currentUser.getUsername(),key);
+        ActivateCdKeyUserParam param = new ActivateCdKeyUserParam(currentUser.getId(),key);
         return iCdKeyClientService.activate(param);
     }
 
@@ -46,7 +46,7 @@ public class ConsumerCdKeyController {
     @PostMapping("/renew")
     public Result renew(@RequestBody RenewCdKeyParam param) {
         CustomUserDetailsImpl currentUser = getCurrentUser();
-        RenewCdKeyUserParam renewCdKeyUserParam = new RenewCdKeyUserParam(currentUser.getId(),currentUser.getUsername(),param.getUserProductComboId(),param.getCdKey());
+        RenewCdKeyUserParam renewCdKeyUserParam = new RenewCdKeyUserParam(currentUser.getId(),param.getUserProductComboId(),param.getCdKey());
         return iCdKeyClientService.renew(renewCdKeyUserParam);
     }
 
@@ -63,10 +63,11 @@ public class ConsumerCdKeyController {
     public PageInfo<CdKeyOther> getCdKeyBySearch(@RequestParam(value = "cdKey",required = false) String cdKey,
                                                     @RequestParam(value = "username",required = false) String username,
                                                     @RequestParam(value = "isUsed",required = false) Integer isUsed,
+                                                    @RequestParam(value = "userProductComboId",required = false) Integer userProductComboId,
                                                     @RequestParam(value = "sort",required = false,defaultValue = "0") Integer sort,
                                                     @RequestParam(value = "pageNum",required = false, defaultValue = "1") Integer pageNum,
                                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize) {
-        return iCdKeyClientService.getCdKeyBySearch(cdKey,username,isUsed,sort,pageNum,pageSize);
+        return iCdKeyClientService.getCdKeyBySearch(cdKey,username,isUsed,userProductComboId, sort,pageNum,pageSize);
     }
 
     private CustomUserDetailsImpl getCurrentUser() {

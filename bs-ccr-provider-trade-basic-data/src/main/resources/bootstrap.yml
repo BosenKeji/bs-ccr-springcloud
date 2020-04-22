@@ -1,4 +1,4 @@
 spring:
   profiles:
-    active: ${CCR_ENV:prod}
+    active: ${CCR_ENV:dev}
 

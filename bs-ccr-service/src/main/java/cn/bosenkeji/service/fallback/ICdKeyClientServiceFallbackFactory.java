@@ -43,7 +43,7 @@ public class ICdKeyClientServiceFallbackFactory implements FallbackFactory<ICdKe
             }
 
             @Override
-            public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed,Integer sort, Integer pageNum, Integer pageSize) {
+            public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey, String username, Integer isUsed, Integer userProductComboId,  Integer sort, Integer pageNum, Integer pageSize) {
                 PageInfo<CdKeyOther> pageInfo = new PageInfo<>();
                 List<CdKeyOther> list = new ArrayList<>();
                 CdKeyOther cdKeyOther = new CdKeyOther();

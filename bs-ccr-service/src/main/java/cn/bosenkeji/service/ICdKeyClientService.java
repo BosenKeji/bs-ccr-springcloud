@@ -32,6 +32,7 @@ public interface ICdKeyClientService {
     PageInfo<CdKeyOther> getCdKeyBySearch(@RequestParam(value = "cdKey",required = false) String cdKey,
                                           @RequestParam(value = "username",required = false) String username,
                                           @RequestParam(value = "isUsed",required = false) Integer isUsed,
+                                          @RequestParam(value = "userProductComboId",required = false) Integer userProductComboId,
                                           @RequestParam(value = "sort", required = false,defaultValue = "0") Integer sort,
                                           @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
                                           @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize);

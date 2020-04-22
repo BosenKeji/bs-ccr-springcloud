@@ -4,6 +4,7 @@ import cn.bosenkeji.mapper.CdKeyMapper;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.ExcelUtil;
+import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.cdKey.*;
 import cn.bosenkeji.vo.combo.ProductCombo;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -20,6 +21,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -30,6 +32,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CdKeyServiceImpl implements CdKeyService {
@@ -37,7 +40,7 @@ public class CdKeyServiceImpl implements CdKeyService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
+    @Resource
     private CdKeyMapper cdKeyMapper;
 
     @Autowired
@@ -51,6 +54,9 @@ public class CdKeyServiceImpl implements CdKeyService {
 
     @Autowired
     private IUserProductComboDayByAdminService iUserProductComboDayByAdminService;
+
+    @Resource
+    private IUserClientService iUserClientService;
 
 
     @Autowired
@@ -161,7 +167,7 @@ public class CdKeyServiceImpl implements CdKeyService {
 
             int result = iUserProductComboService.add(userProductCombo);
             if (result > 0) {
-                clearCdKey(cdKey.getId(),param.getUsername(),param.getCdKey());
+                clearCdKey(cdKey.getId(),param.getUserId(),param.getCdKey(),result);
                 return new Result<>(1,"激活成功！");
             }
         }
@@ -184,6 +190,10 @@ public class CdKeyServiceImpl implements CdKeyService {
 
             if (userProductCombo == null ) {
                 return new Result<>(0,"机器人不存在，激活失败！");
+            }
+
+            if (userProductCombo.getUserId() != param.getUserId()) {
+                return new Result(0,"系统检测到该机器人不属于您，请再次检查机器人id是否正确");
             }
 
             ProductCombo productCombo = iProductComboService.get(cdKey.getProductComboId());
@@ -212,7 +222,7 @@ public class CdKeyServiceImpl implements CdKeyService {
             int i = iUserProductComboDayByAdminService.add(userProductComboDay, userProductComboDayByAdmin);
 
             if ( i>0 ) {
-                clearCdKey(cdKey.getId(),param.getUsername(),param.getCdKey());
+                clearCdKey(cdKey.getId(),param.getUserId(),param.getCdKey(),param.getUserProductComboId());
                 return new Result<>(1,"激活码续费成功！");
             }
             return new Result<>(0,"激活码续费失败！");
@@ -251,12 +261,12 @@ public class CdKeyServiceImpl implements CdKeyService {
         List<CdKey> cdKeys = new ArrayList<>();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         for (int i = 0; i < num; i++) {
-            cdKeys.add(new CdKey(generateCdKey(prefix),productComboId,null,remark,DEFAULT_STATUS,timestamp,timestamp));
+            cdKeys.add(new CdKey(generateCdKey(prefix),productComboId,remark,DEFAULT_STATUS,timestamp,timestamp));
         }
         if (cdKeys.size() != num ) {
             int temp = num - cdKeys.size();
             for (int i = 0; i < temp; i++) {
-                cdKeys.add(new CdKey(generateCdKey(prefix),productComboId,null,remark,DEFAULT_STATUS,timestamp,timestamp));
+                cdKeys.add(new CdKey(generateCdKey(prefix),productComboId,remark,DEFAULT_STATUS,timestamp,timestamp));
             }
         }
         return cdKeys;
@@ -270,7 +280,7 @@ public class CdKeyServiceImpl implements CdKeyService {
      */
 
     @Override
-    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed,Integer sort, Integer pageNum, Integer pageSize) {
+    public PageInfo<CdKeyOther> getCdKeyBySearch(String cdKey,String username, Integer isUsed, Integer userProductComboId, Integer sort, Integer pageNum, Integer pageSize) {
 
         String orderBy = "created_at ";
         if (sort == 1) {
@@ -282,8 +292,17 @@ public class CdKeyServiceImpl implements CdKeyService {
         PageHelper.startPage(pageNum,pageSize,orderBy);
         CdKey c = new CdKey();
         c.setKey(cdKey);
-        c.setUsername(username);
+
+        if (StringUtils.isNotBlank(username)) {
+            User oneUserByTel = iUserClientService.getOneUserByTel(username);
+            if (oneUserByTel == null) {
+                return new PageInfo<>();
+            }
+            c.setUserId(oneUserByTel.getId());
+        }
         c.setStatus(isUsed);
+        c.setUserProductComboId(userProductComboId);
+
         List<CdKey> cdKeys = cdKeyMapper.getBySearch(c);
         PageInfo<CdKey> cdKeyPageInfo = new PageInfo<>(cdKeys);
 
@@ -318,37 +337,60 @@ public class CdKeyServiceImpl implements CdKeyService {
     }
 
     private List<CdKeyOther> convertToCdKeyOther(List<CdKey> cdKeys) {
-        List<CdKeyOther> cdKeyOthers = new ArrayList<>();
-        if (CollectionUtils.isEmpty(cdKeys)) {
+        try {
+
+
+            List<CdKeyOther> cdKeyOthers = new ArrayList<>();
+            if (CollectionUtils.isEmpty(cdKeys)) {
+                return cdKeyOthers;
+            } else {
+                List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
+                List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
+                List<Integer> allUserIds = new ArrayList<>();
+                cdKeys.forEach(cdKey -> {
+                    allUserIds.add(cdKey.getUserId());
+                });
+                List<Integer> userIds = allUserIds.stream().distinct().collect(Collectors.toList());
+                Map<Integer, User> userMap = iUserClientService.listByIds(userIds);
+                Collection<User> users = userMap.values();
+                List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
+                Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
+                Collection<Product> products = productMap.values();
+                cdKeys.forEach((k) -> {
+                    Optional<Product> productOptional = Optional.empty();
+                    Optional<User> userOptional = Optional.empty();
+                    userOptional = users.stream().filter(user -> user.getId() == k.getUserId()).findFirst();
+                    Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
+                    if (productComboOptional.isPresent()) {
+                        productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
+                    }
+                    CdKeyOther cdKeyOther = new CdKeyOther();
+                    cdKeyOther.setKey(k.getKey());
+                    cdKeyOther.setProductComboId(k.getProductComboId());
+                    cdKeyOther.setId(k.getId());
+                    cdKeyOther.setCreateAt(k.getCreatedAt().toString());
+                    cdKeyOther.setProductName(productOptional.get().getName());
+                    cdKeyOther.setComboName(productComboOptional.get().getName());
+                    cdKeyOther.setTime(productComboOptional.get().getTime());
+                    cdKeyOther.setRemark(k.getRemark());
+                    cdKeyOther.setIsUsed(k.getStatus());
+                    cdKeyOther.setProfix(k.getKey().split("-")[0]);
+                    if (userOptional.isPresent()) {
+                        cdKeyOther.setUsername(userOptional.get().getTel());
+                    }
+                    cdKeyOther.setUserProductComboId(k.getUserProductComboId());
+                    if (null != k.getUserProductCombo()) {
+                        cdKeyOther.setRobotManageStatus(k.getUserProductCombo().getRunStatus());
+                    }
+
+                    cdKeyOthers.add(cdKeyOther);
+                });
+            }
             return cdKeyOthers;
-        } else {
-            List<Integer> productComboIds = cdKeys.stream().map(CdKey::getProductComboId).distinct().collect(Collectors.toList());
-            List<ProductCombo> productCombos = iProductComboService.getByIds(productComboIds);
-            List<Integer> productIds = productCombos.stream().map(ProductCombo::getProductId).distinct().collect(Collectors.toList());
-            Map<Integer, Product> productMap = iProductClientService.listByPrimaryKeys(productIds);
-            Collection<Product> products = productMap.values();
-            cdKeys.forEach((k) -> {
-                Optional<Product> productOptional = Optional.empty();
-                Optional<ProductCombo> productComboOptional = productCombos.stream().filter(p -> p.getId() == k.getProductComboId()).findFirst();
-                if (productComboOptional.isPresent()) {
-                    productOptional = products.stream().filter(p -> p.getId() == productComboOptional.get().getProductId()).findFirst();
-                }
-                CdKeyOther cdKeyOther = new CdKeyOther();
-                cdKeyOther.setKey(k.getKey());
-                cdKeyOther.setProductComboId(k.getProductComboId());
-                cdKeyOther.setId(k.getId());
-                cdKeyOther.setCreateAt(k.getCreatedAt().toString());
-                cdKeyOther.setProductName(productOptional.get().getName());
-                cdKeyOther.setComboName(productComboOptional.get().getName());
-                cdKeyOther.setTime(productComboOptional.get().getTime());
-                cdKeyOther.setRemark(k.getRemark());
-                cdKeyOther.setIsUsed(k.getStatus());
-                cdKeyOther.setProfix(k.getKey().split("-")[0]);
-                cdKeyOther.setUsername(k.getUsername());
-                cdKeyOthers.add(cdKeyOther);
-            });
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
         }
-        return cdKeyOthers;
     }
 
     private static String generateCdKey(String prefix) {
@@ -365,8 +407,8 @@ public class CdKeyServiceImpl implements CdKeyService {
         return "" + localDate.getYear() + localDate.getMonthValue() + localDate.getDayOfMonth() + RandomStringUtils.random(8,'0','1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f');
     }
 
-    private void clearCdKey(Integer cdKeyId, String username,String key) {
-        cdKeyMapper.updateUsernameAndStatusById(cdKeyId,username,USED_STATUS);
+    private void clearCdKey(Integer cdKeyId, int userId,String key, int userProductComboId) {
+        cdKeyMapper.updateUserIdAndStatusById(cdKeyId,userId,USED_STATUS,userProductComboId);
         redisTemplate.opsForHash().delete(CD_KEY_HASH, key);
     }
 

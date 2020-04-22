@@ -17,6 +17,33 @@ public class CdKeyOther {
     private int isUsed;
     private String username;
 
+    private int userProductComboId;
+    private int robotManageStatus;
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public int getUserProductComboId() {
+        return userProductComboId;
+    }
+
+    public void setUserProductComboId(int userProductComboId) {
+        this.userProductComboId = userProductComboId;
+    }
+
+    public int getRobotManageStatus() {
+        return robotManageStatus;
+    }
+
+    public void setRobotManageStatus(int robotManageStatus) {
+        this.robotManageStatus = robotManageStatus;
+    }
+
     public CdKeyOther() { }
 
     public CdKeyOther(int id, String key, String createAt, int productComboId, String productName, String comboName, int time, String prefix, String remark, int isUsed, String username) {
