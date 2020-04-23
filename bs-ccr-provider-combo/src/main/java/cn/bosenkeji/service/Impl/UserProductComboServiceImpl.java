@@ -6,11 +6,13 @@ import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
 import cn.bosenkeji.utils.UserComboTimeUtil;
+import cn.bosenkeji.vo.RobotRunStatusParams;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import cn.bosenkeji.vo.product.Product;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductCombo;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -487,5 +489,25 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             return new Result<>(0,"套餐不存在！");
         }
         return new Result<>(userProductComboMapper.updateRunStatus(id,runStatus));
+    }
+
+
+    /**
+     * 处理过期 机器人方法
+     * @param robotIds
+     */
+    @Override
+    public void handleExpiredRobot(List<Integer> robotIds) {
+
+
+    }
+
+    private void handleRobotRunStatus(RobotRunStatusParams robotRunStatusParams) {
+
+        if (robotRunStatusParams.getRobotIds() != null && robotRunStatusParams.getRobotIds().size() > 0) {
+            String jsonString = JSON.toJSONString(robotRunStatusParams);
+
+        }
+
     }
 }

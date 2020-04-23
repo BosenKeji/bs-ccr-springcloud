@@ -1,0 +1,33 @@
+spring:
+  redis:
+    database: 0
+    host: r-0xi4fslkpsrqxf5vjx.redis.rds.aliyuncs.com  #内网地址
+    port: 6379
+    password: 4v8e3&jo8Y%fG(kv
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1ms
+
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          #name-server: MQ_INST_1782728101358463_BbCmhMPY.mq-internet-access.mq-internet.aliyuncs.com:80 #  tydia 公网测试
+          name-server: MQ_INST_1782728101358463_BbRT1x5s.us-east-1.mq-internal.aliyuncs.com:8080  #  美国区域
+          access-key: LTAISwQkitLFbG0t
+          secret-key: aCeWQl874e6Jvh76GtfhEAeC24hKl0
+      bindings:
+        #output: {destination: MQ_INST_1782728101358463_BbCmhMPY%topic_test, content-type: application/json}
+        #robot_run_status_input: {destination: MQ_INST_1782728101358463_BbCmhMPY%topic_test, content-type: application/json, group: MQ_INST_1782728101358463_BbCmhMPY%GID_topic_test}
+        robot_run_status_input: {destination: MQ_INST_1782728101358463_BbRT1x5s%bs-ccr-consumer-combo-run-status, content-type: application/json, group: MQ_INST_1782728101358463_BbRT1x5s%GID_bs-ccr-consumer-combo-run-status}
+
+
+
+logging:
+  level:
+    com:
+      alibaba: ERROR

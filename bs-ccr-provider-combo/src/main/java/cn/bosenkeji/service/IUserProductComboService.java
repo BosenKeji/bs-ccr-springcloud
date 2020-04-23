@@ -4,6 +4,7 @@ import cn.bosenkeji.util.Result;
 import cn.bosenkeji.vo.combo.UserProductCombo;
 import cn.bosenkeji.vo.combo.UserProductComboDay;
 import com.github.pagehelper.PageInfo;
+import scala.Int;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,8 @@ public interface IUserProductComboService {
     int checkExistByIdAndUserId(int id,int userId);
 
     Result<Integer> updateRunStatus(int id,int runStatus);
+
+    void handleExpiredRobot(List<Integer> robotIds);
 
 
 }

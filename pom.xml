@@ -46,6 +46,7 @@
         <module>bs-ccr-provider-reason</module>
         <module>bs-ccr-basic-deal</module>
         <module>bs-ccr-order</module>
+        <module>bs-ccr-us-mq-consumer</module>
 
     </modules>
 
