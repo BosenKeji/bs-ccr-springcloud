@@ -5,6 +5,7 @@ import cn.bosenkeji.interfaces.ExpiredComboRedisKey;
 import cn.bosenkeji.interfaces.RedisInterface;
 import cn.bosenkeji.service.ICoinPairChoiceClientService;
 import cn.bosenkeji.service.ITradePlatformApiBindProductComboClientService;
+import cn.bosenkeji.service.IUserProductComboService;
 import cn.bosenkeji.service.JobService;
 import cn.bosenkeji.vo.tradeplatform.TradePlatformApiBindProductComboNoComboVo;
 import cn.bosenkeji.vo.transaction.CoinPairChoice;
@@ -41,9 +42,7 @@ public class UserComboTask extends JavaProcessor {
     private DefaultRedisScript<Boolean> redisScript;
 
     @Resource
-    private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
-    @Resource
-    private ICoinPairChoiceClientService iCoinPairChoiceClientService;
+    private IUserProductComboService iUserProductComboService;
 
 
     private final int ZERO = 0;
@@ -68,23 +67,27 @@ public class UserComboTask extends JavaProcessor {
         String jobParameters = context.getJobParameters();
         if(StringUtils.isNotBlank(jobParameters)) {
 
-            List list=new ArrayList();
             //获取剩余0天的 用户套餐
             //把这些套餐的时长从 缓存中清除
             Set eq0Set = redisTemplate.opsForZSet().rangeByScore(jobParameters, ZERO, ZERO);
-            Iterator eq0Iterator = eq0Set.iterator();
+            if (eq0Set!= null && eq0Set.size() > 0) {
+                List<Integer> list = new ArrayList(eq0Set);
+                iUserProductComboService.handleExpiredRobot(list);
+            }
+            /*Iterator eq0Iterator = eq0Set.iterator();
             while (eq0Iterator.hasNext()) {
                 String next = String.valueOf(eq0Iterator.next());
                 list.add(next);
-            }
-            if(list.size()>0) {
+            }*/
+            /*if(list.size()>0) {
 
+                iUserProductComboService.handleExpiredRobot(eq0Set.stream());
                 redisTemplate.opsForZSet().remove(jobParameters, eq0Set.toArray());
                 redisTemplate.opsForHash().delete(UserComboRedisEnum.ComboRedisKey, list.toArray());
 
                 //把已经过期的userProductComboId 放到redis
                 redisTemplate.opsForSet().add(ExpiredComboRedisKey.expiredUserProductComboIdSet,eq0Set.toArray());
-            }
+            }*/
 
 
         }

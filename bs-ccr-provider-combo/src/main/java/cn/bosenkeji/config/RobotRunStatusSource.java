@@ -1,6 +1,5 @@
 package cn.bosenkeji.config;
 
-import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.SubscribableChannel;
 
@@ -13,6 +12,6 @@ import org.springframework.messaging.SubscribableChannel;
 public interface RobotRunStatusSource {
 
     @Output("robot_run_status_output")
-    SubscribableChannel myInput();
+    SubscribableChannel robotRunStatusOutput();
 
 }

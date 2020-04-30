@@ -17,6 +17,13 @@ public class RobotRunStatusParams {
     private int type;
     private List<Integer> robotIds;
 
+    public RobotRunStatusParams() { }
+
+    public RobotRunStatusParams(int type, List<Integer> robotIds) {
+        this.type = type;
+        this.robotIds = robotIds;
+    }
+
     public int getType() {
         return type;
     }

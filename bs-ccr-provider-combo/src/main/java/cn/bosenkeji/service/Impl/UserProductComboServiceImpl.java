@@ -1,11 +1,15 @@
 package cn.bosenkeji.service.Impl;
 
 import cn.bosenkeji.UserComboRedisEnum;
+import cn.bosenkeji.config.RobotRunStatusSource;
+import cn.bosenkeji.interfaces.CommonStatusEnum;
 import cn.bosenkeji.mapper.ProductComboMapper;
 import cn.bosenkeji.mapper.UserProductComboMapper;
 import cn.bosenkeji.service.*;
 import cn.bosenkeji.util.Result;
+import cn.bosenkeji.utils.RocketMqUtil;
 import cn.bosenkeji.utils.UserComboTimeUtil;
+import cn.bosenkeji.vo.ComboStatusEnum;
 import cn.bosenkeji.vo.RobotRunStatusParams;
 import cn.bosenkeji.vo.User;
 import cn.bosenkeji.vo.combo.UserProductCombo;
@@ -21,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
+import scala.Int;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -30,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author xivin
@@ -42,31 +49,22 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
     @Resource
     private UserProductComboMapper userProductComboMapper;
-
     @Resource
     private ProductComboMapper productComboMapper;
-
-
-
     @Resource
     private RedisTemplate redisTemplate;
-
-
     @Resource
     private IUserClientService iUserClientService;
-
     @Resource
     private IProductClientService iProductClientService;
-
     @Autowired
     private JobService jobService;
+    @Resource
+    private RobotRunStatusSource robotRunStatusSource;
 
-
-    private final Logger Log = LoggerFactory.getLogger(this.getClass());
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final int FAIL=0;
     private final int SUCCESS=1;
-    
 
     @Resource
     private ITradePlatformApiBindProductComboClientService iTradePlatformApiBindProductComboClientService;
@@ -76,39 +74,22 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
      * @param userProductCombo
      * @return
      */
-
     @Transactional
     @Override
     public int add(UserProductCombo userProductCombo) {
-
         //查询套餐时长
-
         Integer time=productComboMapper.selectTimeByPrimaryKey(userProductCombo.getProductComboId());
-        //int i=1/0;
+
         //保存到数据库 管理端部署机器人
         int adminResult=userProductComboMapper.insertSelective(userProductCombo);
         //部署失败直接返回
         if(adminResult!=SUCCESS)
             return FAIL;
-
         //把套餐剩余时长 存进缓存中
         UserComboTimeUtil.saveComboTimeToRedis(time,redisTemplate,userProductCombo,jobService);
 
-
-        //int i=1/0;
-        //用户端机器人
-        /*TradePlatformApiBindProductCombo tradePlatformApiBindProductCombo=new TradePlatformApiBindProductCombo();
-        tradePlatformApiBindProductCombo.setUserProductComboId(userProductCombo.getId());
-        tradePlatformApiBindProductCombo.setUserId(userProductCombo.getUserId());
-        tradePlatformApiBindProductCombo.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        tradePlatformApiBindProductCombo.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now()));
-        int userResult= (int) iTradePlatformApiBindProductComboClientService.addTradePlatformApiBindProductCombo(tradePlatformApiBindProductCombo).getData();*/
-
-        //int i=1/0;
         return userProductCombo.getId();
-
     }
-
 
     @Override
     public int update(UserProductCombo userProductCombo) {
@@ -133,7 +114,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         Result result = iTradePlatformApiBindProductComboClientService.deleteByComboId(id);
         int result1=(int) result.getData();
-
         int result2 = userProductComboMapper.deleteByPrimaryKey(id);
         String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey, String.valueOf(id));
         if(redisKey!=null) {
@@ -143,7 +123,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         System.out.println("result1:"+result1);
         System.out.println("result2:"+result2);
-
         if(result1>0||result2>0) {
             return new Result<>(1,"删除操作成功，ID为"+id+"的 userProductCombo 删除个数为"+result1+"。同时删除api绑定机器人 的个数 为"+result2);
         }
@@ -169,11 +148,9 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //数据库联表查询用户套餐信息
         UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
-
         //根据id获取用户套餐的有效时长
         if(userProductCombo!=null)
             setTimeForOneCombo(userProductCombo);
-
         return userProductCombo;
 
 
@@ -201,7 +178,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
 
         User user=null;
-
         try{
             user = iUserClientService.getOneUserByTel(userTel);
         }catch (Exception e) {
@@ -214,7 +190,6 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
             return new PageInfo<>();
         }
         //从数据库查询
-
         return selectUserProductComboByUserId(pageNum,pageSize,user.getId());
 
     }
@@ -279,9 +254,7 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
 
         //从数据库查询
         PageHelper.startPage(pageNum,pageSize);
-
         List<UserProductCombo> userProductCombos = userProductComboMapper.selectUserProductComboByIdAndUserId(id,userId);
-
         getProductByPids(userProductCombos);
 
         return new PageInfo<>(userProductCombos);
@@ -480,34 +453,221 @@ public class UserProductComboServiceImpl implements IUserProductComboService {
         userProductCombo.setRemainTime(time>0?time:0);
     }
 
+    int getOneComboTime(int id) {
+        String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey, String.valueOf(id));
+        Double score=0.0;
+        if(redisKey!=null)
+            score = redisTemplate.opsForZSet().score(redisKey, String.valueOf(id));
+        int time=0;
+
+        //注意判空处理
+        if(score!=null)
+            time=score.intValue();
+        return time;
+    }
+
+    /**
+     * 1 未管控 2暂停 3封禁
+     * @param id
+     * @param runStatus
+     * @return
+     */
     @Override
+    @Transactional
     public Result<Integer> updateRunStatus(int id, int runStatus) {
-        if (runStatus < 1) {
-            return new Result<>(0,"运行状态不存在！");
+        try {
+
+
+            if (runStatus < 1) {
+                return new Result<>(0, "运行状态不存在！");
+            }
+            UserProductCombo userProductCombo = userProductComboMapper.selectByPrimaryKey(id);
+            if (null == userProductCombo) {
+                return new Result<>(0, "机器人不存在");
+            }
+            if (userProductCombo.getRunStatus() == runStatus) {
+                return new Result<>(0,"未检测到更新");
+            }
+            if (userProductCombo.getRunStatus() == 3) {
+                return new Result<>(0, "机器人已被封禁");
+            }
+            int update = userProductComboMapper.updateRunStatus(id, runStatus);
+            if (update != 1) {
+                return new Result<>(0, "找不到机器人");
+            }
+
+            //处理redis中间件数据
+            if (runStatus == 1) {
+                handleRerun(id);
+            } else if (runStatus == 2) {
+                handleStopRobot(id);
+            } else if (runStatus == 3) {
+                handleFreezeRobot(id);
+            }
+
+            return new Result<>(CommonStatusEnum.NORMAL);
+        }catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new Result<>(0,"程序发生未知异常");
         }
-        if (userProductComboMapper.checkExistById(id) < 1) {
-            return new Result<>(0,"套餐不存在！");
-        }
-        return new Result<>(userProductComboMapper.updateRunStatus(id,runStatus));
     }
 
 
     /**
      * 处理过期 机器人方法
+     * 从倒数的redis set中去除 相关的机器人
+     * 将过期的机器人添加到 不运行状态的redis set里面
+     * 发送到 全球路由 通知其他区域 这批机器人 不能参与交易了
      * @param robotIds
      */
     @Override
     public void handleExpiredRobot(List<Integer> robotIds) {
 
+        addToNotRunSet(robotIds);
+        removeRedisDay(robotIds);
+        RobotRunStatusParams robotRunStatusParams = new RobotRunStatusParams(ComboStatusEnum.TO_NOT_RUN, robotIds);
+        sendRobotRunStatusMsg(robotRunStatusParams);
 
     }
 
-    private void handleRobotRunStatus(RobotRunStatusParams robotRunStatusParams) {
+    /**
+     * 处理冻结的机器人
+     * 1 把倒数的redis 移到 静止的redis
+     * 2 把 机器人加到 不运行 redis
+     * 3 全球路由广播
+     * @param robotId
+     */
+    public void handleFreezeRobot(int robotId) {
+
+        List<Integer> list = new ArrayList<>();
+        list.add(robotId);
+        redisTemplate.opsForSet().add(ComboStatusEnum.NOT_RUN_ROBOT_ID_SET, String.valueOf(robotId));
+        int time = getOneComboTime(robotId);
+        redisTemplate.opsForZSet().add(ComboStatusEnum.STOP_COUNT_DOWN_ROBOT, String.valueOf(robotId), time);
+        removeRedisDay(list);
+        RobotRunStatusParams robotRunStatusParams = new RobotRunStatusParams(ComboStatusEnum.TO_NOT_RUN, list);
+        sendRobotRunStatusMsg(robotRunStatusParams);
+
+    }
+
+    /**
+     * 处理暂停运行的机器人
+     * 1 把倒数的redis 移到 冻结的的redis
+     * 2 把 机器人加到 不运行 redis
+     * 3 全球路由广播
+     * @param robotId
+     */
+    public void handleStopRobot(int robotId) {
+
+        List<Integer> list = new ArrayList<>();
+        list.add(robotId);
+        redisTemplate.opsForSet().add(ComboStatusEnum.NOT_RUN_ROBOT_ID_SET, String.valueOf(robotId));
+        int time = getOneComboTime(robotId);
+        redisTemplate.opsForZSet().add(ComboStatusEnum.STOP_COUNT_DOWN_ROBOT, String.valueOf(robotId), time);
+        removeRedisDay(list);
+        RobotRunStatusParams robotRunStatusParams = new RobotRunStatusParams(ComboStatusEnum.TO_NOT_RUN, list);
+        sendRobotRunStatusMsg(robotRunStatusParams);
+
+    }
+
+    /**
+     * 处理 重新运行的机器人
+     * 1 把静止的redis 移到 倒数的redis
+     * 2 把机器人从 不运行状态中 移除
+     * 3 全球路由广播 该机器人可以交易
+     * @param robotId
+     */
+    public void handleRerun(int robotId) {
+
+        Double score = redisTemplate.opsForZSet().score(ComboStatusEnum.STOP_COUNT_DOWN_ROBOT, String.valueOf(robotId));
+        if (null == score || score < 1) {
+            return;
+        }
+        List<Integer> list = new ArrayList<>();
+        list.add(robotId);
+        removeFormNotRunSet(list);
+
+        RobotRunStatusParams robotRunStatusParams = new RobotRunStatusParams(ComboStatusEnum.TO_RUN, list);
+        sendRobotRunStatusMsg(robotRunStatusParams);
+
+        UserProductCombo userProductCombo = new UserProductCombo();
+        userProductCombo.setId(robotId);
+        UserComboTimeUtil.saveComboTimeToRedis(score.intValue(),redisTemplate,userProductCombo,jobService);
+
+        removeFormStopCountDownSet(list);
+    }
+
+    void removeRedisDay(List<Integer> robotIds) {
+
+           // logger.info(robotIds.toArray().toString());
+            System.out.println("robotIds = " + robotIds);
+            List<String> strIds = robotIds.stream().map(String::valueOf).collect(Collectors.toList());
+            String redisKey = (String) redisTemplate.opsForHash().get(UserComboRedisEnum.ComboRedisKey, String.valueOf(robotIds.get(0)));
+            if (redisKey != null) {
+                Long remove = redisTemplate.opsForZSet().remove(redisKey, strIds.toArray());
+                System.out.println("remove = " + remove);
+                Long delete = redisTemplate.opsForHash().delete(UserComboRedisEnum.ComboRedisKey, strIds.toArray());
+                System.out.println("delete = " + delete);
+            }
+    }
+
+    /**
+     * 添加到国内 不运行 set集合
+     * @param robotIds
+     * @return
+     */
+    int addToNotRunSet(List<Integer> robotIds) {
+        Long add = redisTemplate.opsForSet().add(ComboStatusEnum.NOT_RUN_ROBOT_ID_SET, robotIds.toArray());
+        return add.intValue();
+    }
+
+    int addToStopCountDownSet(int robotIds, int time) {
+        Boolean add = redisTemplate.opsForZSet().add(ComboStatusEnum.STOP_COUNT_DOWN_ROBOT, robotIds, time);
+        return add ? 1:0;
+    }
+
+    int removeFormNotRunSet(List<Integer> robotIds) {
+        List<String> strIds = robotIds.stream().map(String::valueOf).collect(Collectors.toList());
+        Long add = redisTemplate.opsForSet().remove(ComboStatusEnum.NOT_RUN_ROBOT_ID_SET, strIds.toArray());
+        return add.intValue();
+    }
+
+    int removeFormStopCountDownSet(List<Integer> robotIds) {
+        List<String> strIds = robotIds.stream().map(String::valueOf).collect(Collectors.toList());
+        Long remove = redisTemplate.opsForZSet().remove(ComboStatusEnum.STOP_COUNT_DOWN_ROBOT, strIds.toArray());
+        return remove.intValue();
+    }
+
+
+    /**
+     * 处理不运行的机器人
+     * 发送到 全球路由mq
+     * @param robotRunStatusParams
+     */
+    private void sendRobotRunStatusMsg(RobotRunStatusParams robotRunStatusParams) {
 
         if (robotRunStatusParams.getRobotIds() != null && robotRunStatusParams.getRobotIds().size() > 0) {
-            String jsonString = JSON.toJSONString(robotRunStatusParams);
-
+            logger.info("====== type: {} |||  robotIds : {}",robotRunStatusParams.getType(),robotRunStatusParams.getRobotIds());
+            boolean send = robotRunStatusSource.robotRunStatusOutput().send(RocketMqUtil.generateRobotRunStatusMessage(robotRunStatusParams));
+            if (!send) {
+                throw new RuntimeException("======== send rocket mq fail==========");
+            }
         }
 
+    }
+
+    public static void main(String[] args) {
+        List<Integer> robotIds = new ArrayList<>();
+        robotIds.add(1);
+        robotIds.add(2);
+        List<String> strIds = robotIds.stream().map(String::valueOf).collect(Collectors.toList());
+        List<String> result = new ArrayList<>();
+        robotIds.forEach(id -> {
+            result.add(String.valueOf(id));
+        });
+        result.add("hello");
+        System.out.println("result = " + result);
+        System.out.println("strIds = " + strIds);
     }
 }
