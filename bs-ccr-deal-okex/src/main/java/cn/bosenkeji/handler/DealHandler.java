@@ -55,7 +55,6 @@ public class DealHandler {
             setKey = DealEnum.OKEX_PLATFORM_NAME + "_" + setKey;
         }
         realTimeTradeParameter.setSetKey(setKey);
-        log.info("接收"+realTimeTradeParameter.getSymbol()+"的现价");
         handle(realTimeTradeParameter);
     }
 
@@ -112,7 +111,7 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送卖的消息
-                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_SELL, realTimeTradeParameter.getSellPrice());
                     boolean isSend = source.okexOutput().send(messageObject);
                     log.info(s + "===> sell-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
@@ -126,7 +125,7 @@ public class DealHandler {
                     //redis分数置为0
                     DealCalculator.updateRedisSortedSetScore(setKey,s,0.0,redisTemplate);
                     //mq发送买的消息
-                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_BUY);
+                    Message<String> messageObject = DealUtil.createMessageObject(dealParameter,realTimeEarningRatio, realTimeTradeParameter.getPlatFormName(), DealEnum.TRADE_TYPE_BUY, realTimeTradeParameter.getSellPrice());
                     boolean isSend = source.okexOutput().send(messageObject);
                     log.info(s + "===> buy-" + isSend + "  " + realTimeTradeParameter + "  " + dealParameter);
                 }
