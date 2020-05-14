@@ -16,6 +16,8 @@ public class RocketMQResult {
     private Integer finished_order;
     private String plantFormName;
     private Double real_time_earning_ratio;
+    private Double sellPrice;
+    private Double buyPrice;
 
     public RocketMQResult() { }
 
@@ -67,6 +69,22 @@ public class RocketMQResult {
         this.real_time_earning_ratio = real_time_earning_ratio;
     }
 
+    public Double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public Double getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
     @Override
     public String toString() {
         return "RocketMQResult{" +
@@ -75,7 +93,9 @@ public class RocketMQResult {
                 ", type='" + type + '\'' +
                 ", finished_order=" + finished_order +
                 ", plantFormName='" + plantFormName + '\'' +
-                ", real_time_earning_ratio='" + real_time_earning_ratio + '\'' +
+                ", real_time_earning_ratio=" + real_time_earning_ratio +
+                ", sellPrice=" + sellPrice +
+                ", buyPrice=" + buyPrice +
                 '}';
     }
 }

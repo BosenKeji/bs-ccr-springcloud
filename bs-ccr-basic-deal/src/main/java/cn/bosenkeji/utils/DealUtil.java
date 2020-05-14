@@ -105,7 +105,7 @@ public class DealUtil {
      * @return 需要发送消息的对象
      */
 
-    public static Message<String> createMessageObject(DealParameter dealParameter, Double realTimeEarningRatio, String platformName, String type) {
+    public static Message<String> createMessageObject(DealParameter dealParameter, Double realTimeEarningRatio, String platformName, String type, Double price) {
         RocketMQResult rocketMQResult = new RocketMQResult();
 
         String symbol = dealParameter.getSymbol();
@@ -113,6 +113,11 @@ public class DealUtil {
         rocketMQResult.setSymbol(symbol);
         rocketMQResult.setSignId(signId);
         rocketMQResult.setType(type);
+        if (DealEnum.TRADE_TYPE_SELL.equals(type)){
+            rocketMQResult.setSellPrice(price);
+        }else {
+            rocketMQResult.setBuyPrice(price);
+        }
         rocketMQResult.setFinished_order(dealParameter.getFinishedOrder());
         rocketMQResult.setPlantFormName(platformName);
         rocketMQResult.setReal_time_earning_ratio(realTimeEarningRatio);
