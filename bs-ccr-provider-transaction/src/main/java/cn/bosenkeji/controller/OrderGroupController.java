@@ -76,9 +76,9 @@ public class OrderGroupController {
             return new Result<>(0-orderGroupId,"订单组name已存在！");
 
         }
-        if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
-            return new Result<>(null,"该自选币有未结单的订单组，创建订单组失败！");
-        }
+//        if (this.orderGroupService.checkExistByCoinPairChoiceIdAndIsEnd(orderGroup.getCoinPairChoiceId()).get() > 0){
+//            return new Result<>(null,"该自选币有未结单的订单组，创建订单组失败！");
+//        }
         return new Result<>(this.orderGroupService.add(orderGroup));
     }
 

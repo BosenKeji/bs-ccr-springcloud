@@ -7,18 +7,18 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         endpoint: addr-sz-internal.edas.aliyun.com
-        namespace : 3893fbec-c3c3-49d2-9843-ff20fdbc4219
+        namespace : e69a7804-9f0f-49e8-aafc-0412ebc9eb8f
         file-extension : yml
         ext-config[0]:
           data-id: bs-ccr-page-size-config.yml
         ext-config[1]:
           data-id: bs-ccr-database-config.yml
         ext-config[2]:
-          data-id: bs-ccr-mq-config.yml
+          data-id: bs-ccr-mq-order-config.yml
         ext-config[3]:
           data-id: bs-crr-common-config.yml
         ext-config[4]:
-          data-id: bs-ccr-transaction-config.yml
+          data-id: bs-ccr-open-search-config.yml
         ext-config[5]:
           data-id: bs-ccr-schedulerx-config.yml
 logging:

@@ -90,12 +90,14 @@ public class OrderHandler {
 
             if (orderGroup.getCoinPairChoiceId() > 0){
                 Result result = this.iOrderGroupClientService.addOneOrderGroup(orderGroup);
+
                 if (result.getData() == null){
                     log.info("result ==>" + result.getMsg());
                 }else{
                     groupId = Integer.parseInt(result.getData().toString());
                     log.info("订单组创建 ==>" + result.getMsg()+result.getData());
                 }
+
                 TradeOrder order = this.transformOrder(msg);
                 if (groupId > 0){
                     order.setOrderGroupId(groupId);
@@ -190,7 +192,6 @@ public class OrderHandler {
                 log.info("找不到该订单组id！");
             }
         }finally {
-            log.info("lockLogo ==>"+lockLogo);
             while(true){
                 boolean isUnLock = distributedLock.releaseLock(lockLogo);
                 if (isUnLock){
