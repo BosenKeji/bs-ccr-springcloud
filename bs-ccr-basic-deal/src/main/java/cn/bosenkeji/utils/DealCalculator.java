@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 public class DealCalculator {
 
+    private static final Logger log = LoggerFactory.getLogger(DealCalculator.class);
 
     /**
      * 计算持仓均价
@@ -166,6 +167,7 @@ public class DealCalculator {
             if (isTriggerTraceStopProfit == 1) {
                 //实时收益比≤最高实时收益比-回降比例？ 确定卖出
                 if (realTimeEarningRatio - (historyMaxBenefitRatio-callBackRatio) <= 0) {
+                    log.info("追踪止盈 实时收益比={},最高实时收益比={},回降比例={}", realTimeEarningRatio,historyMaxBenefitRatio,callBackRatio);
                     return true;
                 }
             }
@@ -173,6 +175,7 @@ public class DealCalculator {
             //固定止盈
             //收益比≥1+止盈比例？ //确定卖出
             if (realTimeEarningRatio - (1 + stopFixedRatio) >= 0) {
+                log.info("固定止盈 收益比={},止盈比例={}",realTimeEarningRatio, stopFixedRatio);
                 return true;
             }
         }
@@ -181,6 +184,9 @@ public class DealCalculator {
             return false;
         } else {
             // 金额止盈
+            if (((positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0)){
+                log.info("金额止盈 ={}",((positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0));
+            }
             return (positionCost * (realTimeEarningRatio-1)) - stopProfitPrice >= 0;
         }
 

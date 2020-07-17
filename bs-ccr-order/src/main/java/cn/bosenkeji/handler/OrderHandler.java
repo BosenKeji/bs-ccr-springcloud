@@ -217,7 +217,7 @@ public class OrderHandler {
         Timestamp createdAt = json.getTimestamp("createdAt");
         if (tradeType > 1){
             if(json.get("sellProfit") != null && json.get("extraProfit") != null) {
-                double sellProfit = MqMessageUtil.getDouble(json.getDouble("sellProfit"));
+                double sellProfit = MqMessageUtil.getDouble(json.getDouble(""));
                 double extraProfit = MqMessageUtil.getDouble(json.getDouble("extraProfit"));
                 order.setExtraProfit(extraProfit);
                 order.setSellProfit(sellProfit);
