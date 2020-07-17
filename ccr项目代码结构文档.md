@@ -57,7 +57,7 @@ bs-ccr-springcloud
 
 ##### 1.下载docker，用docker启动ccr所需环境
 
-在bs-ccr-springcloud项目下，有一个docker的文件夹，下面有启动所需的docker-compose.yaml，用docker compose命令去启动。
+在bs-ccr-springcloud项目下，有一个docker的文件夹，下面有启动系统所需环境的docker-compose.yaml，用docker compose命令去启动。
 
 ##### 2.启动哪几个服务
 
